@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STAROT · Observatory of Fates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Marcellus&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#050609;
+    --gold:#d8b877;
+    --gold-dim:#8f7b52;
+    --gold-bright:#f3e3bb;
+    --bone:#e9e2d2;
+    --mist:#8b8878;
+    --hair:rgba(216,184,119,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--void);color:var(--bone);
+    font-family:'Jost',sans-serif;overflow:hidden;cursor:crosshair;
+  }
+  body::before{ /* faint nebula */
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 50% at 68% 38%, rgba(84,66,38,.16), transparent 70%),
+      radial-gradient(ellipse 50% 60% at 20% 80%, rgba(38,44,66,.22), transparent 70%);
+  }
+  body::after{ /* vignette + grain */
+    content:"";position:fixed;inset:0;z-index:35;pointer-events:none;
+    background:radial-gradient(ellipse 110% 100% at 50% 45%, transparent 55%, rgba(0,0,0,.55));
+  }
+  #gl{position:fixed;inset:0;z-index:1}
+
+  .label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-dim);font-weight:400}
+
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:30;
+    display:flex;justify-content:space-between;align-items:center;padding:26px 40px;
+  }
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Marcellus',serif;
+    font-size:15px;letter-spacing:.42em;color:var(--bone)}
+  .brand i{width:7px;height:7px;border-radius:50%;background:var(--gold);
+    box-shadow:0 0 12px 2px rgba(216,184,119,.7);flex:none}
+  .head-right{display:flex;gap:16px;align-items:center}
+  .head-right .sep{width:3px;height:3px;border-radius:50%;background:var(--gold-dim);opacity:.6}
+  .head-right .count{color:var(--gold);letter-spacing:.3em;font-size:10px}
+
+  /* ── intro ─────────────────────────────── */
+  #intro{
+    position:fixed;inset:0;z-index:25;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:30px;text-align:center;
+    transition:opacity 1s, visibility 1s;
+  }
+  #intro.gone{opacity:0;visibility:hidden;pointer-events:none}
+  #intro .label{margin-bottom:-14px}
+  #intro h1{
+    font-family:'Cormorant Garamond',serif;font-weight:300;
+    font-size:clamp(46px,6.5vw,88px);line-height:1.05;letter-spacing:.02em;
+  }
+  #intro h1 em{font-style:italic;color:var(--gold)}
+  #intro p{
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:18px;color:var(--mist);max-width:46ch;line-height:1.6;
+  }
+  .deal-btn{
+    margin-top:8px;font-family:'Jost';font-size:11px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--gold-bright);background:transparent;border:1px solid var(--hair);
+    padding:17px 42px 15px;border-radius:999px;cursor:pointer;transition:all .4s;
+    position:relative;overflow:hidden;
+  }
+  .deal-btn:hover{border-color:var(--gold);box-shadow:0 0 30px -6px rgba(216,184,119,.45);
+    background:rgba(216,184,119,.07)}
+  .deal-btn.ghost{color:var(--gold-dim)}
+  .deal-btn.ghost:hover{color:var(--gold-bright)}
+  #introMain,#ritual{display:flex;flex-direction:column;align-items:center;gap:30px}
+  #intro .choice{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+  #ritual{display:none}
+  #ritual.on{display:flex}
+  #ritual p em{color:var(--gold)}
+  #dealBtn2{opacity:0;pointer-events:none;transition:opacity 1.6s}
+  #dealBtn2.ready{opacity:1;pointer-events:auto}
+
+  /* ── exhibit panel ─────────────────────── */
+  #panel{
+    position:fixed;left:44px;top:50%;transform:translateY(-50%) translateX(-16px);
+    width:min(380px,34vw);z-index:20;padding:30px 36px 26px 26px;
+    border-left:1px solid var(--hair);
+    background:linear-gradient(90deg,rgba(5,6,9,.72) 55%,rgba(5,6,9,0));
+    opacity:0;visibility:hidden;transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1),visibility .8s;
+  }
+  #panel.show{opacity:1;visibility:visible;transform:translateY(-50%)}
+  #panel .pos{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;
+    color:var(--gold);margin-bottom:10px}
+  #panel h2{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:clamp(30px,3vw,42px);line-height:1.1;margin-bottom:16px;letter-spacing:.01em;
+  }
+  #panel .meta{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;
+    padding-bottom:18px;border-bottom:1px solid rgba(216,184,119,.14)}
+  #panel .meta span{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--mist)}
+  #panel .meta span b{color:var(--gold-dim);font-weight:400}
+  #panel .prose{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:16.5px;line-height:1.66;color:#cfc8b4;max-width:38ch;
+  }
+  #panel .prose .rev{display:block;margin-top:12px;font-style:italic;color:var(--gold)}
+  #panel .foot{margin-top:22px;font-size:9.5px;letter-spacing:.26em;color:var(--gold-dim);text-transform:uppercase}
+
+  /* ── spread slots ──────────────────────── */
+  #spread{
+    position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);z-index:30;
+    display:flex;align-items:flex-end;gap:22px;
+    opacity:0;visibility:hidden;transition:all .8s .3s;
+  }
+  #spread.show{opacity:1;visibility:visible;transform:translateX(-50%)}
+  .slot{display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer}
+  .slot .label{transition:color .4s}
+  .card{
+    width:64px;height:100px;border-radius:7px;border:1px solid var(--hair);
+    background:linear-gradient(160deg,#0c0e14,#080a0f);
+    display:flex;align-items:center;justify-content:center;position:relative;
+    transition:all .45s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;
+    font-family:'Cormorant Garamond',serif;
+  }
+  .card .num{font-size:19px;color:var(--gold);letter-spacing:.08em}
+  .card .back{position:absolute;inset:6px;border:1px solid rgba(216,184,119,.16);border-radius:4px;
+    background:
+     radial-gradient(circle at 50% 50%, rgba(216,184,119,.13) 0 2px, transparent 3px),
+     radial-gradient(circle at 25% 25%, rgba(216,184,119,.1) 0 1px, transparent 2px),
+     radial-gradient(circle at 75% 30%, rgba(216,184,119,.1) 0 1px, transparent 2px),
+     radial-gradient(circle at 30% 75%, rgba(216,184,119,.1) 0 1px, transparent 2px),
+     radial-gradient(circle at 72% 72%, rgba(216,184,119,.1) 0 1px, transparent 2px);
+  }
+  .card.hidden-face .num{display:none}
+  .slot:hover .card{transform:translateY(-6px);border-color:var(--gold-dim)}
+  .slot.on .card{
+    border-color:var(--gold);box-shadow:0 0 34px -6px rgba(216,184,119,.5), inset 0 0 20px rgba(216,184,119,.06);
+    transform:translateY(-10px);
+  }
+  .slot.on .label{color:var(--gold-bright)}
+  .card.reversed::after{
+    content:"▾ rev";position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
+    font-family:'Jost';font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold-dim);
+  }
+
+  #synth{
+    position:fixed;bottom:206px;left:50%;transform:translateX(-50%);z-index:30;
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15.5px;
+    color:var(--mist);text-align:center;max-width:58ch;line-height:1.5;
+    opacity:0;transition:opacity 1.2s .8s;pointer-events:none;padding:6px 20px;
+    background:rgba(5,6,9,.55);border-radius:10px;backdrop-filter:blur(3px);
+  }
+  #synth.show{opacity:1}
+  #synth b{color:var(--gold);font-weight:400}
+
+  #redeal{
+    position:fixed;right:40px;bottom:40px;z-index:30;
+    font-family:'Jost';font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--gold-dim);background:none;border:1px solid var(--hair);border-radius:999px;
+    padding:13px 24px 11px;cursor:pointer;transition:all .4s;
+    opacity:0;visibility:hidden;
+  }
+  #redeal.show{opacity:1;visibility:visible}
+  #redeal:hover{color:var(--gold-bright);border-color:var(--gold)}
+
+  #hint{position:fixed;bottom:92px;left:40px;z-index:30;transition:opacity .8s}
+
+  #offerBtn{
+    position:fixed;left:40px;bottom:40px;z-index:30;
+    font-family:'Jost';font-size:10px;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--gold-dim);background:none;border:1px solid var(--hair);border-radius:999px;
+    padding:13px 24px 11px;cursor:pointer;transition:all .4s;
+  }
+  #offerBtn:hover{color:var(--gold-bright);border-color:var(--gold);
+    box-shadow:0 0 26px -8px rgba(216,184,119,.5)}
+  #offer{
+    position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+    background:rgba(3,4,6,.72);backdrop-filter:blur(7px);
+    opacity:0;visibility:hidden;transition:all .5s;
+  }
+  #offer.show{opacity:1;visibility:visible}
+  .offer-box{
+    position:relative;width:min(400px,86vw);text-align:center;
+    border:1px solid var(--hair);border-radius:14px;padding:44px 36px 38px;
+    background:linear-gradient(170deg,#0a0c12,#06070b);
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.8), 0 0 60px -30px rgba(216,184,119,.3);
+    display:flex;flex-direction:column;align-items:center;gap:18px;
+    transform:translateY(14px);transition:transform .5s cubic-bezier(.2,.7,.2,1);
+  }
+  #offer.show .offer-box{transform:none}
+  .offer-box h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin-top:-6px}
+  .offer-box p{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
+    font-size:16.5px;line-height:1.6;color:var(--mist)}
+  .offer-box .deal-btn{text-decoration:none;font-size:10px;padding:15px 34px 13px}
+  .offer-close{
+    position:absolute;top:14px;right:16px;background:none;border:none;color:var(--gold-dim);
+    font-size:15px;cursor:pointer;transition:color .3s;padding:6px;
+  }
+  .offer-close:hover{color:var(--gold-bright)}
+
+  @media (max-width:940px){
+    #panel{
+      left:16px;right:16px;width:auto;top:auto;bottom:150px;
+      transform:translateY(12px);max-height:42vh;overflow-y:auto;
+      background:rgba(5,6,9,.78);backdrop-filter:blur(8px);
+      border:1px solid rgba(216,184,119,.14);border-radius:12px;
+      padding:20px 20px 18px;
+    }
+    #panel.show{transform:none}
+    #panel h2{font-size:26px;margin-bottom:12px}
+    #panel .prose{font-size:15px}
+    #panel .foot{margin-top:14px}
+    #spread{gap:12px;bottom:20px}
+    .card{width:50px;height:78px}
+    .card .num{font-size:16px}
+    #redeal{right:16px;bottom:auto;top:66px;padding:10px 18px 8px}
+    #offerBtn{left:16px;bottom:auto;top:66px;padding:10px 18px 8px}
+    #hint,#synth{display:none}
+    .head-right{display:none}
+    header{padding:22px 20px}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gl"></canvas>
+
+<header>
+  <div class="brand"><i></i>STAROT</div>
+  <div class="head-right">
+    <span class="label">Observatory of Fates</span><span class="sep"></span>
+    <span class="label">Hall of Stars</span><span class="sep"></span>
+    <span class="count" id="counter">— / XXII</span>
+  </div>
+</header>
+
+<div id="intro">
+  <div id="introMain">
+    <span class="label">A reading in stardust</span>
+    <h1>The cards are<br><em>constellations.</em></h1>
+    <p>Ask your question in silence. Three arcana will be drawn from the
+       dark — past, present, future — each figure assembled from thousands
+       of stars that scatter at your touch, and remember.</p>
+    <div class="choice">
+      <button class="deal-btn" id="dealSelf">✦ &nbsp;A reading for myself</button>
+      <button class="deal-btn ghost" id="dealOther">☾ &nbsp;For someone else</button>
+    </div>
+  </div>
+  <div id="ritual">
+    <span class="label">Before the cards are drawn</span>
+    <p>Hold them silently in your mind — their face, the weight of
+       their question. Let the noise settle. The stars can wait;
+       they have practice.<br><br>
+       <em>When they are clearly before you, deal.</em></p>
+    <button class="deal-btn" id="dealBtn2">✦ &nbsp;Deal their spread&nbsp; ✦</button>
+  </div>
+</div>
+
+<aside id="panel">
+  <div class="pos" id="pPos">Exhibit — The Past</div>
+  <h2 id="pName">The Star</h2>
+  <div class="meta">
+    <span>MAJOR ARCANA · <b id="pNum">XVII</b></span>
+    <span>ORIENTATION · <b id="pOri">UPRIGHT</b></span>
+    <span>SPEAKS OF · <b id="pKeys">HOPE, RENEWAL</b></span>
+  </div>
+  <p class="prose" id="pProse"></p>
+  <div class="foot">Celestial point-sampling · <span id="pStars">48,000</span> stars</div>
+</aside>
+
+<p id="synth"></p>
+
+<nav id="spread">
+  <div class="slot" data-i="0">
+    <div class="card hidden-face"><div class="back"></div><span class="num"></span></div>
+    <span class="label">Past</span>
+  </div>
+  <div class="slot" data-i="1">
+    <div class="card hidden-face"><div class="back"></div><span class="num"></span></div>
+    <span class="label">Present</span>
+  </div>
+  <div class="slot" data-i="2">
+    <div class="card hidden-face"><div class="back"></div><span class="num"></span></div>
+    <span class="label">Future</span>
+  </div>
+</nav>
+
+<button id="redeal">↻ &nbsp;Ask again</button>
+<button id="offerBtn">✦ &nbsp;Leave an offering</button>
+<span id="hint" class="label" style="opacity:0">Touch the figure — the stars remember</span>
+
+<div id="offer">
+  <div class="offer-box">
+    <button class="offer-close" id="offerClose">✕</button>
+    <span class="label">Keep the lamps lit</span>
+    <h3>An offering</h3>
+    <p>The observatory runs on starlight and small kindnesses.
+       If the cards told you something true — or something usefully
+       untrue — you may leave a coin in the dark. The stars notice.</p>
+    <a class="deal-btn" id="offerLink" target="_blank" rel="noopener">✦ &nbsp;Make an offering</a>
+    <span class="label" id="offerNote" style="display:none">The offering bowl is still being carved — soon.</span>
+  </div>
+</div>
+
+<script>
+/* ═══ THE MAJOR ARCANA ════════════════════════════════════════ */
+const ROMAN=["0","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
+const ARCANA=[
+{name:"The Fool",keys:"beginnings, leap, innocence",
+ prose:"A traveller at the rim of the known, one foot already in the air. The Fool is the zero before all counting — the willingness to begin without proof that the ground continues. Whatever you are protecting by waiting, the cliff has already forgiven you.",
+ rev:"Reversed: the leap taken carelessly, or never taken at all — check which fear is steering."},
+{name:"The Magician",keys:"will, craft, channel",
+ prose:"Above his head, the sideways eight of endlessness; on his table, every tool you already own. The Magician does not summon new power — he notices the power that was lying around, and points it. As above, so below; as intended, so made.",
+ rev:"Reversed: talent scattered into tricks; the tools used to impress rather than to build."},
+{name:"The High Priestess",keys:"intuition, threshold, silence",
+ prose:"She sits between the two pillars, before the veil, and says nothing — which is the answer. The Priestess guards what cannot be researched, only received. Your body already knows; the appointment is with your own stillness.",
+ rev:"Reversed: the inner voice shouted down by other people's certainty."},
+{name:"The Empress",keys:"abundance, growth, tending",
+ prose:"Everything she touches remembers how to grow. The Empress is the patient arithmetic of gardens: what is fed, multiplies; what is loved aloud, ripens. This is a season for tending, not harvesting — let the field be slow.",
+ rev:"Reversed: care curdling into smothering, or the tender thing left unwatered."},
+{name:"The Emperor",keys:"structure, order, foundation",
+ prose:"Four sides, four legs, four seasons held in a square fist. The Emperor builds the walls inside which softness becomes possible. Rules are not the opposite of freedom — they are its scaffolding. Decide the shape, and defend it kindly.",
+ rev:"Reversed: the scaffold mistaken for the building; control outliving its reason."},
+{name:"The Hierophant",keys:"teaching, tradition, keys",
+ prose:"He holds the key that was handed to him by someone who was handed the key. The Hierophant is the long corridor of teachers behind every thing you know. Honour the lineage — then notice which door your key no longer opens.",
+ rev:"Reversed: doctrine without doorway; it may be time to teach yourself."},
+{name:"The Lovers",keys:"union, choice, mirror",
+ prose:"Two circles overlapping: the almond of light where they meet is a third thing neither could make alone. The Lovers is less about romance than about choosing — every union is a door closed on a thousand other rooms, gladly.",
+ rev:"Reversed: the mirror fogged; wanting the union without the choice."},
+{name:"The Chariot",keys:"momentum, victory, resolve",
+ prose:"Two wheels that disagree, one driver who doesn't. The Chariot is will applied to contradiction — moving forward not because the horses align but because the hands are steady. Aim matters more than speed now.",
+ rev:"Reversed: the reins loose; motion mistaken for direction."},
+{name:"Strength",keys:"gentleness, courage, taming",
+ prose:"Not the fist — the open hand on the lion's jaw. Strength is the discovery that the wild thing calms for whoever is not afraid of it, including the wild thing inside you. Approach softly what you have been fighting loudly.",
+ rev:"Reversed: force where patience was owed; the lion pushed, not befriended."},
+{name:"The Hermit",keys:"solitude, search, lantern",
+ prose:"One lamp, deliberately small, so it lights only the next step. The Hermit withdraws not to escape the world but to hear it without echo. What you are looking for is looking for quiet — go where the signal is weak and the sky is loud.",
+ rev:"Reversed: solitude soured into hiding; come down the mountain with what you found."},
+{name:"Wheel of Fortune",keys:"turning, cycles, chance",
+ prose:"Eight spokes, no brakes. The Wheel does not ask permission — it turns, and the only fixed point is the hub. What rises will circle down; what fell is already rising. Hold the centre and let the rim do its weather.",
+ rev:"Reversed: gripping the rim; resisting a turn that is already complete."},
+{name:"Justice",keys:"balance, truth, consequence",
+ prose:"The scales do not hate what they weigh. Justice is the universe's bookkeeping — precise, unhurried, immune to charm. Something is being measured back to you now; meet it with clean hands and an honest ledger.",
+ rev:"Reversed: the thumb on the scale — possibly yours."},
+{name:"The Hanged Man",keys:"surrender, new sight, pause",
+ prose:"Upside down, and finally seeing the ceiling was a floor. The Hanged Man is the sacred pause — progress that looks, from outside, like stopping. Stop pulling at the knot; the view from here is the lesson.",
+ rev:"Reversed: suspension become stagnation; the martyrdom nobody assigned you."},
+{name:"Death",keys:"ending, release, passage",
+ prose:"The scythe does not punish the wheat; it completes it. Death here is rarely the body — it is the ending that has already happened, waiting for your paperwork. Grieve properly, travel light, and notice what the cleared field can see now.",
+ rev:"Reversed: the ending refused; a door held open for a room that's gone dark."},
+{name:"Temperance",keys:"blending, patience, alchemy",
+ prose:"One cup poured into another, and back, until neither is the original and both are improved. Temperance is the angel of ratios — the exact amount, the middle path that is not compromise but recipe. Mix slowly; taste often.",
+ rev:"Reversed: the mixture forced, the ratio ignored — excess wearing the mask of passion."},
+{name:"The Devil",keys:"shadow, bindings, appetite",
+ prose:"The inverted star, the chains worn loose enough to remove. The Devil is not out there — he is the deal you keep renewing. Name the appetite honestly and it shrinks to its true size: a hunger, not a master.",
+ rev:"Reversed: the chain already slipping; freedom arriving with withdrawal symptoms."},
+{name:"The Tower",keys:"rupture, lightning, truth",
+ prose:"Lightning is a truth that could not get an appointment. The Tower falls because it was built on the wrong ground with excellent bricks. Let it. What survives the fall is the foundation you should have used the first time.",
+ rev:"Reversed: the collapse postponed, paid for in tremors; take the tower down gently yourself."},
+{name:"The Star",keys:"hope, renewal, guidance",
+ prose:"After the tower, the sky. The Star is the small steady light that survives the catastrophe — not rescue, but orientation. Pour out what you carried; the well refills. You are being navigated even when you cannot feel the current.",
+ rev:"Reversed: the light doubted, not absent — look up again."},
+{name:"The Moon",keys:"dream, illusion, tide",
+ prose:"Everything is visible and nothing is certain. The Moon lights a road that moves — intuition and illusion drinking from the same pool. Do not decide tonight what daylight can decide tomorrow; but do write the dream down.",
+ rev:"Reversed: the fog thinning; a confusion you're almost ready to name."},
+{name:"The Sun",keys:"joy, clarity, warmth",
+ prose:"No riddle. The Sun is the one card that means what it shows: warmth after the long dark, the simple animal gladness of being seen entirely and staying anyway. Say yes in the plainest words you own.",
+ rev:"Reversed: joy delayed at customs — still arriving, still yours."},
+{name:"Judgement",keys:"awakening, calling, rise",
+ prose:"The horn sounds and the buried life sits up. Judgement is the summons you have been rehearsing refusals for — the call to rise as the person the last years were secretly building. Answer with your whole name.",
+ rev:"Reversed: the call heard and screened; forgiveness of self is the unlocked door."},
+{name:"The World",keys:"completion, wholeness, dance",
+ prose:"The laurel closes its circle; the dancer holds both wands. The World is the exhale at the end of the long project of becoming — not a finish line but a fitting. Everything belongs, including the detours. Take the bow, then begin again, lighter.",
+ rev:"Reversed: the circle nearly closed; one honest conversation from complete."}
+];
+
+/* ═══ SIGIL DRAWINGS — sampled into stars ═════════════════════ */
+function drawSigil(ctx,S,i){
+  const c=S/2, lw=S*0.052;
+  ctx.clearRect(0,0,S,S);
+  ctx.strokeStyle='#fff'; ctx.fillStyle='#fff';
+  ctx.lineWidth=lw; ctx.lineCap='round'; ctx.lineJoin='round';
+  const L=(x1,y1,x2,y2)=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();};
+  const C=(x,y,r,fill)=>{ctx.beginPath();ctx.arc(x,y,r,0,7);fill?ctx.fill():ctx.stroke();};
+  const A=(x,y,r,a0,a1)=>{ctx.beginPath();ctx.arc(x,y,r,a0,a1);ctx.stroke();};
+  const star=(x,y,r,n,inner)=>{ctx.beginPath();for(let k=0;k<n*2;k++){const rr=k%2?r*inner:r,a=-Math.PI/2+k*Math.PI/n;ctx[k?'lineTo':'moveTo'](x+Math.cos(a)*rr,y+Math.sin(a)*rr);}ctx.closePath();ctx.fill();};
+  switch(i){
+  case 0:/*Fool: spiral path + wanderer + cliff*/
+    ctx.beginPath();for(let a=0;a<Math.PI*4.4;a+=.08){const r=S*.045+a*S*.028;ctx.lineTo(c+Math.cos(a-1.2)*r,c*.86+Math.sin(a-1.2)*r*.8);}ctx.stroke();
+    C(S*.78,S*.2,S*.05,true); L(S*.1,S*.88,S*.62,S*.88); L(S*.62,S*.88,S*.72,S*.98);break;
+  case 1:/*Magician: lemniscate + wand*/
+    ctx.beginPath();for(let a=0;a<=Math.PI*2.01;a+=.05){const s=Math.sin(a);ctx.lineTo(c+Math.cos(a)*S*.3/(1+s*s),c+S*.06+s*Math.cos(a)*S*.3/(1+s*s));}ctx.stroke();
+    L(c,S*.14,c,S*.4); C(c,S*.12,S*.028,true);break;
+  case 2:/*Priestess: pillars + crescent*/
+    L(S*.2,S*.16,S*.2,S*.84); L(S*.8,S*.16,S*.8,S*.84);
+    ctx.beginPath();ctx.arc(c,S*.46,S*.2,-1.1,1.1+Math.PI);ctx.stroke();
+    ctx.beginPath();ctx.arc(c+S*.075,S*.46,S*.145,-1.35,1.35+Math.PI,false);ctx.stroke();break;
+  case 3:/*Empress: venus + wheat arcs*/
+    C(c,S*.34,S*.2); L(c,S*.54,c,S*.86); L(c-S*.13,S*.7,c+S*.13,S*.7);
+    A(S*.14,S*.6,S*.3,-1.1,-.2); A(S*.86,S*.6,S*.3,Math.PI+.2,Math.PI+1.1);break;
+  case 4:/*Emperor: square + crown*/
+    ctx.strokeRect(S*.24,S*.34,S*.52,S*.52);
+    L(c,S*.44,c,S*.76); L(c-S*.16,S*.6,c+S*.16,S*.6);
+    ctx.beginPath();ctx.moveTo(S*.3,S*.26);ctx.lineTo(S*.38,S*.13);ctx.lineTo(c,S*.24);ctx.lineTo(S*.62,S*.13);ctx.lineTo(S*.7,S*.26);ctx.stroke();break;
+  case 5:/*Hierophant: key*/
+    C(c,S*.28,S*.13); L(c,S*.41,c,S*.84);
+    L(c,S*.66,c+S*.15,S*.66); L(c,S*.8,c+S*.2,S*.8); L(c,S*.53,c-S*.12,S*.53);break;
+  case 6:/*Lovers: vesica + rays*/
+    C(c-S*.13,S*.52,S*.21); C(c+S*.13,S*.52,S*.21);
+    for(let k=0;k<5;k++){const a=-Math.PI/2+(k-2)*.42;L(c+Math.cos(a)*S*.1,S*.2+Math.sin(a)*S*.06,c+Math.cos(a)*S*.2,S*.14+Math.sin(a)*S*.12);}break;
+  case 7:/*Chariot: canopy + wheels + star*/
+    ctx.beginPath();ctx.moveTo(S*.2,S*.62);ctx.lineTo(c,S*.24);ctx.lineTo(S*.8,S*.62);ctx.closePath();ctx.stroke();
+    C(S*.3,S*.74,S*.11); C(S*.7,S*.74,S*.11); star(c,S*.44,S*.07,4,.4);break;
+  case 8:/*Strength: arc + lemniscate above*/
+    ctx.beginPath();for(let a=0;a<=Math.PI*2.01;a+=.05){const s=Math.sin(a);ctx.lineTo(c+Math.cos(a)*S*.17/(1+s*s),S*.24+s*Math.cos(a)*S*.17/(1+s*s));}ctx.stroke();
+    A(c,S*.92,S*.42,Math.PI+.35,-.35); A(c,S*.7,S*.16,.3,Math.PI-.3);break;
+  case 9:/*Hermit: lantern + staff + star*/
+    ctx.strokeRect(S*.36,S*.34,S*.28,S*.34); L(c,S*.24,c,S*.34);
+    star(c,S*.51,S*.075,4,.42); L(S*.76,S*.18,S*.76,S*.86); C(S*.76,S*.14,S*.035,true);break;
+  case 10:/*Wheel: circle + 8 spokes*/
+    C(c,c,S*.34); C(c,c,S*.07,true);
+    for(let k=0;k<8;k++){const a=k*Math.PI/4;L(c+Math.cos(a)*S*.1,c+Math.sin(a)*S*.1,c+Math.cos(a)*S*.34,c+Math.sin(a)*S*.34);}break;
+  case 11:/*Justice: scales*/
+    L(c,S*.14,c,S*.82); L(c-S*.3,S*.28,c+S*.3,S*.28);
+    L(c-S*.3,S*.28,c-S*.3,S*.44); L(c+S*.3,S*.28,c+S*.3,S*.44);
+    A(c-S*.3,S*.42,S*.12,0,Math.PI); A(c+S*.3,S*.42,S*.12,0,Math.PI);
+    L(c-S*.14,S*.82,c+S*.14,S*.82);break;
+  case 12:/*Hanged Man: gallows + inverted figure*/
+    L(S*.2,S*.14,S*.8,S*.14); L(c,S*.14,c,S*.36);
+    L(c,S*.36,c-S*.09,S*.56); L(c,S*.36,c+S*.09,S*.56);
+    L(c-S*.045,S*.56,c+S*.045,S*.56); L(c,S*.56,c,S*.72); C(c,S*.79,S*.07);break;
+  case 13:/*Death: scythe*/
+    ctx.beginPath();ctx.arc(c+S*.05,S*.44,S*.34,Math.PI*1.05,Math.PI*1.78);ctx.stroke();
+    L(S*.4,S*.2,S*.62,S*.88); L(S*.5,S*.5,S*.66,S*.44);break;
+  case 14:/*Temperance: two cups + stream*/
+    ctx.beginPath();ctx.moveTo(S*.16,S*.24);ctx.lineTo(S*.4,S*.24);ctx.lineTo(S*.28,S*.42);ctx.closePath();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(S*.6,S*.66);ctx.lineTo(S*.84,S*.66);ctx.lineTo(S*.72,S*.84);ctx.closePath();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(S*.3,S*.4);
+    for(let k=0;k<=8;k++){ctx.lineTo(S*.3+k*S*.052,S*.4+k*S*.033+(k%2?S*.02:-S*.02));}ctx.stroke();break;
+  case 15:/*Devil: inverted pentagram*/
+    ctx.beginPath();for(let k=0;k<=5;k++){const a=Math.PI/2+k*Math.PI*4/5;ctx[k?'lineTo':'moveTo'](c+Math.cos(a)*S*.34,c+Math.sin(a)*S*.34);}ctx.stroke();
+    C(c,c,S*.4);break;
+  case 16:/*Tower: tower + bolt*/
+    ctx.strokeRect(S*.38,S*.36,S*.24,S*.5);
+    L(S*.34,S*.36,S*.66,S*.36); L(S*.38,S*.28,S*.42,S*.36); L(S*.5,S*.26,S*.52,S*.36); L(S*.62,S*.28,S*.58,S*.36);
+    ctx.beginPath();ctx.moveTo(S*.78,S*.08);ctx.lineTo(S*.6,S*.3);ctx.lineTo(S*.7,S*.32);ctx.lineTo(S*.52,S*.52);ctx.stroke();break;
+  case 17:/*Star: 8-point + minors*/
+    star(c,S*.46,S*.3,8,.38);
+    star(S*.2,S*.2,S*.05,4,.4); star(S*.82,S*.3,S*.04,4,.4); star(S*.76,S*.78,S*.05,4,.4); star(S*.22,S*.74,S*.035,4,.4);break;
+  case 18:/*Moon: crescent + drops*/
+    ctx.beginPath();ctx.arc(c,S*.42,S*.27,-Math.PI*.62,Math.PI*.62,false);
+    ctx.arc(c+S*.12,S*.42,S*.2,Math.PI*.55,-Math.PI*.55,true);ctx.closePath();ctx.fill();
+    for(let k=0;k<3;k++){L(S*(.32+k*.18),S*.78,S*(.32+k*.18),S*.88);}break;
+  case 19:/*Sun: disc + rays*/
+    C(c,c,S*.17,true);
+    for(let k=0;k<12;k++){const a=k*Math.PI/6;const r1=S*.24,r2=k%2?S*.34:S*.42;
+      L(c+Math.cos(a)*r1,c+Math.sin(a)*r1,c+Math.cos(a)*r2,c+Math.sin(a)*r2);}break;
+  case 20:/*Judgement: horn + rays*/
+    ctx.beginPath();ctx.moveTo(S*.2,S*.3);ctx.lineTo(S*.72,S*.52);ctx.lineTo(S*.66,S*.66);ctx.lineTo(S*.24,S*.44);ctx.closePath();ctx.stroke();
+    C(S*.72,S*.6,S*.1);
+    for(let k=0;k<4;k++){const a=-.6+k*.4;L(S*.8+Math.cos(a)*S*.06,S*.6+Math.sin(a)*S*.06,S*.8+Math.cos(a)*S*.16,S*.6+Math.sin(a)*S*.16);}break;
+  case 21:/*World: laurel oval + star*/
+    ctx.beginPath();ctx.ellipse(c,c,S*.26,S*.38,0,0,7);ctx.stroke();
+    star(c,c,S*.1,5,.45);
+    for(let k=0;k<10;k++){const a=k/10*Math.PI*2;const x=c+Math.cos(a)*S*.26,y=c+Math.sin(a)*S*.38;C(x,y,S*.02,true);}break;
+  }
+}
+
+/* ═══ WEBGL STAR ENGINE ═══════════════════════════════════════ */
+const cv=document.getElementById('gl');
+const gl=cv.getContext('webgl',{alpha:true,antialias:false});
+let W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
+function resize(){W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;
+  cv.style.width=W+'px';cv.style.height=H+'px';gl.viewport(0,0,cv.width,cv.height);}
+resize();addEventListener('resize',()=>{resize();if(view>=0)retarget(view,true);});
+
+const VS=`
+attribute vec2 aA; attribute vec2 aB; attribute vec4 aMeta; // seed,size,delay,dust
+uniform float uT,uMorph,uLens,uForce; uniform vec2 uRes,uMouse;
+varying float vTw; varying float vSeed;
+void main(){
+  float seed=aMeta.x, size=aMeta.y, delay=aMeta.z, dust=aMeta.w;
+  float d=clamp((uMorph*1.7-delay*0.7),0.,1.);
+  float e=d*d*(3.-2.*d);
+  vec2 p=mix(aA,aB,e);
+  /* the universe turns: dust rotates slowly around the centre,
+     each star at its own galactic speed */
+  float ang=uT*(0.012+fract(seed*5.)*0.02)*dust;
+  vec2 ctr=uRes*0.5;
+  vec2 rel=p-ctr;
+  float ca=cos(ang), sa=sin(ang);
+  p=ctr+vec2(rel.x*ca-rel.y*sa, rel.x*sa+rel.y*ca);
+  p+=vec2(sin(uT*(.5+seed)+seed*40.),cos(uT*(.4+seed*.8)+seed*23.))*(1.2+dust*2.5);
+  /* cursor lens: radius+force set by state; swirl makes it carve */
+  vec2 dm=p-uMouse; float dist=length(dm);
+  float f=smoothstep(uLens,0.,dist)*uForce*(1.-dust*.85);
+  vec2 dir=dm/max(dist,1.);
+  p+=dir*f+vec2(-dir.y,dir.x)*f*0.65;
+  vec2 clip=(p/uRes*2.-1.)*vec2(1.,-1.);
+  gl_Position=vec4(clip,0.,1.);
+  float tw=.55+.45*sin(uT*(1.2+fract(seed*7.)*2.5)+seed*80.);
+  vTw=tw; vSeed=seed;
+  gl_PointSize=(size*(0.7+0.5*tw))* ${DPR.toFixed(1)};
+}`;
+const FS=`
+precision mediump float;
+varying float vTw; varying float vSeed;
+void main(){
+  vec2 uv=gl_PointCoord-.5;
+  float r=length(uv);
+  float a=smoothstep(.5,.05,r);
+  a*=a; a*=vTw;
+  vec3 warm=vec3(.98,.92,.78), cool=vec3(.82,.86,.95);
+  vec3 col=mix(warm,cool,step(.82,fract(vSeed*13.)));
+  gl_FragColor=vec4(col*a,a);
+}`;
+function sh(t,s){const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);
+  if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))console.error(gl.getShaderInfoLog(o));return o;}
+const prog=gl.createProgram();
+gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));
+gl.linkProgram(prog);gl.useProgram(prog);
+gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
+
+const N=52000, DUST=13000;
+const A=new Float32Array(N*2), B=new Float32Array(N*2), META=new Float32Array(N*4);
+for(let i=0;i<N;i++){
+  const dust=i<DUST?1:0;
+  const x=Math.random()*innerWidth, y=Math.random()*innerHeight;
+  A[i*2]=x;A[i*2+1]=y;B[i*2]=x;B[i*2+1]=y;
+  META[i*4]=Math.random();
+  META[i*4+1]=dust?(Math.random()<.08?3.2:1.9):(1.6+Math.random()*2.6);
+  META[i*4+2]=Math.random();
+  META[i*4+3]=dust;
+}
+function buf(data,loc,size,usage){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);
+  gl.bufferData(gl.ARRAY_BUFFER,data,usage);gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,size,gl.FLOAT,false,0,0);return b;}
+const locA=gl.getAttribLocation(prog,'aA'),locB=gl.getAttribLocation(prog,'aB'),locM=gl.getAttribLocation(prog,'aMeta');
+const bufA=buf(A,locA,2,gl.DYNAMIC_DRAW), bufB=buf(B,locB,2,gl.DYNAMIC_DRAW);
+buf(META,locM,4,gl.STATIC_DRAW);
+const uT=gl.getUniformLocation(prog,'uT'),uMorph=gl.getUniformLocation(prog,'uMorph'),
+      uRes=gl.getUniformLocation(prog,'uRes'),uMouse=gl.getUniformLocation(prog,'uMouse'),
+      uLens=gl.getUniformLocation(prog,'uLens'),uForce=gl.getUniformLocation(prog,'uForce');
+
+let morph=1, morphV=0;
+let mx=-9999,my=-9999;
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;});
+addEventListener('pointerleave',()=>{mx=my=-9999;});
+
+/* lens state: wide & soft on the landing sky, small & fierce on a figure */
+let lensR=190, lensF=48, lensRT=190, lensFT=48;
+function setLens(intro){ lensRT=intro?190:22; lensFT=intro?48:85; }
+
+function frame(t){
+  gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+  if(morph<1){morph=Math.min(1,morph+0.008);}
+  lensR+=(lensRT-lensR)*0.05; lensF+=(lensFT-lensF)*0.05;
+  gl.uniform1f(uT,t*0.001);
+  gl.uniform1f(uMorph,morph);
+  gl.uniform2f(uRes,W,H);
+  gl.uniform2f(uMouse,mx,my);
+  gl.uniform1f(uLens,lensR);
+  gl.uniform1f(uForce,lensF);
+  gl.drawArrays(gl.POINTS,0,N);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* sample sigil into targets */
+const off=document.createElement('canvas');off.width=off.height=760;
+const octx=off.getContext('2d',{willReadFrequently:true});
+function targetsFor(cardIdx,reversed){
+  drawSigil(octx,760,cardIdx);
+  const data=octx.getImageData(0,0,760,760).data;
+  const pts=[];
+  for(let y=0;y<760;y+=2)for(let x=0;x<760;x+=2)
+    if(data[(y*760+x)*4+3]>100)pts.push([x/760,y/760]);
+  const wide=W>940;
+  /* keep the figure clear of the exhibit panel (left ≈ 500px on desktop) */
+  const panelEdge=520;
+  const size=wide? Math.min((W-panelEdge)*0.9, H*0.7) : Math.min(W*0.82,H*0.36);
+  const cx=wide? panelEdge+(W-panelEdge)/2 : W*0.5;
+  const cy=wide?H*0.46:H*0.26;
+  const out=new Float32Array((N-DUST)*2);
+  for(let i=0;i<N-DUST;i++){
+    const p=pts[(i*7919)%pts.length];
+    let nx=(p[0]-0.5), ny=(p[1]-0.5);
+    if(reversed){nx=-nx;ny=-ny;}
+    out[i*2]=cx+nx*size+(Math.random()-.5)*3;
+    out[i*2+1]=cy+ny*size+(Math.random()-.5)*3;
+  }
+  return out;
+}
+function scatterTargets(){
+  const out=new Float32Array((N-DUST)*2);
+  for(let i=0;i<N-DUST;i++){out[i*2]=Math.random()*W;out[i*2+1]=Math.random()*H;}
+  return out;
+}
+function pushTargets(newB){
+  // freeze current evaluated B into A (morph completed states only)
+  gl.bindBuffer(gl.ARRAY_BUFFER,bufA);
+  gl.bufferSubData(gl.ARRAY_BUFFER,DUST*2*4,B.subarray(DUST*2));
+  B.set(newB,DUST*2);
+  gl.bindBuffer(gl.ARRAY_BUFFER,bufB);
+  gl.bufferSubData(gl.ARRAY_BUFFER,DUST*2*4,newB);
+  morph=0;
+}
+
+/* ═══ READING LOGIC ═══════════════════════════════════════════ */
+const POS=["The Past","The Present","The Future"];
+const POSINTRO={
+ self:["What shaped the road behind you:",
+       "What stands in the room with you now:",
+       "What gathers on the horizon:"],
+ other:["What shaped the road behind them:",
+        "What stands in the room with them now:",
+        "What gathers on their horizon:"]};
+let spread=[], view=-1, mode='self';
+
+function deal(){
+  const idxs=[...Array(22).keys()];
+  spread=[];
+  for(let k=0;k<3;k++){
+    const j=Math.floor(Math.random()*idxs.length);
+    spread.push({card:idxs.splice(j,1)[0], reversed:Math.random()<0.28});
+  }
+  document.getElementById('intro').classList.add('gone');
+  setLens(false);
+  const slots=[...document.querySelectorAll('.slot')];
+  slots.forEach((s,k)=>{
+    const cardEl=s.querySelector('.card');
+    cardEl.classList.add('hidden-face');
+    setTimeout(()=>{
+      cardEl.classList.remove('hidden-face');
+      cardEl.classList.toggle('reversed',spread[k].reversed);
+      cardEl.querySelector('.num').textContent=ROMAN[spread[k].card];
+    },700+k*550);
+  });
+  document.getElementById('spread').classList.add('show');
+  document.getElementById('redeal').classList.add('show');
+  setTimeout(()=>show(0),1200);
+  setTimeout(()=>{
+    const s=document.getElementById('synth');
+    const k=i=>ARCANA[spread[i].card].keys.split(',')[0].trim();
+    const [a,b]=mode==='self'?['you','you']:['them','them'];
+    s.innerHTML=`The thread of this spread: <b>${k(0)}</b> behind ${a}, <b>${k(1)}</b> beside ${b}, <b>${k(2)}</b> ahead.`;
+    s.classList.add('show');
+    const h=document.getElementById('hint');h.style.opacity=1;
+    setTimeout(()=>h.style.opacity=0,6000);
+  },2600);
+}
+
+function retarget(k,silent){
+  const {card,reversed}=spread[k];
+  const t=targetsFor(card,reversed);
+  if(silent){
+    B.set(t,DUST*2);
+    gl.bindBuffer(gl.ARRAY_BUFFER,bufB);
+    gl.bufferSubData(gl.ARRAY_BUFFER,DUST*2*4,t);
+  } else pushTargets(t);
+}
+
+function show(k){
+  if(view===k)return;
+  view=k;
+  const {card,reversed}=spread[k];
+  const a=ARCANA[card];
+  retarget(k);
+  [...document.querySelectorAll('.slot')].forEach((s,j)=>s.classList.toggle('on',j===k));
+  const panel=document.getElementById('panel');
+  panel.classList.remove('show');
+  setTimeout(()=>{
+    document.getElementById('pPos').textContent='Exhibit — '+POS[k];
+    document.getElementById('pName').textContent=a.name;
+    document.getElementById('pNum').textContent=ROMAN[card];
+    document.getElementById('pOri').textContent=reversed?'REVERSED':'UPRIGHT';
+    document.getElementById('pKeys').textContent=a.keys.toUpperCase();
+    document.getElementById('pProse').innerHTML=
+      `<em style="color:var(--gold-dim)">${POSINTRO[mode][k]}</em> ${a.prose}`+
+      (reversed?`<span class="rev">${a.rev}</span>`:'');
+    document.getElementById('pStars').textContent=(N-DUST).toLocaleString('en-US');
+    document.getElementById('counter').textContent=ROMAN[card]+' / XXII';
+    panel.classList.add('show');
+  },350);
+}
+
+document.getElementById('dealSelf').onclick=()=>{mode='self';deal();};
+document.getElementById('dealOther').onclick=()=>{
+  mode='other';
+  document.getElementById('introMain').style.display='none';
+  const r=document.getElementById('ritual');
+  r.classList.add('on');
+  setTimeout(()=>document.getElementById('dealBtn2').classList.add('ready'),4200);
+};
+document.getElementById('dealBtn2').onclick=deal;
+document.getElementById('redeal').onclick=()=>{
+  view=-1;
+  document.getElementById('panel').classList.remove('show');
+  document.getElementById('synth').classList.remove('show');
+  document.getElementById('spread').classList.remove('show');
+  document.getElementById('redeal').classList.remove('show');
+  document.getElementById('counter').textContent='— / XXII';
+  document.querySelectorAll('.slot').forEach(s=>{
+    s.classList.remove('on');
+    s.querySelector('.card').classList.add('hidden-face');
+  });
+  pushTargets(scatterTargets());
+  setLens(true);
+  /* back to the choice, so the next reading can be for anyone */
+  document.getElementById('introMain').style.display='flex';
+  const r=document.getElementById('ritual');
+  r.classList.remove('on');
+  document.getElementById('dealBtn2').classList.remove('ready');
+  setTimeout(()=>document.getElementById('intro').classList.remove('gone'),600);
+};
+document.querySelectorAll('.slot').forEach(s=>{
+  s.onclick=()=>{if(spread.length)show(+s.dataset.i)};
+});
+
+/* ═══ OFFERINGS — set your donation link here (Ko-fi, PayPal.me,
+   Buy Me a Coffee, Stripe payment link…) ═══════════════════════ */
+const DONATION_URL = "";
+
+const offer=document.getElementById('offer');
+document.getElementById('offerBtn').onclick=()=>offer.classList.add('show');
+document.getElementById('offerClose').onclick=()=>offer.classList.remove('show');
+offer.addEventListener('click',e=>{if(e.target===offer)offer.classList.remove('show');});
+if(DONATION_URL){
+  document.getElementById('offerLink').href=DONATION_URL;
+}else{
+  document.getElementById('offerLink').style.display='none';
+  document.getElementById('offerNote').style.display='block';
+}
+</script>
+</body>
+</html>
