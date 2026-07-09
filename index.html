@@ -584,9 +584,9 @@ function targetsFor(cardIdx,reversed){
   const wide=W>940;
   /* keep the figure clear of the exhibit panel (left ≈ 500px on desktop) */
   const panelEdge=520;
-  const size=wide? Math.min((W-panelEdge)*0.9, H*0.7) : Math.min(W*0.80,H*0.31);
+  const size=wide? Math.min((W-panelEdge)*0.9, H*0.7) : Math.min(W*0.78,H*0.27);
   const cx=wide? panelEdge+(W-panelEdge)/2 : W*0.5;
-  const cy=wide?H*0.46:H*0.25;
+  const cy=wide?H*0.46:H*0.29;
   const out=new Float32Array((N-DUST)*2);
   for(let i=0;i<N-DUST;i++){
     const p=pts[(i*7919)%pts.length];
