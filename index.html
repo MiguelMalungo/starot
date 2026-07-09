@@ -204,9 +204,10 @@
   .offer-close:hover{color:var(--gold-bright)}
 
   @media (max-width:940px){
+    /* symbol lives in the top ~40%; text is pinned to a band below it */
     #panel{
-      left:16px;right:16px;width:auto;top:auto;bottom:150px;
-      transform:translateY(12px);max-height:42vh;overflow-y:auto;
+      left:16px;right:16px;width:auto;top:45vh;bottom:124px;
+      transform:translateY(12px);overflow-y:auto;
       background:rgba(5,6,9,.78);backdrop-filter:blur(8px);
       border:1px solid rgba(216,184,119,.14);border-radius:12px;
       padding:20px 20px 18px;
@@ -583,9 +584,9 @@ function targetsFor(cardIdx,reversed){
   const wide=W>940;
   /* keep the figure clear of the exhibit panel (left ≈ 500px on desktop) */
   const panelEdge=520;
-  const size=wide? Math.min((W-panelEdge)*0.9, H*0.7) : Math.min(W*0.82,H*0.36);
+  const size=wide? Math.min((W-panelEdge)*0.9, H*0.7) : Math.min(W*0.80,H*0.31);
   const cx=wide? panelEdge+(W-panelEdge)/2 : W*0.5;
-  const cy=wide?H*0.46:H*0.26;
+  const cy=wide?H*0.46:H*0.25;
   const out=new Float32Array((N-DUST)*2);
   for(let i=0;i<N-DUST;i++){
     const p=pts[(i*7919)%pts.length];
