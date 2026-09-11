@@ -42,18 +42,20 @@
     display:flex;justify-content:space-between;align-items:center;padding:26px 40px;
   }
   .brand{display:flex;align-items:center;gap:11px;font-family:'Marcellus',serif;
-    font-size:15px;letter-spacing:.42em;color:var(--bone)}
+    font-size:15px;letter-spacing:.42em;color:var(--bone);cursor:pointer;background:none;border:none}
   .brand i{width:7px;height:7px;border-radius:50%;background:var(--gold);
     box-shadow:0 0 12px 2px rgba(216,184,119,.7);flex:none}
   .head-right{display:flex;gap:16px;align-items:center}
   .head-right .sep{width:3px;height:3px;border-radius:50%;background:var(--gold-dim);opacity:.6}
   .head-right .count{color:var(--gold);letter-spacing:.3em;font-size:10px}
+  .head-right .nav{cursor:pointer;transition:color .3s}
+  .head-right .nav:hover,.head-right .nav.here{color:var(--gold-bright)}
 
-  /* ── intro ─────────────────────────────── */
+  /* ── intro / menu ───────────────────────── */
   #intro{
     position:fixed;inset:0;z-index:25;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:30px;text-align:center;
-    transition:opacity 1s, visibility 1s;
+    align-items:center;justify-content:flex-start;gap:30px;text-align:center;
+    transition:opacity 1s, visibility 1s;overflow-y:auto;padding:90px 20px 40px;
   }
   #intro.gone{opacity:0;visibility:hidden;pointer-events:none}
   #intro .label{margin-bottom:-14px}
@@ -76,6 +78,8 @@
     background:rgba(216,184,119,.07)}
   .deal-btn.ghost{color:var(--gold-dim)}
   .deal-btn.ghost:hover{color:var(--gold-bright)}
+  .section{display:none;flex-direction:column;align-items:center;gap:30px;width:100%;margin:auto 0} /* centred when it fits, scrollable when not */
+  .section.on{display:flex}
   #introMain,#ritual{display:flex;flex-direction:column;align-items:center;gap:30px}
   #intro .choice{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:8px}
   #ritual{display:none}
@@ -83,13 +87,68 @@
   #ritual p em{color:var(--gold)}
   #dealBtn2{opacity:0;pointer-events:none;transition:opacity 1.6s}
   #dealBtn2.ready{opacity:1;pointer-events:auto}
+  .back{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-dim);
+    background:none;border:none;cursor:pointer;transition:color .3s;margin-top:-6px}
+  .back:hover{color:var(--gold-bright)}
+
+  .doors{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+  .door{
+    width:220px;padding:28px 22px 24px;border:1px solid var(--hair);border-radius:14px;
+    background:rgba(5,6,9,.45);cursor:pointer;transition:all .45s cubic-bezier(.2,.7,.2,1);
+    text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;color:var(--bone);
+  }
+  .door:hover{border-color:var(--gold);box-shadow:0 0 34px -8px rgba(216,184,119,.45);
+    transform:translateY(-5px);background:rgba(216,184,119,.05)}
+  .door .glyph{font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);line-height:1}
+  .door h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:25px;letter-spacing:.02em}
+  .door p{font-size:14.5px!important;line-height:1.45!important}
+  .door .label{margin:0!important;font-size:9px}
+
+  /* ── forms ─────────────────────────────── */
+  .form{display:flex;flex-direction:column;gap:26px;align-items:center;width:min(620px,92vw)}
+  .frow{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;align-items:flex-end}
+  .field{display:flex;flex-direction:column;gap:9px;align-items:center}
+  .field label{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-dim)}
+  .field input,.field select{
+    background:transparent;border:none;border-bottom:1px solid var(--hair);color:var(--bone);
+    font-family:'Cormorant Garamond',serif;font-size:24px;padding:4px 2px 6px;outline:none;
+    text-align:center;border-radius:0;-webkit-appearance:none;appearance:none;transition:border-color .3s;
+  }
+  .field input::placeholder{color:rgba(139,136,120,.45)}
+  .field input:focus,.field select:focus{border-color:var(--gold)}
+  .field input:disabled{opacity:.3}
+  .field input.w2{width:64px}.field input.w4{width:92px}.field select{width:130px;cursor:pointer}
+  .field input.wide{width:min(420px,84vw);text-align:center}
+  .field select option{background:#0a0c12;color:var(--bone)}
+  .check{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:10px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--gold-dim);transition:color .3s}
+  .check:hover{color:var(--gold-bright)}
+  .check input{appearance:none;-webkit-appearance:none;width:12px;height:12px;border:1px solid var(--hair);
+    border-radius:50%;cursor:pointer;transition:all .3s;margin:0}
+  .check input:checked{background:var(--gold);box-shadow:0 0 10px rgba(216,184,119,.6);border-color:var(--gold)}
+  .citywrap{position:relative}
+  .citylist{
+    position:absolute;top:100%;left:50%;transform:translateX(-50%);width:min(420px,84vw);
+    background:rgba(8,10,15,.97);border:1px solid var(--hair);border-radius:10px;z-index:5;
+    text-align:left;display:none;margin-top:6px;overflow:hidden;backdrop-filter:blur(8px);
+  }
+  .citylist.on{display:block}
+  .citylist div{padding:9px 16px;font-family:'Cormorant Garamond',serif;font-size:17px;cursor:pointer;
+    display:flex;justify-content:space-between;gap:12px;transition:background .2s}
+  .citylist div span{font-family:'Jost';font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);align-self:center}
+  .citylist div:hover,.citylist div.sel{background:rgba(216,184,119,.09)}
+  .coords{display:none}
+  .coords.on{display:flex}
+  .err{color:#c9917c;font-size:10px;letter-spacing:.22em;text-transform:uppercase;min-height:12px}
+  .note{font-size:9.5px!important;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim)!important;
+    font-family:'Jost'!important;font-style:normal!important;max-width:60ch!important}
 
   /* ── exhibit panel ─────────────────────── */
   #panel{
     position:fixed;left:44px;top:50%;transform:translateY(-50%) translateX(-16px);
-    width:min(380px,34vw);z-index:20;padding:30px 36px 26px 26px;
-    border-left:1px solid var(--hair);
-    background:linear-gradient(90deg,rgba(5,6,9,.72) 55%,rgba(5,6,9,0));
+    width:min(400px,36vw);z-index:20;padding:30px 36px 26px 26px;max-height:calc(100vh - 200px);overflow-y:auto;
+    border-left:1px solid var(--hair);scrollbar-width:thin;scrollbar-color:var(--hair) transparent;
+    background:linear-gradient(90deg,rgba(5,6,9,.78) 55%,rgba(5,6,9,.2));
     opacity:0;visibility:hidden;transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1),visibility .8s;
   }
   #panel.show{opacity:1;visibility:visible;transform:translateY(-50%)}
@@ -105,14 +164,24 @@
   #panel .meta span b{color:var(--gold-dim);font-weight:400}
   #panel .prose{
     font-family:'Cormorant Garamond',serif;font-weight:400;
-    font-size:16.5px;line-height:1.66;color:#cfc8b4;max-width:38ch;
+    font-size:16.5px;line-height:1.66;color:#cfc8b4;max-width:40ch;
   }
+  #panel .prose em{color:var(--gold-dim)}
   #panel .prose .rev{display:block;margin-top:12px;font-style:italic;color:var(--gold)}
+  #panel .prose .line{display:block;margin-top:10px}
+  #panel .prose .line b{color:var(--gold);font-weight:400}
+  #panel .sub{margin:18px 0 4px;font-family:'Jost';font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-dim)}
+  #panel .tbl{width:100%;border-collapse:collapse;margin:6px 0 2px;font-family:'Jost';font-size:11.5px;letter-spacing:.05em}
+  #panel .tbl td{padding:5px 4px;border-bottom:1px solid rgba(216,184,119,.08);color:#cfc8b4;vertical-align:baseline;white-space:nowrap}
+  #panel .tbl td.g{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:18px;width:24px;padding-right:8px}
+  #panel .tbl td.s{color:var(--gold-dim);text-transform:uppercase;font-size:9.5px;letter-spacing:.18em}
+  #panel .tbl td.r{text-align:right;color:var(--mist)}
+  #panel .tbl .rx{color:var(--gold);font-size:9px;letter-spacing:.1em;margin-left:4px}
   #panel .foot{margin-top:22px;font-size:9.5px;letter-spacing:.26em;color:var(--gold-dim);text-transform:uppercase}
 
   /* ── spread slots ──────────────────────── */
-  #spread{
-    position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);z-index:30;
+  #spread{ /* desktop: centred under the figure, clear of the panel */
+    position:fixed;bottom:32px;left:calc(50% + 260px);transform:translateX(-50%) translateY(20px);z-index:30;
     display:flex;align-items:flex-end;gap:22px;
     opacity:0;visibility:hidden;transition:all .8s .3s;
   }
@@ -126,7 +195,8 @@
     transition:all .45s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;
     font-family:'Cormorant Garamond',serif;
   }
-  .card .num{font-size:19px;color:var(--gold);letter-spacing:.08em}
+  .card .num{font-size:19px;color:var(--gold);letter-spacing:.08em;position:relative}
+  .card .num.big{font-size:27px;letter-spacing:0}
   .card .back{position:absolute;inset:6px;border:1px solid rgba(216,184,119,.16);border-radius:4px;
     background:
      radial-gradient(circle at 50% 50%, rgba(216,184,119,.13) 0 2px, transparent 3px),
@@ -148,8 +218,8 @@
     color:var(--gold-dim);
   }
 
-  #synth{
-    position:fixed;bottom:206px;left:50%;transform:translateX(-50%);z-index:30;
+  #synth{ /* centred under the figure, clear of the panel */
+    position:fixed;bottom:206px;left:calc(50% + 260px);transform:translateX(-50%);z-index:30;
     font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15.5px;
     color:var(--mist);text-align:center;max-width:58ch;line-height:1.5;
     opacity:0;transition:opacity 1.2s .8s;pointer-events:none;padding:6px 20px;
@@ -159,7 +229,7 @@
   #synth b{color:var(--gold);font-weight:400}
 
   #redeal{
-    position:fixed;right:40px;bottom:40px;z-index:30;
+    position:fixed;right:40px;top:72px;z-index:30;
     font-family:'Jost';font-size:10px;letter-spacing:.3em;text-transform:uppercase;
     color:var(--gold-dim);background:none;border:1px solid var(--hair);border-radius:999px;
     padding:13px 24px 11px;cursor:pointer;transition:all .4s;
@@ -168,7 +238,7 @@
   #redeal.show{opacity:1;visibility:visible}
   #redeal:hover{color:var(--gold-bright);border-color:var(--gold)}
 
-  #hint{position:fixed;bottom:92px;left:40px;z-index:30;transition:opacity .8s}
+  #hint{position:fixed;bottom:182px;left:calc(50% + 260px);transform:translateX(-50%);z-index:30;transition:opacity .8s;white-space:nowrap}
 
   #offerBtn{
     position:fixed;left:40px;bottom:40px;z-index:30;
@@ -205,8 +275,18 @@
 
   @media (max-width:940px){
     /* symbol lives in the top ~40%; text is pinned to a band below it */
+    #intro{padding-top:126px;gap:24px}
+    .section{margin:0}
+    #intro h1{font-size:clamp(38px,10vw,56px)}
+    .doors{flex-direction:column;width:100%;max-width:360px;gap:12px}
+    .door{width:100%;flex-direction:row;text-align:left;padding:16px 18px;gap:16px;align-items:center}
+    .door .glyph{font-size:30px;width:34px;text-align:center}
+    .door div{display:flex;flex-direction:column;gap:3px}
+    .door h3{font-size:21px}
+    .door p{font-size:13.5px!important}
+    .door .label{display:none}
     #panel{
-      left:16px;right:16px;width:auto;top:45vh;bottom:124px;
+      left:16px;right:16px;width:auto;top:45vh;bottom:124px;max-height:none;
       transform:translateY(12px);overflow-y:auto;
       background:rgba(5,6,9,.78);backdrop-filter:blur(8px);
       border:1px solid rgba(216,184,119,.14);border-radius:12px;
@@ -214,11 +294,12 @@
     }
     #panel.show{transform:none}
     #panel h2{font-size:26px;margin-bottom:12px}
-    #panel .prose{font-size:15px}
+    #panel .prose{font-size:15px;max-width:none}
     #panel .foot{margin-top:14px}
-    #spread{gap:12px;bottom:20px}
+    #spread{gap:10px;bottom:20px;left:50%}
     .card{width:50px;height:78px}
     .card .num{font-size:16px}
+    .card .num.big{font-size:22px}
     #redeal{right:16px;bottom:auto;top:66px;padding:10px 18px 8px}
     #offerBtn{left:16px;bottom:auto;top:66px;padding:10px 18px 8px}
     #hint,#synth{display:none}
@@ -232,64 +313,129 @@
 <canvas id="gl"></canvas>
 
 <header>
-  <div class="brand"><i></i>STAROT</div>
+  <button class="brand" id="brand"><i></i>STAROT</button>
   <div class="head-right">
     <span class="label">Observatory of Fates</span><span class="sep"></span>
-    <span class="label">Hall of Stars</span><span class="sep"></span>
-    <span class="count" id="counter">— / XXII</span>
+    <span class="label nav" data-go="tarot">Tarot</span><span class="sep"></span>
+    <span class="label nav" data-go="astro">Astral map</span><span class="sep"></span>
+    <span class="label nav" data-go="num">Numerology</span><span class="sep"></span>
+    <span class="count" id="counter">—</span>
   </div>
 </header>
 
 <div id="intro">
-  <div id="introMain">
-    <span class="label">A reading in stardust</span>
-    <h1>The cards are<br><em>constellations.</em></h1>
-    <p>Ask your question in silence. Three arcana will be drawn from the
-       dark — past, present, future — each figure assembled from thousands
-       of stars that scatter at your touch, and remember.</p>
-    <div class="choice">
-      <button class="deal-btn" id="dealSelf">✦ &nbsp;A reading for myself</button>
-      <button class="deal-btn ghost" id="dealOther">☾ &nbsp;For someone else</button>
+
+  <!-- ── the hall: choose an instrument ── -->
+  <div class="section on" id="menu">
+    <span class="label">Observatory of Fates</span>
+    <h1>Choose your<br><em>instrument.</em></h1>
+    <p>Three ways of asking the dark. Each answer is drawn in stardust —
+       figures assembled from thousands of stars that scatter at your touch, and remember.</p>
+    <div class="doors">
+      <button class="door" data-go="tarot">
+        <span class="glyph">✦</span>
+        <div><h3>Tarot reading</h3><p>Three arcana — past, present, future — dealt from the twenty-two.</p></div>
+        <span class="label">The cards</span>
+      </button>
+      <button class="door" data-go="astro">
+        <span class="glyph">☉</span>
+        <div><h3>Astral map</h3><p>The sky as it stood when you were born — planets, houses, the rising sign.</p></div>
+        <span class="label">The wheel</span>
+      </button>
+      <button class="door" data-go="num">
+        <span class="glyph">⁂</span>
+        <div><h3>Numerology</h3><p>The numbers hidden in your name and your date — the path, the voice, the door.</p></div>
+        <span class="label">The seal</span>
+      </button>
     </div>
   </div>
-  <div id="ritual">
-    <span class="label">Before the cards are drawn</span>
-    <p>Hold them silently in your mind — their face, the weight of
-       their question. Let the noise settle. The stars can wait;
-       they have practice.<br><br>
-       <em>When they are clearly before you, deal.</em></p>
-    <button class="deal-btn" id="dealBtn2">✦ &nbsp;Deal their spread&nbsp; ✦</button>
+
+  <!-- ── tarot ── -->
+  <div class="section" id="tarotIntro">
+    <div id="introMain">
+      <span class="label">A reading in stardust</span>
+      <h1>The cards are<br><em>constellations.</em></h1>
+      <p>Ask your question in silence. Three arcana will be drawn from the
+         dark — past, present, future — each figure assembled from thousands
+         of stars that scatter at your touch, and remember.</p>
+      <div class="choice">
+        <button class="deal-btn" id="dealSelf">✦ &nbsp;A reading for myself</button>
+        <button class="deal-btn ghost" id="dealOther">☾ &nbsp;For someone else</button>
+      </div>
+      <button class="back" data-go="menu">← &nbsp;The observatory</button>
+    </div>
+    <div id="ritual">
+      <span class="label">Before the cards are drawn</span>
+      <p>Hold them silently in your mind — their face, the weight of
+         their question. Let the noise settle. The stars can wait;
+         they have practice.<br><br>
+         <em>When they are clearly before you, deal.</em></p>
+      <button class="deal-btn" id="dealBtn2">✦ &nbsp;Deal their spread&nbsp; ✦</button>
+    </div>
   </div>
+
+  <!-- ── astral map ── -->
+  <div class="section" id="astroIntro">
+    <span class="label">The sky at the hour of your birth</span>
+    <h1>Where were the<br><em>planets standing?</em></h1>
+    <p>Give the observatory your date, your hour and the place you first breathed.
+       The stars will turn back to that night and draw the wheel.</p>
+    <form class="form" id="astroForm" autocomplete="off" novalidate>
+      <div class="frow" id="astroDate"></div>
+      <div class="frow">
+        <div class="field"><label>Hour</label><input class="w2" id="aHour" type="number" min="0" max="23" placeholder="14"></div>
+        <div class="field"><label>Minute</label><input class="w2" id="aMin" type="number" min="0" max="59" placeholder="30"></div>
+        <label class="check"><input type="checkbox" id="aNoTime"> I don't know the hour</label>
+      </div>
+      <div class="frow">
+        <div class="field citywrap">
+          <label>Birthplace</label>
+          <input class="wide" id="aCity" type="text" placeholder="Begin typing a city…">
+          <div class="citylist" id="cityList"></div>
+        </div>
+      </div>
+      <label class="check" id="coordToggle"><input type="checkbox" id="aManual"> My town isn't listed — enter coordinates</label>
+      <div class="frow coords" id="coords">
+        <div class="field"><label>Latitude</label><input class="w4" id="aLat" type="number" step="0.0001" placeholder="38.72"></div>
+        <div class="field"><label>Longitude</label><input class="w4" id="aLon" type="number" step="0.0001" placeholder="-9.14"></div>
+        <div class="field"><label>Time zone</label><select id="aTz"></select></div>
+      </div>
+      <div class="err" id="astroErr"></div>
+      <button class="deal-btn" type="submit">☉ &nbsp;Cast the chart</button>
+      <button class="back" type="button" data-go="menu">← &nbsp;The observatory</button>
+    </form>
+  </div>
+
+  <!-- ── numerology ── -->
+  <div class="section" id="numIntro">
+    <span class="label">The arithmetic of a life</span>
+    <h1>Every name is<br><em>a number.</em></h1>
+    <p>Write the full name you were given at birth, and the date. The letters will be
+       weighed, the digits folded, and the seal of your path drawn in stars.</p>
+    <form class="form" id="numForm" autocomplete="off" novalidate>
+      <div class="frow">
+        <div class="field"><label>Full name at birth</label><input class="wide" id="nName" type="text" placeholder="e.g. Maria Inês Soares Costa"></div>
+      </div>
+      <div class="frow" id="numDate"></div>
+      <div class="err" id="numErr"></div>
+      <button class="deal-btn" type="submit">⁂ &nbsp;Read the numbers</button>
+      <button class="back" type="button" data-go="menu">← &nbsp;The observatory</button>
+    </form>
+  </div>
+
 </div>
 
 <aside id="panel">
   <div class="pos" id="pPos">Exhibit — The Past</div>
   <h2 id="pName">The Star</h2>
-  <div class="meta">
-    <span>MAJOR ARCANA · <b id="pNum">XVII</b></span>
-    <span>ORIENTATION · <b id="pOri">UPRIGHT</b></span>
-    <span>SPEAKS OF · <b id="pKeys">HOPE, RENEWAL</b></span>
-  </div>
-  <p class="prose" id="pProse"></p>
+  <div class="meta" id="pMeta"></div>
+  <div class="prose" id="pProse"></div>
   <div class="foot">Celestial point-sampling · <span id="pStars">48,000</span> stars</div>
 </aside>
 
 <p id="synth"></p>
 
-<nav id="spread">
-  <div class="slot" data-i="0">
-    <div class="card hidden-face"><div class="back"></div><span class="num"></span></div>
-    <span class="label">Past</span>
-  </div>
-  <div class="slot" data-i="1">
-    <div class="card hidden-face"><div class="back"></div><span class="num"></span></div>
-    <span class="label">Present</span>
-  </div>
-  <div class="slot" data-i="2">
-    <div class="card hidden-face"><div class="back"></div><span class="num"></span></div>
-    <span class="label">Future</span>
-  </div>
-</nav>
+<nav id="spread"></nav>
 
 <button id="redeal">↻ &nbsp;Ask again</button>
 <button id="offerBtn">✦ &nbsp;Leave an offering</button>
@@ -472,13 +618,72 @@ function drawSigil(ctx,S,i){
   }
 }
 
+/* ═══ ZODIAC & PLANET GLYPHS — hand-drawn, unit space ─────────
+   every glyph fits roughly in [-1,1]²; (x,y) centre, s = half-size */
+function glyphSign(ctx,i,x,y,s,lw){
+  ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();
+  switch(i){
+  case 0:/*Aries*/ ctx.moveTo(0,1);ctx.lineTo(0,-.3);ctx.bezierCurveTo(0,-1.1,-1,-1.2,-.95,-.35);
+    ctx.moveTo(0,-.3);ctx.bezierCurveTo(0,-1.1,1,-1.2,.95,-.35);break;
+  case 1:/*Taurus*/ ctx.arc(0,.3,.62,0,7);ctx.moveTo(.62*Math.cos(Math.PI*.2),-1+.62*Math.sin(Math.PI*.2));ctx.arc(0,-1,.62,Math.PI*.2,Math.PI*.8);break;
+  case 2:/*Gemini*/ ctx.moveTo(-.45,-.7);ctx.lineTo(-.45,.7);ctx.moveTo(.45,-.7);ctx.lineTo(.45,.7);
+    ctx.moveTo(-.95,-.95);ctx.quadraticCurveTo(0,-.65,.95,-.95);ctx.moveTo(-.95,.95);ctx.quadraticCurveTo(0,.65,.95,.95);break;
+  case 3:/*Cancer*/ ctx.arc(-.5,.38,.3,0,7);ctx.moveTo(.8,-.38);ctx.arc(.5,-.38,.3,0,7);
+    ctx.moveTo(-.8,.38);ctx.quadraticCurveTo(-.7,-.95,.95,-.55);ctx.moveTo(.8,-.38);ctx.quadraticCurveTo(.7,.95,-.95,.55);break;
+  case 4:/*Leo*/ ctx.arc(-.5,.5,.3,0,7);ctx.moveTo(-.3,.25);ctx.bezierCurveTo(-.55,-1.1,.75,-1.15,.45,-.1);
+    ctx.bezierCurveTo(.25,.5,.35,1.05,.95,.75);break;
+  case 5:/*Virgo*/ ctx.moveTo(-.95,-.15);ctx.quadraticCurveTo(-.95,-.7,-.62,-.7);ctx.quadraticCurveTo(-.3,-.7,-.3,-.15);ctx.lineTo(-.3,.65);
+    ctx.moveTo(-.3,-.15);ctx.quadraticCurveTo(-.3,-.7,.02,-.7);ctx.quadraticCurveTo(.34,-.7,.34,-.15);ctx.lineTo(.34,.65);
+    ctx.moveTo(.34,-.15);ctx.quadraticCurveTo(.34,-.7,.66,-.7);ctx.quadraticCurveTo(.98,-.7,.98,-.15);ctx.lineTo(.98,.45);
+    ctx.quadraticCurveTo(.98,.95,.5,.95);ctx.quadraticCurveTo(.2,.95,.1,.7);break;
+  case 6:/*Libra*/ ctx.moveTo(-.95,.75);ctx.lineTo(.95,.75);ctx.moveTo(-.95,.25);ctx.lineTo(-.5,.25);ctx.lineTo(-.5,-.05);
+    ctx.arc(0,-.05,.5,Math.PI,Math.PI*2);ctx.lineTo(.5,.25);ctx.lineTo(.95,.25);break;
+  case 7:/*Scorpio*/ ctx.moveTo(-.95,-.15);ctx.quadraticCurveTo(-.95,-.7,-.62,-.7);ctx.quadraticCurveTo(-.3,-.7,-.3,-.15);ctx.lineTo(-.3,.65);
+    ctx.moveTo(-.3,-.15);ctx.quadraticCurveTo(-.3,-.7,.02,-.7);ctx.quadraticCurveTo(.34,-.7,.34,-.15);ctx.lineTo(.34,.65);
+    ctx.moveTo(.34,-.15);ctx.quadraticCurveTo(.34,-.7,.66,-.7);ctx.quadraticCurveTo(.98,-.7,.98,-.15);ctx.lineTo(.98,.55);
+    ctx.quadraticCurveTo(.98,.9,1.3,.85);ctx.moveTo(1.05,.6);ctx.lineTo(1.32,.85);ctx.lineTo(1.05,1.1);break;
+  case 8:/*Sagittarius*/ ctx.moveTo(-.85,.85);ctx.lineTo(.85,-.85);ctx.moveTo(.1,-.85);ctx.lineTo(.85,-.85);ctx.lineTo(.85,-.1);
+    ctx.moveTo(-.55,.05);ctx.lineTo(.05,.65);break;
+  case 9:/*Capricorn*/ ctx.moveTo(-.95,-.6);ctx.lineTo(-.55,.5);ctx.lineTo(-.05,-.65);ctx.lineTo(.3,.55);
+    ctx.quadraticCurveTo(.4,1.05,.85,.9);ctx.quadraticCurveTo(1.1,.7,.9,.35);ctx.quadraticCurveTo(.6,.05,.3,.45);break;
+  case 10:/*Aquarius*/ for(const yy of [-.35,.35]){ctx.moveTo(-.95,yy);ctx.lineTo(-.55,yy-.4);ctx.lineTo(-.15,yy);ctx.lineTo(.25,yy-.4);ctx.lineTo(.65,yy);ctx.lineTo(1,yy-.4);}break;
+  case 11:/*Pisces*/ ctx.moveTo(-.85,-.95);ctx.quadraticCurveTo(.05,0,-.85,.95);ctx.moveTo(.85,-.95);ctx.quadraticCurveTo(-.05,0,.85,.95);
+    ctx.moveTo(-.75,0);ctx.lineTo(.75,0);break;
+  }
+  ctx.stroke();ctx.restore();
+}
+function glyphPlanet(ctx,i,x,y,s,lw){
+  ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();
+  switch(i){
+  case 0:/*Sun*/ ctx.arc(0,0,.8,0,7);ctx.stroke();ctx.beginPath();ctx.arc(0,0,.16,0,7);ctx.fill();break;
+  case 1:/*Moon*/ ctx.arc(0,0,.85,-Math.PI*.62,Math.PI*.62,false);ctx.arc(.37,0,.63,Math.PI*.55,-Math.PI*.55,true);ctx.closePath();ctx.fill();break;
+  case 2:/*Mercury*/ ctx.arc(0,-.05,.45,0,7);ctx.moveTo(0,.4);ctx.lineTo(0,1);ctx.moveTo(-.38,.72);ctx.lineTo(.38,.72);
+    ctx.moveTo(.45*Math.cos(Math.PI*.15),-.95+.45*Math.sin(Math.PI*.15));ctx.arc(0,-.95,.45,Math.PI*.15,Math.PI*.85);break;
+  case 3:/*Venus*/ ctx.arc(0,-.3,.55,0,7);ctx.moveTo(0,.25);ctx.lineTo(0,1);ctx.moveTo(-.4,.65);ctx.lineTo(.4,.65);break;
+  case 4:/*Mars*/ ctx.arc(-.2,.2,.55,0,7);ctx.moveTo(.2,-.2);ctx.lineTo(.85,-.85);ctx.moveTo(.3,-.85);ctx.lineTo(.85,-.85);ctx.lineTo(.85,-.3);break;
+  case 5:/*Jupiter*/ ctx.moveTo(-.85,-.35);ctx.quadraticCurveTo(-.85,-1,-.2,-.95);ctx.quadraticCurveTo(.5,-.9,-.1,-.2);ctx.lineTo(-.95,.4);
+    ctx.lineTo(.95,.4);ctx.moveTo(.45,-.4);ctx.lineTo(.45,1);break;
+  case 6:/*Saturn*/ ctx.moveTo(-.4,-1);ctx.lineTo(-.4,.55);ctx.moveTo(-.85,-.6);ctx.lineTo(.05,-.6);
+    ctx.moveTo(-.4,.05);ctx.quadraticCurveTo(.2,-.45,.5,.1);ctx.quadraticCurveTo(.75,.55,.3,.85);ctx.quadraticCurveTo(.1,1,.4,1.05);break;
+  case 7:/*Uranus*/ ctx.moveTo(-.6,-.85);ctx.lineTo(-.6,.3);ctx.moveTo(.6,-.85);ctx.lineTo(.6,.3);ctx.moveTo(-.6,-.25);ctx.lineTo(.6,-.25);
+    ctx.moveTo(0,-.85);ctx.lineTo(0,.35);ctx.moveTo(.3,.7);ctx.arc(0,.7,.3,0,7);break;
+  case 8:/*Neptune*/ ctx.moveTo(0,-.6);ctx.lineTo(0,1);ctx.moveTo(-.4,.6);ctx.lineTo(.4,.6);
+    ctx.moveTo(-.6,-.95);ctx.lineTo(-.6,-.3);ctx.arc(0,-.3,.6,Math.PI,0,true);ctx.lineTo(.6,-.95);break;
+  case 9:/*Pluto*/ ctx.arc(0,-.62,.28,0,7);ctx.moveTo(.6,-.62);ctx.arc(0,-.62,.6,0,Math.PI);
+    ctx.moveTo(0,-.02);ctx.lineTo(0,1);ctx.moveTo(-.4,.62);ctx.lineTo(.4,.62);break;
+  }
+  ctx.stroke();ctx.restore();
+}
+
 /* ═══ WEBGL STAR ENGINE ═══════════════════════════════════════ */
 const cv=document.getElementById('gl');
 const gl=cv.getContext('webgl',{alpha:true,antialias:false});
 let W=0,H=0,DPR=Math.min(devicePixelRatio||1,2);
 function resize(){W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;
   cv.style.width=W+'px';cv.style.height=H+'px';gl.viewport(0,0,cv.width,cv.height);}
-resize();addEventListener('resize',()=>{resize();if(view>=0)retarget(view,true);});
+resize();addEventListener('resize',()=>{resize();if(currentDraw)morphTo(currentDraw,true);});
 
 const VS=`
 attribute vec2 aA; attribute vec2 aB; attribute vec4 aMeta; // seed,size,delay,dust
@@ -572,26 +777,32 @@ function frame(t){
 }
 requestAnimationFrame(frame);
 
-/* sample sigil into targets */
+/* sample any drawing into star targets.
+   draw = {fn(ctx,S), fill:{desk,mobile}} — fill = fraction of the free height used */
 const off=document.createElement('canvas');off.width=off.height=760;
 const octx=off.getContext('2d',{willReadFrequently:true});
-function targetsFor(cardIdx,reversed){
-  drawSigil(octx,760,cardIdx);
+let currentDraw=null;
+function targetsFromDraw(draw){
+  octx.clearRect(0,0,760,760);
+  octx.strokeStyle='#fff';octx.fillStyle='#fff';
+  draw.fn(octx,760);
   const data=octx.getImageData(0,0,760,760).data;
   const pts=[];
   for(let y=0;y<760;y+=2)for(let x=0;x<760;x+=2)
     if(data[(y*760+x)*4+3]>100)pts.push([x/760,y/760]);
+  if(!pts.length)pts.push([.5,.5]);
   const wide=W>940;
   /* keep the figure clear of the exhibit panel (left ≈ 500px on desktop) */
   const panelEdge=520;
-  const size=wide? Math.min((W-panelEdge)*0.9, H*0.7) : Math.min(W*0.78,H*0.27);
+  const fill=draw.fill||{desk:.7,mobile:.27};
+  const size=wide? Math.min((W-panelEdge)*0.9, H*fill.desk) : Math.min(W*0.82,H*fill.mobile);
   const cx=wide? panelEdge+(W-panelEdge)/2 : W*0.5;
   const cy=wide?H*0.46:H*0.29;
   const out=new Float32Array((N-DUST)*2);
   for(let i=0;i<N-DUST;i++){
     const p=pts[(i*7919)%pts.length];
     let nx=(p[0]-0.5), ny=(p[1]-0.5);
-    if(reversed){nx=-nx;ny=-ny;}
+    if(draw.reversed){nx=-nx;ny=-ny;}
     out[i*2]=cx+nx*size+(Math.random()-.5)*3;
     out[i*2+1]=cy+ny*size+(Math.random()-.5)*3;
   }
@@ -611,8 +822,95 @@ function pushTargets(newB){
   gl.bufferSubData(gl.ARRAY_BUFFER,DUST*2*4,newB);
   morph=0;
 }
+function morphTo(draw,silent){
+  currentDraw=draw;
+  const t=targetsFromDraw(draw);
+  if(silent){
+    B.set(t,DUST*2);
+    gl.bindBuffer(gl.ARRAY_BUFFER,bufB);
+    gl.bufferSubData(gl.ARRAY_BUFFER,DUST*2*4,t);
+  } else pushTargets(t);
+}
+function scatter(){currentDraw=null;pushTargets(scatterTargets());}
 
-/* ═══ READING LOGIC ═══════════════════════════════════════════ */
+/* ═══ SHARED STAGE — panel, slots, intro sections ═════════════ */
+const $=id=>document.getElementById(id);
+let mode='tarot', view=-1;
+
+function setPanel({pos,name,meta,prose}){
+  const panel=$('panel');
+  panel.classList.remove('show');
+  setTimeout(()=>{
+    $('pPos').textContent=pos;
+    $('pName').innerHTML=name;
+    $('pMeta').innerHTML=meta.map(([k,v])=>`<span>${k} · <b>${v}</b></span>`).join('');
+    $('pProse').innerHTML=prose;
+    $('pStars').textContent=(N-DUST).toLocaleString('en-US');
+    panel.scrollTop=0;
+    panel.classList.add('show');
+  },350);
+}
+function setSlots(items,onpick){
+  const nav=$('spread');
+  nav.innerHTML='';
+  items.forEach((it,k)=>{
+    const s=document.createElement('div');s.className='slot';s.dataset.i=k;
+    s.innerHTML=`<div class="card hidden-face"><div class="back"></div><span class="num ${it.big?'big':''}">${it.face||''}</span></div><span class="label">${it.label}</span>`;
+    s.onclick=()=>onpick(k);
+    nav.appendChild(s);
+  });
+}
+function revealSlots(stagger){
+  [...document.querySelectorAll('.slot .card')].forEach((c,k)=>setTimeout(()=>c.classList.remove('hidden-face'),700+k*stagger));
+  $('spread').classList.add('show');
+  $('redeal').classList.add('show');
+}
+function markSlot(k){[...document.querySelectorAll('.slot')].forEach((s,j)=>s.classList.toggle('on',j===k));}
+function showSynth(html){
+  const s=$('synth');s.innerHTML=html;s.classList.add('show');
+  const h=$('hint');h.style.opacity=1;setTimeout(()=>h.style.opacity=0,6000);
+}
+function showSection(id){
+  document.querySelectorAll('#intro .section').forEach(s=>s.classList.toggle('on',s.id===id));
+  $('intro').scrollTop=0;
+  $('intro').classList.remove('gone');
+  document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',
+    (id==='tarotIntro'&&n.dataset.go==='tarot')||(id==='astroIntro'&&n.dataset.go==='astro')||(id==='numIntro'&&n.dataset.go==='num')));
+}
+const SECTION={menu:'menu',tarot:'tarotIntro',astro:'astroIntro',num:'numIntro'};
+/* clear the stage: hide reading, scatter the stars, return to an intro section */
+function leaveReading(to){
+  view=-1;
+  $('panel').classList.remove('show');
+  $('synth').classList.remove('show');
+  $('spread').classList.remove('show');
+  $('redeal').classList.remove('show');
+  $('counter').textContent='—';
+  document.querySelectorAll('.slot').forEach(s=>{s.classList.remove('on');s.querySelector('.card').classList.add('hidden-face');});
+  scatter();
+  setLens(true);
+  /* tarot: back to the choice, so the next reading can be for anyone */
+  $('introMain').style.display='flex';
+  $('ritual').classList.remove('on');
+  $('dealBtn2').classList.remove('ready');
+  setTimeout(()=>showSection(SECTION[to]),600);
+}
+function beginReading(){
+  $('intro').classList.add('gone');
+  setLens(false);
+  document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',n.dataset.go===mode));
+}
+document.querySelectorAll('[data-go]').forEach(el=>{
+  el.addEventListener('click',()=>{
+    const to=el.dataset.go;
+    if($('intro').classList.contains('gone'))leaveReading(to);
+    else{ $('introMain').style.display='flex';$('ritual').classList.remove('on');$('dealBtn2').classList.remove('ready');showSection(SECTION[to]); }
+  });
+});
+$('brand').onclick=()=>{ if($('intro').classList.contains('gone'))leaveReading('menu'); else showSection('menu'); };
+$('redeal').onclick=()=>leaveReading(mode);
+
+/* ═══ TAROT ═══════════════════════════════════════════════════ */
 const POS=["The Past","The Present","The Future"];
 const POSINTRO={
  self:["What shaped the road behind you:",
@@ -621,121 +919,590 @@ const POSINTRO={
  other:["What shaped the road behind them:",
         "What stands in the room with them now:",
         "What gathers on their horizon:"]};
-let spread=[], view=-1, mode='self';
+let spread=[], tarotFor='self';
 
 function deal(){
+  mode='tarot';
   const idxs=[...Array(22).keys()];
   spread=[];
   for(let k=0;k<3;k++){
     const j=Math.floor(Math.random()*idxs.length);
     spread.push({card:idxs.splice(j,1)[0], reversed:Math.random()<0.28});
   }
-  document.getElementById('intro').classList.add('gone');
-  setLens(false);
-  const slots=[...document.querySelectorAll('.slot')];
-  slots.forEach((s,k)=>{
-    const cardEl=s.querySelector('.card');
-    cardEl.classList.add('hidden-face');
-    setTimeout(()=>{
-      cardEl.classList.remove('hidden-face');
-      cardEl.classList.toggle('reversed',spread[k].reversed);
-      cardEl.querySelector('.num').textContent=ROMAN[spread[k].card];
-    },700+k*550);
-  });
-  document.getElementById('spread').classList.add('show');
-  document.getElementById('redeal').classList.add('show');
-  setTimeout(()=>show(0),1200);
+  beginReading();
+  setSlots(POS.map((p,k)=>({label:p.replace('The ',''),face:ROMAN[spread[k].card]})),k=>showCard(k));
+  document.querySelectorAll('.slot .card').forEach((c,k)=>c.classList.toggle('reversed',spread[k].reversed));
+  revealSlots(550);
+  setTimeout(()=>showCard(0),1200);
   setTimeout(()=>{
-    const s=document.getElementById('synth');
     const k=i=>ARCANA[spread[i].card].keys.split(',')[0].trim();
-    const [a,b]=mode==='self'?['you','you']:['them','them'];
-    s.innerHTML=`The thread of this spread: <b>${k(0)}</b> behind ${a}, <b>${k(1)}</b> beside ${b}, <b>${k(2)}</b> ahead.`;
-    s.classList.add('show');
-    const h=document.getElementById('hint');h.style.opacity=1;
-    setTimeout(()=>h.style.opacity=0,6000);
+    const [a,b]=tarotFor==='self'?['you','you']:['them','them'];
+    showSynth(`The thread of this spread: <b>${k(0)}</b> behind ${a}, <b>${k(1)}</b> beside ${b}, <b>${k(2)}</b> ahead.`);
   },2600);
 }
-
-function retarget(k,silent){
-  const {card,reversed}=spread[k];
-  const t=targetsFor(card,reversed);
-  if(silent){
-    B.set(t,DUST*2);
-    gl.bindBuffer(gl.ARRAY_BUFFER,bufB);
-    gl.bufferSubData(gl.ARRAY_BUFFER,DUST*2*4,t);
-  } else pushTargets(t);
-}
-
-function show(k){
+function showCard(k){
   if(view===k)return;
   view=k;
   const {card,reversed}=spread[k];
   const a=ARCANA[card];
-  retarget(k);
-  [...document.querySelectorAll('.slot')].forEach((s,j)=>s.classList.toggle('on',j===k));
-  const panel=document.getElementById('panel');
-  panel.classList.remove('show');
-  setTimeout(()=>{
-    document.getElementById('pPos').textContent='Exhibit — '+POS[k];
-    document.getElementById('pName').textContent=a.name;
-    document.getElementById('pNum').textContent=ROMAN[card];
-    document.getElementById('pOri').textContent=reversed?'REVERSED':'UPRIGHT';
-    document.getElementById('pKeys').textContent=a.keys.toUpperCase();
-    document.getElementById('pProse').innerHTML=
-      `<em style="color:var(--gold-dim)">${POSINTRO[mode][k]}</em> ${a.prose}`+
-      (reversed?`<span class="rev">${a.rev}</span>`:'');
-    document.getElementById('pStars').textContent=(N-DUST).toLocaleString('en-US');
-    document.getElementById('counter').textContent=ROMAN[card]+' / XXII';
-    panel.classList.add('show');
-  },350);
+  morphTo({fn:(ctx,S)=>drawSigil(ctx,S,card),reversed});
+  markSlot(k);
+  $('counter').textContent=ROMAN[card]+' / XXII';
+  setPanel({
+    pos:'Exhibit — '+POS[k], name:a.name,
+    meta:[['MAJOR ARCANA',ROMAN[card]],['ORIENTATION',reversed?'REVERSED':'UPRIGHT'],['SPEAKS OF',a.keys.toUpperCase()]],
+    prose:`<em>${POSINTRO[tarotFor][k]}</em> ${a.prose}`+(reversed?`<span class="rev">${a.rev}</span>`:'')
+  });
+}
+$('dealSelf').onclick=()=>{tarotFor='self';deal();};
+$('dealOther').onclick=()=>{
+  tarotFor='other';
+  $('introMain').style.display='none';
+  $('ritual').classList.add('on');
+  setTimeout(()=>$('dealBtn2').classList.add('ready'),4200);
+};
+$('dealBtn2').onclick=deal;
+
+/* ═══ DATE FIELDS (shared by the two forms) ═══════════════════ */
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function dateFields(prefix){
+  return `<div class="field"><label>Day</label><input class="w2" id="${prefix}Day" type="number" min="1" max="31" placeholder="12"></div>
+  <div class="field"><label>Month</label><select id="${prefix}Mon">${MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select></div>
+  <div class="field"><label>Year</label><input class="w4" id="${prefix}Year" type="number" min="1800" max="2050" placeholder="1985"></div>`;
+}
+$('astroDate').innerHTML=dateFields('a');
+$('numDate').innerHTML=dateFields('n');
+function readDate(prefix,errEl){
+  const d=+$(prefix+'Day').value, m=+$(prefix+'Mon').value, y=+$(prefix+'Year').value;
+  if(!d||!y){errEl.textContent='The observatory needs a day and a year.';return null;}
+  if(y<1800||y>2050){errEl.textContent='The tables hold the years 1800 to 2050.';return null;}
+  const dim=new Date(Date.UTC(y,m,0)).getUTCDate();
+  if(d<1||d>dim){errEl.textContent=`${MONTHS[m-1]} ${y} has only ${dim} days.`;return null;}
+  return {d,m,y};
 }
 
-document.getElementById('dealSelf').onclick=()=>{mode='self';deal();};
-document.getElementById('dealOther').onclick=()=>{
-  mode='other';
-  document.getElementById('introMain').style.display='none';
-  const r=document.getElementById('ritual');
-  r.classList.add('on');
-  setTimeout(()=>document.getElementById('dealBtn2').classList.add('ready'),4200);
-};
-document.getElementById('dealBtn2').onclick=deal;
-document.getElementById('redeal').onclick=()=>{
-  view=-1;
-  document.getElementById('panel').classList.remove('show');
-  document.getElementById('synth').classList.remove('show');
-  document.getElementById('spread').classList.remove('show');
-  document.getElementById('redeal').classList.remove('show');
-  document.getElementById('counter').textContent='— / XXII';
-  document.querySelectorAll('.slot').forEach(s=>{
-    s.classList.remove('on');
-    s.querySelector('.card').classList.add('hidden-face');
+/* ═══ ASTRONOMY — the sky itself ══════════════════════════════
+   Sun: Meeus ch.25 · Moon: Meeus ch.47 (principal terms)
+   Planets: Keplerian elements (Standish, JPL, valid 1800–2050)
+   Houses: Placidus, equal houses beyond the polar circles       */
+const D2R=Math.PI/180, R2D=180/Math.PI;
+const norm=a=>((a%360)+360)%360;
+const jdOf=ms=>ms/86400000+2440587.5, Tof=jd=>(jd-2451545)/36525;
+function keplerE(M,e){let E=M+e*R2D*Math.sin(M*D2R)*(1+e*Math.cos(M*D2R));
+  for(let k=0;k<30;k++){const dM=M-(E-e*R2D*Math.sin(E*D2R));const dE=dM/(1-e*Math.cos(E*D2R));E+=dE;if(Math.abs(dE)<1e-9)break;}return E;}
+const ELEM={ /* a, e, I, L, ϖ, Ω  +  rates per century */
+ mercury:[[0.38709927,0.20563593,7.00497902,252.25032350,77.45779628,48.33076593],[0.00000037,0.00001906,-0.00594749,149472.67411175,0.16047689,-0.12534081]],
+ venus:[[0.72333566,0.00677672,3.39467605,181.97909950,131.60246718,76.67984255],[0.00000390,-0.00004107,-0.00078890,58517.81538729,0.00268329,-0.27769418]],
+ earth:[[1.00000261,0.01671123,-0.00001531,100.46457166,102.93768193,0.0],[0.00000562,-0.00004392,-0.01294668,35999.37244981,0.32327364,0.0]],
+ mars:[[1.52371034,0.09339410,1.84969142,-4.55343205,-23.94362959,49.55953891],[0.00001847,0.00007882,-0.00813131,19140.30268499,0.44441088,-0.29257343]],
+ jupiter:[[5.20288700,0.04838624,1.30439695,34.39644051,14.72847983,100.47390909],[-0.00011607,-0.00013253,-0.00183714,3034.74612775,0.21252668,0.20469106]],
+ saturn:[[9.53667594,0.05386179,2.48599187,49.95424423,92.59887831,113.66242448],[-0.00125060,-0.00050991,0.00193609,1222.49362201,-0.41897216,-0.28867794]],
+ uranus:[[19.18916464,0.04725744,0.77263783,313.23810451,170.95427630,74.01692503],[-0.00196176,-0.00004397,-0.00242939,428.48202785,0.40805281,0.04240589]],
+ neptune:[[30.06992276,0.00859048,1.77004347,-55.12002969,44.96476227,131.78422574],[0.00026291,0.00005105,0.00035372,218.45945325,-0.32241464,-0.00508664]],
+ pluto:[[39.48211675,0.24882730,17.14001206,238.92903833,224.06891629,110.30393684],[-0.00031596,0.00005170,0.00004818,145.20780515,-0.04062942,-0.01183482]]};
+function helio(n,T){const [b,r]=ELEM[n];
+  const a=b[0]+r[0]*T,e=b[1]+r[1]*T,I=(b[2]+r[2]*T)*D2R,L=b[3]+r[3]*T,wb=b[4]+r[4]*T,O=b[5]+r[5]*T;
+  const w=(wb-O)*D2R,Om=O*D2R;let M=norm(L-wb);if(M>180)M-=360;const E=keplerE(M,e)*D2R;
+  const xp=a*(Math.cos(E)-e),yp=a*Math.sqrt(1-e*e)*Math.sin(E);
+  const cw=Math.cos(w),sw=Math.sin(w),cO=Math.cos(Om),sO=Math.sin(Om),cI=Math.cos(I),sI=Math.sin(I);
+  return [(cw*cO-sw*sO*cI)*xp+(-sw*cO-cw*sO*cI)*yp,(cw*sO+sw*cO*cI)*xp+(-sw*sO+cw*cO*cI)*yp,(sw*sI)*xp+(cw*sI)*yp];}
+function planetLon(n,T){const p=helio(n,T),e=helio('earth',T);
+  return norm(Math.atan2(p[1]-e[1],p[0]-e[0])*R2D+1.3969713*T);} /* J2000 → of date */
+function sunLon(T){const L0=norm(280.46646+36000.76983*T+0.0003032*T*T),M=norm(357.52911+35999.05029*T-0.0001537*T*T),Mr=M*D2R;
+  const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)+(0.019993-0.000101*T)*Math.sin(2*Mr)+0.000289*Math.sin(3*Mr);
+  const O=(125.04-1934.136*T)*D2R;return norm(L0+C-0.00569-0.00478*Math.sin(O));}
+const MOON_L=[[0,0,1,0,6288774],[2,0,-1,0,1274027],[2,0,0,0,658314],[0,0,2,0,213618],[0,1,0,0,-185116],[0,0,0,2,-114332],[2,0,-2,0,58793],[2,-1,-1,0,57066],[2,0,1,0,53322],[2,-1,0,0,45758],[0,1,-1,0,-40923],[1,0,0,0,-34720],[0,1,1,0,-30383],[2,0,0,-2,15327],[0,0,1,2,-12528],[0,0,1,-2,10980],[4,0,-1,0,10675],[0,0,3,0,10034],[4,0,-2,0,8548],[2,1,-1,0,-7888],[2,1,0,0,-6766],[1,0,-1,0,-5163],[1,1,0,0,4987],[2,-1,1,0,4036],[2,0,2,0,3994],[4,0,0,0,3861],[2,0,-3,0,3665],[0,1,-2,0,-2689],[2,0,-1,2,-2602],[2,-1,-2,0,2390],[1,0,1,0,-2348],[2,-2,0,0,2236],[0,1,2,0,-2120],[0,2,0,0,-2069],[2,-2,-1,0,2048],[2,0,1,-2,-1773],[2,0,0,2,-1595],[4,-1,-1,0,1215],[0,0,2,2,-1110],[3,0,-1,0,-892],[2,1,1,0,-810],[4,-1,-2,0,759],[0,2,-1,0,-713],[2,2,-1,0,-700],[2,1,-2,0,691],[2,-1,0,-2,596],[4,0,1,0,549],[0,0,4,0,537],[4,-1,0,0,520],[1,0,-2,0,-487],[2,1,0,-2,-399],[0,0,2,-2,-381],[1,1,1,0,351],[3,0,-2,0,-340],[4,0,-3,0,330],[2,-1,2,0,327],[0,2,1,0,-323],[1,1,-1,0,299],[2,0,3,0,294]];
+function moonLon(T){const T2=T*T,T3=T2*T,T4=T3*T;
+  const Lp=norm(218.3164477+481267.88123421*T-0.0015786*T2+T3/538841-T4/65194000),
+        D=norm(297.8501921+445267.1114034*T-0.0018819*T2+T3/545868-T4/113065000),
+        M=norm(357.5291092+35999.0502909*T-0.0001536*T2+T3/24490000),
+        Mp=norm(134.9633964+477198.8675055*T+0.0087414*T2+T3/69699-T4/14712000),
+        F=norm(93.2720950+483202.0175233*T-0.0036539*T2-T3/3526000+T4/863310000),
+        E=1-0.002516*T-0.0000074*T2;
+  let s=0;for(const [d,m,mp,f,c] of MOON_L){let k=c;if(m)k*=Math.abs(m)===2?E*E:E;s+=k*Math.sin((d*D+m*M+mp*Mp+f*F)*D2R);}
+  const A1=119.75+131.849*T,A2=53.09+479264.290*T;
+  s+=3958*Math.sin(A1*D2R)+1962*Math.sin((Lp-F)*D2R)+318*Math.sin(A2*D2R);
+  const O=(125.04452-1934.136261*T)*D2R;return norm(Lp+s/1e6-0.00478*Math.sin(O));}
+function gmst(jd){const T=Tof(jd);return norm(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T-T*T*T/38710000);}
+function computeHouses(jd,lat,lon){
+  const T=Tof(jd),eps=23.4392911-0.0130042*T,ramc=norm(gmst(jd)+lon),e=eps*D2R,f=lat*D2R;
+  const toLon=ra=>norm(Math.atan2(Math.sin(ra*D2R),Math.cos(ra*D2R)*Math.cos(e))*R2D);
+  const mc=toLon(ramc);
+  const asc=norm(Math.atan2(Math.cos(ramc*D2R),-(Math.sin(ramc*D2R)*Math.cos(e)+Math.tan(f)*Math.sin(e)))*R2D);
+  const cusps=new Array(12);cusps[0]=asc;cusps[9]=mc;cusps[3]=norm(mc+180);cusps[6]=norm(asc+180);
+  let system='Placidus';
+  if(Math.abs(lat)<66){
+    const tt=Math.tan(f)*Math.tan(e);
+    const solve=(fr,noc)=>{let ra=noc?ramc+180-fr*90:ramc+fr*90;
+      for(let k=0;k<40;k++){const x=Math.max(-1,Math.min(1,tt*Math.sin(ra*D2R)));
+        const arc=(noc?Math.acos(x):Math.acos(-x))*R2D;const n=noc?ramc+180-fr*arc:ramc+fr*arc;
+        if(Math.abs(n-ra)<1e-7){ra=n;break;}ra=n;}return ra;};
+    cusps[10]=toLon(solve(1/3,false));cusps[11]=toLon(solve(2/3,false));
+    cusps[1]=toLon(solve(2/3,true));cusps[2]=toLon(solve(1/3,true));
+    cusps[4]=norm(cusps[10]+180);cusps[5]=norm(cusps[11]+180);cusps[7]=norm(cusps[1]+180);cusps[8]=norm(cusps[2]+180);
+  }else{
+    system='Equal';
+    for(let i=0;i<12;i++)cusps[i]=norm(asc+i*30);
+  }
+  return {asc,mc,cusps,system};
+}
+
+/* ═══ THE LANGUAGE OF THE SKY ═════════════════════════════════ */
+const SIGNS=[
+{name:"Aries",el:"Fire",mod:"Cardinal",ruler:"Mars",keys:"ignition, courage, the first step",flavor:"quick to start, honest to a fault, alive in the moment of ignition"},
+{name:"Taurus",el:"Earth",mod:"Fixed",ruler:"Venus",keys:"steadiness, pleasure, patience",flavor:"slow, sensual, loyal to what lasts"},
+{name:"Gemini",el:"Air",mod:"Mutable",ruler:"Mercury",keys:"curiosity, exchange, doubleness",flavor:"quick-tongued, restless, fed by conversation"},
+{name:"Cancer",el:"Water",mod:"Cardinal",ruler:"the Moon",keys:"shelter, memory, tide",flavor:"protective, tidal, holding the past like a shell"},
+{name:"Leo",el:"Fire",mod:"Fixed",ruler:"the Sun",keys:"radiance, pride, play",flavor:"warm, theatrical, needing to be seen and to give"},
+{name:"Virgo",el:"Earth",mod:"Mutable",ruler:"Mercury",keys:"craft, discernment, service",flavor:"precise, useful, healed by order"},
+{name:"Libra",el:"Air",mod:"Cardinal",ruler:"Venus",keys:"balance, beauty, the other",flavor:"graceful, weighing, defined by relationship"},
+{name:"Scorpio",el:"Water",mod:"Fixed",ruler:"Mars and Pluto",keys:"depth, secrecy, transformation",flavor:"intense, private, unafraid of the underneath"},
+{name:"Sagittarius",el:"Fire",mod:"Mutable",ruler:"Jupiter",keys:"horizon, faith, the long road",flavor:"expansive, blunt, aimed at the far hill"},
+{name:"Capricorn",el:"Earth",mod:"Cardinal",ruler:"Saturn",keys:"ambition, time, mastery",flavor:"patient, dutiful, building for the long winter"},
+{name:"Aquarius",el:"Air",mod:"Fixed",ruler:"Saturn and Uranus",keys:"vision, distance, the collective",flavor:"original, cool, loyal to the future"},
+{name:"Pisces",el:"Water",mod:"Mutable",ruler:"Jupiter and Neptune",keys:"dissolution, dream, compassion",flavor:"porous, dreaming, unable to stop feeling"}];
+const SIGN_CH=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"].map(c=>c+"︎");
+const SUN_IN=[
+"You were lit at the beginning of the wheel, where nothing has been tried yet. Your centre is the spark itself — the willingness to go first, to be wrong loudly rather than right too late. Your task is to keep the fire without burning the people who came to warm their hands.",
+"Your centre is a garden with a wall. You are built for the long keeping of things — bodies, promises, afternoons. Others mistake your slowness for reluctance; it is actually loyalty to the ground. Learn when the wall is shelter and when it is only habit.",
+"You are two lights that take turns. The Gemini sun lives on exchange — the question, the answer, the better question. You are never finished learning because finishing would be a kind of silence. Let yourself land somewhere long enough to be known.",
+"Your centre is a tide, and tides are not indecisive; they are faithful to something larger. You carry home with you and offer it to strangers. What protects you can also seal you in — open the shell on purpose, now and then.",
+"You were made to be warm in public. The Leo sun is not vanity; it is the generosity of a fire that does not know how to burn quietly. Your dignity is real and so is your need to be seen — let both be true without asking the room to applaud.",
+"Your centre is a workshop. You are the one who notices the loose thread and cannot rest until it is mended — in a sentence, a body, a plan. The gift is precision; the shadow is the belief that you are only worth what you fix. You are also the finished thing.",
+"You were born at the balance point, where the year tips toward the dark. Your centre is the space between two people — you know yourself best in reflection. The work is to want something before you know what the other wants.",
+"Your centre is underground, where the roots and the treasure are. You do not do surfaces. You will lose everything at least once and be more yourself afterwards. Trust is your currency; spend it slowly, but spend it.",
+"You were aimed, not placed. The Sagittarius sun is the arrow that only feels alive in flight — toward the far hill, the next philosophy, the truth that is bigger than the room. Your honesty is a gift; wrap it sometimes.",
+"Your centre is a mountain with a long memory. You were born knowing that time is the material — that things worth having are built slowly, on cold mornings, without applause. Do not mistake endurance for the whole of life; the summit has a view.",
+"Your centre stands a little apart from the crowd it loves. You see the pattern the others are inside of, and it makes you both a prophet and a stranger. Your coolness is not coldness — it is the distance required to see. Come closer anyway.",
+"You were born at the end of the wheel, where everything dissolves back into the sea it came from. You feel the room before you enter it. The gift is compassion without borders; the practice is remembering where you end and the ocean begins."];
+const MOON_IN=[
+"Your feelings arrive fast and leave the same way — a flare, not a smoulder. You need to act on emotion, not analyse it; anger is honest weather for you. Safety means being allowed to begin.",
+"You are soothed by the reliable: the same chair, the known voice, the meal that tastes like last time. Your feelings move slowly and hold their shape. Safety is a body at rest and a promise kept.",
+"You feel by talking. The Gemini moon needs to name the feeling to have it, and often has two at once. Safety is a conversation that does not end; loneliness is a silence nobody explains.",
+"The Moon is at home here, and so are you — in the past, in the kitchen, in the memory of who held you. Your feelings are tidal and enormous. Safety is belonging; the risk is never leaving the shore.",
+"You need to be adored, and there is no shame in it. The Leo moon feels in bright colours and wants an audience for its joy. Safety is being celebrated by someone who means it.",
+"You feel through usefulness — worry is your love language, and care looks like a list. You are comforted by order and unsettled by anything left undone. Safety is knowing you helped.",
+"You are calm when the room is calm. The Libra moon needs harmony the way lungs need air, and will bend to keep it. Safety is a partner; the lesson is that peace made by disappearing is not peace.",
+"Your feelings go all the way down, and you do not show the depth to anyone who has not earned the dive. You need intensity, loyalty, and the truth even when it hurts. Safety is a secret kept.",
+"You feel best in motion. The Sagittarius moon needs room — a horizon, a plan to leave, a bigger meaning for the small sorrow. Safety is freedom; confinement is the only real grief.",
+"You learned early to carry your own weather. The Capricorn moon needs to be competent to feel safe, and finds tenderness embarrassing until it doesn't. Safety is a structure that holds; let someone else hold it sometimes.",
+"You feel from a slight distance, as if watching your own weather from a hill. You need friendship more than romance, ideas more than reassurance. Safety is being understood without being crowded.",
+"You have no skin between you and the room. The Pisces moon absorbs — moods, music, other people's rain. You need solitude to wring yourself out and art to explain what you felt. Safety is a place to dissolve on purpose."];
+const RISING_IN=[
+"You arrive before you are announced. The Aries ascendant leads with the forehead — direct, quick, faintly impatient with doors. People read you as brave, sometimes before you are.",
+"You enter the room slowly and it settles around you. The Taurus ascendant wears calm like good cloth — people trust your steadiness before you have said a word.",
+"You arrive already talking. The Gemini ascendant is quick, curious, youthful past its years — people read you as clever and slightly elsewhere.",
+"You enter sideways, feeling the temperature first. The Cancer ascendant is soft-armoured; people sense a home in you and sometimes forget to knock.",
+"You arrive like weather. The Leo ascendant carries its own light — people read you as warm, proud, and impossible to overlook, whether or not you meant to be.",
+"You enter having already noticed everything. The Virgo ascendant is modest, exact, quietly useful — people read you as capable and a little reserved.",
+"You arrive with grace and an eye for the room's symmetry. The Libra ascendant charms without trying — people read you as fair, pleasant, and harder to know than you seem.",
+"You enter, and the room feels watched. The Scorpio ascendant is magnetic and guarded — people read you as intense, and they are not wrong about the depth.",
+"You arrive mid-story, laughing. The Sagittarius ascendant is open, frank, faintly foreign wherever it is — people read you as free.",
+"You enter as if already responsible for the building. The Capricorn ascendant is composed, dry, older when young and younger when old — people read you as serious, then are surprised by the wit.",
+"You arrive from slightly outside the century. The Aquarius ascendant is cool, original, friendly at a distance — people read you as unusual before they read you as kind.",
+"You enter like fog, and everyone relaxes without knowing why. The Pisces ascendant is gentle, permeable, hard to pin — people read you as dreamy and confide in you anyway."];
+const PLANETS=[
+{key:'sun',name:"Sun",ch:"☉",domain:"your will and the light you steer by"},
+{key:'moon',name:"Moon",ch:"☽",domain:"what you need in order to feel safe"},
+{key:'mercury',name:"Mercury",ch:"☿",domain:"how you think and speak"},
+{key:'venus',name:"Venus",ch:"♀",domain:"what you love and how you draw it near"},
+{key:'mars',name:"Mars",ch:"♂",domain:"how you want, fight and pursue"},
+{key:'jupiter',name:"Jupiter",ch:"♃",domain:"where you are lucky and where you overreach"},
+{key:'saturn',name:"Saturn",ch:"♄",domain:"where you are tested and, in time, mastered"},
+{key:'uranus',name:"Uranus",ch:"♅",domain:"where you break the pattern",gen:true},
+{key:'neptune',name:"Neptune",ch:"♆",domain:"where you dream and dissolve",gen:true},
+{key:'pluto',name:"Pluto",ch:"♇",domain:"where you are unmade and remade",gen:true}];
+const HOUSES=["self and the body","money and worth","words, siblings, the near world","home and root","play, art and children",
+  "work, health and service","partnership and the mirror","shared depths, endings and rebirth","the far horizon, belief and travel",
+  "vocation and the public name","friends, hopes and the collective","solitude, the hidden and the sea"];
+const ASPECTS=[
+{name:"conjunction",ch:"☌",angle:0,orb:8,verb:"fused with"},
+{name:"opposition",ch:"☍",angle:180,orb:8,verb:"facing across the wheel"},
+{name:"trine",ch:"△",angle:120,orb:7,verb:"flowing easily with"},
+{name:"square",ch:"□",angle:90,orb:7,verb:"in building friction with"},
+{name:"sextile",ch:"⚹",angle:60,orb:5,verb:"in quiet cooperation with"}];
+const ELEMENT_DOM={Fire:"your sky burns — you move by impulse and faith",Earth:"your sky is grounded — you move by substance and patience",
+  Air:"your sky is windy — you move by thought and exchange",Water:"your sky is oceanic — you move by feeling and memory"};
+const ELEMENT_LACK={Fire:"courage must be borrowed or grown deliberately",Earth:"the body and the budget will need practising",
+  Air:"you know before you can explain, and that is allowed",Water:"feeling arrives late, and through the side door"};
+
+const signOf=l=>Math.floor(norm(l)/30);
+function degStr(l){const d=norm(l)%30;const dd=Math.floor(d),mm=Math.floor((d-dd)*60);return `${dd}°${String(mm).padStart(2,'0')}′`;}
+function houseOf(l,cusps){for(let i=0;i<12;i++){const a=cusps[i],b=cusps[(i+1)%12];const span=norm(b-a),off=norm(l-a);if(off<span)return i+1;}return 12;}
+const RN=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+
+function computeChart(utcMs,lat,lon,hasTime){
+  const jd=jdOf(utcMs),T=Tof(jd),Tn=T+1/36525;
+  const bodies=PLANETS.map((p,i)=>{
+    let lon,retro=false;
+    if(p.key==='sun')lon=sunLon(T);
+    else if(p.key==='moon')lon=moonLon(T);
+    else{lon=planetLon(p.key,T);const next=planetLon(p.key,Tn);retro=norm(next-lon)>180;}
+    return {...p,i,lon,sign:signOf(lon),retro};
   });
-  pushTargets(scatterTargets());
-  setLens(true);
-  /* back to the choice, so the next reading can be for anyone */
-  document.getElementById('introMain').style.display='flex';
-  const r=document.getElementById('ritual');
-  r.classList.remove('on');
-  document.getElementById('dealBtn2').classList.remove('ready');
-  setTimeout(()=>document.getElementById('intro').classList.remove('gone'),600);
-};
-document.querySelectorAll('.slot').forEach(s=>{
-  s.onclick=()=>{if(spread.length)show(+s.dataset.i)};
+  const houses=hasTime?computeHouses(jd,lat,lon):null;
+  if(houses)bodies.forEach(b=>b.house=houseOf(b.lon,houses.cusps));
+  const aspects=[];
+  for(let i=0;i<bodies.length;i++)for(let j=i+1;j<bodies.length;j++){
+    let d=Math.abs(norm(bodies[i].lon-bodies[j].lon));if(d>180)d=360-d;
+    for(const a of ASPECTS){const orb=a.orb+((i<2||j<2)?2:0);const off=Math.abs(d-a.angle);
+      if(off<=orb){aspects.push({a:bodies[i],b:bodies[j],asp:a,off});break;}}
+  }
+  aspects.sort((x,y)=>x.off-y.off);
+  const els={Fire:0,Earth:0,Air:0,Water:0},mods={Cardinal:0,Fixed:0,Mutable:0};
+  bodies.forEach(b=>{els[SIGNS[b.sign].el]++;mods[SIGNS[b.sign].mod]++;});
+  return {jd,bodies,houses,aspects,els,mods,hasTime};
+}
+
+/* ═══ THE WHEEL — drawn, then sampled into stars ══════════════ */
+function drawWheel(ctx,S,ch){
+  const c=S/2, R1=S*.475, R2=S*.395, Rp=S*.335, Rp2=S*.285, Ra=S*.235;
+  const asc=ch.houses?ch.houses.asc:0;
+  const pos=(l,r)=>{const a=Math.PI+(l-asc)*D2R;return [c+r*Math.cos(a),c-r*Math.sin(a)];};
+  const line=(p,q)=>{ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();};
+  ctx.lineCap='round';
+  /* rings */
+  ctx.lineWidth=S*.013;
+  for(const r of [R1,R2]){ctx.beginPath();ctx.arc(c,c,r,0,7);ctx.stroke();}
+  ctx.lineWidth=S*.007;ctx.beginPath();ctx.arc(c,c,Ra,0,7);ctx.stroke();
+  /* zodiac band: sign divisions, glyphs, 10° ticks */
+  ctx.lineWidth=S*.010;
+  for(let i=0;i<12;i++){line(pos(i*30,R2),pos(i*30,R1));glyphSign(ctx,i,...pos(i*30+15,(R1+R2)/2),S*.024,S*.017);}
+  ctx.lineWidth=S*.006;
+  for(let d=0;d<360;d+=10)if(d%30)line(pos(d,R2),pos(d,R2+S*.012));
+  /* houses */
+  if(ch.houses){
+    const H=ch.houses;
+    ctx.lineWidth=S*.007;
+    for(let i=0;i<12;i++)if(i%3)line(pos(H.cusps[i],Ra),pos(H.cusps[i],R2));
+    ctx.lineWidth=S*.016;
+    line(pos(H.asc,S*.03),pos(H.asc,R2));line(pos(H.asc+180,S*.03),pos(H.asc+180,R2));
+    line(pos(H.mc,S*.03),pos(H.mc,R2));line(pos(H.mc+180,S*.03),pos(H.mc+180,R2));
+    ctx.font=`500 ${S*.03}px Jost, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    const la=pos(H.asc+7,Ra-S*.05),lm=pos(H.mc-7,Ra-S*.05);
+    ctx.fillText('AC',la[0],la[1]);ctx.fillText('MC',lm[0],lm[1]);
+  }
+  /* planets — neighbours closer than 7° alternate radius */
+  const sorted=ch.bodies.slice().sort((a,b)=>a.lon-b.lon);
+  let prev=-99,inner=false;
+  ctx.lineWidth=S*.008;
+  for(const b of sorted){
+    inner=(b.lon-prev<7)?!inner:false;prev=b.lon;
+    line(pos(b.lon,R2),pos(b.lon,R2-S*.02));
+    glyphPlanet(ctx,b.i,...pos(b.lon,inner?Rp2:Rp),S*.024,S*.018);
+  }
+  /* aspects */
+  ctx.lineWidth=S*.005;
+  for(const x of ch.aspects)line(pos(x.a.lon,Ra),pos(x.b.lon,Ra));
+}
+/* a single sign, as a seal: ring + planet glyph at the crown + big sign glyph */
+function drawSeal(ctx,S,signIdx,planetIdx){
+  const c=S/2;
+  ctx.lineWidth=S*.014;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(c,c,S*.44,Math.PI*1.5+.28,Math.PI*1.5-.28+Math.PI*2);ctx.stroke();
+  glyphPlanet(ctx,planetIdx,c,c-S*.44,S*.05,S*.03);
+  glyphSign(ctx,signIdx,c,c+S*.02,S*.27,S*.05);
+}
+function drawRisingSeal(ctx,S,signIdx){
+  const c=S/2;
+  ctx.lineWidth=S*.014;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(c,c,S*.44,Math.PI+.25,Math.PI-.25+Math.PI*2);ctx.stroke();
+  /* horizon mark at the left of the ring */
+  ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c-S*.36,c);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(c-S*.43,c-S*.06);ctx.lineTo(c-S*.36,c);ctx.lineTo(c-S*.43,c+S*.06);ctx.stroke();
+  glyphSign(ctx,signIdx,c+S*.02,c+S*.02,S*.27,S*.05);
+}
+
+/* ═══ PLACES & TIME ═══════════════════════════════════════════ */
+const CITIES=[
+["Lisbon","Portugal",38.72,-9.14,"Europe/Lisbon"],["Porto","Portugal",41.15,-8.61,"Europe/Lisbon"],["Braga","Portugal",41.55,-8.42,"Europe/Lisbon"],["Coimbra","Portugal",40.21,-8.43,"Europe/Lisbon"],["Faro","Portugal",37.02,-7.93,"Europe/Lisbon"],["Aveiro","Portugal",40.64,-8.65,"Europe/Lisbon"],["Setúbal","Portugal",38.52,-8.89,"Europe/Lisbon"],["Évora","Portugal",38.57,-7.91,"Europe/Lisbon"],["Viseu","Portugal",40.66,-7.91,"Europe/Lisbon"],["Leiria","Portugal",39.74,-8.81,"Europe/Lisbon"],["Guimarães","Portugal",41.44,-8.29,"Europe/Lisbon"],["Vila Real","Portugal",41.30,-7.74,"Europe/Lisbon"],["Bragança","Portugal",41.81,-6.76,"Europe/Lisbon"],["Funchal","Madeira",32.65,-16.91,"Atlantic/Madeira"],["Ponta Delgada","Azores",37.74,-25.67,"Atlantic/Azores"],
+["Madrid","Spain",40.42,-3.70,"Europe/Madrid"],["Barcelona","Spain",41.39,2.17,"Europe/Madrid"],["Valencia","Spain",39.47,-0.38,"Europe/Madrid"],["Seville","Spain",37.39,-5.99,"Europe/Madrid"],["Bilbao","Spain",43.26,-2.93,"Europe/Madrid"],["Málaga","Spain",36.72,-4.42,"Europe/Madrid"],["Las Palmas","Canary Islands",28.12,-15.43,"Atlantic/Canary"],
+["Paris","France",48.86,2.35,"Europe/Paris"],["Lyon","France",45.76,4.84,"Europe/Paris"],["Marseille","France",43.30,5.37,"Europe/Paris"],["Toulouse","France",43.60,1.44,"Europe/Paris"],["Bordeaux","France",44.84,-0.58,"Europe/Paris"],["Nice","France",43.71,7.26,"Europe/Paris"],
+["London","United Kingdom",51.51,-0.13,"Europe/London"],["Manchester","United Kingdom",53.48,-2.24,"Europe/London"],["Edinburgh","United Kingdom",55.95,-3.19,"Europe/London"],["Glasgow","United Kingdom",55.86,-4.25,"Europe/London"],["Birmingham","United Kingdom",52.49,-1.89,"Europe/London"],["Dublin","Ireland",53.35,-6.26,"Europe/Dublin"],["Belfast","Northern Ireland",54.60,-5.93,"Europe/London"],
+["Berlin","Germany",52.52,13.40,"Europe/Berlin"],["Munich","Germany",48.14,11.58,"Europe/Berlin"],["Hamburg","Germany",53.55,9.99,"Europe/Berlin"],["Frankfurt","Germany",50.11,8.68,"Europe/Berlin"],["Cologne","Germany",50.94,6.96,"Europe/Berlin"],
+["Amsterdam","Netherlands",52.37,4.90,"Europe/Amsterdam"],["Rotterdam","Netherlands",51.92,4.48,"Europe/Amsterdam"],["Brussels","Belgium",50.85,4.35,"Europe/Brussels"],["Luxembourg","Luxembourg",49.61,6.13,"Europe/Luxembourg"],["Zurich","Switzerland",47.38,8.54,"Europe/Zurich"],["Geneva","Switzerland",46.20,6.14,"Europe/Zurich"],["Vienna","Austria",48.21,16.37,"Europe/Vienna"],["Prague","Czechia",50.08,14.44,"Europe/Prague"],["Warsaw","Poland",52.23,21.01,"Europe/Warsaw"],["Kraków","Poland",50.06,19.94,"Europe/Warsaw"],["Budapest","Hungary",47.50,19.04,"Europe/Budapest"],
+["Rome","Italy",41.90,12.50,"Europe/Rome"],["Milan","Italy",45.46,9.19,"Europe/Rome"],["Naples","Italy",40.85,14.27,"Europe/Rome"],["Turin","Italy",45.07,7.69,"Europe/Rome"],["Florence","Italy",43.77,11.26,"Europe/Rome"],["Venice","Italy",45.44,12.32,"Europe/Rome"],
+["Athens","Greece",37.98,23.73,"Europe/Athens"],["Thessaloniki","Greece",40.64,22.94,"Europe/Athens"],["Istanbul","Türkiye",41.01,28.98,"Europe/Istanbul"],["Ankara","Türkiye",39.93,32.86,"Europe/Istanbul"],
+["Copenhagen","Denmark",55.68,12.57,"Europe/Copenhagen"],["Stockholm","Sweden",59.33,18.07,"Europe/Stockholm"],["Gothenburg","Sweden",57.71,11.97,"Europe/Stockholm"],["Oslo","Norway",59.91,10.75,"Europe/Oslo"],["Helsinki","Finland",60.17,24.94,"Europe/Helsinki"],["Reykjavík","Iceland",64.15,-21.94,"Atlantic/Reykjavik"],
+["Moscow","Russia",55.76,37.62,"Europe/Moscow"],["Saint Petersburg","Russia",59.93,30.34,"Europe/Moscow"],["Kyiv","Ukraine",50.45,30.52,"Europe/Kyiv"],["Bucharest","Romania",44.43,26.10,"Europe/Bucharest"],["Sofia","Bulgaria",42.70,23.32,"Europe/Sofia"],["Belgrade","Serbia",44.79,20.45,"Europe/Belgrade"],["Zagreb","Croatia",45.81,15.98,"Europe/Zagreb"],["Ljubljana","Slovenia",46.06,14.51,"Europe/Ljubljana"],["Bratislava","Slovakia",48.15,17.11,"Europe/Bratislava"],["Vilnius","Lithuania",54.69,25.28,"Europe/Vilnius"],["Riga","Latvia",56.95,24.11,"Europe/Riga"],["Tallinn","Estonia",59.44,24.75,"Europe/Tallinn"],
+["New York","United States",40.71,-74.01,"America/New_York"],["Boston","United States",42.36,-71.06,"America/New_York"],["Philadelphia","United States",39.95,-75.17,"America/New_York"],["Washington","United States",38.91,-77.04,"America/New_York"],["Miami","United States",25.76,-80.19,"America/New_York"],["Atlanta","United States",33.75,-84.39,"America/New_York"],["Newark","United States",40.74,-74.17,"America/New_York"],["Chicago","United States",41.88,-87.63,"America/Chicago"],["Houston","United States",29.76,-95.37,"America/Chicago"],["Dallas","United States",32.78,-96.80,"America/Chicago"],["Denver","United States",39.74,-104.99,"America/Denver"],["Phoenix","United States",33.45,-112.07,"America/Phoenix"],["Los Angeles","United States",34.05,-118.24,"America/Los_Angeles"],["San Francisco","United States",37.77,-122.42,"America/Los_Angeles"],["Seattle","United States",47.61,-122.33,"America/Los_Angeles"],["Las Vegas","United States",36.17,-115.14,"America/Los_Angeles"],["Honolulu","United States",21.31,-157.86,"Pacific/Honolulu"],["Anchorage","United States",61.22,-149.90,"America/Anchorage"],
+["Toronto","Canada",43.65,-79.38,"America/Toronto"],["Montreal","Canada",45.50,-73.57,"America/Toronto"],["Vancouver","Canada",49.28,-123.12,"America/Vancouver"],
+["Mexico City","Mexico",19.43,-99.13,"America/Mexico_City"],["Guadalajara","Mexico",20.67,-103.35,"America/Mexico_City"],["Havana","Cuba",23.11,-82.37,"America/Havana"],["Bogotá","Colombia",4.71,-74.07,"America/Bogota"],["Lima","Peru",-12.05,-77.04,"America/Lima"],["Quito","Ecuador",-0.18,-78.47,"America/Guayaquil"],["Caracas","Venezuela",10.48,-66.90,"America/Caracas"],["Santiago","Chile",-33.45,-70.67,"America/Santiago"],["Buenos Aires","Argentina",-34.60,-58.38,"America/Argentina/Buenos_Aires"],["Montevideo","Uruguay",-34.90,-56.16,"America/Montevideo"],
+["São Paulo","Brazil",-23.55,-46.63,"America/Sao_Paulo"],["Rio de Janeiro","Brazil",-22.91,-43.17,"America/Sao_Paulo"],["Brasília","Brazil",-15.79,-47.88,"America/Sao_Paulo"],["Belo Horizonte","Brazil",-19.92,-43.94,"America/Sao_Paulo"],["Porto Alegre","Brazil",-30.03,-51.23,"America/Sao_Paulo"],["Curitiba","Brazil",-25.43,-49.27,"America/Sao_Paulo"],["Salvador","Brazil",-12.97,-38.51,"America/Bahia"],["Recife","Brazil",-8.05,-34.88,"America/Recife"],["Fortaleza","Brazil",-3.72,-38.54,"America/Fortaleza"],["Manaus","Brazil",-3.12,-60.02,"America/Manaus"],
+["Luanda","Angola",-8.84,13.23,"Africa/Luanda"],["Maputo","Mozambique",-25.97,32.57,"Africa/Maputo"],["Praia","Cabo Verde",14.93,-23.51,"Atlantic/Cape_Verde"],["Bissau","Guinea-Bissau",11.86,-15.60,"Africa/Bissau"],["São Tomé","São Tomé and Príncipe",0.34,6.73,"Africa/Sao_Tome"],["Casablanca","Morocco",33.57,-7.59,"Africa/Casablanca"],["Cairo","Egypt",30.04,31.24,"Africa/Cairo"],["Lagos","Nigeria",6.52,3.38,"Africa/Lagos"],["Nairobi","Kenya",-1.29,36.82,"Africa/Nairobi"],["Johannesburg","South Africa",-26.20,28.05,"Africa/Johannesburg"],["Cape Town","South Africa",-33.92,18.42,"Africa/Johannesburg"],["Accra","Ghana",5.60,-0.19,"Africa/Accra"],["Addis Ababa","Ethiopia",9.03,38.74,"Africa/Addis_Ababa"],["Dakar","Senegal",14.72,-17.47,"Africa/Dakar"],["Algiers","Algeria",36.75,3.06,"Africa/Algiers"],["Tunis","Tunisia",36.81,10.18,"Africa/Tunis"],
+["Dubai","United Arab Emirates",25.20,55.27,"Asia/Dubai"],["Tel Aviv","Israel",32.09,34.78,"Asia/Jerusalem"],["Tehran","Iran",35.69,51.39,"Asia/Tehran"],["Mumbai","India",19.08,72.88,"Asia/Kolkata"],["Delhi","India",28.61,77.21,"Asia/Kolkata"],["Bangalore","India",12.97,77.59,"Asia/Kolkata"],["Panaji (Goa)","India",15.49,73.83,"Asia/Kolkata"],["Karachi","Pakistan",24.86,67.01,"Asia/Karachi"],["Dhaka","Bangladesh",23.81,90.41,"Asia/Dhaka"],["Bangkok","Thailand",13.76,100.50,"Asia/Bangkok"],["Singapore","Singapore",1.35,103.82,"Asia/Singapore"],["Kuala Lumpur","Malaysia",3.14,101.69,"Asia/Kuala_Lumpur"],["Jakarta","Indonesia",-6.21,106.85,"Asia/Jakarta"],["Manila","Philippines",14.60,120.98,"Asia/Manila"],["Hong Kong","Hong Kong",22.32,114.17,"Asia/Hong_Kong"],["Macau","Macau",22.20,113.54,"Asia/Macau"],["Shanghai","China",31.23,121.47,"Asia/Shanghai"],["Beijing","China",39.90,116.41,"Asia/Shanghai"],["Taipei","Taiwan",25.03,121.57,"Asia/Taipei"],["Seoul","South Korea",37.57,126.98,"Asia/Seoul"],["Tokyo","Japan",35.68,139.69,"Asia/Tokyo"],["Osaka","Japan",34.69,135.50,"Asia/Tokyo"],["Dili","Timor-Leste",-8.56,125.58,"Asia/Dili"],
+["Sydney","Australia",-33.87,151.21,"Australia/Sydney"],["Melbourne","Australia",-37.81,144.96,"Australia/Melbourne"],["Brisbane","Australia",-27.47,153.03,"Australia/Brisbane"],["Perth","Australia",-31.95,115.86,"Australia/Perth"],["Auckland","New Zealand",-36.85,174.76,"Pacific/Auckland"]
+].map(([name,country,lat,lon,tz])=>({name,country,lat,lon,tz}));
+
+const fold=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+let pickedCity=null;
+const cityIn=$('aCity'),cityList=$('cityList');
+function renderCityList(){
+  const q=fold(cityIn.value.trim());
+  if(q.length<2){cityList.classList.remove('on');return;}
+  const hits=CITIES.filter(c=>fold(c.name).includes(q)||fold(c.country).includes(q)).slice(0,6);
+  cityList.innerHTML=hits.map((c,i)=>`<div data-i="${CITIES.indexOf(c)}" class="${i?'':'sel'}">${c.name}<span>${c.country}</span></div>`).join('');
+  cityList.classList.toggle('on',hits.length>0);
+}
+function pickCity(c){pickedCity=c;cityIn.value=`${c.name}, ${c.country}`;cityList.classList.remove('on');}
+cityIn.addEventListener('input',()=>{pickedCity=null;renderCityList();});
+cityIn.addEventListener('focus',()=>{if(!pickedCity)renderCityList();});
+cityIn.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){const sel=cityList.querySelector('.sel');if(sel&&cityList.classList.contains('on')){e.preventDefault();pickCity(CITIES[+sel.dataset.i]);}}
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){const items=[...cityList.children];const k=items.findIndex(x=>x.classList.contains('sel'));
+    if(items.length){e.preventDefault();items.forEach(x=>x.classList.remove('sel'));items[(k+(e.key==='ArrowDown'?1:items.length-1))%items.length].classList.add('sel');}}
 });
+cityList.addEventListener('mousedown',e=>{const d=e.target.closest('[data-i]');if(d){e.preventDefault();pickCity(CITIES[+d.dataset.i]);}});
+cityIn.addEventListener('blur',()=>setTimeout(()=>cityList.classList.remove('on'),150));
+
+/* time zones for the manual path */
+(function(){
+  let zones=[];
+  try{zones=Intl.supportedValuesOf('timeZone');}catch(e){}
+  if(!zones.length)zones=[...new Set(CITIES.map(c=>c.tz))].sort();
+  $('aTz').innerHTML=zones.map(z=>`<option value="${z}">${z.replace(/_/g,' ')}</option>`).join('');
+  try{$('aTz').value=Intl.DateTimeFormat().resolvedOptions().timeZone;}catch(e){}
+})();
+$('aManual').onchange=e=>$('coords').classList.toggle('on',e.target.checked);
+$('aNoTime').onchange=e=>{$('aHour').disabled=$('aMin').disabled=e.target.checked;};
+
+/* local civil time in a zone → UTC ms (handles DST and history via Intl) */
+function tzOffsetMin(tz,utcMs){
+  const dtf=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const p={};dtf.formatToParts(new Date(utcMs)).forEach(x=>p[x.type]=x.value);
+  return (Date.UTC(+p.year,+p.month-1,+p.day,+p.hour%24,+p.minute,+p.second)-utcMs)/60000;
+}
+function localToUTC(y,m,d,h,mi,tz){
+  const guess=Date.UTC(y,m-1,d,h,mi);
+  let utc=guess-tzOffsetMin(tz,guess)*60000;
+  utc=guess-tzOffsetMin(tz,utc)*60000;
+  return utc;
+}
+
+/* ═══ ASTRAL MAP — the reading ════════════════════════════════ */
+let chart=null, chartMeta=null;
+$('astroForm').onsubmit=e=>{
+  e.preventDefault();
+  const err=$('astroErr');err.textContent='';
+  const date=readDate('a',err);if(!date)return;
+  const noTime=$('aNoTime').checked;
+  let h=+$('aHour').value, mi=+$('aMin').value;
+  if(!noTime&&($('aHour').value===''||h<0||h>23||mi<0||mi>59)){err.textContent='Give the hour (0–23) and minute, or tick "I don\'t know the hour".';return;}
+  if(noTime){h=12;mi=0;}
+  let place;
+  if($('aManual').checked){
+    const lat=parseFloat($('aLat').value),lon=parseFloat($('aLon').value);
+    if(isNaN(lat)||isNaN(lon)||Math.abs(lat)>89.9||Math.abs(lon)>180){err.textContent='Latitude −90…90, longitude −180…180 (east positive).';return;}
+    place={name:`${Math.abs(lat).toFixed(2)}°${lat<0?'S':'N'} ${Math.abs(lon).toFixed(2)}°${lon<0?'W':'E'}`,country:'',lat,lon,tz:$('aTz').value};
+  }else{
+    if(!pickedCity){err.textContent='Choose a birthplace from the list, or enter coordinates.';return;}
+    place=pickedCity;
+  }
+  let utc;
+  try{utc=localToUTC(date.y,date.m,date.d,h,mi,place.tz);}catch(ex){err.textContent='That time zone is unknown to this browser.';return;}
+  chart=computeChart(utc,place.lat,place.lon,!noTime);
+  chartMeta={date,h,mi,noTime,place};
+  openChart();
+};
+
+const ASTRO_SLOTS=[{label:'Sky',face:'✶',big:true},{label:'Sun',face:'☉',big:true},{label:'Moon',face:'☽',big:true},{label:'Rising',face:'↑',big:true}];
+function openChart(){
+  mode='astro';
+  beginReading();
+  setSlots(ASTRO_SLOTS,k=>showAstro(k));
+  revealSlots(380);
+  setTimeout(()=>showAstro(0),1000);
+  setTimeout(()=>{
+    const s=SIGNS[chart.bodies[0].sign].name,m=SIGNS[chart.bodies[1].sign].name;
+    const r=chart.houses?`<b>${SIGNS[signOf(chart.houses.asc)].name}</b> on the horizon.`:`the horizon unread.`;
+    showSynth(`The thread of this sky: <b>${s}</b> at the centre, <b>${m}</b> in the tide, ${r}`);
+  },2600);
+}
+function bornLine(){
+  const {date,h,mi,noTime,place}=chartMeta;
+  return `${date.d} ${MONTHS[date.m-1].slice(0,3).toUpperCase()} ${date.y}`+(noTime?' · HOUR UNKNOWN':` · ${String(h).padStart(2,'0')}:${String(mi).padStart(2,'0')}`);
+}
+function placeLine(){const p=chartMeta.place;return p.country?`${p.name}, ${p.country}`.toUpperCase():p.name;}
+function houseLine(b){return chart.houses?` It stands in the ${RN[b.house-1]} house — the house of ${HOUSES[b.house-1]}.`:'';}
+
+function showAstro(k){
+  if(view===k)return;
+  view=k;
+  markSlot(k);
+  const sun=chart.bodies[0],moon=chart.bodies[1];
+  $('counter').textContent=`☉ ${SIGNS[sun.sign].name.toUpperCase()}`;
+  if(k===1){
+    const s=SIGNS[sun.sign];
+    morphTo({fn:(ctx,S)=>drawSeal(ctx,S,sun.sign,0),fill:{desk:.66,mobile:.3}});
+    setPanel({pos:'Exhibit — The Sun',name:`Sun in ${s.name}`,
+      meta:[['DEGREE',`${degStr(sun.lon)} ${s.name.toUpperCase()}`],['HOUSE',chart.houses?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:'HOUR NEEDED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
+      prose:`<em>The centre; your will and the light you steer by.</em> ${SUN_IN[sun.sign]}${houseLine(sun)}`});
+  }else if(k===2){
+    const s=SIGNS[moon.sign];
+    morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
+    setPanel({pos:'Exhibit — The Moon',name:`Moon in ${s.name}`,
+      meta:[['DEGREE',`${degStr(moon.lon)} ${s.name.toUpperCase()}`],['HOUSE',chart.houses?`${RN[moon.house-1]} — ${HOUSES[moon.house-1].toUpperCase()}`:'HOUR NEEDED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
+      prose:`<em>The tide; what you need in order to feel safe.</em> ${MOON_IN[moon.sign]}${houseLine(moon)}`+
+        (chart.hasTime?'':`<span class="rev">Without an hour the Moon is placed at noon — she moves half a degree an hour, so she may sit a few degrees to either side.</span>`)});
+  }else if(k===3){
+    if(chart.houses){
+      const a=signOf(chart.houses.asc),m=signOf(chart.houses.mc),s=SIGNS[a];
+      const ruler=chart.bodies.find(b=>s.ruler.toLowerCase().includes(b.name.toLowerCase()));
+      morphTo({fn:(ctx,S)=>drawRisingSeal(ctx,S,a),fill:{desk:.66,mobile:.3}});
+      setPanel({pos:'Exhibit — The Horizon',name:`${s.name} rising`,
+        meta:[['ASCENDANT',`${degStr(chart.houses.asc)} ${s.name.toUpperCase()}`],['MIDHEAVEN',`${degStr(chart.houses.mc)} ${SIGNS[m].name.toUpperCase()}`],['RULED BY',s.ruler.replace('the ','').toUpperCase()]],
+        prose:`<em>The door; how you arrive, and what the world meets first.</em> ${RISING_IN[a]}`+
+          (ruler?`<span class="line">The ruler of your horizon, <b>${ruler.name}</b>, sits in <b>${SIGNS[ruler.sign].name}</b> in the ${RN[ruler.house-1]} house — the door opens onto ${HOUSES[ruler.house-1]}.</span>`:'')+
+          `<span class="line">Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.</span>`});
+    }else{
+      morphTo({fn:(ctx,S)=>{const c=S/2;ctx.lineWidth=S*.014;ctx.setLineDash([S*.03,S*.05]);ctx.beginPath();ctx.arc(c,c,S*.44,0,7);ctx.stroke();ctx.setLineDash([]);
+        ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c+S*.5,c);ctx.stroke();},fill:{desk:.66,mobile:.3}});
+      setPanel({pos:'Exhibit — The Horizon',name:'The horizon is unread',
+        meta:[['ASCENDANT','HOUR NEEDED'],['MIDHEAVEN','HOUR NEEDED'],['HOUSES','NOT CAST']],
+        prose:`<em>The rising sign turns a full circle every day.</em> Without the hour of birth the observatory cannot say which sign was climbing over the eastern edge of the world when you arrived, nor place the planets in their houses. The planets themselves are true to the day. If you learn the hour — a birth certificate, a parent's memory — return, and the wheel will complete.`});
+    }
+  }else{
+    morphTo({fn:(ctx,S)=>drawWheel(ctx,S,chart),fill:{desk:.74,mobile:.3}});
+    const H=chart.houses;
+    const rows=chart.bodies.map(b=>`<tr><td class="g">${b.ch}</td><td>${b.name}${b.retro?'<span class="rx">℞</span>':''}</td><td class="s">${SIGNS[b.sign].name}</td><td class="r">${degStr(b.lon)}</td><td class="r">${H?RN[b.house-1]:'—'}</td></tr>`).join('');
+    const houseRows=H?H.cusps.map((c,i)=>`<tr><td class="s">${RN[i]}</td><td class="g">${SIGN_CH[signOf(c)]}</td><td>${SIGNS[signOf(c)].name}</td><td class="r">${degStr(c)}</td></tr>`).join(''):'';
+    const aspRows=chart.aspects.slice(0,14).map(x=>`<tr><td class="g">${x.a.ch}</td><td>${x.a.name}</td><td class="g">${x.asp.ch}</td><td class="g">${x.b.ch}</td><td>${x.b.name}</td><td class="s">${x.asp.name}</td><td class="r">${x.off.toFixed(1)}°</td></tr>`).join('');
+    const E=chart.els;const domEl=Object.keys(E).sort((a,b)=>E[b]-E[a])[0];const lack=Object.keys(E).filter(k=>!E[k]);
+    const Mm=chart.mods;const domMod=Object.keys(Mm).sort((a,b)=>Mm[b]-Mm[a])[0];
+    const readings=chart.bodies.map(b=>`<span class="line"><b>${b.ch} ${b.name} in ${SIGNS[b.sign].name}</b>${H?`, ${RN[b.house-1]} house`:''} — ${b.domain}, worn ${SIGNS[b.sign].flavor}.${b.retro?' Retrograde: turned inward, revisited, learned twice.':''}</span>`).join('');
+    setPanel({pos:'Exhibit — The Whole Sky',name:'Your natal wheel',
+      meta:[['BORN',bornLine()],['PLACE',placeLine()],['HOUSES',H?H.system.toUpperCase():'HOUR NEEDED']],
+      prose:`<em>The sky as it stood over ${chartMeta.place.name} — ${SIGNS[sun.sign].name} at the centre, ${SIGNS[moon.sign].name} in the tide${H?`, ${SIGNS[signOf(H.asc)].name} on the horizon`:''}.</em>
+        <div class="sub">Planets</div><table class="tbl">${rows}</table>
+        ${H?`<div class="sub">Houses · ${H.system}</div><table class="tbl">${houseRows}</table>`:''}
+        <div class="sub">Aspects</div>${aspRows?`<table class="tbl">${aspRows}</table>`:'<span class="line">A quiet sky — no major aspects within orb.</span>'}
+        <div class="sub">Balance</div>
+        <span class="line">Fire ${E.Fire} · Earth ${E.Earth} · Air ${E.Air} · Water ${E.Water} — ${ELEMENT_DOM[domEl]}.${lack.length?` There is no ${lack.join(' and no ')} in your sky: ${lack.map(l=>ELEMENT_LACK[l]).join('; ')}.`:''}</span>
+        <span class="line">${domMod} leads (${Mm.Cardinal} cardinal · ${Mm.Fixed} fixed · ${Mm.Mutable} mutable) — ${domMod==='Cardinal'?'you begin things':domMod==='Fixed'?'you keep things':'you change things'}.</span>
+        <div class="sub">Readings</div>${readings}
+        <span class="line" style="font-size:13px;color:var(--mist)">Positions computed in the browser from Keplerian elements and the principal lunar terms — good to a fraction of a degree. Planets within a degree of a cusp may be argued over by better instruments.</span>`});
+  }
+}
+
+/* ═══ NUMEROLOGY ══════════════════════════════════════════════ */
+const PYTH={a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8};
+const NUMBERS={
+1:{title:"The Pioneer",keys:"beginning, independence, drive",prose:"You were sent to begin things. One is the line drawn on the blank page — independence, initiative, the loneliness and glory of going first. Your work is leadership without domination; your shadow is the belief that needing anyone is weakness."},
+2:{title:"The Diplomat",keys:"partnership, sensitivity, balance",prose:"Two is the first relationship — the mirror, the pair, the pause before the answer. You are built for partnership, tact and the patient weaving of people together. Your shadow is disappearing to keep the peace."},
+3:{title:"The Voice",keys:"expression, creativity, joy",prose:"Three is the triangle, the first shape that stands — creation, expression, the joy of making something out of two things that met. You are here to speak, make and delight. Your shadow is scattering the gift across too many tables."},
+4:{title:"The Builder",keys:"structure, work, loyalty",prose:"Four is the square, the foundation, the four legs of the table. You bring order out of ambition and finish what others only start. Your shadow is mistaking the walls for the house."},
+5:{title:"The Traveller",keys:"freedom, change, experience",prose:"Five is the pentagram — the human figure with arms out, wanting everything. You are change, appetite, freedom, the story that needs a new chapter. Your shadow is confusing motion with meaning."},
+6:{title:"The Keeper",keys:"care, harmony, responsibility",prose:"Six is the hexagram, two triangles interlocked — heaven and earth agreeing to share a house. You are here to tend: family, beauty, the people who lean on you. Your shadow is the martyrdom nobody asked for."},
+7:{title:"The Seeker",keys:"wisdom, solitude, analysis",prose:"Seven is the number that cannot be made from the others — the prime, the mystic, the week. You are built for depth: analysis, solitude, the long look under the surface. Your shadow is the tower with no door."},
+8:{title:"The Steward",keys:"power, abundance, mastery",prose:"Eight is the lemniscate stood upright — power that circulates, cause meeting consequence. You are here to master the material world without being mastered by it. Your shadow is measuring your worth in what you hold."},
+9:{title:"The Elder",keys:"completion, compassion, release",prose:"Nine is the last of the single numbers, the one that contains the rest. You are here to complete, forgive, and give away — compassion at the scale of the whole. Your shadow is grieving for what you have not yet let go."},
+11:{title:"The Illuminator",keys:"intuition, inspiration, vision",master:true,prose:"Eleven is two pillars and the gate between them. You carry Two's sensitivity at a higher voltage — intuition, inspiration, nerves like antennae. You are here to light a room, not to hold it up. Your shadow is anxiety wearing the mask of vision."},
+22:{title:"The Master Builder",keys:"manifestation, vision made real",master:true,prose:"Twenty-two is Four at the scale of a city. You are here to make the visionary practical — to give the dream a foundation and a permit. Your shadow is the weight of a potential you were told about too early."},
+33:{title:"The Master Teacher",keys:"healing, service, unconditional care",master:true,prose:"Thirty-three is Six raised to a vocation — care as a calling, love with no interest rate. You are here to lift, teach and heal, often at cost. Your shadow is forgetting that you too are someone's responsibility."}};
+const NUM_POS=[
+{key:'life',label:'Life Path',pos:'The Life Path',intro:"The road you are walking — folded from the day, the month and the year.",
+ tail:n=>`This is the number of the whole journey: not what you do, but the terrain you do it on.`},
+{key:'expr',label:'Expression',pos:'The Expression',intro:"The tools you carry — every letter of the name you were given.",
+ tail:n=>`Whatever the road, these are the instruments in your hands: ${NUMBERS[n].keys}. You will do it this way.`},
+{key:'soul',label:'Soul',pos:'The Soul Urge',intro:"What you want beneath the wanting — the vowels, the breath inside the name.",
+ tail:n=>`Beneath the wanting, you want ${NUMBERS[n].keys}. When life gives you this, you go quiet.`},
+{key:'pers',label:'Persona',pos:'The Personality',intro:"The door others see first — the consonants, the bones of the name.",
+ tail:n=>`At the door, people meet ${NUMBERS[n].keys} before they meet the rest of you. The rest arrives later, and is allowed to.`},
+{key:'year',label:'Year',pos:'The Personal Year',intro:"The season you are in — your birthday folded into the present year.",
+ tail:n=>`This is a ${n} year for you — a season of ${NUMBERS[n].keys}. Plant accordingly; the next number is already on its way.`}];
+const digitSum=n=>String(n).split('').reduce((a,b)=>a+ +b,0);
+function reduceNum(n,masters=true){while(n>9&&!(masters&&(n===11||n===22||n===33)))n=digitSum(n);return n;}
+function nameNumbers(raw){
+  const words=fold(raw).replace(/[^a-z]+/g,' ').trim().split(' ').filter(Boolean);
+  let all=0,vow=0,con=0,letters=0;
+  for(const w of words)for(let i=0;i<w.length;i++){
+    const ch=w[i],v=PYTH[ch];if(!v)continue;letters++;all+=v;
+    const isV='aeiou'.includes(ch)||(ch==='y'&&!'aeiou'.includes(w[i-1]||'')&&!'aeiou'.includes(w[i+1]||''));
+    if(isV)vow+=v;else con+=v;
+  }
+  return {letters,expr:reduceNum(all),soul:reduceNum(vow),pers:reduceNum(con)};
+}
+function drawNumberSigil(ctx,S,n){
+  const c=S/2,R=S*.36;
+  ctx.lineWidth=S*.014;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.arc(c,c,S*.46,0,7);ctx.stroke();
+  const poly=(k,step,rot)=>{ctx.beginPath();for(let i=0;i<=k;i++){const a=(rot-90+(i*step%k)*360/k)*D2R;ctx[i?'lineTo':'moveTo'](c+R*Math.cos(a),c+R*Math.sin(a));}ctx.stroke();};
+  const tri=rot=>poly(3,1,rot);
+  ctx.lineWidth=S*.012;
+  switch(n){
+    case 1:ctx.beginPath();ctx.moveTo(c,c-R);ctx.lineTo(c,c+R);ctx.stroke();ctx.beginPath();ctx.arc(c,c,S*.03,0,7);ctx.fill();break;
+    case 2:for(const dx of [-R*.32,R*.32]){ctx.beginPath();ctx.arc(c+dx,c,R*.66,0,7);ctx.stroke();}break;
+    case 3:tri(0);break;
+    case 4:poly(4,1,45);break;
+    case 5:poly(5,2,0);break;
+    case 6:tri(0);tri(180);break;
+    case 7:poly(7,3,0);break;
+    case 8:poly(8,3,0);break;
+    case 9:poly(9,4,0);break;
+    case 11:for(const dx of [-R*.5,R*.5]){ctx.beginPath();ctx.moveTo(c+dx,c-R*.9);ctx.lineTo(c+dx,c+R*.9);ctx.stroke();}
+      ctx.beginPath();ctx.arc(c,c-R*.9,R*.5,Math.PI,Math.PI*2);ctx.stroke();break;
+    case 22:poly(4,1,45);poly(4,1,0);break;
+    case 33:tri(0);tri(30);tri(60);break;
+  }
+  ctx.font=`300 ${S*.2}px 'Cormorant Garamond', Georgia, serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=S*.011;ctx.strokeText(String(n),c,c+S*.01);
+}
+
+let numbers=null;
+$('numForm').onsubmit=e=>{
+  e.preventDefault();
+  const err=$('numErr');err.textContent='';
+  const raw=$('nName').value.trim();
+  const date=readDate('n',err);if(!date)return;
+  const nm=nameNumbers(raw);
+  if(nm.letters<2){err.textContent='The observatory needs a name of at least two letters.';return;}
+  const now=new Date();
+  numbers={
+    life:reduceNum(reduceNum(date.m)+reduceNum(date.d)+reduceNum(date.y)),
+    birthday:reduceNum(date.d),
+    expr:nm.expr,soul:nm.soul,pers:nm.pers,
+    year:reduceNum(reduceNum(date.m)+reduceNum(date.d)+reduceNum(now.getFullYear())),
+    yearNo:now.getFullYear(),
+    name:raw,date
+  };
+  numbers.maturity=reduceNum(numbers.life+numbers.expr);
+  mode='num';
+  beginReading();
+  setSlots(NUM_POS.map(p=>({label:p.label,face:numbers[p.key],big:true})),k=>showNumber(k));
+  revealSlots(420);
+  setTimeout(()=>showNumber(0),1000);
+  setTimeout(()=>showSynth(`The thread of these numbers: <b>${numbers.life}</b> on the road, <b>${numbers.expr}</b> in the hands, <b>${numbers.soul}</b> beneath the breath.`),2600);
+};
+function showNumber(k){
+  if(view===k)return;
+  view=k;
+  markSlot(k);
+  const p=NUM_POS[k],n=numbers[p.key],N_=NUMBERS[n];
+  $('counter').textContent=`PATH · ${numbers.life}`;
+  morphTo({fn:(ctx,S)=>drawNumberSigil(ctx,S,n),fill:{desk:.68,mobile:.3}});
+  const {d,m,y}=numbers.date;
+  const from=p.key==='life'?`${d} · ${m} · ${y}`:p.key==='year'?`${d} · ${m} · ${numbers.yearNo}`:numbers.name.toUpperCase();
+  const meta=[['NUMBER',`${n}${N_.master?' — MASTER':''}`],['DRAWN FROM',from],['SPEAKS OF',N_.keys.toUpperCase()]];
+  let extra='';
+  if(p.key==='life')extra=`<span class="line">Your <b>birthday number</b> is ${numbers.birthday} — ${NUMBERS[numbers.birthday].title.toLowerCase()}'s gift, carried in the day itself. Your <b>maturity number</b>, the road and the tools folded together, is ${numbers.maturity}: ${NUMBERS[numbers.maturity].keys} — what the second half of life leans toward.</span>`;
+  if(N_.master)extra+=`<span class="rev">A master number: it carries the voltage of ${n} and the ground of ${digitSum(n)}. On tired days you will live it as a ${digitSum(n)}; that is not failure, it is rest.</span>`;
+  setPanel({pos:`Exhibit — ${p.pos}`,name:`${n} · ${N_.title}`,meta,
+    prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`});
+}
 
 /* ═══ OFFERINGS — set your donation link here (Ko-fi, PayPal.me,
    Buy Me a Coffee, Stripe payment link…) ═══════════════════════ */
 const DONATION_URL = "";
 
-const offer=document.getElementById('offer');
-document.getElementById('offerBtn').onclick=()=>offer.classList.add('show');
-document.getElementById('offerClose').onclick=()=>offer.classList.remove('show');
+const offer=$('offer');
+$('offerBtn').onclick=()=>offer.classList.add('show');
+$('offerClose').onclick=()=>offer.classList.remove('show');
 offer.addEventListener('click',e=>{if(e.target===offer)offer.classList.remove('show');});
 if(DONATION_URL){
-  document.getElementById('offerLink').href=DONATION_URL;
+  $('offerLink').href=DONATION_URL;
 }else{
-  document.getElementById('offerLink').style.display='none';
-  document.getElementById('offerNote').style.display='block';
+  $('offerLink').style.display='none';
+  $('offerNote').style.display='block';
 }
 </script>
 </body>
