@@ -188,7 +188,7 @@
   }
   #spread.show{opacity:1;visibility:visible;transform:translateX(-50%)}
   .slot{display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer}
-  .slot .label{transition:color .4s}
+  .slot .label{transition:color .4s;white-space:nowrap}
   .card{
     width:64px;height:100px;border-radius:7px;border:1px solid var(--hair);
     background:linear-gradient(160deg,#0c0e14,#080a0f);
@@ -297,7 +297,8 @@
     #panel h2{font-size:26px;margin-bottom:12px}
     #panel .prose{font-size:15px;max-width:none}
     #panel .foot{margin-top:14px}
-    #spread{gap:10px;bottom:20px;left:50%}
+    #spread{gap:8px;bottom:20px;left:50%}
+    .slot .label{font-size:8px;letter-spacing:.16em}
     .card{width:50px;height:78px}
     .card .num{font-size:16px}
     .card .num.big{font-size:22px}
@@ -688,7 +689,7 @@ resize();addEventListener('resize',()=>{resize();if(currentDraw)morphTo(currentD
 
 const VS=`
 attribute vec2 aA; attribute vec2 aB; attribute vec4 aMeta; // seed,size,delay,dust
-uniform float uT,uMorph,uLens,uForce; uniform vec2 uRes,uMouse;
+uniform float uT,uMorph,uLens,uForce,uDim; uniform vec2 uRes,uMouse;
 varying float vTw; varying float vSeed;
 void main(){
   float seed=aMeta.x, size=aMeta.y, delay=aMeta.z, dust=aMeta.w;
@@ -711,7 +712,7 @@ void main(){
   vec2 clip=(p/uRes*2.-1.)*vec2(1.,-1.);
   gl_Position=vec4(clip,0.,1.);
   float tw=.55+.45*sin(uT*(1.2+fract(seed*7.)*2.5)+seed*80.);
-  vTw=tw; vSeed=seed;
+  vTw=tw*uDim; vSeed=seed;
   gl_PointSize=(size*(0.7+0.5*tw))* ${DPR.toFixed(1)};
 }`;
 const FS=`
@@ -734,10 +735,13 @@ gl.linkProgram(prog);gl.useProgram(prog);
 gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
 
 const N=52000, DUST=13000;
+/* the landing sky keeps only a share of the figure stars, so the text stays legible —
+   fewer still on a phone. The rest wait off-screen until a figure is drawn. */
+const landingCount=()=>Math.round((N-DUST)*(innerWidth>940?.3:.14));
 const A=new Float32Array(N*2), B=new Float32Array(N*2), META=new Float32Array(N*4);
 for(let i=0;i<N;i++){
   const dust=i<DUST?1:0;
-  const x=Math.random()*innerWidth, y=Math.random()*innerHeight;
+  const x=(dust||i<DUST+landingCount())?Math.random()*innerWidth:-5000, y=Math.random()*innerHeight;
   A[i*2]=x;A[i*2+1]=y;B[i*2]=x;B[i*2+1]=y;
   META[i*4]=Math.random();
   META[i*4+1]=dust?(Math.random()<.08?3.2:1.9):(1.6+Math.random()*2.6);
@@ -752,7 +756,8 @@ const bufA=buf(A,locA,2,gl.DYNAMIC_DRAW), bufB=buf(B,locB,2,gl.DYNAMIC_DRAW);
 buf(META,locM,4,gl.STATIC_DRAW);
 const uT=gl.getUniformLocation(prog,'uT'),uMorph=gl.getUniformLocation(prog,'uMorph'),
       uRes=gl.getUniformLocation(prog,'uRes'),uMouse=gl.getUniformLocation(prog,'uMouse'),
-      uLens=gl.getUniformLocation(prog,'uLens'),uForce=gl.getUniformLocation(prog,'uForce');
+      uLens=gl.getUniformLocation(prog,'uLens'),uForce=gl.getUniformLocation(prog,'uForce'),
+      uDim=gl.getUniformLocation(prog,'uDim');
 
 let morph=1, morphV=0;
 let mx=-9999,my=-9999;
@@ -761,18 +766,21 @@ addEventListener('pointerleave',()=>{mx=my=-9999;});
 
 /* lens state: wide & soft on the landing sky, small & fierce on a figure */
 let lensR=190, lensF=48, lensRT=190, lensFT=48;
-function setLens(intro){ lensRT=intro?190:22; lensFT=intro?48:85; }
+const landingDim=()=>innerWidth>940?.6:.45;
+let dim=landingDim(), dimT=dim;
+function setLens(intro){ lensRT=intro?190:22; lensFT=intro?48:85; dimT=intro?landingDim():1; }
 
 function frame(t){
   gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
   if(morph<1){morph=Math.min(1,morph+0.008);}
-  lensR+=(lensRT-lensR)*0.05; lensF+=(lensFT-lensF)*0.05;
+  lensR+=(lensRT-lensR)*0.05; lensF+=(lensFT-lensF)*0.05; dim+=(dimT-dim)*0.03;
   gl.uniform1f(uT,t*0.001);
   gl.uniform1f(uMorph,morph);
   gl.uniform2f(uRes,W,H);
   gl.uniform2f(uMouse,mx,my);
   gl.uniform1f(uLens,lensR);
   gl.uniform1f(uForce,lensF);
+  gl.uniform1f(uDim,dim);
   gl.drawArrays(gl.POINTS,0,N);
   requestAnimationFrame(frame);
 }
@@ -811,7 +819,8 @@ function targetsFromDraw(draw){
 }
 function scatterTargets(){
   const out=new Float32Array((N-DUST)*2);
-  for(let i=0;i<N-DUST;i++){out[i*2]=Math.random()*W;out[i*2+1]=Math.random()*H;}
+  const keep=landingCount();
+  for(let i=0;i<N-DUST;i++){out[i*2]=i<keep?Math.random()*W:-5000;out[i*2+1]=Math.random()*H;}
   return out;
 }
 function pushTargets(newB){
@@ -1253,8 +1262,9 @@ cityIn.addEventListener('keydown',e=>{
   if(e.key==='ArrowDown'||e.key==='ArrowUp'){const items=[...cityList.children];const k=items.findIndex(x=>x.classList.contains('sel'));
     if(items.length){e.preventDefault();items.forEach(x=>x.classList.remove('sel'));items[(k+(e.key==='ArrowDown'?1:items.length-1))%items.length].classList.add('sel');}}
 });
-cityList.addEventListener('mousedown',e=>{const d=e.target.closest('[data-i]');if(d){e.preventDefault();pickCity(CITIES[+d.dataset.i]);}});
-cityIn.addEventListener('blur',()=>setTimeout(()=>cityList.classList.remove('on'),150));
+/* pointerdown fires before the input blurs — matters on touch screens */
+cityList.addEventListener('pointerdown',e=>{const d=e.target.closest('[data-i]');if(d){e.preventDefault();pickCity(CITIES[+d.dataset.i]);}});
+cityIn.addEventListener('blur',()=>setTimeout(()=>cityList.classList.remove('on'),250));
 
 /* time zones for the manual path */
 (function(){
