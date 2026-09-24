@@ -1,0 +1,13 @@
+{
+  "name": "starot-pay",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/run.mjs",
+    "dev:mock": "node test/mock-server.mjs",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

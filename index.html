@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STAROT · Observatory of Fates</title>
+<meta name="description" content="Tarot, astral maps and numerology drawn in stardust. Deal three arcana, read the numbers in your name, or see the sky as it stood when you were born.">
+<meta name="theme-color" content="#050609">
+<link rel="canonical" href="https://miguelmalungo.github.io/starot/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="STAROT">
+<meta property="og:title" content="STAROT · Observatory of Fates">
+<meta property="og:description" content="Tarot, astral maps and numerology — every answer drawn in thousands of stars.">
+<meta property="og:url" content="https://miguelmalungo.github.io/starot/">
+<meta property="og:image" content="https://miguelmalungo.github.io/starot/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23050609'/%3E%3Ccircle cx='32' cy='32' r='16' fill='%23d8b877' opacity='.14'/%3E%3Cpath d='M32 8 L35.8 25.6 L52 12 L38.4 28.2 L56 32 L38.4 35.8 L52 52 L35.8 38.4 L32 56 L28.2 38.4 L12 52 L25.6 35.8 L8 32 L25.6 28.2 L12 12 L28.2 25.6 Z' fill='%23d8b877'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f3e3bb'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -249,12 +262,18 @@
   }
   #offerBtn:hover{color:var(--gold-bright);border-color:var(--gold);
     box-shadow:0 0 26px -8px rgba(216,184,119,.5)}
-  #offer{
+  #offerBtn.unlock{color:#1a1409;border-color:var(--gold);font-weight:500;
+    background:linear-gradient(120deg,#c9a764,#f3e3bb 45%,#d8b877 60%,#b8955a);background-size:220% 100%;
+    box-shadow:0 0 34px -6px rgba(216,184,119,.6);animation:gild 5s ease-in-out infinite}
+  #offerBtn.unlock:hover{color:#000;box-shadow:0 0 44px -4px rgba(243,227,187,.75)}
+  @keyframes gild{0%,100%{background-position:0 0}50%{background-position:100% 0}}
+  #offerBtn .sm{display:none}
+  #offer,#unlock{
     position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
     background:rgba(3,4,6,.72);backdrop-filter:blur(7px);
     opacity:0;visibility:hidden;transition:all .5s;
   }
-  #offer.show{opacity:1;visibility:visible}
+  #offer.show,#unlock.show{opacity:1;visibility:visible}
   .offer-box{
     position:relative;width:min(400px,86vw);text-align:center;
     border:1px solid var(--hair);border-radius:14px;padding:44px 36px 38px;
@@ -263,7 +282,7 @@
     display:flex;flex-direction:column;align-items:center;gap:18px;
     transform:translateY(14px);transition:transform .5s cubic-bezier(.2,.7,.2,1);
   }
-  #offer.show .offer-box{transform:none}
+  #offer.show .offer-box,#unlock.show .offer-box{transform:none}
   .offer-box h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin-top:-6px}
   .offer-box p{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
     font-size:16.5px;line-height:1.6;color:var(--mist)}
@@ -273,6 +292,78 @@
     font-size:15px;cursor:pointer;transition:color .3s;padding:6px;
   }
   .offer-close:hover{color:var(--gold-bright)}
+
+  /* ── pricing, seals & the unlock ─────────── */
+  .tag{display:inline-block;margin-top:8px;font-family:'Jost';font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--gold-dim);border:1px solid rgba(216,184,119,.16);border-radius:999px;padding:4px 10px 3px;white-space:nowrap}
+  .tag.paid{color:var(--gold-bright);border-color:rgba(216,184,119,.42);background:rgba(216,184,119,.06)}
+  .ledger{display:flex;align-items:stretch;gap:0;border:1px solid rgba(216,184,119,.16);border-radius:12px;
+    font-family:'Jost';font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--mist);
+    max-width:min(560px,92vw);overflow:hidden;background:rgba(5,6,9,.4)}
+  .ledger>div{padding:12px 18px;display:flex;flex-direction:column;gap:6px;justify-content:center;line-height:1.7}
+  .ledger>div+div{border-left:1px solid rgba(216,184,119,.16)}
+  .ledger b{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:.02em;text-transform:none;color:var(--gold);font-weight:400}
+  .ledger .free b{color:var(--bone)}
+  .saved{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;max-width:min(620px,92vw)}
+  .saved .label{margin:0!important;width:100%}
+  .chip{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--bone);background:rgba(216,184,119,.05);
+    border:1px solid var(--hair);border-radius:999px;padding:6px 16px;cursor:pointer;transition:all .3s}
+  .chip:hover{border-color:var(--gold);color:var(--gold-bright)}
+  .chip i{font-style:normal;color:var(--gold);margin-right:6px}
+  .privacy{font-family:'Jost'!important;font-style:normal!important;font-size:9px!important;letter-spacing:.2em;
+    text-transform:uppercase;color:rgba(139,136,120,.75)!important;max-width:52ch!important;line-height:1.9!important}
+  .legal{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:6px;
+    font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:rgba(139,136,120,.7)}
+  .legal a{color:var(--gold-dim);text-decoration:none;transition:color .3s}
+  .legal a:hover{color:var(--gold-bright)}
+  .legal i{width:3px;height:3px;border-radius:50%;background:var(--gold-dim);opacity:.5}
+
+  .card.sealed .num{opacity:.4}
+  .card.sealed::after{
+    content:"sealed";position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
+    font-family:'Jost';font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);
+  }
+  .veil{-webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 45%,transparent 90%);
+    mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 45%,transparent 90%);
+    filter:blur(3.5px);user-select:none;pointer-events:none;display:block;margin-top:6px;max-height:5.2em;overflow:hidden}
+  .seal{margin-top:14px;padding:20px 20px 18px;border:1px solid rgba(216,184,119,.28);border-radius:12px;
+    background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.09),rgba(5,6,9,0) 70%);
+    display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .seal .k{font-family:'Jost';font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .seal p{font-size:15.5px;line-height:1.55;color:#cfc8b4}
+  .seal ul{list-style:none;display:flex;flex-direction:column;gap:5px;font-size:15px;color:#cfc8b4}
+  .seal li::before{content:"✦";color:var(--gold);font-size:10px;margin-right:10px;vertical-align:2px}
+  .seal .deal-btn{margin-top:4px;padding:14px 26px 12px;font-size:10px}
+  .seal .fine{font-family:'Jost';font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim)}
+  .deal-btn.gold{color:#1a1409;font-weight:500;border-color:var(--gold);
+    background:linear-gradient(120deg,#c9a764,#f3e3bb 45%,#d8b877 60%,#b8955a);background-size:220% 100%;animation:gild 5s ease-in-out infinite}
+  .deal-btn.gold:hover{color:#000;box-shadow:0 0 40px -6px rgba(243,227,187,.7)}
+  .deal-btn:disabled{opacity:.6;cursor:wait}
+  .linkish{margin-top:14px;background:none;border:none;cursor:pointer;font-family:'Jost';font-size:9.5px;
+    letter-spacing:.26em;text-transform:uppercase;color:var(--gold-dim);transition:color .3s;padding:0}
+  .linkish:hover{color:var(--gold-bright)}
+
+  #unlock .offer-box{width:min(440px,92vw);gap:14px;padding:40px 34px 30px}
+  .price{display:flex;align-items:baseline;gap:12px;justify-content:center}
+  .price b{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:64px;line-height:.9;color:var(--gold-bright)}
+  .price span{font-family:'Jost';font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dim);text-align:left;line-height:1.7}
+  .gets{list-style:none;text-align:left;display:flex;flex-direction:column;gap:8px;width:100%;
+    border-top:1px solid rgba(216,184,119,.14);border-bottom:1px solid rgba(216,184,119,.14);padding:16px 4px}
+  .gets li{font-family:'Cormorant Garamond',serif;font-size:16.5px;line-height:1.35;color:#cfc8b4;display:flex;gap:12px}
+  .gets li i{font-style:normal;color:var(--gold);width:18px;flex:none;text-align:center}
+  .gets li b{color:var(--bone);font-weight:500}
+  .for{font-family:'Jost';font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mist)}
+  .trust{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);line-height:1.9}
+  .trust a{color:var(--gold-dim)}
+  #unlockNote{color:#c9917c;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;min-height:0}
+
+  #toast{position:fixed;left:50%;top:22px;transform:translate(-50%,-14px);z-index:60;width:max-content;max-width:min(520px,92vw);
+    padding:14px 22px;border:1px solid rgba(216,184,119,.35);border-radius:12px;background:rgba(8,10,15,.94);
+    backdrop-filter:blur(8px);font-family:'Cormorant Garamond',serif;font-size:16.5px;line-height:1.5;color:var(--bone);
+    text-align:center;opacity:0;visibility:hidden;transition:all .5s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 20px 60px -20px rgba(0,0,0,.9)}
+  #toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+  #toast b{color:var(--gold);font-weight:400}
 
   @media (max-width:940px){
     /* symbol lives in the top ~40%; text is pinned to a band below it */
@@ -305,6 +396,15 @@
     #redeal{right:16px;bottom:auto;top:66px;padding:10px 18px 8px}
     #offerBtn{left:16px;bottom:auto;top:66px;padding:10px 18px 8px}
     #hint,#synth{display:none}
+    #offerBtn .lg{display:none}
+    #offerBtn .sm{display:inline}
+    .ledger{font-size:8px;letter-spacing:.16em}
+    .ledger>div{padding:10px 12px;gap:3px;line-height:1.65}
+    .ledger>div.free{flex:0 0 34%}
+    .ledger b{font-size:19px}
+    .door .tag{margin-top:6px;align-self:flex-start}
+    #unlock .offer-box{padding:34px 22px 24px;max-height:92vh;overflow-y:auto}
+    .price b{font-size:52px}
     .head-right{display:none}
     header{padding:22px 20px}
   }
@@ -336,20 +436,21 @@
     <div class="doors">
       <button class="door" data-go="tarot">
         <span class="glyph">✦</span>
-        <div><h3>Tarot reading</h3><p>Three arcana — past, present, future — dealt from the twenty-two.</p></div>
+        <div><h3>Tarot reading</h3><p>Three arcana — past, present, future — dealt from the twenty-two.</p><span class="tag">Free</span></div>
         <span class="label">The cards</span>
       </button>
       <button class="door" data-go="astro">
         <span class="glyph">☉</span>
-        <div><h3>Astral map</h3><p>The sky as it stood when you were born — planets, houses, the rising sign.</p></div>
+        <div><h3>Astral map</h3><p>The sky as it stood when you were born — planets, houses, the rising sign.</p><span class="tag" id="astroTag">Free</span></div>
         <span class="label">The wheel</span>
       </button>
       <button class="door" data-go="num">
         <span class="glyph">⁂</span>
-        <div><h3>Numerology</h3><p>The numbers hidden in your name and your date — the path, the voice, the door.</p></div>
+        <div><h3>Numerology</h3><p>The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag">Free</span></div>
         <span class="label">The seal</span>
       </button>
     </div>
+    <footer class="legal"><a href="terms.html">Terms &amp; privacy</a><i></i><button class="linkish" style="margin:0" data-share>Share the observatory</button><i></i><span>For reflection &amp; entertainment</span></footer>
   </div>
 
   <!-- ── tarot ── -->
@@ -382,6 +483,11 @@
     <h1>Where were the<br><em>planets standing?</em></h1>
     <p>Give the observatory your date, your hour and the place you first breathed.
        The stars will turn back to that night and draw the wheel.</p>
+    <div class="ledger" id="astroLedger" hidden>
+      <div class="free"><span><b>Free</b></span><span>The wheel in stars · your Sun</span></div>
+      <div><span><b id="ledgerPrice">€3</b></span><span>Moon · Rising · houses · aspects · all ten planets read · a star poster to keep</span></div>
+    </div>
+    <div class="saved" id="savedMaps" hidden></div>
     <form class="form" id="astroForm" autocomplete="off" novalidate>
       <div class="frow" id="astroDate"></div>
       <div class="frow">
@@ -404,6 +510,7 @@
       </div>
       <div class="err" id="astroErr"></div>
       <button class="deal-btn" type="submit">☉ &nbsp;Cast the chart</button>
+      <p class="privacy">Computed in your browser. Nothing leaves this page unless you choose to buy the full map.</p>
       <button class="back" type="button" data-go="menu">← &nbsp;The observatory</button>
     </form>
   </div>
@@ -433,6 +540,7 @@
   <div class="meta" id="pMeta"></div>
   <div class="prose" id="pProse"></div>
   <div class="foot">Celestial point-sampling · <span id="pStars">48,000</span> stars</div>
+  <button class="linkish" data-share>✦ &nbsp;Share the observatory</button>
 </aside>
 
 <p id="synth"></p>
@@ -449,14 +557,60 @@
     <span class="label">Keep the lamps lit</span>
     <h3>An offering</h3>
     <p>The observatory runs on starlight and small kindnesses.
-       If the cards told you something true — or something usefully
+       If the stars told you something true — or something usefully
        untrue — you may leave a coin in the dark. The stars notice.</p>
     <a class="deal-btn" id="offerLink" target="_blank" rel="noopener">✦ &nbsp;Make an offering</a>
     <span class="label" id="offerNote" style="display:none">The offering bowl is still being carved — soon.</span>
   </div>
 </div>
 
+<div id="unlock" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
+  <div class="offer-box">
+    <button class="offer-close" id="unlockClose" aria-label="Close">✕</button>
+    <span class="label">Break the seal</span>
+    <h3 id="unlockTitle">The full map</h3>
+    <span class="for" id="unlockFor"></span>
+    <ul class="gets">
+      <li><i>☽</i><span><b>Your Moon</b> — what you need in order to feel safe</span></li>
+      <li><i>↑</i><span><b>Rising &amp; Midheaven</b> — how you arrive, and where you are headed</span></li>
+      <li><i>✶</i><span><b>All ten planets read</b> in their signs and houses</span></li>
+      <li><i>△</i><span><b>Houses, aspects</b> and the balance of your elements</span></li>
+      <li><i>↓</i><span><b>A star poster</b> of your sky — print-ready, yours to keep</span></li>
+    </ul>
+    <div class="price"><b id="unlockPrice">€3</b><span>One payment<br>this chart, kept for good</span></div>
+    <button class="deal-btn gold" id="unlockGo">✦ &nbsp;Break the seal</button>
+    <span id="unlockNote"></span>
+    <span class="trust">Secure checkout by Stripe · card · Apple Pay · Google Pay · MB WAY<br>
+      Your birth details travel with the payment so your link can reopen the map · <a href="terms.html" target="_blank">Terms</a></span>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
 <script>
+/* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
+const CONFIG={
+  payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = astral map stays free
+  price:"€3",       // shown on the page; the amount actually charged lives in the worker (PRICE_CENTS)
+  donationUrl:"",   // pay-what-you-want link for the offering bowl (Stripe payment link, Ko-fi…)
+  goatcounter:"",   // e.g. "starot" for https://starot.goatcounter.com — empty = no analytics
+};
+
+/* ═══ SMALL HELPERS — storage, analytics ══════════════════════ */
+const store={
+  get(k,d){try{const v=localStorage.getItem('starot.'+k);return v?JSON.parse(v):d;}catch(e){return d;}},
+  set(k,v){try{v==null?localStorage.removeItem('starot.'+k):localStorage.setItem('starot.'+k,JSON.stringify(v));}catch(e){}}
+};
+/* on localhost a test worker can be set with localStorage['starot.api']='"http://localhost:8787"' */
+const IS_LOCAL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const PAY_API=((IS_LOCAL&&store.get('api',''))||CONFIG.payApi).replace(/\/$/,'');
+const PAYWALL=!!PAY_API;
+if(CONFIG.goatcounter&&!IS_LOCAL){
+  const g=document.createElement('script');g.async=true;g.src='https://gc.zgo.at/count.js';
+  g.dataset.goatcounter=`https://${CONFIG.goatcounter}.goatcounter.com/count`;document.head.appendChild(g);
+}
+function track(name){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:'ev/'+name,title:name,event:true});}catch(e){}}
+
 /* ═══ THE MAJOR ARCANA ════════════════════════════════════════ */
 const ROMAN=["0","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
 const ARCANA=[
@@ -845,7 +999,26 @@ function scatter(){currentDraw=null;pushTargets(scatterTargets());}
 
 /* ═══ SHARED STAGE — panel, slots, intro sections ═════════════ */
 const $=id=>document.getElementById(id);
-let mode='tarot', view=-1;
+let mode='tarot', view=-1, reading=false;
+
+let toastT;
+function toast(html,ms=6500){
+  const t=$('toast');t.innerHTML=html;t.classList.add('show');
+  clearTimeout(toastT);if(ms)toastT=setTimeout(()=>t.classList.remove('show'),ms);
+}
+async function shareSite(){
+  const url=location.origin+location.pathname;   /* never the ?map= link — that one is private */
+  track('share');
+  try{
+    if(navigator.share){await navigator.share({title:'STAROT · Observatory of Fates',text:'Tarot, astral maps and numerology — drawn in stardust.',url});return;}
+    await navigator.clipboard.writeText(url);toast('Link copied — pass it on.');
+  }catch(e){}
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('[data-share]'))shareSite();
+  if(e.target.closest('[data-unlock]'))openUnlock();
+  if(e.target.closest('[data-poster]'))downloadPoster();
+});
 
 function setPanel({pos,name,meta,prose}){
   const panel=$('panel');
@@ -896,6 +1069,8 @@ function leaveReading(to){
   $('spread').classList.remove('show');
   $('redeal').classList.remove('show');
   $('counter').textContent='—';
+  reading=false;setOfferBtn();
+  if(location.search)history.replaceState(null,'',location.pathname);
   document.querySelectorAll('.slot').forEach(s=>{s.classList.remove('on');s.querySelector('.card').classList.add('hidden-face');});
   scatter();
   setLens(true);
@@ -903,18 +1078,23 @@ function leaveReading(to){
   $('introMain').style.display='flex';
   $('ritual').classList.remove('on');
   $('dealBtn2').classList.remove('ready');
-  setTimeout(()=>showSection(SECTION[to]),600);
+  setTimeout(()=>{showSection(SECTION[to]);if(to==='astro')renderSaved();},600);
 }
+const REDEAL={tarot:'↻ &nbsp;Ask again',astro:'↻ &nbsp;New chart',num:'↻ &nbsp;New numbers'};
 function beginReading(){
   $('intro').classList.add('gone');
   setLens(false);
+  reading=true;
+  $('redeal').innerHTML=REDEAL[mode];
+  $('unlock').classList.remove('show');$('offer').classList.remove('show');
   document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',n.dataset.go===mode));
 }
 document.querySelectorAll('[data-go]').forEach(el=>{
   el.addEventListener('click',()=>{
     const to=el.dataset.go;
     if($('intro').classList.contains('gone'))leaveReading(to);
-    else{ $('introMain').style.display='flex';$('ritual').classList.remove('on');$('dealBtn2').classList.remove('ready');showSection(SECTION[to]); }
+    else{ $('introMain').style.display='flex';$('ritual').classList.remove('on');$('dealBtn2').classList.remove('ready');showSection(SECTION[to]);if(to==='astro')renderSaved(); }
+    track('open-'+to);
   });
 });
 $('brand').onclick=()=>{ if($('intro').classList.contains('gone'))leaveReading('menu'); else showSection('menu'); };
@@ -939,7 +1119,7 @@ function deal(){
     const j=Math.floor(Math.random()*idxs.length);
     spread.push({card:idxs.splice(j,1)[0], reversed:Math.random()<0.28});
   }
-  beginReading();
+  beginReading();setOfferBtn();track('tarot-dealt');
   setSlots(POS.map((p,k)=>({label:p.replace('The ',''),face:ROMAN[spread[k].card]})),k=>showCard(k));
   document.querySelectorAll('.slot .card').forEach((c,k)=>c.classList.toggle('reversed',spread[k].reversed));
   revealSlots(550);
@@ -1165,7 +1345,7 @@ function computeChart(utcMs,lat,lon,hasTime){
 }
 
 /* ═══ THE WHEEL — drawn, then sampled into stars ══════════════ */
-function drawWheel(ctx,S,ch){
+function drawWheel(ctx,S,ch,fine=1){   /* fine<1 thins the glyph strokes for print sizes */
   const c=S/2, R1=S*.475, R2=S*.395, Rp=S*.335, Rp2=S*.285, Ra=S*.235;
   const asc=ch.houses?ch.houses.asc:0;
   const pos=(l,r)=>{const a=Math.PI+(l-asc)*D2R;return [c+r*Math.cos(a),c-r*Math.sin(a)];};
@@ -1177,7 +1357,7 @@ function drawWheel(ctx,S,ch){
   ctx.lineWidth=S*.007;ctx.beginPath();ctx.arc(c,c,Ra,0,7);ctx.stroke();
   /* zodiac band: sign divisions, glyphs, 10° ticks */
   ctx.lineWidth=S*.010;
-  for(let i=0;i<12;i++){line(pos(i*30,R2),pos(i*30,R1));glyphSign(ctx,i,...pos(i*30+15,(R1+R2)/2),S*.024,S*.017);}
+  for(let i=0;i<12;i++){line(pos(i*30,R2),pos(i*30,R1));glyphSign(ctx,i,...pos(i*30+15,(R1+R2)/2),S*.024,S*.017*fine);}
   ctx.lineWidth=S*.006;
   for(let d=0;d<360;d+=10)if(d%30)line(pos(d,R2),pos(d,R2+S*.012));
   /* houses */
@@ -1199,7 +1379,7 @@ function drawWheel(ctx,S,ch){
   for(const b of sorted){
     inner=(b.lon-prev<7)?!inner:false;prev=b.lon;
     line(pos(b.lon,R2),pos(b.lon,R2-S*.02));
-    glyphPlanet(ctx,b.i,...pos(b.lon,inner?Rp2:Rp),S*.024,S*.018);
+    glyphPlanet(ctx,b.i,...pos(b.lon,inner?Rp2:Rp),S*.024,S*.018*fine);
   }
   /* aspects */
   ctx.lineWidth=S*.005;
@@ -1290,8 +1470,36 @@ function localToUTC(y,m,d,h,mi,tz){
   return utc;
 }
 
-/* ═══ ASTRAL MAP — the reading ════════════════════════════════ */
-let chart=null, chartMeta=null;
+/* ═══ ASTRAL MAP — the reading ════════════════════════════════
+   A chart is fully described by its input; the input's key decides
+   whether this browser owns the full map. */
+let chart=null, chartMeta=null, chartInput=null, chartId='';
+function chartKey(inp){
+  const s=[inp.y,inp.m,inp.d,inp.h,inp.mi,inp.nt?1:0,(+inp.lat).toFixed(3),(+inp.lon).toFixed(3),inp.tz].join('|');
+  let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}
+  return (h>>>0).toString(36);
+}
+const ownedMap=id=>store.get('maps',[]).find(m=>m.id===id);
+const isOpen=()=>!PAYWALL||!!ownedMap(chartId);
+function castChart(inp){
+  inp={...inp,place:String(inp.place||'').replace(/[<>&"]/g,'')};   /* it is written into the page */
+  const utc=localToUTC(inp.y,inp.m,inp.d,inp.h,inp.mi,inp.tz);
+  chart=computeChart(utc,inp.lat,inp.lon,!inp.nt);
+  chartInput=inp;chartId=chartKey(inp);
+  chartMeta={date:{y:inp.y,m:inp.m,d:inp.d},h:inp.h,mi:inp.mi,noTime:!!inp.nt,
+    place:{name:inp.place.split(',')[0],full:inp.place,lat:inp.lat,lon:inp.lon,tz:inp.tz}};
+  const own=ownedMap(chartId);
+  history.replaceState(null,'',own&&own.sid?`?map=${encodeURIComponent(own.sid)}`:location.pathname);
+  openChart();
+}
+function mapLabel(inp){return `${inp.d} ${MONTHS[inp.m-1].slice(0,3)} ${inp.y} · ${inp.place.split(',')[0]}`;}
+function renderSaved(){
+  const box=$('savedMaps'),maps=store.get('maps',[]);
+  box.hidden=!PAYWALL||!maps.length;
+  if(box.hidden)return;
+  box.innerHTML='<span class="label">Your kept maps</span>'+maps.slice(0,6).map((m,i)=>`<button class="chip" data-i="${i}"><i>☉</i>${mapLabel(m.input)}</button>`).join('');
+  box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>castChart(maps[+c.dataset.i].input));
+}
 $('astroForm').onsubmit=e=>{
   e.preventDefault();
   const err=$('astroErr');err.textContent='';
@@ -1309,18 +1517,19 @@ $('astroForm').onsubmit=e=>{
     if(!pickedCity){err.textContent='Choose a birthplace from the list, or enter coordinates.';return;}
     place=pickedCity;
   }
-  let utc;
-  try{utc=localToUTC(date.y,date.m,date.d,h,mi,place.tz);}catch(ex){err.textContent='That time zone is unknown to this browser.';return;}
-  chart=computeChart(utc,place.lat,place.lon,!noTime);
-  chartMeta={date,h,mi,noTime,place};
-  openChart();
+  const inp={y:date.y,m:date.m,d:date.d,h,mi,nt:noTime?1:0,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4),tz:place.tz,
+    place:place.country?`${place.name}, ${place.country}`:place.name};
+  try{castChart(inp);}catch(ex){err.textContent='That time zone is unknown to this browser.';return;}
 };
 
 const ASTRO_SLOTS=[{label:'Sky',face:'✶',big:true},{label:'Sun',face:'☉',big:true},{label:'Moon',face:'☽',big:true},{label:'Rising',face:'↑',big:true}];
 function openChart(){
   mode='astro';
   beginReading();
+  setOfferBtn();
+  track(isOpen()?'map-opened':'map-preview');
   setSlots(ASTRO_SLOTS,k=>showAstro(k));
+  if(!isOpen()){const cards=document.querySelectorAll('.slot .card');cards[2].classList.add('sealed');if(chart.houses)cards[3].classList.add('sealed');}
   revealSlots(380);
   setTimeout(()=>showAstro(0),1000);
   setTimeout(()=>{
@@ -1333,21 +1542,70 @@ function bornLine(){
   const {date,h,mi,noTime,place}=chartMeta;
   return `${date.d} ${MONTHS[date.m-1].slice(0,3).toUpperCase()} ${date.y}`+(noTime?' · HOUR UNKNOWN':` · ${String(h).padStart(2,'0')}:${String(mi).padStart(2,'0')}`);
 }
-function placeLine(){const p=chartMeta.place;return p.country?`${p.name}, ${p.country}`.toUpperCase():p.name;}
+function placeLine(){return chartMeta.place.full.toUpperCase();}
 function houseLine(b){return chart.houses?` It stands in the ${RN[b.house-1]} house — the house of ${HOUSES[b.house-1]}.`:'';}
+
+/* the sealed views: enough to see what waits, not enough to read it */
+const firstSentence=t=>{const i=t.search(/[.!?](\s|$)/);return i<0?t:t.slice(0,i+1);};
+function sealBox(lead){
+  return `<div class="seal"><span class="k">Sealed in the full map</span><p>${lead}</p>
+    <button class="deal-btn gold" data-unlock>✦ &nbsp;Break the seal · ${CONFIG.price}</button>
+    <span class="fine">One payment · this chart, kept for good</span></div>`;
+}
+function veiled(text){const f=firstSentence(text);return `${f}<span class="veil" aria-hidden="true">${text.slice(f.length)}</span>`;}
 
 function showAstro(k){
   if(view===k)return;
   view=k;
   markSlot(k);
-  const sun=chart.bodies[0],moon=chart.bodies[1];
+  const sun=chart.bodies[0],moon=chart.bodies[1],open=isOpen();
   $('counter').textContent=`☉ ${SIGNS[sun.sign].name.toUpperCase()}`;
+  if(k===2&&!open){
+    const s=SIGNS[moon.sign];
+    morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
+    setPanel({pos:'Exhibit — The Moon',name:`Moon in ${s.name}`,
+      meta:[['DEGREE','SEALED'],['HOUSE','SEALED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
+      prose:`<em>The tide; what you need in order to feel safe.</em> ${veiled(MOON_IN[moon.sign])}`+
+        sealBox(`Your Moon is in <b style="color:var(--gold);font-weight:400">${s.name}</b>. Its reading, its house and its degree wait beneath the seal — with your Rising sign and all ten planets.`)});
+    return;
+  }
+  if(k===3&&!open&&chart.houses){
+    const a=signOf(chart.houses.asc),s=SIGNS[a];
+    morphTo({fn:(ctx,S)=>drawRisingSeal(ctx,S,a),fill:{desk:.66,mobile:.3}});
+    setPanel({pos:'Exhibit — The Horizon',name:`${s.name} rising`,
+      meta:[['ASCENDANT','SEALED'],['MIDHEAVEN','SEALED'],['RULED BY',s.ruler.replace('the ','').toUpperCase()]],
+      prose:`<em>The door; how you arrive, and what the world meets first.</em> ${veiled(RISING_IN[a])}`+
+        sealBox(`${s.name} was climbing the eastern horizon when you arrived. The full map reads it — with your Midheaven, the ruler of your chart, and where its door opens.`)});
+    return;
+  }
+  if(k===0&&!open){
+    morphTo({fn:(ctx,S)=>drawWheel(ctx,S,chart),fill:{desk:.74,mobile:.3}});
+    const H=chart.houses;
+    const rows=chart.bodies.map(b=>`<tr><td class="g">${b.ch}</td><td>${b.name}</td><td class="s">${SIGNS[b.sign].name}</td><td class="r">${b.i===0?degStr(b.lon):'·'}</td></tr>`).join('');
+    setPanel({pos:'Exhibit — The Whole Sky',name:'Your natal wheel',
+      meta:[['BORN',bornLine()],['PLACE',placeLine()],['HOUSES',H?H.system.toUpperCase():'HOUR NEEDED']],
+      prose:`<em>The sky as it stood over ${chartMeta.place.name} — ${SIGNS[sun.sign].name} at the centre, ${SIGNS[moon.sign].name} in the tide${H?`, ${SIGNS[signOf(H.asc)].name} on the horizon`:''}.</em>
+        <div class="sub">Planets</div><table class="tbl">${rows}</table>
+        <div class="seal"><span class="k">Sealed in the full map</span>
+          <ul>
+            <li>Your Moon${H?' and Rising':''}, read in full</li>
+            <li>All ten planets read${H?' in their houses':''}</li>
+            ${H?'<li>The twelve houses and your Midheaven</li>':''}
+            <li>${chart.aspects.length} aspect${chart.aspects.length===1?'':'s'} binding your planets</li>
+            <li>The balance of your elements</li>
+            <li>A star poster of this sky, print-ready</li>
+          </ul>
+          <button class="deal-btn gold" data-unlock>✦ &nbsp;Break the seal · ${CONFIG.price}</button>
+          <span class="fine">One payment · this chart, kept for good</span></div>`});
+    return;
+  }
   if(k===1){
     const s=SIGNS[sun.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,sun.sign,0),fill:{desk:.66,mobile:.3}});
     setPanel({pos:'Exhibit — The Sun',name:`Sun in ${s.name}`,
-      meta:[['DEGREE',`${degStr(sun.lon)} ${s.name.toUpperCase()}`],['HOUSE',chart.houses?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:'HOUR NEEDED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
-      prose:`<em>The centre; your will and the light you steer by.</em> ${SUN_IN[sun.sign]}${houseLine(sun)}`});
+      meta:[['DEGREE',`${degStr(sun.lon)} ${s.name.toUpperCase()}`],['HOUSE',!chart.houses?'HOUR NEEDED':open?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:'SEALED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
+      prose:`<em>The centre; your will and the light you steer by.</em> ${SUN_IN[sun.sign]}${open?houseLine(sun):''}`+
+        (open?'':sealBox(`Your Sun is only the centre. Your Moon is in <b style="color:var(--gold);font-weight:400">${SIGNS[moon.sign].name}</b>${chart.houses?` and <b style="color:var(--gold);font-weight:400">${SIGNS[signOf(chart.houses.asc)].name}</b> rises`:''} — the full map reads them, with every planet and house.`))});
   }else if(k===2){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
@@ -1391,6 +1649,7 @@ function showAstro(k){
         <span class="line">Fire ${E.Fire} · Earth ${E.Earth} · Air ${E.Air} · Water ${E.Water} — ${ELEMENT_DOM[domEl]}.${lack.length?` There is no ${lack.join(' and no ')} in your sky: ${lack.map(l=>ELEMENT_LACK[l]).join('; ')}.`:''}</span>
         <span class="line">${domMod} leads (${Mm.Cardinal} cardinal · ${Mm.Fixed} fixed · ${Mm.Mutable} mutable) — ${domMod==='Cardinal'?'you begin things':domMod==='Fixed'?'you keep things':'you change things'}.</span>
         <div class="sub">Readings</div>${readings}
+        <button class="deal-btn" data-poster style="margin:22px 0 6px;padding:14px 26px 12px;font-size:10px">↓ &nbsp;Download your star poster</button>
         <span class="line" style="font-size:13px;color:var(--mist)">Positions computed in the browser from Keplerian elements and the principal lunar terms — good to a fraction of a degree. Planets within a degree of a cusp may be argued over by better instruments.</span>`});
   }
 }
@@ -1478,7 +1737,7 @@ $('numForm').onsubmit=e=>{
   };
   numbers.maturity=reduceNum(numbers.life+numbers.expr);
   mode='num';
-  beginReading();
+  beginReading();setOfferBtn();track('numbers-read');
   setSlots(NUM_POS.map(p=>({label:p.label,face:numbers[p.key],big:true})),k=>showNumber(k));
   revealSlots(420);
   setTimeout(()=>showNumber(0),1000);
@@ -1501,20 +1760,158 @@ function showNumber(k){
     prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`});
 }
 
-/* ═══ OFFERINGS — set your donation link here (Ko-fi, PayPal.me,
-   Buy Me a Coffee, Stripe payment link…) ═══════════════════════ */
-const DONATION_URL = "";
-
+/* ═══ THE CORNER BUTTON — an offering, the seal, or the poster ═ */
+function setOfferBtn(){
+  const b=$('offerBtn');
+  const kind=(reading&&mode==='astro')?(isOpen()?'poster':'unlock'):'offer';
+  b.dataset.kind=kind;
+  b.classList.toggle('unlock',kind==='unlock');
+  b.innerHTML=kind==='unlock'?`☉ &nbsp;<span class="lg">Unlock the full map · </span><span class="sm">Full map · </span>${CONFIG.price}`
+    :kind==='poster'?'↓ &nbsp;Star poster':'✦ &nbsp;Leave an offering';
+}
+$('offerBtn').onclick=()=>{
+  const k=$('offerBtn').dataset.kind;
+  if(k==='unlock')openUnlock();
+  else if(k==='poster')downloadPoster();
+  else{offer.classList.add('show');track('offering-open');}
+};
 const offer=$('offer');
-$('offerBtn').onclick=()=>offer.classList.add('show');
 $('offerClose').onclick=()=>offer.classList.remove('show');
 offer.addEventListener('click',e=>{if(e.target===offer)offer.classList.remove('show');});
-if(DONATION_URL){
-  $('offerLink').href=DONATION_URL;
+if(CONFIG.donationUrl){
+  $('offerLink').href=CONFIG.donationUrl;
+  $('offerLink').onclick=()=>track('offering-click');
 }else{
   $('offerLink').style.display='none';
   $('offerNote').style.display='block';
 }
+addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');}});
+
+/* ═══ THE UNLOCK — Stripe Checkout through the payment worker ═══ */
+const unlockEl=$('unlock');
+function openUnlock(){
+  if(!PAYWALL||!chartInput)return;
+  $('unlockFor').textContent=`For the sky of ${bornLine()} · ${chartMeta.place.full}`;
+  $('unlockNote').textContent='';
+  unlockEl.classList.add('show');
+  track('unlock-open');
+}
+$('unlockClose').onclick=()=>unlockEl.classList.remove('show');
+unlockEl.addEventListener('click',e=>{if(e.target===unlockEl)unlockEl.classList.remove('show');});
+$('unlockGo').onclick=async()=>{
+  const btn=$('unlockGo'),note=$('unlockNote');
+  btn.disabled=true;btn.innerHTML='Opening the vault…';note.textContent='';
+  track('checkout-start');
+  store.set('pending',chartInput);
+  try{
+    const r=await fetch(PAY_API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:chartInput})});
+    const j=await r.json().catch(()=>({}));
+    /* only ever hand the visitor to Stripe's own checkout page */
+    const safe=j.url&&(/^https:\/\/checkout\.stripe\.com\//.test(j.url)||(IS_LOCAL&&/^http:\/\/localhost[:/]/.test(j.url)));
+    if(!r.ok||!safe)throw new Error(j.error||'checkout unavailable');
+    location.href=j.url;
+  }catch(e){
+    note.textContent='The vault would not open — please try again in a moment.';
+    btn.disabled=false;btn.innerHTML='✦ &nbsp;Break the seal';
+  }
+};
+$('ledgerPrice').textContent=$('unlockPrice').textContent=CONFIG.price;
+if(PAYWALL){
+  $('astroLedger').hidden=false;
+  $('astroTag').textContent=`Free preview · full map ${CONFIG.price}`;
+  $('astroTag').classList.add('paid');
+}
+
+/* ═══ THE STAR POSTER — the wheel resampled at print size ═══════ */
+async function downloadPoster(){
+  if(!chart||!isOpen())return;
+  track('poster');
+  toast('Gathering the stars for your poster…',0);
+  await new Promise(r=>setTimeout(r,60));
+  const c=await renderPoster();
+  const inp=chartInput;
+  const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.93));
+  const name=`starot-sky-${inp.y}-${String(inp.m).padStart(2,'0')}-${String(inp.d).padStart(2,'0')}.jpg`;
+  const file=new File([blob],name,{type:'image/jpeg'});
+  $('toast').classList.remove('show');
+  /* phones: the share sheet saves to photos or posts straight to a story */
+  if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title:'My sky, drawn in stars'});return;}catch(e){if(e.name==='AbortError')return;}
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast('Your star poster is saved — 2400 × 3000, ready to print.');
+}
+async function renderPoster(){
+  try{await Promise.all(["300 60px 'Cormorant Garamond'","italic 300 60px 'Cormorant Garamond'","400 30px Jost","400 30px Marcellus"].map(f=>document.fonts.load(f)));}catch(e){}
+  const PW=2400,PH=3000,c=document.createElement('canvas');c.width=PW;c.height=PH;
+  const x=c.getContext('2d');
+  x.fillStyle='#050609';x.fillRect(0,0,PW,PH);
+  for(const [gx,gy,r,col] of [[.66,.36,.75,'rgba(84,66,38,.30)'],[.2,.86,.7,'rgba(38,44,66,.34)']]){
+    const g=x.createRadialGradient(PW*gx,PH*gy,0,PW*gx,PH*gy,PW*r);g.addColorStop(0,col);g.addColorStop(1,'rgba(5,6,9,0)');
+    x.fillStyle=g;x.fillRect(0,0,PW,PH);
+  }
+  x.globalCompositeOperation='lighter';
+  const dot=(px,py,r,a,cool)=>{x.fillStyle=cool?`rgba(209,219,242,${a})`:`rgba(250,235,199,${a})`;x.beginPath();x.arc(px,py,r,0,7);x.fill();};
+  for(let i=0;i<9000;i++)dot(Math.random()*PW,Math.random()*PH,.6+Math.random()*1.5,.08+Math.random()*.45,Math.random()<.2);
+  /* the wheel, sampled pixel by pixel at 1400px and scattered as stars */
+  const S=1400,o=document.createElement('canvas');o.width=o.height=S;
+  const ox=o.getContext('2d',{willReadFrequently:true});ox.strokeStyle=ox.fillStyle='#fff';drawWheel(ox,S,chart,.55);
+  const d=ox.getImageData(0,0,S,S).data,pts=[];
+  for(let y=0;y<S;y++)for(let xx=0;xx<S;xx++)if(d[(y*S+xx)*4+3]>110)pts.push(xx,y);
+  const size=2040,cx=PW/2,cy=PH*.42,k=size/S,n=Math.min(pts.length/2,120000);
+  for(let i=0;i<n;i++){
+    const j=(Math.random()*pts.length/2|0)*2;
+    const tw=Math.random();
+    dot(cx+(pts[j]-S/2)*k+(Math.random()-.5)*5,cy+(pts[j+1]-S/2)*k+(Math.random()-.5)*5,.7+tw*1.9,.25+tw*.65,Math.random()<.16);
+  }
+  x.globalCompositeOperation='source-over';
+  /* the legend */
+  const txt=(t,font,color,y,spacing)=>{x.font=font;x.fillStyle=color;x.textAlign='center';x.textBaseline='alphabetic';
+    if('letterSpacing' in x)x.letterSpacing=spacing||'0px';x.fillText(t,PW/2,y);if('letterSpacing' in x)x.letterSpacing='0px';};
+  const inp=chartInput,sun=chart.bodies[0],moon=chart.bodies[1];
+  txt('STAROT',"400 34px Marcellus",'#d8b877',150,'18px');
+  txt(`The sky over ${chartMeta.place.name}`,"italic 300 132px 'Cormorant Garamond'",'#e9e2d2',2560);
+  const when=`${inp.d} ${MONTHS[inp.m-1]} ${inp.y}`+(inp.nt?'':` · ${String(inp.h).padStart(2,'0')}:${String(inp.mi).padStart(2,'0')}`);
+  txt(`${when} · ${chartMeta.place.full}`.toUpperCase(),"400 34px Jost",'#8f7b52',2660,'10px');
+  txt(`Sun in ${SIGNS[sun.sign].name}  ·  Moon in ${SIGNS[moon.sign].name}`+(chart.houses?`  ·  ${SIGNS[signOf(chart.houses.asc)].name} rising`:''),
+    "300 62px 'Cormorant Garamond'",'#d8b877',2780);
+  txt((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),"400 24px Jost",'rgba(143,123,82,.8)',2910,'8px');
+  return c;
+}
+
+/* ═══ RETURNING FROM CHECKOUT — ?map=<session> is the map's own link ═══ */
+(async function arrive(){
+  const q=new URLSearchParams(location.search);
+  if(q.has('canceled')){
+    history.replaceState(null,'',location.pathname);
+    const p=store.get('pending',null);
+    if(p){try{castChart(p);toast('No payment was taken. The seal will wait whenever you are ready.');}catch(e){}}
+    return;
+  }
+  const sid=q.get('map');
+  if(!sid)return;
+  const local=store.get('maps',[]).find(m=>m.sid===sid);
+  if(local){try{castChart(local.input);}catch(e){}return;}
+  if(!PAYWALL){history.replaceState(null,'',location.pathname);return;}
+  toast('Opening your map…',0);
+  try{
+    const r=await fetch(`${PAY_API}/map?id=${encodeURIComponent(sid)}`);
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.ok||!j.input)throw new Error(j.error||'not found');
+    const inp=j.input,id=chartKey(inp),maps=store.get('maps',[]);
+    if(!maps.some(m=>m.id===id)){maps.unshift({id,sid,input:inp,at:Date.now()});store.set('maps',maps);}
+    const pending=store.get('pending',null),justPaid=pending&&chartKey(pending)===id;
+    if(justPaid){store.set('pending',null);track('paid');}
+    castChart(inp);
+    toast(justPaid?'<b>The seal is broken.</b> This page’s address is now your map — bookmark it to open it on any device.'
+                  :'Your map, as the stars left it.',justPaid?11000:5000);
+  }catch(e){
+    history.replaceState(null,'',location.pathname);
+    toast(String(e.message).includes('unpaid')?'Your payment is still settling — try this link again in a minute.'
+      :'That map could not be opened. If you paid, write to us from the Terms page and we will reopen it.',10000);
+  }
+})();
 </script>
 </body>
 </html>

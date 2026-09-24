@@ -1,0 +1,16 @@
+name = "starot-pay"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[vars]
+SITE_URL = "https://miguelmalungo.github.io/starot/"
+TERMS_URL = "https://miguelmalungo.github.io/starot/terms.html"
+PRICE_CENTS = "300"          # €3.00 — change here, and CONFIG.price in index.html
+CURRENCY = "eur"
+REQUIRE_TERMS = "true"       # needs a Terms URL in Stripe → Settings → Public details
+STRIPE_TAX = "false"         # "true" only once Stripe Tax is set up
+ALLOWED_ORIGINS = ""         # extra site origins, comma-separated (e.g. a custom domain)
+ALLOW_LOCALHOST = "false"    # "true" only on a test deployment
+
+# The Stripe key is a secret, never put it here:
+#   npx wrangler secret put STRIPE_SECRET_KEY

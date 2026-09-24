@@ -39,11 +39,27 @@ numbers 11 · 22 · 33 preserved. Five cards: **Life Path**, **Expression**, **S
 **Personality** and **Personal Year** (birthday and maturity numbers appear in the
 Life Path exhibit). Each number has its own geometric seal drawn in stars.
 
+## What is free, what is paid
+
+Tarot and numerology are free, with an optional offering (a pay-what-you-want link).
+The astral map is a free preview — the wheel in stars and the Sun reading — and the
+**full map costs €3**: Moon, Rising and Midheaven, all ten planets read in their houses,
+houses, aspects, element balance, and a 2400 × 3000 **star poster** to download.
+
+Payment is Stripe Checkout through a tiny Cloudflare Worker in [`worker/`](worker/).
+There are no accounts and no database: the birth details travel as the Checkout
+Session's metadata, and after paying, the page's address (`?map=cs_…`) becomes the
+buyer's permanent link to that map, on any device. The paywall only switches on once
+`CONFIG.payApi` is set at the top of the script — until then the astral map is fully free.
+
+Setup, testing and going live: [`docs/LAUNCH.md`](docs/LAUNCH.md).
+
 ## Tech
 
-A single self-contained `index.html` — WebGL point cloud, hand-drawn arcana, zodiac
+A self-contained `index.html` — WebGL point cloud, hand-drawn arcana, zodiac
 and planet glyphs, a small ephemeris, no build step and no dependencies beyond Google
-Fonts. Just open the file, or visit the GitHub Pages deployment.
+Fonts. `terms.html` holds the terms and privacy notice; `worker/` holds the payment
+worker (`npm test` runs it against a mock Stripe).
 
 ## Credits
 
