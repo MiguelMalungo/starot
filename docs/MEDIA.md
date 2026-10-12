@@ -12,8 +12,8 @@ It stays hidden until `CONFIG.gallery` in `index.html` has entries.
 | 3 | `design-2-sun-gemini.png` | inside of the wrist | ~3 cm |
 | 4 | `design-2-sun-gemini.png` | ankle | ~3 cm |
 | 5 | `design-3-rising-leo.png` | collarbone | ~4 cm |
-| 6 | `design-4-numbers-8-6-5-3.png` | along the forearm | ~5 cm |
-| 7 | `design-4-numbers-8-6-5-3.png` | behind the ear / side of a finger | ~3 cm |
+| 6 | `design-4-sun-and-rising-gemini-leo.png` | along the forearm / collarbone | ~6 cm |
+| 7 | `design-5-numbers-8-6-5-3.png` | along the forearm or down the spine | ~8 cm |
 | 8 | `design-flash-sheet.png` | the printed sheet on a tattoo artist's desk | product shot |
 
 Plus 3–4 short videos (4–6 s): a wrist turning slowly, a push-in on the forearm wheel,
@@ -49,7 +49,7 @@ the placement and size.
 
 These models often bend small symbols. STAROT promises accuracy, so throw away any render
 where a glyph is wrong: a Gemini sign that isn't ♊, a missing centre dot in ☉, wrong
-numbers. If a model keeps distorting the symbols, a reliable fallback is a real photo of
+numbers or figures inside the seals. If a model keeps distorting the symbols, a reliable fallback is a real photo of
 skin with the PNG laid over it in an editor (Photopea or Photoshop, blend mode *Multiply*,
 a little blur and opacity around 85%).
 

@@ -383,7 +383,7 @@
   .ink-door{border-color:rgba(216,184,119,.42);background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.08),rgba(5,6,9,.45) 70%)}
   .showcase{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;width:min(620px,92vw)}
   .showcase figure{border:1px solid var(--hair);border-radius:12px;background:rgba(5,6,9,.5);padding:12px 14px 10px;display:flex;flex-direction:column;gap:8px;justify-content:center}
-  .showcase figure.big{grid-row:span 3}
+  .showcase figure.big{grid-row:span 4}
   .showcase .sc svg{width:100%;height:auto;display:block}
   .showcase figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
   .showcase figcaption b{color:var(--gold);font-weight:400;margin-right:8px}
@@ -502,7 +502,7 @@
       </button>
       <button class="door ink-door" data-go="ink">
         <span class="glyph">✒</span>
-        <div><h3 data-t="door.ink.h">Your tattoos</h3><p data-t="door.ink.p">Your sky and your numbers, drawn as four tattoo designs on one flash sheet.</p><span class="tag" id="inkTag">€7</span></div>
+        <div><h3 data-t="door.ink.h">Your tattoos</h3><p data-t="door.ink.p">Your sky and your numbers, drawn as five tattoo designs on one flash sheet.</p><span class="tag" id="inkTag">€7</span></div>
         <span class="label" data-t="door.ink.l">The ink</span>
       </button>
     </div>
@@ -542,7 +542,7 @@
        The stars will turn back to that night and draw the wheel.</p>
     <span class="label ink-only" data-t="ink.label" hidden>Your readings, worn</span>
     <h1 class="ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h1>
-    <p class="ink-only" data-t="ink.p" hidden>Four tattoo designs drawn from your own chart and your own numbers. Preview them free;
+    <p class="ink-only" data-t="ink.p" hidden>Five tattoo designs drawn from your own chart and your own numbers. Preview them free;
        the print-ready flash sheet and the files for your tattoo artist are the one thing here that costs money.</p>
     <div class="showcase ink-only" id="showcase" hidden></div>
     <div class="saved" id="savedMaps" hidden></div>
@@ -631,13 +631,14 @@
   <div class="offer-box">
     <button class="offer-close" id="unlockClose" aria-label="Close">✕</button>
     <span class="label" data-t="unlock.label">Your tattoo flash</span>
-    <h3 id="unlockTitle" data-t="unlock.h">Four designs, yours to wear</h3>
+    <h3 id="unlockTitle" data-t="unlock.h">Your designs, yours to wear</h3>
     <span class="for" id="unlockFor"></span>
     <ul class="gets">
       <li><i>✶</i><span data-t="get.wheel"><b>Your natal wheel</b> — the whole sky of your birth, as one piece</span></li>
       <li><i>☉</i><span data-t="get.sun"><b>☉ beside your Sun sign</b> — small, for a wrist or an ankle</span></li>
       <li id="getRising"><i>↑</i><span data-t="get.rising"><b>↑ beside your Rising sign</b> — how you arrive, worn</span></li>
-      <li><i>⁂</i><span data-t="get.nums"><b>Your numbers in a row</b> — Life Path, Expression, Soul, Persona</span></li>
+      <li id="getSky"><i>☉</i><span data-t="get.sky"><b>Both in one line</b> — ☉ and ↑ with their signs, side by side</span></li>
+      <li><i>⁂</i><span data-t="get.nums"><b>Your numbers as seals, in a row</b> — Life Path, Expression, Soul, Persona, as drawn in your reading</span></li>
       <li><i>↓</i><span data-t="get.files"><b>A print-ready flash sheet</b> with them all, and each design as vector SVG and 4000 px PNG for your tattoo artist</span></li>
     </ul>
     <div class="price"><b id="unlockPrice">€7</b><span data-t="price.note">One payment<br>yours for good</span></div>
@@ -727,7 +728,7 @@ const UI_PT={
   'door.tarot.h':'Leitura de tarô','door.tarot.p':'Três arcanos — passado, presente, futuro — tirados dos vinte e dois.','door.tarot.l':'As cartas',
   'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — planetas, casas, o ascendente.','door.astro.l':'A roda',
   'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — o caminho, a voz, a porta.',
-  'door.ink.h':'As suas tatuagens','door.ink.p':'O seu céu e os seus números, desenhados como quatro tatuagens numa folha de flash.','door.ink.l':'A tinta','door.num.l':'O selo',
+  'door.ink.h':'As suas tatuagens','door.ink.p':'O seu céu e os seus números, desenhados como cinco tatuagens numa folha de flash.','door.ink.l':'A tinta','door.num.l':'O selo',
   'free':'Grátis',
   'legal.terms':'Termos e privacidade','legal.share':'Compartilhar o observatório','legal.ent':'Para reflexão e entretenimento',
   'tarot.label':'Uma leitura em poeira de estrelas',
@@ -740,15 +741,13 @@ const UI_PT={
   'astro.label':'O céu na hora do seu nascimento',
   'astro.h1':'Onde estavam<br><em>os planetas?</em>',
   'astro.p':'Conte ao observatório a sua data, a sua hora e o lugar onde você respirou pela primeira vez. As estrelas vão voltar àquela noite e desenhar a roda.',
-  'ledger.free':'A roda em estrelas · o seu Sol',
-  'ledger.paid':'Um pôster em estrelas do seu céu · traço pronto para tatuagem · Lua · Ascendente · casas · aspectos · os dez planetas lidos',
   'f.hour':'Hora','f.min':'Minuto','f.notime':'Não sei a hora','f.place':'Cidade natal',
   'f.manual':'Minha cidade não está na lista — informar coordenadas','f.tz':'Fuso horário',
   'ph.city':'Comece a digitar uma cidade…',
   'cast':'☉ &nbsp;Desenhar o mapa',
   'privacy':'Calculado no seu navegador. O seu nome nunca sai desta página.',
   'ink.label':'As suas leituras, na pele','ink.h1':'Leve o seu céu<br><em>na pele.</em>',
-  'ink.p':'Quatro desenhos de tatuagem feitos a partir do seu mapa e dos seus números. Veja grátis; a folha de flash pronta para imprimir e os arquivos para o seu tatuador são a única coisa paga aqui.',
+  'ink.p':'Cinco desenhos de tatuagem feitos a partir do seu mapa e dos seus números. Veja grátis; a folha de flash pronta para imprimir e os arquivos para o seu tatuador são a única coisa paga aqui.',
   'f.iname':'Nome completo de nascimento — para os seus números','inkGo':'✒ &nbsp;Desenhar as minhas tatuagens',
   'num.label':'A aritmética de uma vida',
   'num.h1':'Todo nome é<br><em>um número.</em>',
@@ -761,24 +760,18 @@ const UI_PT={
   'offer.label':'Mantenha as lâmpadas acesas','offer.h':'Uma oferenda',
   'offer.p':'O observatório funciona com luz das estrelas e pequenas gentilezas. Se as estrelas disseram algo verdadeiro — ou algo útil, mesmo que não seja verdade — você pode deixar uma moeda no escuro. As estrelas reparam.',
   'offer.link':'✦ &nbsp;Fazer uma oferenda','offer.note':'A tigela de oferendas ainda está sendo esculpida — em breve.',
-  'unlock.label':'A sua folha de flash','unlock.h':'Quatro desenhos, para usar na pele',
+  'unlock.label':'A sua folha de flash','unlock.h':'Os seus desenhos, para usar na pele',
   'get.wheel':'<b>A sua roda natal</b> — o céu inteiro do seu nascimento, numa só peça',
   'get.sun':'<b>☉ ao lado do seu signo solar</b> — pequena, para o pulso ou o tornozelo',
   'get.rising':'<b>↑ ao lado do seu ascendente</b> — o jeito como você chega, na pele',
-  'get.nums':'<b>Os seus números numa linha</b> — Caminho, Expressão, Alma, Persona',
+  'get.sky':'<b>Os dois numa linha</b> — ☉ e ↑ com os seus signos, lado a lado',
+  'get.nums':'<b>Os seus números em selos, numa linha</b> — Caminho, Expressão, Alma, Persona, como na sua leitura',
   'get.files':'<b>Uma folha de flash pronta para imprimir</b> com todos eles, e cada desenho em SVG vetorial e PNG de 4000 px para o seu tatuador',
   'price.note':'Um pagamento só<br>seus para sempre',
   'unlockGo':'✒ &nbsp;Quero a minha folha','st.buy':'✒ &nbsp;Quero a minha folha',
   'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento e os seus quatro números vão junto com o pagamento, para que o seu link possa reabrir a folha — o seu nome nunca vai · <a href="termos.html" target="_blank">Termos</a>',
   'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
-  'get.moon':'<b>A sua Lua</b> — o que você precisa para se sentir em segurança',
-  'get.rising':'<b>Ascendente e Meio do Céu</b> — como você chega, e para onde vai',
-  'get.planets':'<b>Os dez planetas lidos</b> nos seus signos e casas',
-  'get.houses':'<b>Casas, aspectos</b> e o equilíbrio dos seus elementos',
-  'price.note':'Um pagamento só<br>pôster e mapa, seus para sempre',
-  'unlockGo':'✦ &nbsp;Quebrar o selo',
-  'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento vão junto com o pagamento, para que o seu link possa reabrir o mapa · <a href="termos.html" target="_blank">Termos</a>',
 };
 
 const PT_TEXT={
@@ -2067,8 +2060,8 @@ function showAstro(k){
     setPanel({pos:M.pos+T('The Sun','O Sol'),name:T(`Sun in ${s.name}`,`Sol em ${s.name}`),
       meta:[[M.deg,`${degStr(sun.lon)} ${s.name.toUpperCase()}`],[M.house,chart.houses?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:NEED_HOUR],[M.el,elMod(s)]],
       prose:`<em>${T('The centre; your will and the light you steer by.','O centro; a sua vontade e a luz que guia você.')}</em> ${SUN_IN[sun.sign]}${houseLine(sun)}`+
-        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of four designs drawn from your readings.`,
-                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de quatro desenhos feitos das suas leituras.`))});
+        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of five designs drawn from your readings.`,
+                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de cinco desenhos feitos das suas leituras.`))});
   }else if(k===2){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
@@ -2090,8 +2083,8 @@ function showAstro(k){
                                         `O regente do seu horizonte, <b>${{Sol:'o Sol',Lua:'a Lua'}[ruler.name]||ruler.name}</b>, está em <b>${SIGNS[ruler.sign].name}</b> na casa ${RN[ruler.house-1]} — a porta se abre para ${HOUSES[ruler.house-1]}.`)}</span>`:'')+
           `<span class="line">${T(`Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.`,
                                   `O seu Meio do Céu — o cume público — está em <b>${SIGNS[m].name}</b>: o mundo vai conhecer você como alguém ${SIGNS[m].flavor}.`)}</span>`+
-          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of four designs drawn from your readings.`,
-                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de quatro desenhos feitos das suas leituras.`))});
+          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of five designs drawn from your readings.`,
+                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de cinco desenhos feitos das suas leituras.`))});
     }else{
       morphTo({fn:(ctx,S)=>{const c=S/2;ctx.lineWidth=S*.014;ctx.setLineDash([S*.03,S*.05]);ctx.beginPath();ctx.arc(c,c,S*.44,0,7);ctx.stroke();ctx.setLineDash([]);
         ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c+S*.5,c);ctx.stroke();},fill:{desk:.66,mobile:.3}});
@@ -2173,15 +2166,15 @@ function nameNumbers(raw){
   }
   return {letters,expr:reduceNum(all),soul:reduceNum(vow),pers:reduceNum(con)};
 }
-function drawNumberSigil(ctx,S,n){
+function drawNumberSigil(ctx,S,n,wt=1){   /* wt>1 thickens the lines for small tattoo sizes */
   const c=S/2,R=S*.36;
-  ctx.lineWidth=S*.014;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.lineWidth=S*.014*wt;ctx.lineCap='round';ctx.lineJoin='round';
   ctx.beginPath();ctx.arc(c,c,S*.46,0,7);ctx.stroke();
   const poly=(k,step,rot)=>{ctx.beginPath();for(let i=0;i<=k;i++){const a=(rot-90+(i*step%k)*360/k)*D2R;ctx[i?'lineTo':'moveTo'](c+R*Math.cos(a),c+R*Math.sin(a));}ctx.stroke();};
   const tri=rot=>poly(3,1,rot);
-  ctx.lineWidth=S*.012;
+  ctx.lineWidth=S*.012*wt;
   switch(n){
-    case 1:ctx.beginPath();ctx.moveTo(c,c-R*.95);ctx.lineTo(c,c-R*.34);ctx.moveTo(c,c+R*.34);ctx.lineTo(c,c+R*.95);ctx.stroke();ctx.beginPath();ctx.arc(c,c-R*.95,S*.022,0,7);ctx.fill();break;
+    case 1:ctx.beginPath();ctx.moveTo(c,c-R*.95);ctx.lineTo(c,c-R*.34);ctx.moveTo(c,c+R*.34);ctx.lineTo(c,c+R*.95);ctx.stroke();ctx.beginPath();ctx.arc(c,c-R*.95,S*.022*Math.sqrt(wt),0,7);ctx.fill();break;
     case 2:for(const dx of [-R*.32,R*.32]){ctx.beginPath();ctx.arc(c+dx,c,R*.66,0,7);ctx.stroke();}break;
     case 3:tri(0);break;
     case 4:poly(4,1,45);break;
@@ -2196,7 +2189,7 @@ function drawNumberSigil(ctx,S,n){
     case 22:poly(4,1,45);poly(4,1,0);break;
     case 33:tri(0);tri(40);tri(80);break;   /* three triangles, evenly turned: a nine-point star */
   }
-  glyphText(ctx,String(n),c,c,n>9?S*.12:S*.15,S*.012);
+  glyphText(ctx,String(n),c,c,n>9?S*.12:S*.15,S*.012*wt);
 }
 
 let numbers=null;
@@ -2213,7 +2206,7 @@ function computeNumbers(name,date){
   n.maturity=reduceNum(n.life+n.expr);
   return n;
 }
-/* the four that go on the skin: Life Path, Expression, Soul, Persona */
+/* the four numbers that go on the skin, as seals: Life Path, Expression, Soul, Persona */
 const numsFor=(name,date)=>{const n=computeNumbers(name,date);return [n.life,n.expr,n.soul,n.pers];};
 $('numForm').onsubmit=e=>{
   e.preventDefault();
@@ -2251,8 +2244,8 @@ function showNumber(k){
   const row=[numbers.life,numbers.expr,numbers.soul,numbers.pers].join(' · ');
   setPanel({pos:`${T('Exhibit — ','Exposição — ')}${p.pos}`,name:`${n} · ${N_.title}`,meta,
     prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`+
-      inkCta(T(`<b style="color:var(--gold);font-weight:400">${row}</b> — your Life Path, Expression, Soul and Persona in one line, drawn as a tattoo with your chart.`,
-               `<b style="color:var(--gold);font-weight:400">${row}</b> — o seu Caminho, Expressão, Alma e Persona numa linha, desenhados como tatuagem junto com o seu mapa.`))});
+      inkCta(T(`<b style="color:var(--gold);font-weight:400">${row}</b> — your Life Path, Expression, Soul and Persona as their seals in one row, drawn as a tattoo with your chart.`,
+               `<b style="color:var(--gold);font-weight:400">${row}</b> — o seu Caminho, Expressão, Alma e Persona em selos numa linha, desenhados como tatuagem junto com o seu mapa.`))});
 }
 
 /* ═══ THE CORNER BUTTON — an offering, or the tattoo flash ════ */
@@ -2282,9 +2275,10 @@ if(CONFIG.donationUrl){
 }
 addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');$('stencil').classList.remove('show');}});
 
-/* ═══ THE TATTOOS — four designs drawn from your own readings ═══
-   1 the natal wheel · 2 ☉ beside the Sun's sign · 3 the ascendant arrow beside
-   the rising sign · 4 Life Path, Expression, Soul and Persona in one row.
+/* ═══ THE TATTOOS — five designs drawn from your own readings ═══
+   1 the natal wheel · 2 ☉ beside the Sun's sign · 3 the ascendant arrow beside the
+   rising sign · 4 both in one line · 5 Life Path, Expression, Soul and Persona as
+   their seals, in a row. Without a birth hour 3 and 4 can't exist, so the sheet has three.
    Free to preview; the flash sheet and the files are the product. */
 function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the horizon */
   ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
@@ -2293,16 +2287,17 @@ function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the ho
 }
 function drawSunPair(ctx,W,H,sign){glyphPlanet(ctx,0,W*.29,H/2,H*.34,H*.05);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*.05);}
 function drawRisingPair(ctx,W,H,sign){glyphAsc(ctx,W*.29,H/2,H*.36,H*.05);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*.05);}
-function drawNumberRow(ctx,W,H,nums){
-  let h=H*.62,s=h/2;const lw=H*.05,strs=nums.map(String);
-  const gw=t=>1.4*s*(t.length-1)+1.1*s,G=()=>1.9*s;
-  let total=strs.reduce((a,t)=>a+gw(t),0)+G()*(strs.length-1);
-  if(total>W*.94){const f=W*.94/total;h*=f;s=h/2;total*=f;}
-  let x=(W-total)/2;
-  strs.forEach((t,i)=>{
-    const w=gw(t);glyphText(ctx,t,x+w/2,H/2,h,lw);x+=w;
-    if(i<strs.length-1){ctx.beginPath();ctx.arc(x+G()/2,H/2,lw*.8,0,7);ctx.fill();x+=G();}
-  });
+/* ☉ sign · ↑ sign — the two pairs in one line, a dot between them */
+function drawSkyRow(ctx,W,H,sunSign,ascSign){
+  glyphPlanet(ctx,0,W*.12,H/2,H*.34,H*.05);glyphSign(ctx,sunSign,W*.32,H/2,H*.36,H*.05);
+  ctx.beginPath();ctx.arc(W/2,H/2,H*.035,0,7);ctx.fill();
+  glyphAsc(ctx,W*.68,H/2,H*.36,H*.05);glyphSign(ctx,ascSign,W*.88,H/2,H*.36,H*.05);
+}
+/* the four numbers as their seals — circle, figure and numeral, as drawn in the readings */
+const SEAL_ROW=4.4;   /* width ÷ height of the row */
+function drawSealRow(ctx,W,H,nums){
+  const S=Math.min(H,W/SEAL_ROW),g=(W-nums.length*S)/(nums.length-1),y=(H-S)/2;
+  nums.forEach((n,i)=>{ctx.save();ctx.translate(i*(S+g),y);drawNumberSigil(ctx,S,n,1.8);ctx.restore();});
 }
 
 let inkNums=null,sheetId='',inkList=[];
@@ -2311,32 +2306,44 @@ const ownedSheet=id=>store.get('sheets',[]).find(x=>x.id===id);
 const sheetOpen=()=>!PAYWALL||!!ownedSheet(sheetId);
 const slug=t=>fold(t).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 function inkDesigns(){
-  const sun=chart.bodies[0],H=chart.houses,ss=SIGNS[sun.sign];
+  const sun=chart.bodies[0],H=chart.houses,ss=SIGNS[sun.sign],from=T('from','a partir de');
   const list=[
     {kind:'wheel',w:1,h:1,draw:(c,W)=>drawWheel(c,W,chart,.6),title:T('Your natal wheel','A sua roda natal'),file:'natal-wheel',size:10,
      place:T('upper back, forearm, thigh','costas, antebraço, coxa'),intro:T('The whole sky of your birth, as one piece.','O céu inteiro do seu nascimento, numa só peça.')},
     {kind:'sun',w:2,h:1,draw:(c,W,h)=>drawSunPair(c,W,h,sun.sign),title:T(`Sun in ${ss.name}`,`Sol em ${ss.name}`),file:`sun-${slug(ss.name)}`,size:3,
      place:T('wrist, ankle, behind the ear','pulso, tornozelo, atrás da orelha'),intro:T('☉ — the circle with its centre — beside the sign the Sun stood in.','☉ — o círculo com o seu centro — ao lado do signo onde o Sol estava.')}];
-  if(H){const rs=SIGNS[signOf(H.asc)];
-    list.push({kind:'rising',w:2,h:1,draw:(c,W,h)=>drawRisingPair(c,W,h,signOf(H.asc)),title:risingName(rs),file:`rising-${slug(rs.name)}`,size:3,
-      place:T('collarbone, inner arm, nape','clavícula, parte interna do braço, nuca'),intro:T('The ascendant arrow over the horizon, beside the sign that was rising when you arrived.','A seta do ascendente sobre o horizonte, ao lado do signo que subia quando você chegou.')});}
-  list.push({kind:'nums',w:4,h:1,draw:(c,W,h)=>drawNumberRow(c,W,h,inkNums),title:`${T('Your numbers','Os seus números')} · ${inkNums.join(' ')}`,file:`numbers-${inkNums.join('-')}`,size:4,
-    place:T('wrist, ribs, along a finger','pulso, costelas, ao longo de um dedo'),intro:T('Life Path · Expression · Soul · Persona, in one line.','Caminho · Expressão · Alma · Persona, numa linha.')});
+  if(H){const ra=signOf(H.asc),rs=SIGNS[ra];
+    list.push({kind:'rising',w:2,h:1,draw:(c,W,h)=>drawRisingPair(c,W,h,ra),title:risingName(rs),file:`rising-${slug(rs.name)}`,size:3,
+      place:T('collarbone, inner arm, nape','clavícula, parte interna do braço, nuca'),intro:T('The ascendant arrow over the horizon, beside the sign that was rising when you arrived.','A seta do ascendente sobre o horizonte, ao lado do signo que subia quando você chegou.')});
+    list.push({kind:'sky',w:4,h:1,draw:(c,W,h)=>drawSkyRow(c,W,h,sun.sign,ra),title:T('Sun and Rising, in one line','Sol e Ascendente, numa linha'),file:`sun-and-rising-${slug(ss.name)}-${slug(rs.name)}`,size:6,
+      place:T('forearm, collarbone, along the spine','antebraço, clavícula, ao longo da coluna'),intro:T(`☉ ${ss.name} · ↑ ${rs.name} — your centre and your door, side by side.`,`☉ ${ss.name} · ↑ ${rs.name} — o seu centro e a sua porta, lado a lado.`)});}
+  list.push({kind:'seals',w:SEAL_ROW,h:1,draw:(c,W,h)=>drawSealRow(c,W,h,inkNums),title:`${T('Your numbers','Os seus números')} · ${inkNums.join(' · ')}`,file:`numbers-${inkNums.join('-')}`,size:8,
+    place:T('forearm, along the spine, ribs','antebraço, ao longo da coluna, costelas'),
+    intro:T('Life Path · Expression · Soul · Persona — each number with its seal, as in your reading, in one row.','Caminho · Expressão · Alma · Persona — cada número com o seu selo, como na sua leitura, numa linha.')});
+  for(const d of list)d.cap=d.kind==='wheel'?`${d.title} · ${from} 10 cm`:d.kind==='seals'?`${T('Life Path · Expression · Soul · Persona','Caminho · Expressão · Alma · Persona')} · ${d.size} cm`:`${d.title} · ${d.size} cm`;
   return list;
 }
 function flashLine(){
   const {date,h,mi,noTime}=chartMeta;
   return T(`${date.d} ${MONTHS[date.m-1]} ${date.y}`,`${date.d} de ${MONTHS[date.m-1].toLowerCase()} de ${date.y}`)+(noTime?'':` · ${hhmm(h,mi)}`)+` · ${chartMeta.place.full}`;
 }
-/* the sheet's layout, used both for print and for the star figure (A-series proportions) */
+/* the sheet's layout (A3 at 300 dpi = 3508 px wide), used for print and for the star figure.
+   Each entry: design, centre x (fraction of width), top, width, caption baseline. */
+function flashSlots(){
+  const by=k=>inkList.find(d=>d.kind===k);
+  return by('rising')?[
+    [by('wheel'),.5,700,1750,2530],
+    [by('sun'),.28,2620,1100,3245],[by('rising'),.72,2620,1100,3245],
+    [by('sky'),.5,3330,2200,3955],
+    [by('seals'),.5,4040,2500,4690]]:[
+    [by('wheel'),.5,720,2150,2955],
+    [by('sun'),.5,3120,1250,3825],
+    [by('seals'),.5,3980,2600,4660]];
+}
 function layoutFlash(ctx,W,txt){
-  const f=W/3508,by=k=>inkList.find(d=>d.kind===k);
-  const box=(dz,cx,top,w)=>{const h=w*dz.h/dz.w;ctx.save();ctx.translate(cx-w/2,top);dz.draw(ctx,w,h);ctx.restore();};
-  const wheel=by('wheel'),sun=by('sun'),ris=by('rising'),nums=by('nums');
-  box(wheel,W/2,760*f,2300*f);
-  if(ris){box(sun,W*.28,3330*f,1350*f);box(ris,W*.72,3330*f,1350*f);}else box(sun,W/2,3330*f,1350*f);
-  box(nums,W/2,4150*f,1800*f);
-  if(txt)txt(f,{wheel,sun,ris,nums});
+  const f=W/3508,slots=flashSlots();
+  for(const [dz,cx,top,w] of slots){const h=w*f*dz.h/dz.w;ctx.save();ctx.translate(cx*W-w*f/2,top*f);dz.draw(ctx,w*f,h);ctx.restore();}
+  if(txt)txt(f,slots);
 }
 async function renderFlash(W=3508,wm=false){
   try{await Promise.all(["300 60px 'Cormorant Garamond'","italic 300 60px 'Cormorant Garamond'","400 30px Jost","400 30px Marcellus"].map(f=>document.fonts.load(f)));}catch(e){}
@@ -2348,17 +2355,13 @@ async function renderFlash(W=3508,wm=false){
   const t=(s,font,col,y,sp,xx=W/2)=>{x.font=font;x.fillStyle=col;x.textAlign='center';x.textBaseline='alphabetic';
     if('letterSpacing' in x)x.letterSpacing=sp||'0px';x.fillText(s,xx,y);if('letterSpacing' in x)x.letterSpacing='0px';};
   x.strokeStyle=x.fillStyle=ink;
-  layoutFlash(x,W,(f,dz)=>{
+  layoutFlash(x,W,(f,dz)=>{   /* dz: the slots, in order */
     t('STAROT',`400 ${K(52)}px Marcellus`,gold,K(300),`${K(26)}px`);
     t(T('Tattoo flash','Folha de flash'),`italic 300 ${K(150)}px 'Cormorant Garamond'`,ink,K(480));
     t(flashLine().toUpperCase(),`400 ${K(40)}px Jost`,soft,K(575),`${K(10)}px`);
     x.fillStyle=soft;x.fillRect(W/2-K(160),K(640),K(320),K(3));
     const lab=(n,s,xx,y)=>t(`${n} · ${s}`.toUpperCase(),`400 ${K(38)}px Jost`,soft,y,`${K(9)}px`,xx);
-    let n=1;const from=T('from','a partir de');
-    lab(n++,`${dz.wheel.title} · ${from} 10 cm`,W/2,K(3160));
-    if(dz.ris){lab(n++,`${dz.sun.title} · 3 cm`,W*.28,K(4080));lab(n++,`${dz.ris.title} · 3 cm`,W*.72,K(4080));}
-    else lab(n++,`${dz.sun.title} · ${from} 3 cm`,W/2,K(4080));
-    lab(n,`${T('Life Path · Expression · Soul · Persona','Caminho · Expressão · Alma · Persona')} · 4 cm`,W/2,K(4690));
+    dz.forEach(([d,cx,,,ly],i)=>lab(i+1,d.cap,cx*W,K(ly)));
     t(T('Line art for personal use — the SVG files scale to any size for your tattoo artist.','Traço para uso pessoal — os arquivos SVG escalam para qualquer tamanho para o seu tatuador.'),
       `italic 300 ${K(46)}px 'Cormorant Garamond'`,soft,K(4800));
     t((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),`400 ${K(28)}px Jost`,gold,K(4885),`${K(8)}px`);
@@ -2373,8 +2376,8 @@ async function renderFlash(W=3508,wm=false){
   return c;
 }
 
-const INK_FACES={wheel:'✶',sun:'☉',rising:'↑',nums:'⁂'};
-const INK_LABELS={wheel:T('Map','Mapa'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),nums:T('Numbers','Números')};
+const INK_FACES={wheel:'✶',sun:'☉',rising:'↑',sky:'☉↑',seals:'⁂'};
+const INK_LABELS={wheel:T('Map','Mapa'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),sky:T('Line','Linha'),seals:T('Numbers','Números')};
 function castInk(inp,nums){
   prepChart(inp);inkNums=nums;sheetId=sheetKey(chartInput,nums);
   const own=ownedSheet(sheetId);
@@ -2454,8 +2457,12 @@ let showcaseDone=false;
 function renderShowcase(){
   if(showcaseDone)return;showcaseDone=true;
   const ch=computeChart(Date.UTC(1990,5,21,8,15),38.72,-9.14,true),nums=[8,6,5,3];
-  const items=[[1,(c,W)=>drawWheel(c,W,ch,.6),T('Natal wheel','Roda natal')],[2,(c,W,H)=>drawSunPair(c,W,H,ch.bodies[0].sign),T('☉ + your Sun sign','☉ + o seu signo solar')],
-    [2,(c,W,H)=>drawRisingPair(c,W,H,signOf(ch.houses.asc)),T('↑ + your Rising sign','↑ + o seu ascendente')],[4,(c,W,H)=>drawNumberRow(c,W,H,nums),T('Your numbers in a row','Os seus números numa linha')]];
+  const sun=ch.bodies[0].sign,asc=signOf(ch.houses.asc);
+  const items=[[1,(c,W)=>drawWheel(c,W,ch,.6),T('Natal wheel','Roda natal')],
+    [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar')],
+    [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente')],
+    [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha')],
+    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos')]];
   $('showcase').innerHTML=items.map(([w,draw,cap],i)=>{
     const W=400,H=Math.round(400/w),c=new SvgCtx(W,H);c.strokeStyle=c.fillStyle='#d8b877';draw(c,W,H);
     return `<figure class="${w>1?'wide':'big'}"><div class="sc">${c.svg()}</div><figcaption><b>${i+1}</b>${cap}</figcaption></figure>`;}).join('');
@@ -2554,7 +2561,8 @@ const unlockEl=$('unlock');
 function openUnlock(){
   if(!PAYWALL||!chartInput||!inkNums)return;
   $('unlockFor').textContent=`${T('For','Para')} ${bornLine()} · ${chartMeta.place.full}`;
-  $('getRising').hidden=!chart.houses;
+  $('getRising').hidden=$('getSky').hidden=!chart.houses;
+  $('unlockTitle').textContent=T(`${inkList.length===5?'Five':'Three'} designs, yours to wear`,`${inkList.length===5?'Cinco':'Três'} desenhos, para usar na pele`);
   $('unlockNote').textContent='';
   stencil.classList.remove('show');
   unlockEl.classList.add('show');
