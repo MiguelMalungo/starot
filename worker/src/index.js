@@ -1,6 +1,6 @@
 /* STAROT payment worker — runs on Cloudflare Workers (free tier is plenty).
 
-   POST /checkout   {input}      → creates a Stripe Checkout Session for one astral map, returns {url}
+   POST /checkout   {input,lang} → creates a Stripe Checkout Session for one star poster + full map, returns {url}
    GET  /map?id=cs_…             → if that session is paid, returns {ok, input} so the map can reopen anywhere
 
    There is no database: the birth details ride along as the session's metadata,
@@ -10,7 +10,25 @@
    Vars (wrangler.toml):          SITE_URL, TERMS_URL, PRICE_CENTS, CURRENCY,
                                   REQUIRE_TERMS, STRIPE_TAX, ALLOWED_ORIGINS, ALLOW_LOCALHOST */
 
-const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MON = {
+  en: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  pt: ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"],
+};
+/* everything the buyer reads at checkout, in both languages */
+const COPY = {
+  en: {
+    name: "STAROT · Star poster & astral map",
+    desc: (when, place) => `Star poster and full natal chart · ${when} · ${place}`,
+    submit: "Your map and poster open the moment payment completes.",
+    terms: url => `I agree to the [Terms](${url}) and ask for my map to be delivered immediately. I understand that once it is delivered I lose the 14-day right of withdrawal.`,
+  },
+  pt: {
+    name: "STAROT · Pôster em estrelas e mapa astral",
+    desc: (when, place) => `Pôster em estrelas e mapa natal completo · ${when} · ${place}`,
+    submit: "O seu mapa e o pôster abrem assim que o pagamento for concluído.",
+    terms: url => `Aceito os [Termos](${url}) e peço a entrega imediata do meu mapa. Entendo que, depois de entregue, perco o direito de arrependimento de 14 dias.`,
+  },
+};
 const TAG = "starot-map-1";          // marks sessions created here, so no other payment can open a map
 const pad = n => String(n).padStart(2, "0");
 
@@ -44,33 +62,36 @@ async function checkout(req, env, origin) {
   let body;
   try { body = await req.json(); } catch { throw fail(400, "bad json"); }
   const inp = validate(body && body.input);
+  const lang = body.lang === "pt" ? "pt" : "en";
+  const c = COPY[lang];
   const base = returnBase(env, origin);
-  const when = `${inp.d} ${MON[inp.m - 1]} ${inp.y}` + (inp.nt ? "" : ` · ${pad(inp.h)}:${pad(inp.mi)}`);
+  const back = lang === "pt" ? "&lang=pt" : "";
+  const terms = lang === "pt" ? env.TERMS_URL.replace(/terms\.html$/, "termos.html") : env.TERMS_URL;
+  const when = `${inp.d} ${MON[lang][inp.m - 1]} ${inp.y}` + (inp.nt ? "" : ` · ${pad(inp.h)}:${pad(inp.mi)}`);
 
   const p = new URLSearchParams();
   p.set("mode", "payment");
   p.set("submit_type", "pay");
-  p.set("success_url", `${base}?map={CHECKOUT_SESSION_ID}`);
-  p.set("cancel_url", `${base}?canceled=1`);
+  p.set("success_url", `${base}?map={CHECKOUT_SESSION_ID}${back}`);
+  p.set("cancel_url", `${base}?canceled=1${back}`);
+  p.set("locale", lang === "pt" ? "pt-BR" : "auto");
   p.set("line_items[0][quantity]", "1");
   p.set("line_items[0][price_data][currency]", env.CURRENCY || "eur");
-  p.set("line_items[0][price_data][unit_amount]", String(parseInt(env.PRICE_CENTS || "300", 10)));
-  p.set("line_items[0][price_data][product_data][name]", "STAROT · Astral map");
-  p.set("line_items[0][price_data][product_data][description]", `Full natal chart · ${when} · ${inp.place}`);
-  p.set("payment_intent_data[description]", `STAROT astral map · ${when} · ${inp.place}`);
+  p.set("line_items[0][price_data][unit_amount]", String(parseInt(env.PRICE_CENTS || "700", 10)));
+  p.set("line_items[0][price_data][product_data][name]", c.name);
+  p.set("line_items[0][price_data][product_data][description]", c.desc(when, inp.place));
+  p.set("payment_intent_data[description]", `STAROT poster + map · ${when} · ${inp.place}`);
   p.set("allow_promotion_codes", "true");
-  p.set("custom_text[submit][message]", "Your map opens the moment payment completes.");
+  p.set("custom_text[submit][message]", c.submit);
   if (env.REQUIRE_TERMS !== "false") {
     /* EU digital content: the buyer asks for immediate delivery and acknowledges losing the 14-day withdrawal right.
        Stripe requires a Terms of Service URL in Settings → Public details for this to work. */
     p.set("consent_collection[terms_of_service]", "required");
-    p.set("custom_text[terms_of_service_acceptance][message]",
-      `I agree to the [Terms](${env.TERMS_URL}) and ask for my map to be delivered immediately. ` +
-      `I understand that once it is delivered I lose the 14-day right of withdrawal.`);
+    p.set("custom_text[terms_of_service_acceptance][message]", c.terms(terms));
   }
   if (env.STRIPE_TAX === "true") {
     p.set("automatic_tax[enabled]", "true");
-    p.set("line_items[0][price_data][tax_behavior]", "inclusive");   // €3 stays €3, VAT inside
+    p.set("line_items[0][price_data][tax_behavior]", "inclusive");   // €7 stays €7, VAT inside
   }
   for (const [k, v] of Object.entries({ ...inp, v: TAG })) p.set(`metadata[${k}]`, String(v));
 

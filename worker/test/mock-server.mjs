@@ -9,7 +9,7 @@ const PORT = 8787;
 const mock = installMockStripe({ checkoutBase: `http://localhost:${PORT}` });
 const env = {
   STRIPE_SECRET_KEY: "sk_test_mock", SITE_URL: "https://miguelmalungo.github.io/starot/",
-  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "300", CURRENCY: "eur",
+  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "700", CURRENCY: "eur",
   REQUIRE_TERMS: "true", STRIPE_TAX: "false", ALLOWED_ORIGINS: "", ALLOW_LOCALHOST: "true",
 };
 
@@ -24,7 +24,7 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     return res.end(`<body style="font:16px system-ui;background:#f6f5f2;padding:40px;max-width:520px;margin:auto">
       <p style="color:#b33;font-weight:600">MOCK CHECKOUT — local test only, no money moves</p>
-      <h2>STAROT · Astral map — €${(s.amount_total / 100).toFixed(2)}</h2>
+      <h2>${s.params["line_items[0][price_data][product_data][name]"]} — €${(s.amount_total / 100).toFixed(2)}</h2>
       <p>${s.params["line_items[0][price_data][product_data][description]"]}</p>
       <p style="font-size:13px;color:#555">${s.params["custom_text[terms_of_service_acceptance][message]"] || ""}</p>
       <p><a id="pay" href="?do=pay">Pay</a> &nbsp; · &nbsp; <a id="cancel" href="?do=cancel">Cancel</a></p></body>`);

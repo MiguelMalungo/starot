@@ -12,8 +12,8 @@ The code is ready; nothing charges money until you finish these steps. Do them i
 - **Invoices:** Portugal expects an invoice for each sale, including €3 ones. Decide with
   your contabilista how to issue them (certified invoicing software that imports Stripe
   payments is the usual answer). This is the one real piece of admin — settle it first.
-- Fill in every highlighted `[…]` in `terms.html`: name, NIF, fiscal address, email,
-  ADR entity, date.
+- Fill in every highlighted `[…]` in `terms.html` **and** `termos.html` (the Portuguese
+  version): name, NIF, fiscal address, email, ADR entity, date.
 
 ## 1 · Stripe
 
@@ -22,8 +22,11 @@ The code is ready; nothing charges money until you finish these steps. Do them i
 2. **Settings → Business → Public details:** support email, and set both *Terms of
    service* and *Privacy policy* to `https://miguelmalungo.github.io/starot/terms.html`.
    Checkout's "I agree to the Terms" box needs this; without it, checkout fails.
+   (Portuguese buyers see a consent line that links to `termos.html` instead.)
 3. **Settings → Payment methods:** keep cards, Apple Pay, Google Pay; turn on **MB WAY**.
    Leave **Multibanco off**: it settles days later, and the map should open at once.
+   If **Pix** is offered to your account, turn it on for Brazilian buyers — the page waits
+   up to ~40 seconds for a payment to confirm, which covers Pix.
 4. **Settings → Customer emails:** turn on receipts for successful payments.
 5. **Developers → API keys:** create a **restricted key** with *Checkout Sessions: Write*
    and nothing else. Make one in **test mode** first (`rk_test_…`).
@@ -35,7 +38,7 @@ The code is ready; nothing charges money until you finish these steps. Do them i
 ```bash
 cd worker
 npm install
-npm test                               # 12 checks against a mock Stripe
+npm test                               # 13 checks against a mock Stripe
 npx wrangler login                     # opens the browser once
 npx wrangler secret put STRIPE_SECRET_KEY   # paste the rk_test_… key
 npx wrangler deploy                    # prints https://starot-pay.<you>.workers.dev
@@ -49,7 +52,7 @@ At the top of the `<script>` in `index.html`:
 ```js
 const CONFIG={
   payApi:"https://starot-pay.<you>.workers.dev",
-  price:"€3",
+  price:"€7",
   donationUrl:"https://buy.stripe.com/…",   // the offering link
   goatcounter:"starot",                     // optional, see step 5
 };
@@ -91,8 +94,8 @@ The page reports these events under `ev/…`:
 
 ## Changing things later
 
-- **Price:** `PRICE_CENTS` in `worker/wrangler.toml` (then `npx wrangler deploy`) *and*
-  `CONFIG.price` in `index.html`.
+- **Price:** `PRICE_CENTS` in `worker/wrangler.toml` (now 700, then `npx wrangler deploy`)
+  *and* `CONFIG.price` in `index.html`.
 - **Custom domain:** update `SITE_URL`, `TERMS_URL` (and `ALLOWED_ORIGINS` if you keep
   both) in `wrangler.toml`, the canonical / `og:` URLs in `index.html`, and Stripe's public
   details.
@@ -106,6 +109,6 @@ The page reports these events under `ev/…`:
 
 The chart is computed in the browser and the reading texts ship with the page, so a
 determined person with developer tools can read them without paying. That is normal for
-a €3 web purchase, and the paid path (Stripe, the permanent link, the poster) stays
+a cheap web purchase, and the paid path (Stripe, the permanent link, the poster) stays
 intact. If it ever matters, the next step is to move the paid reading texts into the
 worker and serve them only for paid sessions.

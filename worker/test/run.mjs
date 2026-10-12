@@ -5,7 +5,7 @@ import { installMockStripe } from "./mock-stripe.mjs";
 
 const env = {
   STRIPE_SECRET_KEY: "sk_test_x", SITE_URL: "https://miguelmalungo.github.io/starot/",
-  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "300", CURRENCY: "eur",
+  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "700", CURRENCY: "eur",
   REQUIRE_TERMS: "true", STRIPE_TAX: "false", ALLOWED_ORIGINS: "", ALLOW_LOCALHOST: "false",
 };
 const SITE = "https://miguelmalungo.github.io";
@@ -28,14 +28,15 @@ await t("foreign origins are not echoed back", async () => {
   assert.equal(r.headers.get("Access-Control-Allow-Origin"), SITE);
 });
 let sid;
-await t("checkout creates a €3 session carrying the birth details", async () => {
+await t("checkout creates a €7 session carrying the birth details", async () => {
   const r = await call("/checkout", { method: "POST", body: { input } });
   const j = await r.json();
   assert.equal(r.status, 200, JSON.stringify(j));
   assert.match(j.url, /^https:\/\/checkout\.stripe\.com\//);
   sid = [...mock.sessions.keys()].pop();
   const s = mock.sessions.get(sid);
-  assert.equal(s.amount_total, 300);
+  assert.equal(s.amount_total, 700);
+  assert.equal(s.params.locale, "auto");
   assert.equal(s.params["line_items[0][price_data][currency]"], "eur");
   assert.equal(s.metadata.place, "Lisbon, Portugal");
   assert.equal(s.metadata.v, "starot-map-1");
@@ -44,6 +45,17 @@ await t("checkout creates a €3 session carrying the birth details", async () =
   assert.equal(s.params["consent_collection[terms_of_service]"], "required");
   assert.equal(s.params["allow_promotion_codes"], "true");
   assert.match(s.params["line_items[0][price_data][product_data][description]"], /21 Jun 1990 · 09:15 · Lisbon/);
+});
+await t("Portuguese buyers get Portuguese checkout and come back to the PT page", async () => {
+  await call("/checkout", { method: "POST", body: { input, lang: "pt" } });
+  const s = [...mock.sessions.values()].pop();
+  assert.equal(s.params.locale, "pt-BR");
+  assert.match(s.success_url, /\?map=cs_test_\w+&lang=pt$/);
+  assert.equal(s.cancel_url, "https://miguelmalungo.github.io/starot/?canceled=1&lang=pt");
+  assert.match(s.params["line_items[0][price_data][product_data][name]"], /Pôster em estrelas/);
+  assert.match(s.params["line_items[0][price_data][product_data][description]"], /21 jun 1990 · 09:15/);
+  assert.match(s.params["custom_text[terms_of_service_acceptance][message]"], /termos\.html/);
+  assert.equal(s.metadata.lang, undefined);
 });
 await t("an unpaid session does not open the map", async () => {
   const r = await call(`/map?id=${sid}`);

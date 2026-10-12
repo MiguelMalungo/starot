@@ -42,9 +42,17 @@ Life Path exhibit). Each number has its own geometric seal drawn in stars.
 ## What is free, what is paid
 
 Tarot and numerology are free, with an optional offering (a pay-what-you-want link).
-The astral map is a free preview — the wheel in stars and the Sun reading — and the
-**full map costs €3**: Moon, Rising and Midheaven, all ten planets read in their houses,
-houses, aspects, element balance, and a 2400 × 3000 **star poster** to download.
+The astral map is a free preview — the wheel in stars and the Sun reading — and
+**€7 buys a 2400 × 3000 star poster of that sky plus the full map**: Moon, Rising and
+Midheaven, all ten planets read in their houses, houses, aspects and element balance.
+
+## Languages
+
+English and Brazilian Portuguese. Portuguese-language browsers get PT automatically;
+`?lang=pt` / `?lang=en` force a language (and is what search engines index), and the
+EN/PT button in the header switches. Every reading, the city list (with ~100 Brazilian
+and Portuguese cities, each in its own historical time zone), the poster, Stripe's
+checkout page and the terms (`termos.html`) follow the language.
 
 Payment is Stripe Checkout through a tiny Cloudflare Worker in [`worker/`](worker/).
 There are no accounts and no database: the birth details travel as the Checkout

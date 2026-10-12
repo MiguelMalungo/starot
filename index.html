@@ -6,9 +6,13 @@
 <title>STAROT · Observatory of Fates</title>
 <meta name="description" content="Tarot, astral maps and numerology drawn in stardust. Deal three arcana, read the numbers in your name, or see the sky as it stood when you were born.">
 <meta name="theme-color" content="#050609">
-<link rel="canonical" href="https://miguelmalungo.github.io/starot/">
+<link rel="alternate" hreflang="en" href="https://miguelmalungo.github.io/starot/">
+<link rel="alternate" hreflang="pt-BR" href="https://miguelmalungo.github.io/starot/?lang=pt">
+<link rel="alternate" hreflang="x-default" href="https://miguelmalungo.github.io/starot/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="STAROT">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="pt_BR">
 <meta property="og:title" content="STAROT · Observatory of Fates">
 <meta property="og:description" content="Tarot, astral maps and numerology — every answer drawn in thousands of stars.">
 <meta property="og:url" content="https://miguelmalungo.github.io/starot/">
@@ -64,6 +68,10 @@
   .head-right .count{color:var(--gold);letter-spacing:.3em;font-size:10px}
   .head-right .nav{cursor:pointer;transition:color .3s}
   .head-right .nav:hover,.head-right .nav.here{color:var(--gold-bright)}
+  .lang{background:none;border:1px solid var(--hair);border-radius:999px;padding:4px 9px 3px;cursor:pointer;
+    font-family:'Jost';letter-spacing:.2em;transition:all .3s}
+  .lang:hover{border-color:var(--gold);color:var(--gold-bright)}
+  .lang-m{display:none}
 
   /* ── intro / menu ───────────────────────── */
   #intro{
@@ -323,6 +331,8 @@
     content:"sealed";position:absolute;bottom:7px;left:50%;transform:translateX(-50%);
     font-family:'Jost';font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);
   }
+  html[lang="pt-BR"] .card.sealed::after{content:"selado"}
+  html[lang="pt-BR"] .card.reversed::after{content:"▾ inv"}
   .veil{-webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 45%,transparent 90%);
     mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 45%,transparent 90%);
     filter:blur(3.5px);user-select:none;pointer-events:none;display:block;margin-top:6px;max-height:5.2em;overflow:hidden}
@@ -406,6 +416,7 @@
     #unlock .offer-box{padding:34px 22px 24px;max-height:92vh;overflow-y:auto}
     .price b{font-size:52px}
     .head-right{display:none}
+    .lang-m{display:inline-block}
     header{padding:22px 20px}
   }
 </style>
@@ -417,130 +428,132 @@
 <header>
   <button class="brand" id="brand"><i></i>STAROT</button>
   <div class="head-right">
-    <span class="label">Observatory of Fates</span><span class="sep"></span>
-    <span class="label nav" data-go="tarot">Tarot</span><span class="sep"></span>
-    <span class="label nav" data-go="astro">Astral map</span><span class="sep"></span>
-    <span class="label nav" data-go="num">Numerology</span><span class="sep"></span>
-    <span class="count" id="counter">—</span>
+    <span class="label" data-t="obs">Observatory of Fates</span><span class="sep"></span>
+    <span class="label nav" data-go="tarot" data-t="nav.tarot">Tarot</span><span class="sep"></span>
+    <span class="label nav" data-go="astro" data-t="nav.astro">Astral map</span><span class="sep"></span>
+    <span class="label nav" data-go="num" data-t="nav.num">Numerology</span><span class="sep"></span>
+    <span class="count" id="counter">—</span><span class="sep"></span>
+    <button class="label nav lang" id="langBtn" aria-label="Português">PT</button>
   </div>
+  <button class="label lang lang-m" id="langBtnM" aria-label="Português">PT</button>
 </header>
 
 <div id="intro">
 
   <!-- ── the hall: choose an instrument ── -->
   <div class="section on" id="menu">
-    <span class="label">Observatory of Fates</span>
-    <h1>Choose your<br><em>instrument.</em></h1>
-    <p>Three ways of asking the dark. Each answer is drawn in stardust —
+    <span class="label" data-t="obs">Observatory of Fates</span>
+    <h1 data-t="menu.h1">Choose your<br><em>instrument.</em></h1>
+    <p data-t="menu.p">Three ways of asking the dark. Each answer is drawn in stardust —
        figures assembled from thousands of stars that scatter at your touch, and remember.</p>
     <div class="doors">
       <button class="door" data-go="tarot">
         <span class="glyph">✦</span>
-        <div><h3>Tarot reading</h3><p>Three arcana — past, present, future — dealt from the twenty-two.</p><span class="tag">Free</span></div>
-        <span class="label">The cards</span>
+        <div><h3 data-t="door.tarot.h">Tarot reading</h3><p data-t="door.tarot.p">Three arcana — past, present, future — dealt from the twenty-two.</p><span class="tag" data-t="free">Free</span></div>
+        <span class="label" data-t="door.tarot.l">The cards</span>
       </button>
       <button class="door" data-go="astro">
         <span class="glyph">☉</span>
-        <div><h3>Astral map</h3><p>The sky as it stood when you were born — planets, houses, the rising sign.</p><span class="tag" id="astroTag">Free</span></div>
-        <span class="label">The wheel</span>
+        <div><h3 data-t="door.astro.h">Astral map</h3><p data-t="door.astro.p">The sky as it stood when you were born — planets, houses, the rising sign.</p><span class="tag" id="astroTag" data-t="free">Free</span></div>
+        <span class="label" data-t="door.astro.l">The wheel</span>
       </button>
       <button class="door" data-go="num">
         <span class="glyph">⁂</span>
-        <div><h3>Numerology</h3><p>The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag">Free</span></div>
-        <span class="label">The seal</span>
+        <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag" data-t="free">Free</span></div>
+        <span class="label" data-t="door.num.l">The seal</span>
       </button>
     </div>
-    <footer class="legal"><a href="terms.html">Terms &amp; privacy</a><i></i><button class="linkish" style="margin:0" data-share>Share the observatory</button><i></i><span>For reflection &amp; entertainment</span></footer>
+    <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span></footer>
   </div>
 
   <!-- ── tarot ── -->
   <div class="section" id="tarotIntro">
     <div id="introMain">
-      <span class="label">A reading in stardust</span>
-      <h1>The cards are<br><em>constellations.</em></h1>
-      <p>Ask your question in silence. Three arcana will be drawn from the
+      <span class="label" data-t="tarot.label">A reading in stardust</span>
+      <h1 data-t="tarot.h1">The cards are<br><em>constellations.</em></h1>
+      <p data-t="tarot.p">Ask your question in silence. Three arcana will be drawn from the
          dark — past, present, future — each figure assembled from thousands
          of stars that scatter at your touch, and remember.</p>
       <div class="choice">
-        <button class="deal-btn" id="dealSelf">✦ &nbsp;A reading for myself</button>
-        <button class="deal-btn ghost" id="dealOther">☾ &nbsp;For someone else</button>
+        <button class="deal-btn" id="dealSelf" data-t="dealSelf">✦ &nbsp;A reading for myself</button>
+        <button class="deal-btn ghost" id="dealOther" data-t="dealOther">☾ &nbsp;For someone else</button>
       </div>
-      <button class="back" data-go="menu">← &nbsp;The observatory</button>
+      <button class="back" data-go="menu" data-t="back">← &nbsp;The observatory</button>
     </div>
     <div id="ritual">
-      <span class="label">Before the cards are drawn</span>
-      <p>Hold them silently in your mind — their face, the weight of
+      <span class="label" data-t="ritual.label">Before the cards are drawn</span>
+      <p data-t="ritual.p">Hold them silently in your mind — their face, the weight of
          their question. Let the noise settle. The stars can wait;
          they have practice.<br><br>
          <em>When they are clearly before you, deal.</em></p>
-      <button class="deal-btn" id="dealBtn2">✦ &nbsp;Deal their spread&nbsp; ✦</button>
+      <button class="deal-btn" id="dealBtn2" data-t="dealBtn2">✦ &nbsp;Deal their spread&nbsp; ✦</button>
     </div>
   </div>
 
   <!-- ── astral map ── -->
   <div class="section" id="astroIntro">
-    <span class="label">The sky at the hour of your birth</span>
-    <h1>Where were the<br><em>planets standing?</em></h1>
-    <p>Give the observatory your date, your hour and the place you first breathed.
+    <span class="label" data-t="astro.label">The sky at the hour of your birth</span>
+    <h1 data-t="astro.h1">Where were the<br><em>planets standing?</em></h1>
+    <p data-t="astro.p">Give the observatory your date, your hour and the place you first breathed.
        The stars will turn back to that night and draw the wheel.</p>
     <div class="ledger" id="astroLedger" hidden>
-      <div class="free"><span><b>Free</b></span><span>The wheel in stars · your Sun</span></div>
-      <div><span><b id="ledgerPrice">€3</b></span><span>Moon · Rising · houses · aspects · all ten planets read · a star poster to keep</span></div>
+      <div class="free"><span><b data-t="free">Free</b></span><span data-t="ledger.free">The wheel in stars · your Sun</span></div>
+      <div><span><b id="ledgerPrice">€7</b></span><span data-t="ledger.paid">A star poster of your sky, ready to print · Moon · Rising · houses · aspects · all ten planets read</span></div>
     </div>
     <div class="saved" id="savedMaps" hidden></div>
     <form class="form" id="astroForm" autocomplete="off" novalidate>
       <div class="frow" id="astroDate"></div>
       <div class="frow">
-        <div class="field"><label>Hour</label><input class="w2" id="aHour" type="number" min="0" max="23" placeholder="14"></div>
-        <div class="field"><label>Minute</label><input class="w2" id="aMin" type="number" min="0" max="59" placeholder="30"></div>
-        <label class="check"><input type="checkbox" id="aNoTime"> I don't know the hour</label>
+        <div class="field"><label for="aHour" data-t="f.hour">Hour</label><input class="w2" id="aHour" type="number" min="0" max="23" placeholder="14"></div>
+        <div class="field"><label for="aMin" data-t="f.min">Minute</label><input class="w2" id="aMin" type="number" min="0" max="59" placeholder="30"></div>
+        <label class="check"><input type="checkbox" id="aNoTime"> <span data-t="f.notime">I don't know the hour</span></label>
       </div>
       <div class="frow">
         <div class="field citywrap">
-          <label>Birthplace</label>
-          <input class="wide" id="aCity" type="text" placeholder="Begin typing a city…">
+          <label for="aCity" data-t="f.place">Birthplace</label>
+          <input class="wide" id="aCity" type="text" placeholder="Begin typing a city…" data-tp="ph.city">
           <div class="citylist" id="cityList"></div>
         </div>
       </div>
-      <label class="check" id="coordToggle"><input type="checkbox" id="aManual"> My town isn't listed — enter coordinates</label>
+      <label class="check" id="coordToggle"><input type="checkbox" id="aManual"> <span data-t="f.manual">My town isn't listed — enter coordinates</span></label>
       <div class="frow coords" id="coords">
-        <div class="field"><label>Latitude</label><input class="w4" id="aLat" type="number" step="0.0001" placeholder="38.72"></div>
-        <div class="field"><label>Longitude</label><input class="w4" id="aLon" type="number" step="0.0001" placeholder="-9.14"></div>
-        <div class="field"><label>Time zone</label><select id="aTz"></select></div>
+        <div class="field"><label for="aLat">Latitude</label><input class="w4" id="aLat" type="number" step="0.0001" placeholder="38.72"></div>
+        <div class="field"><label for="aLon">Longitude</label><input class="w4" id="aLon" type="number" step="0.0001" placeholder="-9.14"></div>
+        <div class="field"><label for="aTz" data-t="f.tz">Time zone</label><select id="aTz"></select></div>
       </div>
       <div class="err" id="astroErr"></div>
-      <button class="deal-btn" type="submit">☉ &nbsp;Cast the chart</button>
-      <p class="privacy">Computed in your browser. Nothing leaves this page unless you choose to buy the full map.</p>
-      <button class="back" type="button" data-go="menu">← &nbsp;The observatory</button>
+      <button class="deal-btn" type="submit" data-t="cast">☉ &nbsp;Cast the chart</button>
+      <p class="privacy" data-t="privacy">Computed in your browser. Nothing leaves this page unless you choose to buy the full map.</p>
+      <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
     </form>
   </div>
 
   <!-- ── numerology ── -->
   <div class="section" id="numIntro">
-    <span class="label">The arithmetic of a life</span>
-    <h1>Every name is<br><em>a number.</em></h1>
-    <p>Write the full name you were given at birth, and the date. The letters will be
+    <span class="label" data-t="num.label">The arithmetic of a life</span>
+    <h1 data-t="num.h1">Every name is<br><em>a number.</em></h1>
+    <p data-t="num.p">Write the full name you were given at birth, and the date. The letters will be
        weighed, the digits folded, and the seal of your path drawn in stars.</p>
     <form class="form" id="numForm" autocomplete="off" novalidate>
       <div class="frow">
-        <div class="field"><label>Full name at birth</label><input class="wide" id="nName" type="text" placeholder="e.g. Maria Inês Soares Costa"></div>
+        <div class="field"><label for="nName" data-t="f.name">Full name at birth</label><input class="wide" id="nName" type="text" placeholder="e.g. Maria Inês Soares Costa" data-tp="ph.name"></div>
       </div>
       <div class="frow" id="numDate"></div>
       <div class="err" id="numErr"></div>
-      <button class="deal-btn" type="submit">⁂ &nbsp;Read the numbers</button>
-      <button class="back" type="button" data-go="menu">← &nbsp;The observatory</button>
+      <button class="deal-btn" type="submit" data-t="numGo">⁂ &nbsp;Read the numbers</button>
+      <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
     </form>
   </div>
 
 </div>
 
 <aside id="panel">
-  <div class="pos" id="pPos">Exhibit — The Past</div>
-  <h2 id="pName">The Star</h2>
+  <div class="pos" id="pPos"></div>
+  <h2 id="pName"></h2>
   <div class="meta" id="pMeta"></div>
   <div class="prose" id="pProse"></div>
-  <div class="foot">Celestial point-sampling · <span id="pStars">48,000</span> stars</div>
-  <button class="linkish" data-share>✦ &nbsp;Share the observatory</button>
+  <div class="foot"><span data-t="foot.a">Celestial point-sampling</span> · <span id="pStars">39,000</span> <span data-t="foot.b">stars</span></div>
+  <button class="linkish" data-share data-t="share">✦ &nbsp;Share the observatory</button>
 </aside>
 
 <p id="synth"></p>
@@ -549,38 +562,38 @@
 
 <button id="redeal">↻ &nbsp;Ask again</button>
 <button id="offerBtn">✦ &nbsp;Leave an offering</button>
-<span id="hint" class="label" style="opacity:0">Touch the figure — the stars remember</span>
+<span id="hint" class="label" style="opacity:0" data-t="hint">Touch the figure — the stars remember</span>
 
 <div id="offer">
   <div class="offer-box">
-    <button class="offer-close" id="offerClose">✕</button>
-    <span class="label">Keep the lamps lit</span>
-    <h3>An offering</h3>
-    <p>The observatory runs on starlight and small kindnesses.
+    <button class="offer-close" id="offerClose" aria-label="Close">✕</button>
+    <span class="label" data-t="offer.label">Keep the lamps lit</span>
+    <h3 data-t="offer.h">An offering</h3>
+    <p data-t="offer.p">The observatory runs on starlight and small kindnesses.
        If the stars told you something true — or something usefully
        untrue — you may leave a coin in the dark. The stars notice.</p>
-    <a class="deal-btn" id="offerLink" target="_blank" rel="noopener">✦ &nbsp;Make an offering</a>
-    <span class="label" id="offerNote" style="display:none">The offering bowl is still being carved — soon.</span>
+    <a class="deal-btn" id="offerLink" target="_blank" rel="noopener" data-t="offer.link">✦ &nbsp;Make an offering</a>
+    <span class="label" id="offerNote" style="display:none" data-t="offer.note">The offering bowl is still being carved — soon.</span>
   </div>
 </div>
 
 <div id="unlock" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
   <div class="offer-box">
     <button class="offer-close" id="unlockClose" aria-label="Close">✕</button>
-    <span class="label">Break the seal</span>
-    <h3 id="unlockTitle">The full map</h3>
+    <span class="label" data-t="unlock.label">Break the seal</span>
+    <h3 id="unlockTitle" data-t="unlock.h">Your sky, to keep</h3>
     <span class="for" id="unlockFor"></span>
     <ul class="gets">
-      <li><i>☽</i><span><b>Your Moon</b> — what you need in order to feel safe</span></li>
-      <li><i>↑</i><span><b>Rising &amp; Midheaven</b> — how you arrive, and where you are headed</span></li>
-      <li><i>✶</i><span><b>All ten planets read</b> in their signs and houses</span></li>
-      <li><i>△</i><span><b>Houses, aspects</b> and the balance of your elements</span></li>
-      <li><i>↓</i><span><b>A star poster</b> of your sky — print-ready, yours to keep</span></li>
+      <li><i>↓</i><span data-t="get.poster"><b>A star poster</b> of your sky — 2400 × 3000, ready to print or post</span></li>
+      <li><i>☽</i><span data-t="get.moon"><b>Your Moon</b> — what you need in order to feel safe</span></li>
+      <li><i>↑</i><span data-t="get.rising"><b>Rising &amp; Midheaven</b> — how you arrive, and where you are headed</span></li>
+      <li><i>✶</i><span data-t="get.planets"><b>All ten planets read</b> in their signs and houses</span></li>
+      <li><i>△</i><span data-t="get.houses"><b>Houses, aspects</b> and the balance of your elements</span></li>
     </ul>
-    <div class="price"><b id="unlockPrice">€3</b><span>One payment<br>this chart, kept for good</span></div>
-    <button class="deal-btn gold" id="unlockGo">✦ &nbsp;Break the seal</button>
+    <div class="price"><b id="unlockPrice">€7</b><span data-t="price.note">One payment<br>poster and map, kept for good</span></div>
+    <button class="deal-btn gold" id="unlockGo" data-t="unlockGo">✦ &nbsp;Break the seal</button>
     <span id="unlockNote"></span>
-    <span class="trust">Secure checkout by Stripe · card · Apple Pay · Google Pay · MB WAY<br>
+    <span class="trust" data-t="trust">Secure checkout by Stripe · card · Apple Pay · Google Pay · MB WAY<br>
       Your birth details travel with the payment so your link can reopen the map · <a href="terms.html" target="_blank">Terms</a></span>
   </div>
 </div>
@@ -591,7 +604,7 @@
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = astral map stays free
-  price:"€3",       // shown on the page; the amount actually charged lives in the worker (PRICE_CENTS)
+  price:"€7",       // shown on the page; the amount actually charged lives in the worker (PRICE_CENTS)
   donationUrl:"",   // pay-what-you-want link for the offering bowl (Stripe payment link, Ko-fi…)
   goatcounter:"",   // e.g. "starot" for https://starot.goatcounter.com — empty = no analytics
 };
@@ -605,6 +618,260 @@ const store={
 const IS_LOCAL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const PAY_API=((IS_LOCAL&&store.get('api',''))||CONFIG.payApi).replace(/\/$/,'');
 const PAYWALL=!!PAY_API;
+
+/* ═══ LANGUAGE — English, or Brazilian Portuguese ═════════════
+   ?lang=pt|en wins and is remembered; otherwise a Portuguese browser gets PT.
+   T(en,pt) picks a phrase; L(key,en) swaps a whole table for its PT twin. */
+const URL_LANG=new URLSearchParams(location.search).get('lang');
+const LANG=(()=>{
+  if(URL_LANG==='pt'||URL_LANG==='en'){store.set('lang',URL_LANG);return URL_LANG;}
+  const s=store.get('lang','');if(s==='pt'||s==='en')return s;
+  return (navigator.languages||[navigator.language||'']).some(l=>/^pt\b/i.test(l))?'pt':'en';
+})();
+const PT=LANG==='pt';
+const T=(en,pt)=>PT?pt:en;
+const LOC=T('en-US','pt-BR');
+function L(key,en){
+  if(!PT||!(key in PT_TEXT))return en;
+  const merge=(e,q)=>{
+    if(q===undefined)return e;
+    if(Array.isArray(e))return e.map((x,i)=>merge(x,q[i]));
+    if(e&&typeof e==='object'){const o={...e};for(const k in q)o[k]=merge(e[k],q[k]);return o;}
+    return q;
+  };
+  return merge(en,PT_TEXT[key]);
+}
+/* query string that keeps an explicit ?lang= alongside anything else */
+function qs(extra){
+  const p=new URLSearchParams(extra||{});
+  if(URL_LANG)p.set('lang',URL_LANG);
+  const s=p.toString();return s?'?'+s:'';
+}
+
+const UI_PT={
+  'obs':'Observatório dos Destinos',
+  'nav.tarot':'Tarô','nav.astro':'Mapa astral','nav.num':'Numerologia',
+  'menu.h1':'Escolha o seu<br><em>instrumento.</em>',
+  'menu.p':'Três maneiras de perguntar ao escuro. Cada resposta é desenhada em poeira de estrelas — figuras formadas por milhares de estrelas que se espalham ao seu toque, e se lembram.',
+  'door.tarot.h':'Leitura de tarô','door.tarot.p':'Três arcanos — passado, presente, futuro — tirados dos vinte e dois.','door.tarot.l':'As cartas',
+  'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — planetas, casas, o ascendente.','door.astro.l':'A roda',
+  'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — o caminho, a voz, a porta.','door.num.l':'O selo',
+  'free':'Grátis',
+  'legal.terms':'Termos e privacidade','legal.share':'Compartilhar o observatório','legal.ent':'Para reflexão e entretenimento',
+  'tarot.label':'Uma leitura em poeira de estrelas',
+  'tarot.h1':'As cartas são<br><em>constelações.</em>',
+  'tarot.p':'Faça a sua pergunta em silêncio. Três arcanos serão tirados do escuro — passado, presente, futuro — cada figura formada por milhares de estrelas que se espalham ao seu toque, e se lembram.',
+  'dealSelf':'✦ &nbsp;Uma leitura para mim','dealOther':'☾ &nbsp;Para outra pessoa','back':'← &nbsp;O observatório',
+  'ritual.label':'Antes de tirar as cartas',
+  'ritual.p':'Pense nessa pessoa em silêncio — o rosto dela, o peso da pergunta dela. Deixe o barulho assentar. As estrelas podem esperar; elas têm prática.<br><br><em>Quando ela estiver nítida diante de você, tire as cartas.</em>',
+  'dealBtn2':'✦ &nbsp;Tirar as cartas dela&nbsp; ✦',
+  'astro.label':'O céu na hora do seu nascimento',
+  'astro.h1':'Onde estavam<br><em>os planetas?</em>',
+  'astro.p':'Conte ao observatório a sua data, a sua hora e o lugar onde você respirou pela primeira vez. As estrelas vão voltar àquela noite e desenhar a roda.',
+  'ledger.free':'A roda em estrelas · o seu Sol',
+  'ledger.paid':'Um pôster em estrelas do seu céu, pronto para imprimir · Lua · Ascendente · casas · aspectos · os dez planetas lidos',
+  'f.hour':'Hora','f.min':'Minuto','f.notime':'Não sei a hora','f.place':'Cidade natal',
+  'f.manual':'Minha cidade não está na lista — informar coordenadas','f.tz':'Fuso horário',
+  'ph.city':'Comece a digitar uma cidade…',
+  'cast':'☉ &nbsp;Desenhar o mapa',
+  'privacy':'Calculado no seu navegador. Nada sai desta página, a menos que você decida comprar o mapa completo.',
+  'num.label':'A aritmética de uma vida',
+  'num.h1':'Todo nome é<br><em>um número.</em>',
+  'num.p':'Escreva o nome completo que você recebeu ao nascer, e a data. As letras serão pesadas, os dígitos dobrados, e o selo do seu caminho desenhado em estrelas.',
+  'f.name':'Nome completo de nascimento','ph.name':'ex.: Maria Eduarda Souza Lima',
+  'numGo':'⁂ &nbsp;Ler os números',
+  'foot.a':'Amostragem celeste','foot.b':'estrelas',
+  'share':'✦ &nbsp;Compartilhar o observatório',
+  'hint':'Toque na figura — as estrelas se lembram',
+  'offer.label':'Mantenha as lâmpadas acesas','offer.h':'Uma oferenda',
+  'offer.p':'O observatório funciona com luz das estrelas e pequenas gentilezas. Se as estrelas disseram algo verdadeiro — ou algo útil, mesmo que não seja verdade — você pode deixar uma moeda no escuro. As estrelas reparam.',
+  'offer.link':'✦ &nbsp;Fazer uma oferenda','offer.note':'A tigela de oferendas ainda está sendo esculpida — em breve.',
+  'unlock.label':'Quebrar o selo','unlock.h':'O seu céu, para guardar',
+  'get.poster':'<b>Um pôster em estrelas</b> do seu céu — 2400 × 3000, pronto para imprimir ou postar',
+  'get.moon':'<b>A sua Lua</b> — o que você precisa para se sentir em segurança',
+  'get.rising':'<b>Ascendente e Meio do Céu</b> — como você chega, e para onde vai',
+  'get.planets':'<b>Os dez planetas lidos</b> nos seus signos e casas',
+  'get.houses':'<b>Casas, aspectos</b> e o equilíbrio dos seus elementos',
+  'price.note':'Um pagamento só<br>pôster e mapa, seus para sempre',
+  'unlockGo':'✦ &nbsp;Quebrar o selo',
+  'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento vão junto com o pagamento, para que o seu link possa reabrir o mapa · <a href="termos.html" target="_blank">Termos</a>',
+};
+
+const PT_TEXT={
+POS:["O Passado","O Presente","O Futuro"],
+POS_SHORT:["Passado","Presente","Futuro"],
+POSINTRO:{
+ self:["O que moldou a estrada atrás de você:","O que está na sala com você agora:","O que se reúne no horizonte:"],
+ other:["O que moldou a estrada atrás dessa pessoa:","O que está na sala com ela agora:","O que se reúne no horizonte dela:"]},
+MONTHS:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
+ARCANA:[
+{name:"O Louco",keys:"começos, salto, inocência",
+ prose:"Um viajante na beira do conhecido, com um pé já no ar. O Louco é o zero antes de toda contagem — a disposição de começar sem prova de que o chão continua. O que quer que você esteja protegendo ao esperar, o penhasco já perdoou você.",
+ rev:"Invertida: o salto dado sem cuidado, ou nunca dado — veja qual medo está no volante."},
+{name:"O Mago",keys:"vontade, ofício, canal",
+ prose:"Acima da cabeça dele, o oito deitado do infinito; sobre a mesa, todas as ferramentas que você já tem. O Mago não invoca um poder novo — ele percebe o poder que estava à mão e o aponta. Assim em cima como embaixo; assim pretendido, assim feito.",
+ rev:"Invertida: o talento espalhado em truques; as ferramentas usadas para impressionar, não para construir."},
+{name:"A Sacerdotisa",keys:"intuição, limiar, silêncio",
+ prose:"Ela se senta entre as duas colunas, diante do véu, e não diz nada — e essa é a resposta. A Sacerdotisa guarda o que não se pode pesquisar, só receber. O seu corpo já sabe; o encontro marcado é com a sua própria quietude.",
+ rev:"Invertida: a voz interior abafada pela certeza dos outros."},
+{name:"A Imperatriz",keys:"abundância, crescimento, cuidado",
+ prose:"Tudo o que ela toca se lembra de como crescer. A Imperatriz é a aritmética paciente dos jardins: o que é alimentado se multiplica; o que é amado em voz alta amadurece. Esta é uma estação de cuidar, não de colher — deixe o campo ser lento.",
+ rev:"Invertida: o cuidado que vira sufoco, ou a coisa delicada esquecida sem água."},
+{name:"O Imperador",keys:"estrutura, ordem, alicerce",
+ prose:"Quatro lados, quatro pernas, quatro estações seguras num punho quadrado. O Imperador ergue as paredes dentro das quais a suavidade se torna possível. Regras não são o oposto da liberdade — são o andaime dela. Decida a forma, e defenda-a com gentileza.",
+ rev:"Invertida: o andaime confundido com o prédio; o controle sobrevivendo à própria razão."},
+{name:"O Hierofante",keys:"ensinamento, tradição, chaves",
+ prose:"Ele segura a chave que lhe foi entregue por alguém que também recebeu a chave. O Hierofante é o longo corredor de mestres por trás de tudo o que você sabe. Honre a linhagem — e depois repare qual porta a sua chave já não abre.",
+ rev:"Invertida: doutrina sem porta; talvez seja hora de você ser o seu próprio mestre."},
+{name:"Os Enamorados",keys:"união, escolha, espelho",
+ prose:"Dois círculos que se sobrepõem: a amêndoa de luz onde se encontram é uma terceira coisa que nenhum dos dois faria sozinho. Os Enamorados falam menos de romance do que de escolha — toda união é uma porta fechada para mil outros quartos, com alegria.",
+ rev:"Invertida: o espelho embaçado; querer a união sem a escolha."},
+{name:"O Carro",keys:"impulso, vitória, determinação",
+ prose:"Duas rodas que discordam, um condutor que não. O Carro é a vontade aplicada à contradição — avançar não porque os cavalos concordam, mas porque as mãos estão firmes. Agora a pontaria importa mais que a velocidade.",
+ rev:"Invertida: as rédeas soltas; movimento confundido com rumo."},
+{name:"A Força",keys:"gentileza, coragem, domar",
+ prose:"Não o punho — a mão aberta na mandíbula do leão. A Força é descobrir que o bicho selvagem se acalma diante de quem não tem medo dele, inclusive o bicho selvagem dentro de você. Aproxime-se com suavidade daquilo que você vem combatendo aos gritos.",
+ rev:"Invertida: força onde se devia paciência; o leão empurrado, não conquistado."},
+{name:"O Eremita",keys:"solidão, busca, lanterna",
+ prose:"Uma lâmpada, pequena de propósito, para iluminar só o próximo passo. O Eremita se recolhe não para fugir do mundo, mas para ouvi-lo sem eco. O que você procura está procurando silêncio — vá aonde o sinal é fraco e o céu fala alto.",
+ rev:"Invertida: a solidão azedada em esconderijo; desça da montanha com o que encontrou."},
+{name:"A Roda da Fortuna",keys:"giro, ciclos, acaso",
+ prose:"Oito raios, nenhum freio. A Roda não pede licença — ela gira, e o único ponto fixo é o eixo. O que sobe vai descer em círculo; o que caiu já está subindo. Segure o centro e deixe a borda fazer o seu tempo.",
+ rev:"Invertida: agarrar-se à borda; resistir a uma volta que já se completou."},
+{name:"A Justiça",keys:"equilíbrio, verdade, consequência",
+ prose:"A balança não odeia o que pesa. A Justiça é a contabilidade do universo — precisa, sem pressa, imune ao charme. Algo está sendo medido de volta para você agora; receba-o de mãos limpas e com as contas em dia.",
+ rev:"Invertida: o dedo na balança — possivelmente o seu."},
+{name:"O Enforcado",keys:"entrega, novo olhar, pausa",
+ prose:"De cabeça para baixo, e enfim vendo que o teto era um chão. O Enforcado é a pausa sagrada — um avanço que, visto de fora, parece parada. Pare de puxar o nó; a vista daqui é a lição.",
+ rev:"Invertida: a suspensão virou estagnação; o martírio que ninguém pediu."},
+{name:"A Morte",keys:"fim, libertação, passagem",
+ prose:"A foice não castiga o trigo; ela o completa. A Morte aqui raramente é o corpo — é o fim que já aconteceu, esperando a sua papelada. Viva o luto direito, viaje leve e repare no que o campo limpo agora consegue ver.",
+ rev:"Invertida: o fim recusado; uma porta mantida aberta para um quarto que já escureceu."},
+{name:"A Temperança",keys:"mistura, paciência, alquimia",
+ prose:"Uma taça derramada na outra, e de volta, até que nenhuma seja a original e ambas melhorem. A Temperança é o anjo das proporções — a medida exata, o caminho do meio que não é concessão, é receita. Misture devagar; prove sempre.",
+ rev:"Invertida: a mistura forçada, a proporção ignorada — o excesso com máscara de paixão."},
+{name:"O Diabo",keys:"sombra, amarras, apetite",
+ prose:"A estrela invertida, as correntes frouxas o bastante para tirar. O Diabo não está lá fora — ele é o acordo que você continua renovando. Dê um nome honesto ao apetite e ele encolhe ao seu tamanho real: uma fome, não um senhor.",
+ rev:"Invertida: a corrente já escorregando; a liberdade chegando com crise de abstinência."},
+{name:"A Torre",keys:"ruptura, raio, verdade",
+ prose:"O raio é uma verdade que não conseguiu marcar horário. A Torre cai porque foi construída no chão errado, com tijolos excelentes. Deixe cair. O que sobrevive à queda é o alicerce que você devia ter usado da primeira vez.",
+ rev:"Invertida: o desabamento adiado, pago em tremores; desmonte a torre você mesmo, com cuidado."},
+{name:"A Estrela",keys:"esperança, renovação, orientação",
+ prose:"Depois da torre, o céu. A Estrela é a pequena luz firme que sobrevive à catástrofe — não um resgate, uma orientação. Derrame o que você carregava; o poço se enche de novo. Você está sendo guiado mesmo quando não sente a corrente.",
+ rev:"Invertida: a luz posta em dúvida, não ausente — olhe para cima de novo."},
+{name:"A Lua",keys:"sonho, ilusão, maré",
+ prose:"Tudo está visível e nada é certo. A Lua ilumina uma estrada que se move — intuição e ilusão bebendo da mesma fonte. Não decida esta noite o que a luz do dia pode decidir amanhã; mas anote o sonho.",
+ rev:"Invertida: a névoa se dissipando; uma confusão que você está quase pronto para nomear."},
+{name:"O Sol",keys:"alegria, clareza, calor",
+ prose:"Sem enigma. O Sol é a única carta que quer dizer o que mostra: calor depois do longo escuro, a alegria simples, quase animal, de ser visto por inteiro e ficar mesmo assim. Diga sim com as palavras mais simples que você tem.",
+ rev:"Invertida: a alegria retida na alfândega — ainda chegando, ainda sua."},
+{name:"O Julgamento",keys:"despertar, chamado, ressurgir",
+ prose:"A trombeta soa e a vida enterrada se levanta. O Julgamento é o chamado para o qual você vem ensaiando recusas — o convite para se erguer como a pessoa que os últimos anos estavam construindo em segredo. Responda com o seu nome inteiro.",
+ rev:"Invertida: o chamado ouvido e ignorado; perdoar a si mesmo é a porta destrancada."},
+{name:"O Mundo",keys:"conclusão, inteireza, dança",
+ prose:"O louro fecha o seu círculo; a dançarina segura as duas varas. O Mundo é a expiração no fim do longo projeto de se tornar — não uma linha de chegada, um encaixe. Tudo pertence, inclusive os desvios. Agradeça, e depois comece de novo, mais leve.",
+ rev:"Invertida: o círculo quase fechado; a uma conversa honesta de se completar."}],
+SIGNS:[
+{name:"Áries",ruler:"Marte",keys:"ignição, coragem, o primeiro passo",flavor:"rápido para começar, honesto até demais, vivo no instante da faísca"},
+{name:"Touro",ruler:"Vênus",keys:"constância, prazer, paciência",flavor:"lento, sensual, fiel ao que dura"},
+{name:"Gêmeos",ruler:"Mercúrio",keys:"curiosidade, troca, dualidade",flavor:"de língua rápida, inquieto, alimentado pela conversa"},
+{name:"Câncer",ruler:"Lua",keys:"abrigo, memória, maré",flavor:"protetor, feito de marés, guardando o passado como uma concha"},
+{name:"Leão",ruler:"Sol",keys:"brilho, orgulho, brincadeira",flavor:"caloroso, teatral, precisando ser visto e de dar"},
+{name:"Virgem",ruler:"Mercúrio",keys:"ofício, discernimento, serviço",flavor:"preciso, útil, curado pela ordem"},
+{name:"Libra",ruler:"Vênus",keys:"equilíbrio, beleza, o outro",flavor:"gracioso, ponderado, definido pelas relações"},
+{name:"Escorpião",ruler:"Marte e Plutão",keys:"profundidade, segredo, transformação",flavor:"intenso, reservado, sem medo do que está por baixo"},
+{name:"Sagitário",ruler:"Júpiter",keys:"horizonte, fé, a longa estrada",flavor:"expansivo, franco, mirando o morro distante"},
+{name:"Capricórnio",ruler:"Saturno",keys:"ambição, tempo, maestria",flavor:"paciente, dedicado, construindo para o longo inverno"},
+{name:"Aquário",ruler:"Saturno e Urano",keys:"visão, distância, o coletivo",flavor:"original, sereno, fiel ao futuro"},
+{name:"Peixes",ruler:"Júpiter e Netuno",keys:"dissolução, sonho, compaixão",flavor:"poroso, sonhador, incapaz de parar de sentir"}],
+SUN_IN:[
+"Você foi aceso no começo da roda, onde nada foi tentado ainda. O seu centro é a própria faísca — a disposição de ir primeiro, de errar em voz alta em vez de acertar tarde demais. A sua tarefa é manter o fogo sem queimar quem chegou para aquecer as mãos.",
+"O seu centro é um jardim com muro. Você foi feito para guardar as coisas por muito tempo — corpos, promessas, tardes. Os outros confundem a sua lentidão com relutância; na verdade, é lealdade ao chão. Aprenda quando o muro é abrigo e quando é só costume.",
+"Você é duas luzes que se revezam. O Sol em Gêmeos vive da troca — a pergunta, a resposta, a pergunta melhor. Você nunca termina de aprender, porque terminar seria uma espécie de silêncio. Permita-se pousar em algum lugar tempo suficiente para ser conhecido.",
+"O seu centro é uma maré, e marés não são indecisas; são fiéis a algo maior. Você leva a casa consigo e a oferece a estranhos. O que protege você também pode trancar você — abra a concha de propósito, de vez em quando.",
+"Você foi feito para ser caloroso em público. O Sol em Leão não é vaidade; é a generosidade de um fogo que não sabe queimar baixinho. A sua dignidade é real, e a sua necessidade de ser visto também — deixe as duas serem verdade sem pedir aplausos à sala.",
+"O seu centro é uma oficina. Você é quem nota o fio solto e não descansa até consertá-lo — numa frase, num corpo, num plano. O dom é a precisão; a sombra é acreditar que você só vale o que conserta. Você também é a obra pronta.",
+"Você nasceu no ponto de equilíbrio do ano, quando o dia e a noite se igualam. O seu centro é o espaço entre duas pessoas — você se conhece melhor no reflexo. O trabalho é querer algo antes de saber o que o outro quer.",
+"O seu centro fica debaixo da terra, onde estão as raízes e o tesouro. Você não faz superfícies. Vai perder tudo pelo menos uma vez e sair disso mais você mesmo. A confiança é a sua moeda; gaste devagar, mas gaste.",
+"Você foi lançado, não colocado. O Sol em Sagitário é a flecha que só se sente viva em pleno voo — rumo ao morro distante, à próxima filosofia, à verdade maior que a sala. A sua franqueza é um presente; embrulhe-a de vez em quando.",
+"O seu centro é uma montanha de memória longa. Você nasceu sabendo que o tempo é a matéria-prima — que as coisas que valem a pena se constroem devagar, de madrugada, sem aplauso. Não confunda resistência com a vida inteira; o cume tem vista.",
+"O seu centro fica um pouco à parte da multidão que você ama. Você enxerga o padrão em que os outros estão metidos, e isso faz de você ao mesmo tempo profeta e estrangeiro. O seu distanciamento não é frieza — é a distância necessária para enxergar. Chegue mais perto mesmo assim.",
+"Você nasceu no fim da roda, onde tudo se dissolve de volta no mar de onde veio. Você sente o ambiente antes de entrar nele. O dom é a compaixão sem fronteiras; a prática é lembrar onde você termina e o oceano começa."],
+MOON_IN:[
+"Os seus sentimentos chegam rápido e vão embora do mesmo jeito — uma labareda, não uma brasa. Você precisa agir sobre a emoção, não analisá-la; a raiva é um clima honesto para você. Segurança é ter permissão para começar.",
+"Você se acalma com o que é confiável: a mesma cadeira, a voz conhecida, a comida com gosto da última vez. Os seus sentimentos se movem devagar e mantêm a forma. Segurança é um corpo em repouso e uma promessa cumprida.",
+"Você sente falando. A Lua em Gêmeos precisa dar nome ao sentimento para tê-lo, e muitas vezes tem dois ao mesmo tempo. Segurança é uma conversa que não acaba; solidão é um silêncio que ninguém explica.",
+"A Lua está em casa aqui, e você também — no passado, na cozinha, na lembrança de quem segurou você no colo. Os seus sentimentos são marés, e enormes. Segurança é pertencer; o risco é nunca sair da praia.",
+"Você precisa ser adorado, e não há vergonha nisso. A Lua em Leão sente em cores vivas e quer plateia para a própria alegria. Segurança é ser celebrado por alguém que está falando sério.",
+"Você sente sendo útil — a preocupação é a sua linguagem do amor, e o cuidado parece uma lista. A ordem conforta você, e qualquer coisa por fazer deixa você inquieto. Segurança é saber que ajudou.",
+"Você fica calmo quando o ambiente está calmo. A Lua em Libra precisa de harmonia como os pulmões precisam de ar, e se dobra para mantê-la. Segurança é ter um par; a lição é que a paz feita de desaparecer não é paz.",
+"Os seus sentimentos vão até o fundo, e você não mostra essa profundidade a quem não mereceu o mergulho. Você precisa de intensidade, lealdade e da verdade mesmo quando dói. Segurança é um segredo guardado.",
+"Você se sente melhor em movimento. A Lua em Sagitário precisa de espaço — um horizonte, um plano de partida, um sentido maior para a pequena tristeza. Segurança é liberdade; ficar preso é a única dor de verdade.",
+"Você aprendeu cedo a carregar o próprio tempo. A Lua em Capricórnio precisa ser competente para se sentir segura, e acha a ternura constrangedora — até deixar de achar. Segurança é uma estrutura que se sustenta; deixe outra pessoa sustentá-la às vezes.",
+"Você sente a uma certa distância, como quem observa o próprio tempo do alto de um morro. Precisa mais de amizade que de romance, mais de ideias que de consolo. Segurança é ser compreendido sem ser sufocado.",
+"Não existe pele entre você e o ambiente. A Lua em Peixes absorve — humores, música, a chuva dos outros. Você precisa de solidão para se torcer e de arte para explicar o que sentiu. Segurança é um lugar para se dissolver de propósito."],
+RISING_IN:[
+"Você chega antes de ser anunciado. O Ascendente em Áries entra de testa — direto, rápido, levemente impaciente com portas. As pessoas leem você como corajoso, às vezes antes de você ser.",
+"Você entra devagar e o ambiente se acomoda ao seu redor. O Ascendente em Touro veste a calma como um bom tecido — as pessoas confiam na sua firmeza antes de você dizer uma palavra.",
+"Você já chega falando. O Ascendente em Gêmeos é rápido, curioso, jovem além da idade — as pessoas leem você como esperto e um pouco em outro lugar.",
+"Você entra de lado, sentindo a temperatura primeiro. O Ascendente em Câncer tem uma armadura macia; as pessoas sentem um lar em você e às vezes esquecem de bater.",
+"Você chega como um clima. O Ascendente em Leão traz a própria luz — as pessoas leem você como caloroso, orgulhoso e impossível de ignorar, quer você queira ou não.",
+"Você entra já tendo reparado em tudo. O Ascendente em Virgem é modesto, exato, discretamente útil — as pessoas leem você como capaz e um pouco reservado.",
+"Você chega com graça e um olho para a simetria da sala. O Ascendente em Libra encanta sem esforço — as pessoas leem você como justo, agradável e mais difícil de conhecer do que parece.",
+"Você entra, e a sala se sente observada. O Ascendente em Escorpião é magnético e reservado — as pessoas leem você como intenso, e não se enganam sobre a profundidade.",
+"Você chega no meio da história, rindo. O Ascendente em Sagitário é aberto, franco, um pouco estrangeiro onde quer que esteja — as pessoas leem você como livre.",
+"Você entra como se já fosse responsável pelo prédio. O Ascendente em Capricórnio é sereno, seco, mais velho quando jovem e mais jovem quando velho — as pessoas leem você como sério, e depois se surpreendem com o humor.",
+"Você chega de um pouco fora do século. O Ascendente em Aquário é sereno, original, amigável à distância — as pessoas leem você como incomum antes de ler você como gentil.",
+"Você entra como neblina, e todos relaxam sem saber por quê. O Ascendente em Peixes é suave, permeável, difícil de definir — as pessoas leem você como sonhador e se abrem com você mesmo assim."],
+PLANETS:[
+{name:"Sol",domain:"a sua vontade e a luz que guia você"},
+{name:"Lua",domain:"o que você precisa para se sentir em segurança"},
+{name:"Mercúrio",domain:"como você pensa e fala"},
+{name:"Vênus",domain:"o que você ama e como atrai isso"},
+{name:"Marte",domain:"como você deseja, luta e persegue"},
+{name:"Júpiter",domain:"onde você tem sorte e onde exagera"},
+{name:"Saturno",domain:"onde você é testado e, com o tempo, se torna mestre"},
+{name:"Urano",domain:"onde você quebra o padrão"},
+{name:"Netuno",domain:"onde você sonha e se dissolve"},
+{name:"Plutão",domain:"onde você é desfeito e refeito"}],
+HOUSES:["o eu e o corpo","dinheiro e valor","palavras, irmãos, o mundo próximo","lar e raízes","brincadeira, arte e filhos",
+  "trabalho, saúde e serviço","parcerias e o espelho","profundezas compartilhadas, fins e renascimento","o horizonte distante, crenças e viagens",
+  "vocação e o nome público","amigos, esperanças e o coletivo","solidão, o oculto e o mar"],
+ASPECTS:[{name:"conjunção",verb:"fundido com"},{name:"oposição",verb:"de frente, do outro lado da roda"},{name:"trígono",verb:"fluindo com facilidade com"},
+  {name:"quadratura",verb:"em atrito construtivo com"},{name:"sextil",verb:"em cooperação discreta com"}],
+ELEMENT_DOM:{Fire:"o seu céu arde — você se move por impulso e fé",Earth:"o seu céu é firme — você se move por substância e paciência",
+  Air:"o seu céu venta — você se move por pensamento e troca",Water:"o seu céu é oceano — você se move por sentimento e memória"},
+ELEMENT_LACK:{Fire:"a coragem precisa ser emprestada ou cultivada de propósito",Earth:"o corpo e o orçamento vão pedir prática",
+  Air:"você sabe antes de conseguir explicar, e tudo bem",Water:"o sentimento chega tarde, e pela porta dos fundos"},
+NUMBERS:{
+1:{title:"O Pioneiro",keys:"começo, independência, impulso",prose:"Você veio para começar as coisas. O um é a linha traçada na página em branco — independência, iniciativa, a solidão e a glória de ir primeiro. O seu trabalho é liderar sem dominar; a sua sombra é acreditar que precisar de alguém é fraqueza."},
+2:{title:"O Diplomata",keys:"parceria, sensibilidade, equilíbrio",prose:"O dois é a primeira relação — o espelho, o par, a pausa antes da resposta. Você foi feito para parcerias, tato e para tecer as pessoas umas às outras com paciência. A sua sombra é desaparecer para manter a paz."},
+3:{title:"A Voz",keys:"expressão, criatividade, alegria",prose:"O três é o triângulo, a primeira forma que fica de pé — criação, expressão, a alegria de fazer algo a partir de duas coisas que se encontraram. Você está aqui para falar, criar e encantar. A sua sombra é espalhar o dom por mesas demais."},
+4:{title:"O Construtor",keys:"estrutura, trabalho, lealdade",prose:"O quatro é o quadrado, o alicerce, as quatro pernas da mesa. Você tira ordem da ambição e termina o que os outros só começam. A sua sombra é confundir as paredes com a casa."},
+5:{title:"O Viajante",keys:"liberdade, mudança, experiência",prose:"O cinco é o pentagrama — a figura humana de braços abertos, querendo tudo. Você é mudança, apetite, liberdade, a história que precisa de um novo capítulo. A sua sombra é confundir movimento com sentido."},
+6:{title:"O Guardião",keys:"cuidado, harmonia, responsabilidade",prose:"O seis é o hexagrama, dois triângulos entrelaçados — céu e terra concordando em dividir uma casa. Você está aqui para cuidar: da família, da beleza, de quem se apoia em você. A sua sombra é o martírio que ninguém pediu."},
+7:{title:"O Buscador",keys:"sabedoria, solidão, análise",prose:"O sete é o número que não se forma a partir dos outros — o primo, o místico, a semana. Você foi feito para a profundidade: análise, solidão, o olhar demorado sob a superfície. A sua sombra é a torre sem porta."},
+8:{title:"O Administrador",keys:"poder, abundância, maestria",prose:"O oito é a lemniscata posta de pé — poder que circula, causa encontrando consequência. Você está aqui para dominar o mundo material sem ser dominado por ele. A sua sombra é medir o seu valor pelo que você tem."},
+9:{title:"O Ancião",keys:"conclusão, compaixão, desapego",prose:"O nove é o último dos números simples, aquele que contém os outros. Você está aqui para concluir, perdoar e doar — compaixão na escala do todo. A sua sombra é sofrer pelo que você ainda não soltou."},
+11:{title:"O Iluminador",keys:"intuição, inspiração, visão",prose:"O onze são duas colunas e o portal entre elas. Você carrega a sensibilidade do dois numa voltagem mais alta — intuição, inspiração, nervos como antenas. Você está aqui para iluminar uma sala, não para sustentá-la. A sua sombra é a ansiedade com máscara de visão."},
+22:{title:"O Mestre Construtor",keys:"manifestação, a visão tornada real",prose:"O vinte e dois é o quatro na escala de uma cidade. Você está aqui para tornar o visionário prático — dar ao sonho um alicerce e um alvará. A sua sombra é o peso de um potencial de que lhe falaram cedo demais."},
+33:{title:"O Mestre Professor",keys:"cura, serviço, cuidado incondicional",prose:"O trinta e três é o seis elevado a vocação — o cuidado como chamado, o amor sem juros. Você está aqui para elevar, ensinar e curar, muitas vezes a um custo. A sua sombra é esquecer que você também é responsabilidade de alguém."}},
+EL_NAME:{Fire:'Fogo',Earth:'Terra',Air:'Ar',Water:'Água'},
+MOD_NAME:{Cardinal:'Cardinal',Fixed:'Fixo',Mutable:'Mutável'},
+NUM_POS:[
+{label:'Caminho',pos:'O Caminho de Vida',intro:"A estrada que você percorre — dobrada a partir do dia, do mês e do ano.",
+ tail:n=>`Este é o número da jornada inteira: não o que você faz, mas o terreno onde faz.`},
+{label:'Expressão',pos:'A Expressão',intro:"As ferramentas que você carrega — cada letra do nome que lhe deram.",
+ tail:n=>`Seja qual for a estrada, estes são os instrumentos nas suas mãos: ${NUMBERS[n].keys}. É assim que você vai fazer.`},
+{label:'Alma',pos:'O Desejo da Alma',intro:"O que você quer por baixo do querer — as vogais, o sopro dentro do nome.",
+ tail:n=>`Por baixo do querer, você quer ${NUMBERS[n].keys}. Quando a vida lhe dá isso, você sossega.`},
+{label:'Persona',pos:'A Personalidade',intro:"A porta que os outros veem primeiro — as consoantes, os ossos do nome.",
+ tail:n=>`Na porta, as pessoas encontram ${NUMBERS[n].keys} antes de encontrar o resto de você. O resto chega depois, e tem permissão para isso.`},
+{label:'Ano',pos:'O Ano Pessoal',intro:"A estação em que você está — o seu aniversário dobrado no ano corrente.",
+ tail:n=>`Este é um ano ${n} para você — uma estação de ${NUMBERS[n].keys}. Plante de acordo; o próximo número já está a caminho.`}],
+};
+const EL_NAME=L('EL_NAME',{Fire:'Fire',Earth:'Earth',Air:'Air',Water:'Water'});
+const MOD_NAME=L('MOD_NAME',{Cardinal:'Cardinal',Fixed:'Fixed',Mutable:'Mutable'});
 if(CONFIG.goatcounter&&!IS_LOCAL){
   const g=document.createElement('script');g.async=true;g.src='https://gc.zgo.at/count.js';
   g.dataset.goatcounter=`https://${CONFIG.goatcounter}.goatcounter.com/count`;document.head.appendChild(g);
@@ -613,7 +880,7 @@ function track(name){try{if(window.goatcounter&&window.goatcounter.count)window.
 
 /* ═══ THE MAJOR ARCANA ════════════════════════════════════════ */
 const ROMAN=["0","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII","XIX","XX","XXI"];
-const ARCANA=[
+const ARCANA=L('ARCANA',[
 {name:"The Fool",keys:"beginnings, leap, innocence",
  prose:"A traveller at the rim of the known, one foot already in the air. The Fool is the zero before all counting — the willingness to begin without proof that the ground continues. Whatever you are protecting by waiting, the cliff has already forgiven you.",
  rev:"Reversed: the leap taken carelessly, or never taken at all — check which fear is steering."},
@@ -680,7 +947,7 @@ const ARCANA=[
 {name:"The World",keys:"completion, wholeness, dance",
  prose:"The laurel closes its circle; the dancer holds both wands. The World is the exhale at the end of the long project of becoming — not a finish line but a fitting. Everything belongs, including the detours. Take the bow, then begin again, lighter.",
  rev:"Reversed: the circle nearly closed; one honest conversation from complete."}
-];
+]);
 
 /* ═══ SIGIL DRAWINGS — sampled into stars ═════════════════════ */
 function drawSigil(ctx,S,i){
@@ -999,6 +1266,29 @@ function scatter(){currentDraw=null;pushTargets(scatterTargets());}
 
 /* ═══ SHARED STAGE — panel, slots, intro sections ═════════════ */
 const $=id=>document.getElementById(id);
+
+/* dress the page in its language */
+if(PT){
+  document.documentElement.lang='pt-BR';
+  document.title='STAROT · Tarô, mapa astral e numerologia em estrelas';
+  const md=document.querySelector('meta[name=description]');
+  if(md)md.content='Tarô, mapa astral e numerologia desenhados em poeira de estrelas. Tire três arcanos, descubra os números do seu nome ou veja o céu como estava quando você nasceu.';
+  document.querySelectorAll('[data-t]').forEach(el=>{const v=UI_PT[el.dataset.t];if(v!=null)el.innerHTML=v;});
+  document.querySelectorAll('[data-tp]').forEach(el=>{const v=UI_PT[el.dataset.tp];if(v!=null)el.placeholder=v;});
+}
+/* the other language, one tap away; a map link keeps its map */
+document.querySelectorAll('.lang').forEach(b=>{
+  b.textContent=PT?'EN':'PT';
+  b.setAttribute('aria-label',PT?'English':'Português');
+  b.onclick=()=>{
+    const p=new URLSearchParams(location.search);p.delete('canceled');p.set('lang',PT?'en':'pt');
+    store.set('lang',PT?'en':'pt');track('lang-'+(PT?'en':'pt'));
+    location.href=location.pathname+'?'+p.toString();
+  };
+});
+/* terms only matter once something is for sale */
+document.querySelectorAll('.terms-link').forEach(el=>el.hidden=!PAYWALL);
+if(PT)$('termsLink').href='termos.html';
 let mode='tarot', view=-1, reading=false;
 
 let toastT;
@@ -1007,11 +1297,12 @@ function toast(html,ms=6500){
   clearTimeout(toastT);if(ms)toastT=setTimeout(()=>t.classList.remove('show'),ms);
 }
 async function shareSite(){
-  const url=location.origin+location.pathname;   /* never the ?map= link — that one is private */
+  const url=location.origin+location.pathname+(PT?'?lang=pt':'');   /* never the ?map= link — that one is private */
   track('share');
   try{
-    if(navigator.share){await navigator.share({title:'STAROT · Observatory of Fates',text:'Tarot, astral maps and numerology — drawn in stardust.',url});return;}
-    await navigator.clipboard.writeText(url);toast('Link copied — pass it on.');
+    if(navigator.share){await navigator.share({title:T('STAROT · Observatory of Fates','STAROT · Observatório dos Destinos'),
+      text:T('Tarot, astral maps and numerology — drawn in stardust.','Tarô, mapa astral e numerologia — desenhados em poeira de estrelas.'),url});return;}
+    await navigator.clipboard.writeText(url);toast(T('Link copied — pass it on.','Link copiado — passe adiante.'));
   }catch(e){}
 }
 document.addEventListener('click',e=>{
@@ -1028,7 +1319,7 @@ function setPanel({pos,name,meta,prose}){
     $('pName').innerHTML=name;
     $('pMeta').innerHTML=meta.map(([k,v])=>`<span>${k} · <b>${v}</b></span>`).join('');
     $('pProse').innerHTML=prose;
-    $('pStars').textContent=(N-DUST).toLocaleString('en-US');
+    $('pStars').textContent=(N-DUST).toLocaleString(LOC);
     panel.scrollTop=0;
     panel.classList.add('show');
   },350);
@@ -1070,7 +1361,7 @@ function leaveReading(to){
   $('redeal').classList.remove('show');
   $('counter').textContent='—';
   reading=false;setOfferBtn();
-  if(location.search)history.replaceState(null,'',location.pathname);
+  history.replaceState(null,'',location.pathname+qs());
   document.querySelectorAll('.slot').forEach(s=>{s.classList.remove('on');s.querySelector('.card').classList.add('hidden-face');});
   scatter();
   setLens(true);
@@ -1080,7 +1371,7 @@ function leaveReading(to){
   $('dealBtn2').classList.remove('ready');
   setTimeout(()=>{showSection(SECTION[to]);if(to==='astro')renderSaved();},600);
 }
-const REDEAL={tarot:'↻ &nbsp;Ask again',astro:'↻ &nbsp;New chart',num:'↻ &nbsp;New numbers'};
+const REDEAL={tarot:T('↻ &nbsp;Ask again','↻ &nbsp;Perguntar de novo'),astro:T('↻ &nbsp;New chart','↻ &nbsp;Novo mapa'),num:T('↻ &nbsp;New numbers','↻ &nbsp;Novos números')};
 function beginReading(){
   $('intro').classList.add('gone');
   setLens(false);
@@ -1101,14 +1392,15 @@ $('brand').onclick=()=>{ if($('intro').classList.contains('gone'))leaveReading('
 $('redeal').onclick=()=>leaveReading(mode);
 
 /* ═══ TAROT ═══════════════════════════════════════════════════ */
-const POS=["The Past","The Present","The Future"];
-const POSINTRO={
+const POS=L('POS',["The Past","The Present","The Future"]);
+const POSINTRO=L('POSINTRO',{
  self:["What shaped the road behind you:",
        "What stands in the room with you now:",
        "What gathers on the horizon:"],
  other:["What shaped the road behind them:",
         "What stands in the room with them now:",
-        "What gathers on their horizon:"]};
+        "What gathers on their horizon:"]});
+const POS_SHORT=L('POS_SHORT',["Past","Present","Future"]);
 let spread=[], tarotFor='self';
 
 function deal(){
@@ -1120,14 +1412,15 @@ function deal(){
     spread.push({card:idxs.splice(j,1)[0], reversed:Math.random()<0.28});
   }
   beginReading();setOfferBtn();track('tarot-dealt');
-  setSlots(POS.map((p,k)=>({label:p.replace('The ',''),face:ROMAN[spread[k].card]})),k=>showCard(k));
+  setSlots(POS_SHORT.map((p,k)=>({label:p,face:ROMAN[spread[k].card]})),k=>showCard(k));
   document.querySelectorAll('.slot .card').forEach((c,k)=>c.classList.toggle('reversed',spread[k].reversed));
   revealSlots(550);
   setTimeout(()=>showCard(0),1200);
   setTimeout(()=>{
     const k=i=>ARCANA[spread[i].card].keys.split(',')[0].trim();
-    const [a,b]=tarotFor==='self'?['you','you']:['them','them'];
-    showSynth(`The thread of this spread: <b>${k(0)}</b> behind ${a}, <b>${k(1)}</b> beside ${b}, <b>${k(2)}</b> ahead.`);
+    const self=tarotFor==='self';
+    showSynth(T(`The thread of this spread: <b>${k(0)}</b> behind ${self?'you':'them'}, <b>${k(1)}</b> beside ${self?'you':'them'}, <b>${k(2)}</b> ahead.`,
+                `O fio desta tiragem: <b>${k(0)}</b> atrás ${self?'de você':'dela'}, <b>${k(1)}</b> ao lado ${self?'de você':'dela'}, <b>${k(2)}</b> à frente.`));
   },2600);
 }
 function showCard(k){
@@ -1139,8 +1432,8 @@ function showCard(k){
   markSlot(k);
   $('counter').textContent=ROMAN[card]+' / XXII';
   setPanel({
-    pos:'Exhibit — '+POS[k], name:a.name,
-    meta:[['MAJOR ARCANA',ROMAN[card]],['ORIENTATION',reversed?'REVERSED':'UPRIGHT'],['SPEAKS OF',a.keys.toUpperCase()]],
+    pos:T('Exhibit — ','Exposição — ')+POS[k], name:a.name,
+    meta:[[T('MAJOR ARCANA','ARCANO MAIOR'),ROMAN[card]],[T('ORIENTATION','POSIÇÃO'),reversed?T('REVERSED','INVERTIDA'):T('UPRIGHT','DIREITA')],[T('SPEAKS OF','FALA DE'),a.keys.toUpperCase()]],
     prose:`<em>${POSINTRO[tarotFor][k]}</em> ${a.prose}`+(reversed?`<span class="rev">${a.rev}</span>`:'')
   });
 }
@@ -1154,20 +1447,20 @@ $('dealOther').onclick=()=>{
 $('dealBtn2').onclick=deal;
 
 /* ═══ DATE FIELDS (shared by the two forms) ═══════════════════ */
-const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const MONTHS=L('MONTHS',["January","February","March","April","May","June","July","August","September","October","November","December"]);
 function dateFields(prefix){
-  return `<div class="field"><label>Day</label><input class="w2" id="${prefix}Day" type="number" min="1" max="31" placeholder="12"></div>
-  <div class="field"><label>Month</label><select id="${prefix}Mon">${MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select></div>
-  <div class="field"><label>Year</label><input class="w4" id="${prefix}Year" type="number" min="1800" max="2050" placeholder="1985"></div>`;
+  return `<div class="field"><label for="${prefix}Day">${T('Day','Dia')}</label><input class="w2" id="${prefix}Day" type="number" min="1" max="31" placeholder="12"></div>
+  <div class="field"><label for="${prefix}Mon">${T('Month','Mês')}</label><select id="${prefix}Mon">${MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('')}</select></div>
+  <div class="field"><label for="${prefix}Year">${T('Year','Ano')}</label><input class="w4" id="${prefix}Year" type="number" min="1800" max="2050" placeholder="1985"></div>`;
 }
 $('astroDate').innerHTML=dateFields('a');
 $('numDate').innerHTML=dateFields('n');
 function readDate(prefix,errEl){
   const d=+$(prefix+'Day').value, m=+$(prefix+'Mon').value, y=+$(prefix+'Year').value;
-  if(!d||!y){errEl.textContent='The observatory needs a day and a year.';return null;}
-  if(y<1800||y>2050){errEl.textContent='The tables hold the years 1800 to 2050.';return null;}
+  if(!d||!y){errEl.textContent=T('The observatory needs a day and a year.','O observatório precisa de um dia e um ano.');return null;}
+  if(y<1800||y>2050){errEl.textContent=T('The tables hold the years 1800 to 2050.','As tabelas vão de 1800 a 2050.');return null;}
   const dim=new Date(Date.UTC(y,m,0)).getUTCDate();
-  if(d<1||d>dim){errEl.textContent=`${MONTHS[m-1]} ${y} has only ${dim} days.`;return null;}
+  if(d<1||d>dim){errEl.textContent=T(`${MONTHS[m-1]} ${y} has only ${dim} days.`,`${MONTHS[m-1]} de ${y} tem só ${dim} dias.`);return null;}
   return {d,m,y};
 }
 
@@ -1238,7 +1531,7 @@ function computeHouses(jd,lat,lon){
 }
 
 /* ═══ THE LANGUAGE OF THE SKY ═════════════════════════════════ */
-const SIGNS=[
+const SIGNS=L('SIGNS',[
 {name:"Aries",el:"Fire",mod:"Cardinal",ruler:"Mars",keys:"ignition, courage, the first step",flavor:"quick to start, honest to a fault, alive in the moment of ignition"},
 {name:"Taurus",el:"Earth",mod:"Fixed",ruler:"Venus",keys:"steadiness, pleasure, patience",flavor:"slow, sensual, loyal to what lasts"},
 {name:"Gemini",el:"Air",mod:"Mutable",ruler:"Mercury",keys:"curiosity, exchange, doubleness",flavor:"quick-tongued, restless, fed by conversation"},
@@ -1250,9 +1543,9 @@ const SIGNS=[
 {name:"Sagittarius",el:"Fire",mod:"Mutable",ruler:"Jupiter",keys:"horizon, faith, the long road",flavor:"expansive, blunt, aimed at the far hill"},
 {name:"Capricorn",el:"Earth",mod:"Cardinal",ruler:"Saturn",keys:"ambition, time, mastery",flavor:"patient, dutiful, building for the long winter"},
 {name:"Aquarius",el:"Air",mod:"Fixed",ruler:"Saturn and Uranus",keys:"vision, distance, the collective",flavor:"original, cool, loyal to the future"},
-{name:"Pisces",el:"Water",mod:"Mutable",ruler:"Jupiter and Neptune",keys:"dissolution, dream, compassion",flavor:"porous, dreaming, unable to stop feeling"}];
+{name:"Pisces",el:"Water",mod:"Mutable",ruler:"Jupiter and Neptune",keys:"dissolution, dream, compassion",flavor:"porous, dreaming, unable to stop feeling"}]);
 const SIGN_CH=["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"].map(c=>c+"︎");
-const SUN_IN=[
+const SUN_IN=L('SUN_IN',[
 "You were lit at the beginning of the wheel, where nothing has been tried yet. Your centre is the spark itself — the willingness to go first, to be wrong loudly rather than right too late. Your task is to keep the fire without burning the people who came to warm their hands.",
 "Your centre is a garden with a wall. You are built for the long keeping of things — bodies, promises, afternoons. Others mistake your slowness for reluctance; it is actually loyalty to the ground. Learn when the wall is shelter and when it is only habit.",
 "You are two lights that take turns. The Gemini sun lives on exchange — the question, the answer, the better question. You are never finished learning because finishing would be a kind of silence. Let yourself land somewhere long enough to be known.",
@@ -1264,8 +1557,8 @@ const SUN_IN=[
 "You were aimed, not placed. The Sagittarius sun is the arrow that only feels alive in flight — toward the far hill, the next philosophy, the truth that is bigger than the room. Your honesty is a gift; wrap it sometimes.",
 "Your centre is a mountain with a long memory. You were born knowing that time is the material — that things worth having are built slowly, on cold mornings, without applause. Do not mistake endurance for the whole of life; the summit has a view.",
 "Your centre stands a little apart from the crowd it loves. You see the pattern the others are inside of, and it makes you both a prophet and a stranger. Your coolness is not coldness — it is the distance required to see. Come closer anyway.",
-"You were born at the end of the wheel, where everything dissolves back into the sea it came from. You feel the room before you enter it. The gift is compassion without borders; the practice is remembering where you end and the ocean begins."];
-const MOON_IN=[
+"You were born at the end of the wheel, where everything dissolves back into the sea it came from. You feel the room before you enter it. The gift is compassion without borders; the practice is remembering where you end and the ocean begins."]);
+const MOON_IN=L('MOON_IN',[
 "Your feelings arrive fast and leave the same way — a flare, not a smoulder. You need to act on emotion, not analyse it; anger is honest weather for you. Safety means being allowed to begin.",
 "You are soothed by the reliable: the same chair, the known voice, the meal that tastes like last time. Your feelings move slowly and hold their shape. Safety is a body at rest and a promise kept.",
 "You feel by talking. The Gemini moon needs to name the feeling to have it, and often has two at once. Safety is a conversation that does not end; loneliness is a silence nobody explains.",
@@ -1277,8 +1570,8 @@ const MOON_IN=[
 "You feel best in motion. The Sagittarius moon needs room — a horizon, a plan to leave, a bigger meaning for the small sorrow. Safety is freedom; confinement is the only real grief.",
 "You learned early to carry your own weather. The Capricorn moon needs to be competent to feel safe, and finds tenderness embarrassing until it doesn't. Safety is a structure that holds; let someone else hold it sometimes.",
 "You feel from a slight distance, as if watching your own weather from a hill. You need friendship more than romance, ideas more than reassurance. Safety is being understood without being crowded.",
-"You have no skin between you and the room. The Pisces moon absorbs — moods, music, other people's rain. You need solitude to wring yourself out and art to explain what you felt. Safety is a place to dissolve on purpose."];
-const RISING_IN=[
+"You have no skin between you and the room. The Pisces moon absorbs — moods, music, other people's rain. You need solitude to wring yourself out and art to explain what you felt. Safety is a place to dissolve on purpose."]);
+const RISING_IN=L('RISING_IN',[
 "You arrive before you are announced. The Aries ascendant leads with the forehead — direct, quick, faintly impatient with doors. People read you as brave, sometimes before you are.",
 "You enter the room slowly and it settles around you. The Taurus ascendant wears calm like good cloth — people trust your steadiness before you have said a word.",
 "You arrive already talking. The Gemini ascendant is quick, curious, youthful past its years — people read you as clever and slightly elsewhere.",
@@ -1290,8 +1583,8 @@ const RISING_IN=[
 "You arrive mid-story, laughing. The Sagittarius ascendant is open, frank, faintly foreign wherever it is — people read you as free.",
 "You enter as if already responsible for the building. The Capricorn ascendant is composed, dry, older when young and younger when old — people read you as serious, then are surprised by the wit.",
 "You arrive from slightly outside the century. The Aquarius ascendant is cool, original, friendly at a distance — people read you as unusual before they read you as kind.",
-"You enter like fog, and everyone relaxes without knowing why. The Pisces ascendant is gentle, permeable, hard to pin — people read you as dreamy and confide in you anyway."];
-const PLANETS=[
+"You enter like fog, and everyone relaxes without knowing why. The Pisces ascendant is gentle, permeable, hard to pin — people read you as dreamy and confide in you anyway."]);
+const PLANETS=L('PLANETS',[
 {key:'sun',name:"Sun",ch:"☉",domain:"your will and the light you steer by"},
 {key:'moon',name:"Moon",ch:"☽",domain:"what you need in order to feel safe"},
 {key:'mercury',name:"Mercury",ch:"☿",domain:"how you think and speak"},
@@ -1301,20 +1594,20 @@ const PLANETS=[
 {key:'saturn',name:"Saturn",ch:"♄",domain:"where you are tested and, in time, mastered"},
 {key:'uranus',name:"Uranus",ch:"♅",domain:"where you break the pattern",gen:true},
 {key:'neptune',name:"Neptune",ch:"♆",domain:"where you dream and dissolve",gen:true},
-{key:'pluto',name:"Pluto",ch:"♇",domain:"where you are unmade and remade",gen:true}];
-const HOUSES=["self and the body","money and worth","words, siblings, the near world","home and root","play, art and children",
+{key:'pluto',name:"Pluto",ch:"♇",domain:"where you are unmade and remade",gen:true}]);
+const HOUSES=L('HOUSES',["self and the body","money and worth","words, siblings, the near world","home and root","play, art and children",
   "work, health and service","partnership and the mirror","shared depths, endings and rebirth","the far horizon, belief and travel",
-  "vocation and the public name","friends, hopes and the collective","solitude, the hidden and the sea"];
-const ASPECTS=[
+  "vocation and the public name","friends, hopes and the collective","solitude, the hidden and the sea"]);
+const ASPECTS=L('ASPECTS',[
 {name:"conjunction",ch:"☌",angle:0,orb:8,verb:"fused with"},
 {name:"opposition",ch:"☍",angle:180,orb:8,verb:"facing across the wheel"},
 {name:"trine",ch:"△",angle:120,orb:7,verb:"flowing easily with"},
 {name:"square",ch:"□",angle:90,orb:7,verb:"in building friction with"},
-{name:"sextile",ch:"⚹",angle:60,orb:5,verb:"in quiet cooperation with"}];
-const ELEMENT_DOM={Fire:"your sky burns — you move by impulse and faith",Earth:"your sky is grounded — you move by substance and patience",
-  Air:"your sky is windy — you move by thought and exchange",Water:"your sky is oceanic — you move by feeling and memory"};
-const ELEMENT_LACK={Fire:"courage must be borrowed or grown deliberately",Earth:"the body and the budget will need practising",
-  Air:"you know before you can explain, and that is allowed",Water:"feeling arrives late, and through the side door"};
+{name:"sextile",ch:"⚹",angle:60,orb:5,verb:"in quiet cooperation with"}]);
+const ELEMENT_DOM=L('ELEMENT_DOM',{Fire:"your sky burns — you move by impulse and faith",Earth:"your sky is grounded — you move by substance and patience",
+  Air:"your sky is windy — you move by thought and exchange",Water:"your sky is oceanic — you move by feeling and memory"});
+const ELEMENT_LACK=L('ELEMENT_LACK',{Fire:"courage must be borrowed or grown deliberately",Earth:"the body and the budget will need practising",
+  Air:"you know before you can explain, and that is allowed",Water:"feeling arrives late, and through the side door"});
 
 const signOf=l=>Math.floor(norm(l)/30);
 function degStr(l){const d=norm(l)%30;const dd=Math.floor(d),mm=Math.floor((d-dd)*60);return `${dd}°${String(mm).padStart(2,'0')}′`;}
@@ -1421,20 +1714,47 @@ const CITIES=[
 ["São Paulo","Brazil",-23.55,-46.63,"America/Sao_Paulo"],["Rio de Janeiro","Brazil",-22.91,-43.17,"America/Sao_Paulo"],["Brasília","Brazil",-15.79,-47.88,"America/Sao_Paulo"],["Belo Horizonte","Brazil",-19.92,-43.94,"America/Sao_Paulo"],["Porto Alegre","Brazil",-30.03,-51.23,"America/Sao_Paulo"],["Curitiba","Brazil",-25.43,-49.27,"America/Sao_Paulo"],["Salvador","Brazil",-12.97,-38.51,"America/Bahia"],["Recife","Brazil",-8.05,-34.88,"America/Recife"],["Fortaleza","Brazil",-3.72,-38.54,"America/Fortaleza"],["Manaus","Brazil",-3.12,-60.02,"America/Manaus"],
 ["Luanda","Angola",-8.84,13.23,"Africa/Luanda"],["Maputo","Mozambique",-25.97,32.57,"Africa/Maputo"],["Praia","Cabo Verde",14.93,-23.51,"Atlantic/Cape_Verde"],["Bissau","Guinea-Bissau",11.86,-15.60,"Africa/Bissau"],["São Tomé","São Tomé and Príncipe",0.34,6.73,"Africa/Sao_Tome"],["Casablanca","Morocco",33.57,-7.59,"Africa/Casablanca"],["Cairo","Egypt",30.04,31.24,"Africa/Cairo"],["Lagos","Nigeria",6.52,3.38,"Africa/Lagos"],["Nairobi","Kenya",-1.29,36.82,"Africa/Nairobi"],["Johannesburg","South Africa",-26.20,28.05,"Africa/Johannesburg"],["Cape Town","South Africa",-33.92,18.42,"Africa/Johannesburg"],["Accra","Ghana",5.60,-0.19,"Africa/Accra"],["Addis Ababa","Ethiopia",9.03,38.74,"Africa/Addis_Ababa"],["Dakar","Senegal",14.72,-17.47,"Africa/Dakar"],["Algiers","Algeria",36.75,3.06,"Africa/Algiers"],["Tunis","Tunisia",36.81,10.18,"Africa/Tunis"],
 ["Dubai","United Arab Emirates",25.20,55.27,"Asia/Dubai"],["Tel Aviv","Israel",32.09,34.78,"Asia/Jerusalem"],["Tehran","Iran",35.69,51.39,"Asia/Tehran"],["Mumbai","India",19.08,72.88,"Asia/Kolkata"],["Delhi","India",28.61,77.21,"Asia/Kolkata"],["Bangalore","India",12.97,77.59,"Asia/Kolkata"],["Panaji (Goa)","India",15.49,73.83,"Asia/Kolkata"],["Karachi","Pakistan",24.86,67.01,"Asia/Karachi"],["Dhaka","Bangladesh",23.81,90.41,"Asia/Dhaka"],["Bangkok","Thailand",13.76,100.50,"Asia/Bangkok"],["Singapore","Singapore",1.35,103.82,"Asia/Singapore"],["Kuala Lumpur","Malaysia",3.14,101.69,"Asia/Kuala_Lumpur"],["Jakarta","Indonesia",-6.21,106.85,"Asia/Jakarta"],["Manila","Philippines",14.60,120.98,"Asia/Manila"],["Hong Kong","Hong Kong",22.32,114.17,"Asia/Hong_Kong"],["Macau","Macau",22.20,113.54,"Asia/Macau"],["Shanghai","China",31.23,121.47,"Asia/Shanghai"],["Beijing","China",39.90,116.41,"Asia/Shanghai"],["Taipei","Taiwan",25.03,121.57,"Asia/Taipei"],["Seoul","South Korea",37.57,126.98,"Asia/Seoul"],["Tokyo","Japan",35.68,139.69,"Asia/Tokyo"],["Osaka","Japan",34.69,135.50,"Asia/Tokyo"],["Dili","Timor-Leste",-8.56,125.58,"Asia/Dili"],
+["Rio Branco","Brazil",-9.97,-67.81,"America/Rio_Branco"],["Maceió","Brazil",-9.67,-35.74,"America/Maceio"],["Macapá","Brazil",0.03,-51.07,"America/Belem"],["Vitória","Brazil",-20.32,-40.34,"America/Sao_Paulo"],["Goiânia","Brazil",-16.68,-49.25,"America/Sao_Paulo"],["São Luís","Brazil",-2.53,-44.30,"America/Fortaleza"],["Cuiabá","Brazil",-15.60,-56.10,"America/Cuiaba"],["Campo Grande","Brazil",-20.47,-54.62,"America/Campo_Grande"],["Belém","Brazil",-1.46,-48.50,"America/Belem"],["João Pessoa","Brazil",-7.12,-34.86,"America/Fortaleza"],["Teresina","Brazil",-5.09,-42.80,"America/Fortaleza"],["Natal","Brazil",-5.79,-35.21,"America/Fortaleza"],["Porto Velho","Brazil",-8.76,-63.90,"America/Porto_Velho"],["Boa Vista","Brazil",2.82,-60.67,"America/Boa_Vista"],["Florianópolis","Brazil",-27.60,-48.55,"America/Sao_Paulo"],["Aracaju","Brazil",-10.91,-37.07,"America/Maceio"],["Palmas","Brazil",-10.18,-48.33,"America/Araguaina"],
+["Campinas","Brazil",-22.91,-47.06,"America/Sao_Paulo"],["Guarulhos","Brazil",-23.45,-46.53,"America/Sao_Paulo"],["Osasco","Brazil",-23.53,-46.79,"America/Sao_Paulo"],["Santo André","Brazil",-23.66,-46.53,"America/Sao_Paulo"],["São Bernardo do Campo","Brazil",-23.69,-46.56,"America/Sao_Paulo"],["Santos","Brazil",-23.96,-46.33,"America/Sao_Paulo"],["Sorocaba","Brazil",-23.50,-47.46,"America/Sao_Paulo"],["Ribeirão Preto","Brazil",-21.18,-47.81,"America/Sao_Paulo"],["São José dos Campos","Brazil",-23.18,-45.89,"America/Sao_Paulo"],["São José do Rio Preto","Brazil",-20.81,-49.38,"America/Sao_Paulo"],["Niterói","Brazil",-22.88,-43.10,"America/Sao_Paulo"],["São Gonçalo","Brazil",-22.83,-43.05,"America/Sao_Paulo"],["Duque de Caxias","Brazil",-22.79,-43.31,"America/Sao_Paulo"],["Nova Iguaçu","Brazil",-22.76,-43.45,"America/Sao_Paulo"],["Petrópolis","Brazil",-22.51,-43.18,"America/Sao_Paulo"],["Uberlândia","Brazil",-18.92,-48.28,"America/Sao_Paulo"],["Juiz de Fora","Brazil",-21.76,-43.35,"America/Sao_Paulo"],["Contagem","Brazil",-19.93,-44.05,"America/Sao_Paulo"],["Montes Claros","Brazil",-16.73,-43.86,"America/Sao_Paulo"],["Londrina","Brazil",-23.31,-51.16,"America/Sao_Paulo"],["Maringá","Brazil",-23.42,-51.94,"America/Sao_Paulo"],["Joinville","Brazil",-26.30,-48.85,"America/Sao_Paulo"],["Blumenau","Brazil",-26.92,-49.07,"America/Sao_Paulo"],["Caxias do Sul","Brazil",-29.17,-51.18,"America/Sao_Paulo"],["Pelotas","Brazil",-31.77,-52.34,"America/Sao_Paulo"],["Anápolis","Brazil",-16.33,-48.95,"America/Sao_Paulo"],["Feira de Santana","Brazil",-12.27,-38.97,"America/Bahia"],["Vitória da Conquista","Brazil",-14.86,-40.84,"America/Bahia"],["Campina Grande","Brazil",-7.23,-35.88,"America/Fortaleza"],["Caruaru","Brazil",-8.28,-35.98,"America/Recife"],["Petrolina","Brazil",-9.39,-40.50,"America/Recife"],["Juazeiro do Norte","Brazil",-7.21,-39.32,"America/Fortaleza"],["Mossoró","Brazil",-5.19,-37.34,"America/Fortaleza"],["Imperatriz","Brazil",-5.53,-47.48,"America/Fortaleza"],["Santarém","Brazil",-2.44,-54.71,"America/Santarem"],
 ["Sydney","Australia",-33.87,151.21,"Australia/Sydney"],["Melbourne","Australia",-37.81,144.96,"Australia/Melbourne"],["Brisbane","Australia",-27.47,153.03,"Australia/Brisbane"],["Perth","Australia",-31.95,115.86,"Australia/Perth"],["Auckland","New Zealand",-36.85,174.76,"Pacific/Auckland"]
 ].map(([name,country,lat,lon,tz])=>({name,country,lat,lon,tz}));
 
 const fold=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+/* Portuguese names, shown and searchable in PT (English stays searchable too) */
+const COUNTRY_PT={"Azores":"Açores","Spain":"Espanha","Canary Islands":"Canárias","France":"França","United Kingdom":"Reino Unido","Ireland":"Irlanda","Northern Ireland":"Irlanda do Norte",
+ "Germany":"Alemanha","Netherlands":"Países Baixos","Belgium":"Bélgica","Luxembourg":"Luxemburgo","Switzerland":"Suíça","Austria":"Áustria","Czechia":"Tchéquia","Poland":"Polônia",
+ "Hungary":"Hungria","Italy":"Itália","Greece":"Grécia","Türkiye":"Turquia","Denmark":"Dinamarca","Sweden":"Suécia","Norway":"Noruega","Finland":"Finlândia","Iceland":"Islândia",
+ "Russia":"Rússia","Ukraine":"Ucrânia","Romania":"Romênia","Bulgaria":"Bulgária","Serbia":"Sérvia","Croatia":"Croácia","Slovenia":"Eslovênia","Slovakia":"Eslováquia",
+ "Lithuania":"Lituânia","Latvia":"Letônia","Estonia":"Estônia","United States":"Estados Unidos","Canada":"Canadá","Mexico":"México","Colombia":"Colômbia","Ecuador":"Equador",
+ "Uruguay":"Uruguai","Brazil":"Brasil","Mozambique":"Moçambique","Guinea-Bissau":"Guiné-Bissau","São Tomé and Príncipe":"São Tomé e Príncipe","Morocco":"Marrocos","Egypt":"Egito",
+ "Nigeria":"Nigéria","Kenya":"Quênia","South Africa":"África do Sul","Ghana":"Gana","Ethiopia":"Etiópia","Algeria":"Argélia","Tunisia":"Tunísia",
+ "United Arab Emirates":"Emirados Árabes Unidos","Iran":"Irã","India":"Índia","Pakistan":"Paquistão","Thailand":"Tailândia","Singapore":"Singapura","Malaysia":"Malásia",
+ "Indonesia":"Indonésia","Philippines":"Filipinas","South Korea":"Coreia do Sul","Japan":"Japão","Australia":"Austrália","New Zealand":"Nova Zelândia"};
+const CITY_PT={"Lisbon":"Lisboa","Seville":"Sevilha","Valencia":"Valência","Las Palmas":"Las Palmas de Gran Canaria","Marseille":"Marselha","London":"Londres","Edinburgh":"Edimburgo",
+ "Berlin":"Berlim","Munich":"Munique","Hamburg":"Hamburgo","Cologne":"Colônia","Amsterdam":"Amsterdã","Rotterdam":"Roterdã","Brussels":"Bruxelas","Luxembourg":"Luxemburgo",
+ "Zurich":"Zurique","Geneva":"Genebra","Vienna":"Viena","Prague":"Praga","Warsaw":"Varsóvia","Kraków":"Cracóvia","Budapest":"Budapeste","Rome":"Roma","Milan":"Milão",
+ "Naples":"Nápoles","Turin":"Turim","Florence":"Florença","Venice":"Veneza","Athens":"Atenas","Thessaloniki":"Tessalônica","Istanbul":"Istambul","Ankara":"Ancara",
+ "Copenhagen":"Copenhague","Stockholm":"Estocolmo","Gothenburg":"Gotemburgo","Helsinki":"Helsinque","Moscow":"Moscou","Saint Petersburg":"São Petersburgo",
+ "Bucharest":"Bucareste","Belgrade":"Belgrado","Ljubljana":"Liubliana","New York":"Nova York","Philadelphia":"Filadélfia","San Francisco":"São Francisco",
+ "Mexico City":"Cidade do México","Bogotá":"Bogotá","Cape Town":"Cidade do Cabo","Johannesburg":"Joanesburgo","Cairo":"Cairo","Accra":"Acra","Addis Ababa":"Adis Abeba",
+ "Dakar":"Dacar","Algiers":"Argel","Tunis":"Túnis","Tehran":"Teerã","Delhi":"Nova Délhi","Karachi":"Carachi","Dhaka":"Daca","Jakarta":"Jacarta","Singapore":"Singapura",
+ "Shanghai":"Xangai","Beijing":"Pequim","Seoul":"Seul","Tokyo":"Tóquio","Osaka":"Osaka","Dili":"Díli","Panaji (Goa)":"Pangim (Goa)"};
+const cityName=c=>PT&&CITY_PT[c.name]||c.name;
+const countryName=c=>PT&&COUNTRY_PT[c.country]||c.country;
 let pickedCity=null;
 const cityIn=$('aCity'),cityList=$('cityList');
 function renderCityList(){
   const q=fold(cityIn.value.trim());
   if(q.length<2){cityList.classList.remove('on');return;}
-  const hits=CITIES.filter(c=>fold(c.name).includes(q)||fold(c.country).includes(q)).slice(0,6);
-  cityList.innerHTML=hits.map((c,i)=>`<div data-i="${CITIES.indexOf(c)}" class="${i?'':'sel'}">${c.name}<span>${c.country}</span></div>`).join('');
+  const words=c=>fold([c.name,c.country,CITY_PT[c.name]||'',COUNTRY_PT[c.country]||''].join(' | '));
+  /* names that start with the query first, then the rest */
+  const hits=CITIES.filter(c=>words(c).includes(q))
+    .sort((a,b)=>(fold(cityName(b)).startsWith(q)-fold(cityName(a)).startsWith(q)))
+    .slice(0,6);
+  cityList.innerHTML=hits.map((c,i)=>`<div data-i="${CITIES.indexOf(c)}" class="${i?'':'sel'}">${cityName(c)}<span>${countryName(c)}</span></div>`).join('');
   cityList.classList.toggle('on',hits.length>0);
 }
-function pickCity(c){pickedCity=c;cityIn.value=`${c.name}, ${c.country}`;cityList.classList.remove('on');}
+function pickCity(c){pickedCity=c;cityIn.value=`${cityName(c)}, ${countryName(c)}`;cityList.classList.remove('on');}
 cityIn.addEventListener('input',()=>{pickedCity=null;renderCityList();});
 cityIn.addEventListener('focus',()=>{if(!pickedCity)renderCityList();});
 cityIn.addEventListener('keydown',e=>{
@@ -1489,15 +1809,16 @@ function castChart(inp){
   chartMeta={date:{y:inp.y,m:inp.m,d:inp.d},h:inp.h,mi:inp.mi,noTime:!!inp.nt,
     place:{name:inp.place.split(',')[0],full:inp.place,lat:inp.lat,lon:inp.lon,tz:inp.tz}};
   const own=ownedMap(chartId);
-  history.replaceState(null,'',own&&own.sid?`?map=${encodeURIComponent(own.sid)}`:location.pathname);
+  history.replaceState(null,'',location.pathname+qs(own&&own.sid?{map:own.sid}:null));
   openChart();
 }
-function mapLabel(inp){return `${inp.d} ${MONTHS[inp.m-1].slice(0,3)} ${inp.y} · ${inp.place.split(',')[0]}`;}
+const mon3=m=>MONTHS[m-1].slice(0,3);
+function mapLabel(inp){return `${inp.d} ${mon3(inp.m)} ${inp.y} · ${inp.place.split(',')[0]}`;}
 function renderSaved(){
   const box=$('savedMaps'),maps=store.get('maps',[]);
   box.hidden=!PAYWALL||!maps.length;
   if(box.hidden)return;
-  box.innerHTML='<span class="label">Your kept maps</span>'+maps.slice(0,6).map((m,i)=>`<button class="chip" data-i="${i}"><i>☉</i>${mapLabel(m.input)}</button>`).join('');
+  box.innerHTML=`<span class="label">${T('Your kept maps','Os seus mapas guardados')}</span>`+maps.slice(0,6).map((m,i)=>`<button class="chip" data-i="${i}"><i>☉</i>${mapLabel(m.input)}</button>`).join('');
   box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>castChart(maps[+c.dataset.i].input));
 }
 $('astroForm').onsubmit=e=>{
@@ -1506,23 +1827,25 @@ $('astroForm').onsubmit=e=>{
   const date=readDate('a',err);if(!date)return;
   const noTime=$('aNoTime').checked;
   let h=+$('aHour').value, mi=+$('aMin').value;
-  if(!noTime&&($('aHour').value===''||h<0||h>23||mi<0||mi>59)){err.textContent='Give the hour (0–23) and minute, or tick "I don\'t know the hour".';return;}
+  if(!noTime&&($('aHour').value===''||h<0||h>23||mi<0||mi>59)){
+    err.textContent=T('Give the hour (0–23) and minute, or tick "I don\'t know the hour".','Informe a hora (0–23) e o minuto, ou marque "Não sei a hora".');return;}
   if(noTime){h=12;mi=0;}
   let place;
   if($('aManual').checked){
     const lat=parseFloat($('aLat').value),lon=parseFloat($('aLon').value);
-    if(isNaN(lat)||isNaN(lon)||Math.abs(lat)>89.9||Math.abs(lon)>180){err.textContent='Latitude −90…90, longitude −180…180 (east positive).';return;}
-    place={name:`${Math.abs(lat).toFixed(2)}°${lat<0?'S':'N'} ${Math.abs(lon).toFixed(2)}°${lon<0?'W':'E'}`,country:'',lat,lon,tz:$('aTz').value};
+    if(isNaN(lat)||isNaN(lon)||Math.abs(lat)>89.9||Math.abs(lon)>180){
+      err.textContent=T('Latitude −90…90, longitude −180…180 (east positive).','Latitude −90…90, longitude −180…180 (leste positivo).');return;}
+    place={name:`${Math.abs(lat).toFixed(2)}°${lat<0?'S':'N'} ${Math.abs(lon).toFixed(2)}°${lon<0?T('W','O'):T('E','L')}`,country:'',lat,lon,tz:$('aTz').value};
   }else{
-    if(!pickedCity){err.textContent='Choose a birthplace from the list, or enter coordinates.';return;}
-    place=pickedCity;
+    if(!pickedCity){err.textContent=T('Choose a birthplace from the list, or enter coordinates.','Escolha uma cidade natal da lista, ou informe as coordenadas.');return;}
+    place={...pickedCity,name:cityName(pickedCity),country:countryName(pickedCity)};
   }
   const inp={y:date.y,m:date.m,d:date.d,h,mi,nt:noTime?1:0,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4),tz:place.tz,
     place:place.country?`${place.name}, ${place.country}`:place.name};
-  try{castChart(inp);}catch(ex){err.textContent='That time zone is unknown to this browser.';return;}
+  try{castChart(inp);}catch(ex){err.textContent=T('That time zone is unknown to this browser.','Este navegador não conhece esse fuso horário.');return;}
 };
 
-const ASTRO_SLOTS=[{label:'Sky',face:'✶',big:true},{label:'Sun',face:'☉',big:true},{label:'Moon',face:'☽',big:true},{label:'Rising',face:'↑',big:true}];
+const ASTRO_SLOTS=[{label:T('Sky','Céu'),face:'✶',big:true},{label:T('Sun','Sol'),face:'☉',big:true},{label:T('Moon','Lua'),face:'☽',big:true},{label:T('Rising','Ascendente'),face:'↑',big:true}];
 function openChart(){
   mode='astro';
   beginReading();
@@ -1533,26 +1856,39 @@ function openChart(){
   revealSlots(380);
   setTimeout(()=>showAstro(0),1000);
   setTimeout(()=>{
-    const s=SIGNS[chart.bodies[0].sign].name,m=SIGNS[chart.bodies[1].sign].name;
-    const r=chart.houses?`<b>${SIGNS[signOf(chart.houses.asc)].name}</b> on the horizon.`:`the horizon unread.`;
-    showSynth(`The thread of this sky: <b>${s}</b> at the centre, <b>${m}</b> in the tide, ${r}`);
+    const s=SIGNS[chart.bodies[0].sign].name,m=SIGNS[chart.bodies[1].sign].name,r=chart.houses?SIGNS[signOf(chart.houses.asc)].name:'';
+    showSynth(T(`The thread of this sky: <b>${s}</b> at the centre, <b>${m}</b> in the tide, `+(r?`<b>${r}</b> on the horizon.`:'the horizon unread.'),
+                `O fio deste céu: <b>${s}</b> no centro, <b>${m}</b> na maré, `+(r?`<b>${r}</b> no horizonte.`:'o horizonte por ler.')));
   },2600);
 }
+const hhmm=(h,mi)=>`${String(h).padStart(2,'0')}:${String(mi).padStart(2,'0')}`;
 function bornLine(){
-  const {date,h,mi,noTime,place}=chartMeta;
-  return `${date.d} ${MONTHS[date.m-1].slice(0,3).toUpperCase()} ${date.y}`+(noTime?' · HOUR UNKNOWN':` · ${String(h).padStart(2,'0')}:${String(mi).padStart(2,'0')}`);
+  const {date,h,mi,noTime}=chartMeta;
+  return `${date.d} ${mon3(date.m).toUpperCase()} ${date.y}`+(noTime?T(' · HOUR UNKNOWN',' · HORA DESCONHECIDA'):` · ${hhmm(h,mi)}`);
 }
 function placeLine(){return chartMeta.place.full.toUpperCase();}
-function houseLine(b){return chart.houses?` It stands in the ${RN[b.house-1]} house — the house of ${HOUSES[b.house-1]}.`:'';}
+function houseLine(b){return chart.houses?T(` It stands in the ${RN[b.house-1]} house — the house of ${HOUSES[b.house-1]}.`,` Na carta, ocupa a casa ${RN[b.house-1]} — a casa de ${HOUSES[b.house-1]}.`):'';}
+const sysName=H=>H.system==='Placidus'?'Placidus':T('Equal','Iguais');
+const elMod=s=>`${EL_NAME[s.el]}, ${MOD_NAME[s.mod]}`.toUpperCase();
+const risingName=s=>T(`${s.name} rising`,`Ascendente em ${s.name}`);
+const gold=t=>`<b style="color:var(--gold);font-weight:400">${t}</b>`;
+const SEALED=T('SEALED','SELADO'), NEED_HOUR=T('HOUR NEEDED','PRECISA DA HORA');
+const M={pos:T('Exhibit — ','Exposição — '),deg:T('DEGREE','GRAU'),house:T('HOUSE','CASA'),el:T('ELEMENT','ELEMENTO'),
+  asc:T('ASCENDANT','ASCENDENTE'),mc:T('MIDHEAVEN','MEIO DO CÉU'),ruled:T('RULED BY','REGENTE'),born:T('BORN','NASCIMENTO'),
+  place:T('PLACE','LOCAL'),houses:T('HOUSES','CASAS')};
 
 /* the sealed views: enough to see what waits, not enough to read it */
 const firstSentence=t=>{const i=t.search(/[.!?](\s|$)/);return i<0?t:t.slice(0,i+1);};
-function sealBox(lead){
-  return `<div class="seal"><span class="k">Sealed in the full map</span><p>${lead}</p>
-    <button class="deal-btn gold" data-unlock>✦ &nbsp;Break the seal · ${CONFIG.price}</button>
-    <span class="fine">One payment · this chart, kept for good</span></div>`;
-}
+const SEAL_K=T('Sealed in the full map','Selado no mapa completo');
+const sealBtn=()=>`<button class="deal-btn gold" data-unlock>✦ &nbsp;${T('Break the seal','Quebrar o selo')} · ${CONFIG.price}</button>
+    <span class="fine">${T('Star poster and full map · kept for good','Pôster em estrelas e mapa completo · seus para sempre')}</span>`;
+function sealBox(lead){return `<div class="seal"><span class="k">${SEAL_K}</span><p>${lead}</p>${sealBtn()}</div>`;}
 function veiled(text){const f=firstSentence(text);return `${f}<span class="veil" aria-hidden="true">${text.slice(f.length)}</span>`;}
+function skyIntro(sun,moon,H){
+  const s=SIGNS[sun.sign].name,m=SIGNS[moon.sign].name,a=H?SIGNS[signOf(H.asc)].name:'',p=chartMeta.place.name;
+  return T(`The sky as it stood over ${p} — ${s} at the centre, ${m} in the tide${a?`, ${a} on the horizon`:''}.`,
+           `O céu como estava sobre ${p} — ${s} no centro, ${m} na maré${a?`, ${a} no horizonte`:''}.`);
+}
 
 function showAstro(k){
   if(view===k)return;
@@ -1563,72 +1899,78 @@ function showAstro(k){
   if(k===2&&!open){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
-    setPanel({pos:'Exhibit — The Moon',name:`Moon in ${s.name}`,
-      meta:[['DEGREE','SEALED'],['HOUSE','SEALED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
-      prose:`<em>The tide; what you need in order to feel safe.</em> ${veiled(MOON_IN[moon.sign])}`+
-        sealBox(`Your Moon is in <b style="color:var(--gold);font-weight:400">${s.name}</b>. Its reading, its house and its degree wait beneath the seal — with your Rising sign and all ten planets.`)});
+    setPanel({pos:M.pos+T('The Moon','A Lua'),name:T(`Moon in ${s.name}`,`Lua em ${s.name}`),
+      meta:[[M.deg,SEALED],[M.house,SEALED],[M.el,elMod(s)]],
+      prose:`<em>${T('The tide; what you need in order to feel safe.','A maré; o que você precisa para se sentir em segurança.')}</em> ${veiled(MOON_IN[moon.sign])}`+
+        sealBox(T(`Your Moon is in ${gold(s.name)}. Its reading, its house and its degree wait beneath the seal — with your Rising sign, all ten planets and a star poster of your sky.`,
+                  `A sua Lua está em ${gold(s.name)}. A leitura dela, a casa e o grau esperam sob o selo — com o seu Ascendente, os dez planetas e um pôster em estrelas do seu céu.`))});
     return;
   }
   if(k===3&&!open&&chart.houses){
     const a=signOf(chart.houses.asc),s=SIGNS[a];
     morphTo({fn:(ctx,S)=>drawRisingSeal(ctx,S,a),fill:{desk:.66,mobile:.3}});
-    setPanel({pos:'Exhibit — The Horizon',name:`${s.name} rising`,
-      meta:[['ASCENDANT','SEALED'],['MIDHEAVEN','SEALED'],['RULED BY',s.ruler.replace('the ','').toUpperCase()]],
-      prose:`<em>The door; how you arrive, and what the world meets first.</em> ${veiled(RISING_IN[a])}`+
-        sealBox(`${s.name} was climbing the eastern horizon when you arrived. The full map reads it — with your Midheaven, the ruler of your chart, and where its door opens.`)});
+    setPanel({pos:M.pos+T('The Horizon','O Horizonte'),name:risingName(s),
+      meta:[[M.asc,SEALED],[M.mc,SEALED],[M.ruled,s.ruler.replace('the ','').toUpperCase()]],
+      prose:`<em>${T('The door; how you arrive, and what the world meets first.','A porta; como você chega, e o que o mundo encontra primeiro.')}</em> ${veiled(RISING_IN[a])}`+
+        sealBox(T(`${s.name} was climbing the eastern horizon when you arrived. The full map reads it — with your Midheaven, the ruler of your chart, and where its door opens.`,
+                  `${s.name} subia no horizonte leste quando você chegou. O mapa completo lê esse signo — com o seu Meio do Céu, o regente do seu mapa e para onde a porta se abre.`))});
     return;
   }
   if(k===0&&!open){
     morphTo({fn:(ctx,S)=>drawWheel(ctx,S,chart),fill:{desk:.74,mobile:.3}});
-    const H=chart.houses;
+    const H=chart.houses,n=chart.aspects.length;
     const rows=chart.bodies.map(b=>`<tr><td class="g">${b.ch}</td><td>${b.name}</td><td class="s">${SIGNS[b.sign].name}</td><td class="r">${b.i===0?degStr(b.lon):'·'}</td></tr>`).join('');
-    setPanel({pos:'Exhibit — The Whole Sky',name:'Your natal wheel',
-      meta:[['BORN',bornLine()],['PLACE',placeLine()],['HOUSES',H?H.system.toUpperCase():'HOUR NEEDED']],
-      prose:`<em>The sky as it stood over ${chartMeta.place.name} — ${SIGNS[sun.sign].name} at the centre, ${SIGNS[moon.sign].name} in the tide${H?`, ${SIGNS[signOf(H.asc)].name} on the horizon`:''}.</em>
-        <div class="sub">Planets</div><table class="tbl">${rows}</table>
-        <div class="seal"><span class="k">Sealed in the full map</span>
+    setPanel({pos:M.pos+T('The Whole Sky','O Céu Inteiro'),name:T('Your natal wheel','A sua roda natal'),
+      meta:[[M.born,bornLine()],[M.place,placeLine()],[M.houses,H?sysName(H).toUpperCase():NEED_HOUR]],
+      prose:`<em>${skyIntro(sun,moon,H)}</em>
+        <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
+        <div class="seal"><span class="k">${SEAL_K}</span>
           <ul>
-            <li>Your Moon${H?' and Rising':''}, read in full</li>
-            <li>All ten planets read${H?' in their houses':''}</li>
-            ${H?'<li>The twelve houses and your Midheaven</li>':''}
-            <li>${chart.aspects.length} aspect${chart.aspects.length===1?'':'s'} binding your planets</li>
-            <li>The balance of your elements</li>
-            <li>A star poster of this sky, print-ready</li>
+            <li>${T('A star poster of this sky, 2400 × 3000, ready to print','Um pôster em estrelas deste céu, 2400 × 3000, pronto para imprimir')}</li>
+            <li>${H?T('Your Moon and Rising, read in full','A sua Lua e o seu Ascendente, lidos por inteiro'):T('Your Moon, read in full','A sua Lua, lida por inteiro')}</li>
+            <li>${H?T('All ten planets read in their houses','Os dez planetas lidos nas suas casas'):T('All ten planets read','Os dez planetas lidos')}</li>
+            ${H?`<li>${T('The twelve houses and your Midheaven','As doze casas e o seu Meio do Céu')}</li>`:''}
+            <li>${T(`${n} aspect${n===1?'':'s'} binding your planets`,`${n} aspecto${n===1?'':'s'} ligando os seus planetas`)}</li>
+            <li>${T('The balance of your elements','O equilíbrio dos seus elementos')}</li>
           </ul>
-          <button class="deal-btn gold" data-unlock>✦ &nbsp;Break the seal · ${CONFIG.price}</button>
-          <span class="fine">One payment · this chart, kept for good</span></div>`});
+          ${sealBtn()}</div>`});
     return;
   }
   if(k===1){
     const s=SIGNS[sun.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,sun.sign,0),fill:{desk:.66,mobile:.3}});
-    setPanel({pos:'Exhibit — The Sun',name:`Sun in ${s.name}`,
-      meta:[['DEGREE',`${degStr(sun.lon)} ${s.name.toUpperCase()}`],['HOUSE',!chart.houses?'HOUR NEEDED':open?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:'SEALED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
-      prose:`<em>The centre; your will and the light you steer by.</em> ${SUN_IN[sun.sign]}${open?houseLine(sun):''}`+
-        (open?'':sealBox(`Your Sun is only the centre. Your Moon is in <b style="color:var(--gold);font-weight:400">${SIGNS[moon.sign].name}</b>${chart.houses?` and <b style="color:var(--gold);font-weight:400">${SIGNS[signOf(chart.houses.asc)].name}</b> rises`:''} — the full map reads them, with every planet and house.`))});
+    setPanel({pos:M.pos+T('The Sun','O Sol'),name:T(`Sun in ${s.name}`,`Sol em ${s.name}`),
+      meta:[[M.deg,`${degStr(sun.lon)} ${s.name.toUpperCase()}`],[M.house,!chart.houses?NEED_HOUR:open?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:SEALED],[M.el,elMod(s)]],
+      prose:`<em>${T('The centre; your will and the light you steer by.','O centro; a sua vontade e a luz que guia você.')}</em> ${SUN_IN[sun.sign]}${open?houseLine(sun):''}`+
+        (open?'':sealBox(T(`Your Sun is only the centre. Your Moon is in ${gold(SIGNS[moon.sign].name)}${chart.houses?` and ${gold(SIGNS[signOf(chart.houses.asc)].name)} rises`:''} — the full map reads them, with every planet and house, and draws your sky as a poster to keep.`,
+                           `O seu Sol é só o centro. A sua Lua está em ${gold(SIGNS[moon.sign].name)}${chart.houses?` e o seu Ascendente é ${gold(SIGNS[signOf(chart.houses.asc)].name)}`:''} — o mapa completo lê os dois, com cada planeta e casa, e desenha o seu céu num pôster para guardar.`)))});
   }else if(k===2){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
-    setPanel({pos:'Exhibit — The Moon',name:`Moon in ${s.name}`,
-      meta:[['DEGREE',`${degStr(moon.lon)} ${s.name.toUpperCase()}`],['HOUSE',chart.houses?`${RN[moon.house-1]} — ${HOUSES[moon.house-1].toUpperCase()}`:'HOUR NEEDED'],['ELEMENT',`${s.el}, ${s.mod}`.toUpperCase()]],
-      prose:`<em>The tide; what you need in order to feel safe.</em> ${MOON_IN[moon.sign]}${houseLine(moon)}`+
-        (chart.hasTime?'':`<span class="rev">Without an hour the Moon is placed at noon — she moves half a degree an hour, so she may sit a few degrees to either side.</span>`)});
+    setPanel({pos:M.pos+T('The Moon','A Lua'),name:T(`Moon in ${s.name}`,`Lua em ${s.name}`),
+      meta:[[M.deg,`${degStr(moon.lon)} ${s.name.toUpperCase()}`],[M.house,chart.houses?`${RN[moon.house-1]} — ${HOUSES[moon.house-1].toUpperCase()}`:NEED_HOUR],[M.el,elMod(s)]],
+      prose:`<em>${T('The tide; what you need in order to feel safe.','A maré; o que você precisa para se sentir em segurança.')}</em> ${MOON_IN[moon.sign]}${houseLine(moon)}`+
+        (chart.hasTime?'':`<span class="rev">${T('Without an hour the Moon is placed at noon — she moves half a degree an hour, so she may sit a few degrees to either side.',
+                                               'Sem a hora, a Lua é posicionada ao meio-dia — ela anda meio grau por hora, então pode estar alguns graus para um lado ou para o outro.')}</span>`)});
   }else if(k===3){
     if(chart.houses){
       const a=signOf(chart.houses.asc),m=signOf(chart.houses.mc),s=SIGNS[a];
       const ruler=chart.bodies.find(b=>s.ruler.toLowerCase().includes(b.name.toLowerCase()));
       morphTo({fn:(ctx,S)=>drawRisingSeal(ctx,S,a),fill:{desk:.66,mobile:.3}});
-      setPanel({pos:'Exhibit — The Horizon',name:`${s.name} rising`,
-        meta:[['ASCENDANT',`${degStr(chart.houses.asc)} ${s.name.toUpperCase()}`],['MIDHEAVEN',`${degStr(chart.houses.mc)} ${SIGNS[m].name.toUpperCase()}`],['RULED BY',s.ruler.replace('the ','').toUpperCase()]],
-        prose:`<em>The door; how you arrive, and what the world meets first.</em> ${RISING_IN[a]}`+
-          (ruler?`<span class="line">The ruler of your horizon, <b>${ruler.name}</b>, sits in <b>${SIGNS[ruler.sign].name}</b> in the ${RN[ruler.house-1]} house — the door opens onto ${HOUSES[ruler.house-1]}.</span>`:'')+
-          `<span class="line">Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.</span>`});
+      setPanel({pos:M.pos+T('The Horizon','O Horizonte'),name:risingName(s),
+        meta:[[M.asc,`${degStr(chart.houses.asc)} ${s.name.toUpperCase()}`],[M.mc,`${degStr(chart.houses.mc)} ${SIGNS[m].name.toUpperCase()}`],[M.ruled,s.ruler.replace('the ','').toUpperCase()]],
+        prose:`<em>${T('The door; how you arrive, and what the world meets first.','A porta; como você chega, e o que o mundo encontra primeiro.')}</em> ${RISING_IN[a]}`+
+          (ruler?`<span class="line">${T(`The ruler of your horizon, <b>${ruler.name}</b>, sits in <b>${SIGNS[ruler.sign].name}</b> in the ${RN[ruler.house-1]} house — the door opens onto ${HOUSES[ruler.house-1]}.`,
+                                        `O regente do seu horizonte, <b>${{Sol:'o Sol',Lua:'a Lua'}[ruler.name]||ruler.name}</b>, está em <b>${SIGNS[ruler.sign].name}</b> na casa ${RN[ruler.house-1]} — a porta se abre para ${HOUSES[ruler.house-1]}.`)}</span>`:'')+
+          `<span class="line">${T(`Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.`,
+                                  `O seu Meio do Céu — o cume público — está em <b>${SIGNS[m].name}</b>: o mundo vai conhecer você como alguém ${SIGNS[m].flavor}.`)}</span>`});
     }else{
       morphTo({fn:(ctx,S)=>{const c=S/2;ctx.lineWidth=S*.014;ctx.setLineDash([S*.03,S*.05]);ctx.beginPath();ctx.arc(c,c,S*.44,0,7);ctx.stroke();ctx.setLineDash([]);
         ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c+S*.5,c);ctx.stroke();},fill:{desk:.66,mobile:.3}});
-      setPanel({pos:'Exhibit — The Horizon',name:'The horizon is unread',
-        meta:[['ASCENDANT','HOUR NEEDED'],['MIDHEAVEN','HOUR NEEDED'],['HOUSES','NOT CAST']],
-        prose:`<em>The rising sign turns a full circle every day.</em> Without the hour of birth the observatory cannot say which sign was climbing over the eastern edge of the world when you arrived, nor place the planets in their houses. The planets themselves are true to the day. If you learn the hour — a birth certificate, a parent's memory — return, and the wheel will complete.`});
+      setPanel({pos:M.pos+T('The Horizon','O Horizonte'),name:T('The horizon is unread','O horizonte está por ler'),
+        meta:[[M.asc,NEED_HOUR],[M.mc,NEED_HOUR],[M.houses,T('NOT CAST','NÃO CALCULADAS')]],
+        prose:T(`<em>The rising sign turns a full circle every day.</em> Without the hour of birth the observatory cannot say which sign was climbing over the eastern edge of the world when you arrived, nor place the planets in their houses. The planets themselves are true to the day. If you learn the hour — a birth certificate, a parent's memory — return, and the wheel will complete.`,
+                `<em>O ascendente dá uma volta completa todos os dias.</em> Sem a hora do nascimento, o observatório não consegue dizer qual signo subia na borda leste do mundo quando você chegou, nem colocar os planetas nas casas. Os planetas em si estão certos para o dia. Se você descobrir a hora — uma certidão de nascimento, a memória de alguém da família — volte, e a roda se completa.`)});
     }
   }else{
     morphTo({fn:(ctx,S)=>drawWheel(ctx,S,chart),fill:{desk:.74,mobile:.3}});
@@ -1638,25 +1980,35 @@ function showAstro(k){
     const aspRows=chart.aspects.slice(0,14).map(x=>`<tr><td class="g">${x.a.ch}</td><td>${x.a.name}</td><td class="g">${x.asp.ch}</td><td class="g">${x.b.ch}</td><td>${x.b.name}</td><td class="s">${x.asp.name}</td><td class="r">${x.off.toFixed(1)}°</td></tr>`).join('');
     const E=chart.els;const domEl=Object.keys(E).sort((a,b)=>E[b]-E[a])[0];const lack=Object.keys(E).filter(k=>!E[k]);
     const Mm=chart.mods;const domMod=Object.keys(Mm).sort((a,b)=>Mm[b]-Mm[a])[0];
-    const readings=chart.bodies.map(b=>`<span class="line"><b>${b.ch} ${b.name} in ${SIGNS[b.sign].name}</b>${H?`, ${RN[b.house-1]} house`:''} — ${b.domain}, worn ${SIGNS[b.sign].flavor}.${b.retro?' Retrograde: turned inward, revisited, learned twice.':''}</span>`).join('');
-    setPanel({pos:'Exhibit — The Whole Sky',name:'Your natal wheel',
-      meta:[['BORN',bornLine()],['PLACE',placeLine()],['HOUSES',H?H.system.toUpperCase():'HOUR NEEDED']],
-      prose:`<em>The sky as it stood over ${chartMeta.place.name} — ${SIGNS[sun.sign].name} at the centre, ${SIGNS[moon.sign].name} in the tide${H?`, ${SIGNS[signOf(H.asc)].name} on the horizon`:''}.</em>
-        <div class="sub">Planets</div><table class="tbl">${rows}</table>
-        ${H?`<div class="sub">Houses · ${H.system}</div><table class="tbl">${houseRows}</table>`:''}
-        <div class="sub">Aspects</div>${aspRows?`<table class="tbl">${aspRows}</table>`:'<span class="line">A quiet sky — no major aspects within orb.</span>'}
-        <div class="sub">Balance</div>
-        <span class="line">Fire ${E.Fire} · Earth ${E.Earth} · Air ${E.Air} · Water ${E.Water} — ${ELEMENT_DOM[domEl]}.${lack.length?` There is no ${lack.join(' and no ')} in your sky: ${lack.map(l=>ELEMENT_LACK[l]).join('; ')}.`:''}</span>
-        <span class="line">${domMod} leads (${Mm.Cardinal} cardinal · ${Mm.Fixed} fixed · ${Mm.Mutable} mutable) — ${domMod==='Cardinal'?'you begin things':domMod==='Fixed'?'you keep things':'you change things'}.</span>
-        <div class="sub">Readings</div>${readings}
-        <button class="deal-btn" data-poster style="margin:22px 0 6px;padding:14px 26px 12px;font-size:10px">↓ &nbsp;Download your star poster</button>
-        <span class="line" style="font-size:13px;color:var(--mist)">Positions computed in the browser from Keplerian elements and the principal lunar terms — good to a fraction of a degree. Planets within a degree of a cusp may be argued over by better instruments.</span>`});
+    const readings=chart.bodies.map(b=>`<span class="line">`+T(
+      `<b>${b.ch} ${b.name} in ${SIGNS[b.sign].name}</b>${H?`, ${RN[b.house-1]} house`:''} — ${b.domain}, worn ${SIGNS[b.sign].flavor}.${b.retro?' Retrograde: turned inward, revisited, learned twice.':''}`,
+      `<b>${b.ch} ${b.name} em ${SIGNS[b.sign].name}</b>${H?`, casa ${RN[b.house-1]}`:''} — ${b.domain}, com o temperamento de ${SIGNS[b.sign].name}: ${SIGNS[b.sign].flavor}.${b.retro?' Retrógrado: voltado para dentro, revisitado, aprendido duas vezes.':''}`)+`</span>`).join('');
+    const lackNames=lack.map(l=>EL_NAME[l]);
+    const balance=T(
+      `Fire ${E.Fire} · Earth ${E.Earth} · Air ${E.Air} · Water ${E.Water} — ${ELEMENT_DOM[domEl]}.${lack.length?` There is no ${lackNames.join(' and no ')} in your sky: ${lack.map(l=>ELEMENT_LACK[l]).join('; ')}.`:''}`,
+      `Fogo ${E.Fire} · Terra ${E.Earth} · Ar ${E.Air} · Água ${E.Water} — ${ELEMENT_DOM[domEl]}.${lack.length?` Não há ${lackNames.join(' nem ')} no seu céu: ${lack.map(l=>ELEMENT_LACK[l]).join('; ')}.`:''}`);
+    const modLine=T(
+      `${domMod} leads (${Mm.Cardinal} cardinal · ${Mm.Fixed} fixed · ${Mm.Mutable} mutable) — ${domMod==='Cardinal'?'you begin things':domMod==='Fixed'?'you keep things':'you change things'}.`,
+      `${MOD_NAME[domMod]} predomina (${Mm.Cardinal} cardinais · ${Mm.Fixed} fixos · ${Mm.Mutable} mutáveis) — ${domMod==='Cardinal'?'você começa as coisas':domMod==='Fixed'?'você mantém as coisas':'você transforma as coisas'}.`);
+    setPanel({pos:M.pos+T('The Whole Sky','O Céu Inteiro'),name:T('Your natal wheel','A sua roda natal'),
+      meta:[[M.born,bornLine()],[M.place,placeLine()],[M.houses,H?sysName(H).toUpperCase():NEED_HOUR]],
+      prose:`<em>${skyIntro(sun,moon,H)}</em>
+        <button class="deal-btn" data-poster style="margin:16px 0 4px;padding:14px 26px 12px;font-size:10px">↓ &nbsp;${T('Download your star poster','Baixar o seu pôster em estrelas')}</button>
+        <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
+        ${H?`<div class="sub">${T('Houses','Casas')} · ${sysName(H)}</div><table class="tbl">${houseRows}</table>`:''}
+        <div class="sub">${T('Aspects','Aspectos')}</div>${aspRows?`<table class="tbl">${aspRows}</table>`:`<span class="line">${T('A quiet sky — no major aspects within orb.','Um céu quieto — nenhum aspecto maior dentro da órbita.')}</span>`}
+        <div class="sub">${T('Balance','Equilíbrio')}</div>
+        <span class="line">${balance}</span>
+        <span class="line">${modLine}</span>
+        <div class="sub">${T('Readings','Leituras')}</div>${readings}
+        <span class="line" style="font-size:13px;color:var(--mist)">${T('Positions computed in the browser from Keplerian elements and the principal lunar terms — good to a fraction of a degree. Planets within a degree of a cusp may be argued over by better instruments.',
+          'Posições calculadas no navegador a partir de elementos keplerianos e dos termos principais da teoria lunar — precisas a uma fração de grau. Planetas a menos de um grau de uma cúspide podem ser discutidos por instrumentos melhores.')}</span>`});
   }
 }
 
 /* ═══ NUMEROLOGY ══════════════════════════════════════════════ */
 const PYTH={a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8};
-const NUMBERS={
+const NUMBERS=L('NUMBERS',{
 1:{title:"The Pioneer",keys:"beginning, independence, drive",prose:"You were sent to begin things. One is the line drawn on the blank page — independence, initiative, the loneliness and glory of going first. Your work is leadership without domination; your shadow is the belief that needing anyone is weakness."},
 2:{title:"The Diplomat",keys:"partnership, sensitivity, balance",prose:"Two is the first relationship — the mirror, the pair, the pause before the answer. You are built for partnership, tact and the patient weaving of people together. Your shadow is disappearing to keep the peace."},
 3:{title:"The Voice",keys:"expression, creativity, joy",prose:"Three is the triangle, the first shape that stands — creation, expression, the joy of making something out of two things that met. You are here to speak, make and delight. Your shadow is scattering the gift across too many tables."},
@@ -1668,8 +2020,8 @@ const NUMBERS={
 9:{title:"The Elder",keys:"completion, compassion, release",prose:"Nine is the last of the single numbers, the one that contains the rest. You are here to complete, forgive, and give away — compassion at the scale of the whole. Your shadow is grieving for what you have not yet let go."},
 11:{title:"The Illuminator",keys:"intuition, inspiration, vision",master:true,prose:"Eleven is two pillars and the gate between them. You carry Two's sensitivity at a higher voltage — intuition, inspiration, nerves like antennae. You are here to light a room, not to hold it up. Your shadow is anxiety wearing the mask of vision."},
 22:{title:"The Master Builder",keys:"manifestation, vision made real",master:true,prose:"Twenty-two is Four at the scale of a city. You are here to make the visionary practical — to give the dream a foundation and a permit. Your shadow is the weight of a potential you were told about too early."},
-33:{title:"The Master Teacher",keys:"healing, service, unconditional care",master:true,prose:"Thirty-three is Six raised to a vocation — care as a calling, love with no interest rate. You are here to lift, teach and heal, often at cost. Your shadow is forgetting that you too are someone's responsibility."}};
-const NUM_POS=[
+33:{title:"The Master Teacher",keys:"healing, service, unconditional care",master:true,prose:"Thirty-three is Six raised to a vocation — care as a calling, love with no interest rate. You are here to lift, teach and heal, often at cost. Your shadow is forgetting that you too are someone's responsibility."}});
+const NUM_POS=L('NUM_POS',[
 {key:'life',label:'Life Path',pos:'The Life Path',intro:"The road you are walking — folded from the day, the month and the year.",
  tail:n=>`This is the number of the whole journey: not what you do, but the terrain you do it on.`},
 {key:'expr',label:'Expression',pos:'The Expression',intro:"The tools you carry — every letter of the name you were given.",
@@ -1679,7 +2031,7 @@ const NUM_POS=[
 {key:'pers',label:'Persona',pos:'The Personality',intro:"The door others see first — the consonants, the bones of the name.",
  tail:n=>`At the door, people meet ${NUMBERS[n].keys} before they meet the rest of you. The rest arrives later, and is allowed to.`},
 {key:'year',label:'Year',pos:'The Personal Year',intro:"The season you are in — your birthday folded into the present year.",
- tail:n=>`This is a ${n} year for you — a season of ${NUMBERS[n].keys}. Plant accordingly; the next number is already on its way.`}];
+ tail:n=>`This is a ${n} year for you — a season of ${NUMBERS[n].keys}. Plant accordingly; the next number is already on its way.`}]);
 const digitSum=n=>String(n).split('').reduce((a,b)=>a+ +b,0);
 function reduceNum(n,masters=true){while(n>9&&!(masters&&(n===11||n===22||n===33)))n=digitSum(n);return n;}
 function nameNumbers(raw){
@@ -1725,7 +2077,7 @@ $('numForm').onsubmit=e=>{
   const raw=$('nName').value.trim();
   const date=readDate('n',err);if(!date)return;
   const nm=nameNumbers(raw);
-  if(nm.letters<2){err.textContent='The observatory needs a name of at least two letters.';return;}
+  if(nm.letters<2){err.textContent=T('The observatory needs a name of at least two letters.','O observatório precisa de um nome com pelo menos duas letras.');return;}
   const now=new Date();
   numbers={
     life:reduceNum(reduceNum(date.m)+reduceNum(date.d)+reduceNum(date.y)),
@@ -1741,22 +2093,28 @@ $('numForm').onsubmit=e=>{
   setSlots(NUM_POS.map(p=>({label:p.label,face:numbers[p.key],big:true})),k=>showNumber(k));
   revealSlots(420);
   setTimeout(()=>showNumber(0),1000);
-  setTimeout(()=>showSynth(`The thread of these numbers: <b>${numbers.life}</b> on the road, <b>${numbers.expr}</b> in the hands, <b>${numbers.soul}</b> beneath the breath.`),2600);
+  setTimeout(()=>showSynth(T(`The thread of these numbers: <b>${numbers.life}</b> on the road, <b>${numbers.expr}</b> in the hands, <b>${numbers.soul}</b> beneath the breath.`,
+    `O fio destes números: <b>${numbers.life}</b> na estrada, <b>${numbers.expr}</b> nas mãos, <b>${numbers.soul}</b> por baixo do sopro.`)),2600);
 };
 function showNumber(k){
   if(view===k)return;
   view=k;
   markSlot(k);
   const p=NUM_POS[k],n=numbers[p.key],N_=NUMBERS[n];
-  $('counter').textContent=`PATH · ${numbers.life}`;
+  $('counter').textContent=`${T('PATH','CAMINHO')} · ${numbers.life}`;
   morphTo({fn:(ctx,S)=>drawNumberSigil(ctx,S,n),fill:{desk:.68,mobile:.3}});
   const {d,m,y}=numbers.date;
   const from=p.key==='life'?`${d} · ${m} · ${y}`:p.key==='year'?`${d} · ${m} · ${numbers.yearNo}`:numbers.name.toUpperCase();
-  const meta=[['NUMBER',`${n}${N_.master?' — MASTER':''}`],['DRAWN FROM',from],['SPEAKS OF',N_.keys.toUpperCase()]];
+  const meta=[[T('NUMBER','NÚMERO'),`${n}${N_.master?T(' — MASTER',' — MESTRE'):''}`],[T('DRAWN FROM','TIRADO DE'),from],[T('SPEAKS OF','FALA DE'),N_.keys.toUpperCase()]];
   let extra='';
-  if(p.key==='life')extra=`<span class="line">Your <b>birthday number</b> is ${numbers.birthday} — ${NUMBERS[numbers.birthday].title.toLowerCase()}'s gift, carried in the day itself. Your <b>maturity number</b>, the road and the tools folded together, is ${numbers.maturity}: ${NUMBERS[numbers.maturity].keys} — what the second half of life leans toward.</span>`;
-  if(N_.master)extra+=`<span class="rev">A master number: it carries the voltage of ${n} and the ground of ${digitSum(n)}. On tired days you will live it as a ${digitSum(n)}; that is not failure, it is rest.</span>`;
-  setPanel({pos:`Exhibit — ${p.pos}`,name:`${n} · ${N_.title}`,meta,
+  const bt=NUMBERS[numbers.birthday].title,mk=NUMBERS[numbers.maturity].keys;
+  if(p.key==='life')extra=`<span class="line">`+T(
+    `Your <b>birthday number</b> is ${numbers.birthday} — ${bt.toLowerCase()}'s gift, carried in the day itself. Your <b>maturity number</b>, the road and the tools folded together, is ${numbers.maturity}: ${mk} — what the second half of life leans toward.`,
+    `O seu <b>número do aniversário</b> é ${numbers.birthday} — o dom ${bt.replace(/^O /,'do ').replace(/^A /,'da ').toLowerCase()}, carregado no próprio dia. O seu <b>número da maturidade</b>, a estrada e as ferramentas dobradas juntas, é ${numbers.maturity}: ${mk} — para onde a segunda metade da vida se inclina.`)+`</span>`;
+  if(N_.master)extra+=`<span class="rev">`+T(
+    `A master number: it carries the voltage of ${n} and the ground of ${digitSum(n)}. On tired days you will live it as a ${digitSum(n)}; that is not failure, it is rest.`,
+    `Um número mestre: carrega a voltagem do ${n} e o chão do ${digitSum(n)}. Nos dias cansados, você vai vivê-lo como um ${digitSum(n)}; isso não é fracasso, é descanso.`)+`</span>`;
+  setPanel({pos:`${T('Exhibit — ','Exposição — ')}${p.pos}`,name:`${n} · ${N_.title}`,meta,
     prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`});
 }
 
@@ -1766,8 +2124,8 @@ function setOfferBtn(){
   const kind=(reading&&mode==='astro')?(isOpen()?'poster':'unlock'):'offer';
   b.dataset.kind=kind;
   b.classList.toggle('unlock',kind==='unlock');
-  b.innerHTML=kind==='unlock'?`☉ &nbsp;<span class="lg">Unlock the full map · </span><span class="sm">Full map · </span>${CONFIG.price}`
-    :kind==='poster'?'↓ &nbsp;Star poster':'✦ &nbsp;Leave an offering';
+  b.innerHTML=kind==='unlock'?`☉ &nbsp;<span class="lg">${T('Poster &amp; full map','Pôster e mapa completo')} · </span><span class="sm">${T('Poster','Pôster')} · </span>${CONFIG.price}`
+    :kind==='poster'?`↓ &nbsp;${T('Star poster','Pôster')}`:`✦ &nbsp;${T('Leave an offering','Deixar uma oferenda')}`;
 }
 $('offerBtn').onclick=()=>{
   const k=$('offerBtn').dataset.kind;
@@ -1775,6 +2133,7 @@ $('offerBtn').onclick=()=>{
   else if(k==='poster')downloadPoster();
   else{offer.classList.add('show');track('offering-open');}
 };
+setOfferBtn();
 const offer=$('offer');
 $('offerClose').onclick=()=>offer.classList.remove('show');
 offer.addEventListener('click',e=>{if(e.target===offer)offer.classList.remove('show');});
@@ -1791,7 +2150,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show
 const unlockEl=$('unlock');
 function openUnlock(){
   if(!PAYWALL||!chartInput)return;
-  $('unlockFor').textContent=`For the sky of ${bornLine()} · ${chartMeta.place.full}`;
+  $('unlockFor').textContent=`${T('For the sky of','Para o céu de')} ${bornLine()} · ${chartMeta.place.full}`;
   $('unlockNote').textContent='';
   unlockEl.classList.add('show');
   track('unlock-open');
@@ -1800,25 +2159,25 @@ $('unlockClose').onclick=()=>unlockEl.classList.remove('show');
 unlockEl.addEventListener('click',e=>{if(e.target===unlockEl)unlockEl.classList.remove('show');});
 $('unlockGo').onclick=async()=>{
   const btn=$('unlockGo'),note=$('unlockNote');
-  btn.disabled=true;btn.innerHTML='Opening the vault…';note.textContent='';
+  btn.disabled=true;btn.innerHTML=T('Opening the vault…','Abrindo o cofre…');note.textContent='';
   track('checkout-start');
   store.set('pending',chartInput);
   try{
-    const r=await fetch(PAY_API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:chartInput})});
+    const r=await fetch(PAY_API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:chartInput,lang:LANG})});
     const j=await r.json().catch(()=>({}));
     /* only ever hand the visitor to Stripe's own checkout page */
     const safe=j.url&&(/^https:\/\/checkout\.stripe\.com\//.test(j.url)||(IS_LOCAL&&/^http:\/\/localhost[:/]/.test(j.url)));
     if(!r.ok||!safe)throw new Error(j.error||'checkout unavailable');
     location.href=j.url;
   }catch(e){
-    note.textContent='The vault would not open — please try again in a moment.';
-    btn.disabled=false;btn.innerHTML='✦ &nbsp;Break the seal';
+    note.textContent=T('The vault would not open — please try again in a moment.','O cofre não abriu — tente de novo daqui a pouco.');
+    btn.disabled=false;btn.innerHTML=T('✦ &nbsp;Break the seal','✦ &nbsp;Quebrar o selo');
   }
 };
 $('ledgerPrice').textContent=$('unlockPrice').textContent=CONFIG.price;
 if(PAYWALL){
   $('astroLedger').hidden=false;
-  $('astroTag').textContent=`Free preview · full map ${CONFIG.price}`;
+  $('astroTag').textContent=T(`Free preview · poster & map ${CONFIG.price}`,`Prévia grátis · pôster e mapa ${CONFIG.price}`);
   $('astroTag').classList.add('paid');
 }
 
@@ -1826,7 +2185,7 @@ if(PAYWALL){
 async function downloadPoster(){
   if(!chart||!isOpen())return;
   track('poster');
-  toast('Gathering the stars for your poster…',0);
+  toast(T('Gathering the stars for your poster…','Juntando as estrelas para o seu pôster…'),0);
   await new Promise(r=>setTimeout(r,60));
   const c=await renderPoster();
   const inp=chartInput;
@@ -1836,11 +2195,11 @@ async function downloadPoster(){
   $('toast').classList.remove('show');
   /* phones: the share sheet saves to photos or posts straight to a story */
   if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[file]})){
-    try{await navigator.share({files:[file],title:'My sky, drawn in stars'});return;}catch(e){if(e.name==='AbortError')return;}
+    try{await navigator.share({files:[file],title:T('My sky, drawn in stars','O meu céu, desenhado em estrelas')});return;}catch(e){if(e.name==='AbortError')return;}
   }
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
-  toast('Your star poster is saved — 2400 × 3000, ready to print.');
+  toast(T('Your star poster is saved — 2400 × 3000, ready to print.','O seu pôster foi salvo — 2400 × 3000, pronto para imprimir.'));
 }
 async function renderPoster(){
   try{await Promise.all(["300 60px 'Cormorant Garamond'","italic 300 60px 'Cormorant Garamond'","400 30px Jost","400 30px Marcellus"].map(f=>document.fonts.load(f)));}catch(e){}
@@ -1871,10 +2230,10 @@ async function renderPoster(){
     if('letterSpacing' in x)x.letterSpacing=spacing||'0px';x.fillText(t,PW/2,y);if('letterSpacing' in x)x.letterSpacing='0px';};
   const inp=chartInput,sun=chart.bodies[0],moon=chart.bodies[1];
   txt('STAROT',"400 34px Marcellus",'#d8b877',150,'18px');
-  txt(`The sky over ${chartMeta.place.name}`,"italic 300 132px 'Cormorant Garamond'",'#e9e2d2',2560);
-  const when=`${inp.d} ${MONTHS[inp.m-1]} ${inp.y}`+(inp.nt?'':` · ${String(inp.h).padStart(2,'0')}:${String(inp.mi).padStart(2,'0')}`);
+  txt(T(`The sky over ${chartMeta.place.name}`,`O céu sobre ${chartMeta.place.name}`),"italic 300 132px 'Cormorant Garamond'",'#e9e2d2',2560);
+  const when=T(`${inp.d} ${MONTHS[inp.m-1]} ${inp.y}`,`${inp.d} de ${MONTHS[inp.m-1].toLowerCase()} de ${inp.y}`)+(inp.nt?'':` · ${hhmm(inp.h,inp.mi)}`);
   txt(`${when} · ${chartMeta.place.full}`.toUpperCase(),"400 34px Jost",'#8f7b52',2660,'10px');
-  txt(`Sun in ${SIGNS[sun.sign].name}  ·  Moon in ${SIGNS[moon.sign].name}`+(chart.houses?`  ·  ${SIGNS[signOf(chart.houses.asc)].name} rising`:''),
+  txt(T(`Sun in ${SIGNS[sun.sign].name}  ·  Moon in ${SIGNS[moon.sign].name}`,`Sol em ${SIGNS[sun.sign].name}  ·  Lua em ${SIGNS[moon.sign].name}`)+(chart.houses?`  ·  ${risingName(SIGNS[signOf(chart.houses.asc)])}`:''),
     "300 62px 'Cormorant Garamond'",'#d8b877',2780);
   txt((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),"400 24px Jost",'rgba(143,123,82,.8)',2910,'8px');
   return c;
@@ -1884,33 +2243,41 @@ async function renderPoster(){
 (async function arrive(){
   const q=new URLSearchParams(location.search);
   if(q.has('canceled')){
-    history.replaceState(null,'',location.pathname);
+    history.replaceState(null,'',location.pathname+qs());
     const p=store.get('pending',null);
-    if(p){try{castChart(p);toast('No payment was taken. The seal will wait whenever you are ready.');}catch(e){}}
+    if(p){try{castChart(p);toast(T('No payment was taken. The seal will wait whenever you are ready.','Nenhum pagamento foi feito. O selo vai esperar até você estar pronto.'));}catch(e){}}
     return;
   }
   const sid=q.get('map');
   if(!sid)return;
   const local=store.get('maps',[]).find(m=>m.sid===sid);
   if(local){try{castChart(local.input);}catch(e){}return;}
-  if(!PAYWALL){history.replaceState(null,'',location.pathname);return;}
-  toast('Opening your map…',0);
-  try{
-    const r=await fetch(`${PAY_API}/map?id=${encodeURIComponent(sid)}`);
-    const j=await r.json().catch(()=>({}));
-    if(!r.ok||!j.ok||!j.input)throw new Error(j.error||'not found');
-    const inp=j.input,id=chartKey(inp),maps=store.get('maps',[]);
-    if(!maps.some(m=>m.id===id)){maps.unshift({id,sid,input:inp,at:Date.now()});store.set('maps',maps);}
-    const pending=store.get('pending',null),justPaid=pending&&chartKey(pending)===id;
-    if(justPaid){store.set('pending',null);track('paid');}
-    castChart(inp);
-    toast(justPaid?'<b>The seal is broken.</b> This page’s address is now your map — bookmark it to open it on any device.'
-                  :'Your map, as the stars left it.',justPaid?11000:5000);
-  }catch(e){
-    history.replaceState(null,'',location.pathname);
-    toast(String(e.message).includes('unpaid')?'Your payment is still settling — try this link again in a minute.'
-      :'That map could not be opened. If you paid, write to us from the Terms page and we will reopen it.',10000);
+  if(!PAYWALL){history.replaceState(null,'',location.pathname+qs());return;}
+  toast(T('Opening your map…','Abrindo o seu mapa…'),0);
+  /* some methods (wallets, Pix) confirm a few seconds after the redirect: keep asking for ~40s */
+  let j={},r;
+  for(let tries=0;tries<9;tries++){
+    try{r=await fetch(`${PAY_API}/map?id=${encodeURIComponent(sid)}`);j=await r.json().catch(()=>({}));}catch(e){j={error:'network'};}
+    if(r&&r.ok&&j.ok&&j.input)break;
+    if(j.error!=='unpaid'||tries===8)break;
+    if(tries===1)toast(T('Your payment is confirming — the map opens in a moment…','O seu pagamento está sendo confirmado — o mapa abre em instantes…'),0);
+    await new Promise(res=>setTimeout(res,5000));
   }
+  if(!(j.ok&&j.input)){
+    history.replaceState(null,'',location.pathname+qs());
+    toast(j.error==='unpaid'
+      ?T('Your payment is still settling — open this link again in a few minutes.','O seu pagamento ainda está sendo processado — abra este link de novo daqui a alguns minutos.')
+      :T('That map could not be opened. If you paid, write to us from the Terms page and we will reopen it.','Não foi possível abrir esse mapa. Se você pagou, escreva para nós pela página de Termos e vamos reabri-lo.'),12000);
+    return;
+  }
+  const inp=j.input,id=chartKey(inp),maps=store.get('maps',[]);
+  if(!maps.some(m=>m.id===id)){maps.unshift({id,sid,input:inp,at:Date.now()});store.set('maps',maps);}
+  const pending=store.get('pending',null),justPaid=pending&&chartKey(pending)===id;
+  if(justPaid){store.set('pending',null);track('paid');}
+  castChart(inp);
+  toast(justPaid?T('<b>The seal is broken.</b> This page’s address is now your map — bookmark it to open it on any device. Your poster is under “Star poster”.',
+                   '<b>O selo foi quebrado.</b> O endereço desta página agora é o seu mapa — salve nos favoritos para abri-lo em qualquer aparelho. O seu pôster está em “Pôster”.')
+                :T('Your map, as the stars left it.','O seu mapa, como as estrelas o deixaram.'),justPaid?12000:5000);
 })();
 </script>
 </body>
