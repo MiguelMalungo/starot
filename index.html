@@ -520,7 +520,6 @@
       </button>
     </div>
     <button class="linkish" data-examples style="margin-top:-8px" data-t="ex.open">✒ &nbsp;See the tattoos on skin</button>
-    <div class="gallery" hidden></div>
     <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span></footer>
   </div>
 
@@ -707,7 +706,22 @@ const CONFIG={
      {src:"media/gallery/wheel-forearm.jpg", caption:"Natal wheel · forearm", captionPt:"Roda natal · antebraço", concept:true}
      or {video:"media/gallery/sun-wrist.mp4", poster:"media/gallery/sun-wrist.jpg", caption:"…", concept:true}
      concept:true marks AI renders, and the gallery says so */
-  gallery:[],
+  gallery:[
+    {src:"media/gallery/hands-sun-rising.jpg",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
+     alt:"Two people holding hands; his hand has the Sun and Gemini symbols, hers the ascendant arrow and Leo",altPt:"Duas pessoas de mãos dadas; na mão dele o Sol e Gêmeos, na dela a seta do ascendente e Leão"},
+    {src:"media/gallery/wheel-forearm-woman.jpg",concept:true,caption:"Natal wheel · inner forearm",captionPt:"Roda natal · parte interna do antebraço",
+     alt:"A natal wheel tattoo on a woman's inner forearm",altPt:"Tatuagem de roda natal na parte interna do antebraço de uma mulher"},
+    {src:"media/gallery/wheel-calf-man.jpg",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
+     alt:"A natal wheel tattoo on the back of a man's calf",altPt:"Tatuagem de roda natal na panturrilha de um homem"},
+    {src:"media/gallery/line-neck-woman.jpg",concept:true,caption:"Sun and Rising in one line · back of the neck",captionPt:"Sol e Ascendente numa linha · nuca",
+     alt:"A row of four astrological symbols low on the back of a woman's neck",altPt:"Uma linha de quatro símbolos astrológicos na nuca de uma mulher"},
+    {src:"media/gallery/line-neck-man.jpg",concept:true,caption:"Sun and Rising in one line · back of the neck",captionPt:"Sol e Ascendente numa linha · nuca",
+     alt:"A row of four astrological symbols low on the back of a man's neck",altPt:"Uma linha de quatro símbolos astrológicos na nuca de um homem"},
+    {src:"media/gallery/numbers-obliques-woman.jpg",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+     alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
+    {src:"media/gallery/numbers-obliques-man.jpg",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+     alt:"Four numerology seals in a vertical line down the side of a man's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de um homem"},
+  ],
 };
 
 /* ═══ SMALL HELPERS — storage, analytics ══════════════════════ */
@@ -1456,6 +1470,7 @@ if(PT){
   document.querySelectorAll('[data-t]').forEach(el=>{const v=UI_PT[el.dataset.t];if(v!=null)el.innerHTML=v;});
   document.querySelectorAll('[data-tp]').forEach(el=>{const v=UI_PT[el.dataset.tp];if(v!=null)el.placeholder=v;});
   document.querySelectorAll('[data-ta]').forEach(el=>{const v=UI_PT[el.dataset.ta];if(v!=null)el.alt=v;});
+  const exImg=document.querySelector('.ex-sheet img');if(exImg)exImg.src='media/examples/flash-sheet-example-pt.jpg';
 }
 /* the other language, one tap away; a map link keeps its map */
 document.querySelectorAll('.lang').forEach(b=>{
