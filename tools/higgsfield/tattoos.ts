@@ -31,6 +31,9 @@ const TATTOO = "The tattoo is a healed black fine-line tattoo that reproduces th
   "same symbols, same proportions, same thin even lines, nothing added or removed, no shading, no colour.";
 
 const SHOTS: Shot[] = [
+  /* a clean plate for compositing: the exact designs are laid on afterwards (tools/higgsfield/composite-hands.py) */
+  { id: "hands-plate", refs: [], aspect: "3:2",
+    prompt: `Close-up of a couple holding hands, seen from above at a slight angle so the backs of both hands face the camera, fingers loosely interlaced. The man's RIGHT hand is on the left of the frame, the woman's LEFT hand is on the right; both thumbs relaxed and clearly visible, the soft area between thumb and index finger on the back of each hand clearly visible and unobstructed. No tattoos, no jewellery, clean bare skin. ${STUDIO}` },
   { id: "wheel-calf-man", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
     prompt: `${TATTOO} A man's lower leg seen from behind and slightly to the side, the round natal-wheel tattoo about 12 cm wide on the back of his calf, standing on a plinth, bare leg, neutral linen shorts just visible. ${STUDIO}` },
   { id: "wheel-forearm-woman", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
@@ -50,7 +53,7 @@ const SHOTS: Shot[] = [
 async function generate(shot: Shot, n: number): Promise<Outcome> {
   try {
     const r = await higgsfield.subscribe(MODEL, {
-      input: { prompt: shot.prompt, image_urls: shot.refs.map(f => DESIGNS + f), aspect_ratio: shot.aspect, resolution: "2k", quality: "medium" },
+      input: { prompt: shot.prompt, ...(shot.refs.length ? { image_urls: shot.refs.map(f => DESIGNS + f) } : {}), aspect_ratio: shot.aspect, resolution: "2k", quality: "medium" },
       withPolling: true,
     });
     const status = r.status as string, url = r.images?.[0]?.url;

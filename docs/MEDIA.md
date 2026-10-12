@@ -34,7 +34,12 @@ npm run tattoos -- hands-pair    # just one shot
 ```
 
 It sends each shot to Grok Image 2.0 with our own design file as the reference image, and
-saves the results in `media/gallery/raw/` (git-ignored) for review. `npm run example` is the
+saves the results in `media/gallery/raw/` (git-ignored) for review.
+
+Small symbols on hands are where the model fails most (it moves, resizes and redraws them).
+For those, generate a clean plate (`npm run tattoos -- hands-plate`) and lay the exact designs on
+with `python3 tools/higgsfield/composite-hands.py`: positions, size and angle are set in the
+script, and the ink is multiplied into the skin so its texture shows through. `npm run example` is the
 Seedance 2.5 setup check. Every generation is billed to your Higgsfield credits.
 
 ## Prompts (for the Higgsfield website)
