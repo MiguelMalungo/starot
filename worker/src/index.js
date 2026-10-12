@@ -1,10 +1,11 @@
 /* STAROT payment worker — runs on Cloudflare Workers (free tier is plenty).
 
-   POST /checkout   {input,lang} → creates a Stripe Checkout Session for one star poster + full map, returns {url}
-   GET  /map?id=cs_…             → if that session is paid, returns {ok, input} so the map can reopen anywhere
+   POST /checkout   {input,nums,lang} → creates a Stripe Checkout Session for one tattoo flash sheet, returns {url}
+   GET  /sheet?id=cs_…                → if that session is paid, returns {ok, input, nums} so the sheet reopens anywhere
 
-   There is no database: the birth details ride along as the session's metadata,
-   so the Checkout Session id *is* the buyer's key to their map.
+   There is no database: the birth details and the four numerology numbers ride along as
+   the session's metadata (the name they came from never leaves the browser), so the
+   Checkout Session id *is* the buyer's key to their designs.
 
    Secret (wrangler secret put):  STRIPE_SECRET_KEY
    Vars (wrangler.toml):          SITE_URL, TERMS_URL, PRICE_CENTS, CURRENCY,
@@ -17,19 +18,20 @@ const MON = {
 /* everything the buyer reads at checkout, in both languages */
 const COPY = {
   en: {
-    name: "STAROT · Star poster & astral map",
-    desc: (when, place) => `Star poster and full natal chart · ${when} · ${place}`,
-    submit: "Your map and poster open the moment payment completes.",
-    terms: url => `I agree to the [Terms](${url}) and ask for my map to be delivered immediately. I understand that once it is delivered I lose the 14-day right of withdrawal.`,
+    name: "STAROT · Tattoo flash",
+    desc: (when, place) => `Your tattoo designs and flash sheet · ${when} · ${place}`,
+    submit: "Your designs open the moment payment completes.",
+    terms: url => `I agree to the [Terms](${url}) and ask for my designs to be delivered immediately. I understand that once they are delivered I lose the 14-day right of withdrawal.`,
   },
   pt: {
-    name: "STAROT · Pôster em estrelas e mapa astral",
-    desc: (when, place) => `Pôster em estrelas e mapa natal completo · ${when} · ${place}`,
-    submit: "O seu mapa e o pôster abrem assim que o pagamento for concluído.",
-    terms: url => `Aceito os [Termos](${url}) e peço a entrega imediata do meu mapa. Entendo que, depois de entregue, perco o direito de arrependimento de 14 dias.`,
+    name: "STAROT · Folha de flash",
+    desc: (when, place) => `Os seus desenhos de tatuagem e a folha de flash · ${when} · ${place}`,
+    submit: "Os seus desenhos abrem assim que o pagamento for concluído.",
+    terms: url => `Aceito os [Termos](${url}) e peço a entrega imediata dos meus desenhos. Entendo que, depois de entregues, perco o direito de arrependimento de 14 dias.`,
   },
 };
-const TAG = "starot-map-1";          // marks sessions created here, so no other payment can open a map
+const TAG = "starot-sheet-1";        // marks sessions created here, so no other payment can open a sheet
+const NUMS_OK = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33]);
 const pad = n => String(n).padStart(2, "0");
 
 export default {
@@ -46,7 +48,7 @@ export default {
     const url = new URL(req.url);
     try {
       if (url.pathname === "/checkout" && req.method === "POST") return json(await checkout(req, env, origin), 200, cors);
-      if (url.pathname === "/map" && req.method === "GET") return json(await openMap(url, env), 200, cors);
+      if (url.pathname === "/sheet" && req.method === "GET") return json(await openSheet(url, env), 200, cors);
       if (url.pathname === "/" || url.pathname === "/health") return json({ ok: true, service: "starot-pay" }, 200, cors);
       return json({ error: "not found" }, 404, cors);
     } catch (e) {
@@ -62,6 +64,7 @@ async function checkout(req, env, origin) {
   let body;
   try { body = await req.json(); } catch { throw fail(400, "bad json"); }
   const inp = validate(body && body.input);
+  const nums = validateNums(body.nums);
   const lang = body.lang === "pt" ? "pt" : "en";
   const c = COPY[lang];
   const base = returnBase(env, origin);
@@ -72,7 +75,7 @@ async function checkout(req, env, origin) {
   const p = new URLSearchParams();
   p.set("mode", "payment");
   p.set("submit_type", "pay");
-  p.set("success_url", `${base}?map={CHECKOUT_SESSION_ID}${back}`);
+  p.set("success_url", `${base}?sheet={CHECKOUT_SESSION_ID}${back}`);
   p.set("cancel_url", `${base}?canceled=1${back}`);
   p.set("locale", lang === "pt" ? "pt-BR" : "auto");
   p.set("line_items[0][quantity]", "1");
@@ -80,7 +83,7 @@ async function checkout(req, env, origin) {
   p.set("line_items[0][price_data][unit_amount]", String(parseInt(env.PRICE_CENTS || "700", 10)));
   p.set("line_items[0][price_data][product_data][name]", c.name);
   p.set("line_items[0][price_data][product_data][description]", c.desc(when, inp.place));
-  p.set("payment_intent_data[description]", `STAROT poster + map · ${when} · ${inp.place}`);
+  p.set("payment_intent_data[description]", `STAROT tattoo flash · ${when} · ${inp.place}`);
   p.set("allow_promotion_codes", "true");
   p.set("custom_text[submit][message]", c.submit);
   if (env.REQUIRE_TERMS !== "false") {
@@ -93,14 +96,14 @@ async function checkout(req, env, origin) {
     p.set("automatic_tax[enabled]", "true");
     p.set("line_items[0][price_data][tax_behavior]", "inclusive");   // €7 stays €7, VAT inside
   }
-  for (const [k, v] of Object.entries({ ...inp, v: TAG })) p.set(`metadata[${k}]`, String(v));
+  for (const [k, v] of Object.entries({ ...inp, nums: nums.join("."), v: TAG })) p.set(`metadata[${k}]`, String(v));
 
   const s = await stripe(env, "POST", "/checkout/sessions", p);
   if (!s.url) throw fail(502, "checkout unavailable");
   return { url: s.url };
 }
 
-async function openMap(url, env) {
+async function openSheet(url, env) {
   const id = url.searchParams.get("id") || "";
   if (!/^cs_(test|live)_[A-Za-z0-9]{8,240}$/.test(id)) throw fail(400, "bad id");
   let s;
@@ -108,7 +111,7 @@ async function openMap(url, env) {
   catch (e) { if (e.status === 404) throw fail(404, "not found"); throw e; }
   if (!s.metadata || s.metadata.v !== TAG) throw fail(404, "not found");
   if (s.payment_status !== "paid" && s.payment_status !== "no_payment_required") throw fail(402, "unpaid");
-  return { ok: true, input: validate(s.metadata) };
+  return { ok: true, input: validate(s.metadata), nums: validateNums(String(s.metadata.nums || "").split(".")) };
 }
 
 /* ── helpers ────────────────────────────────────────────── */
@@ -141,6 +144,16 @@ export function validate(i) {
   if (!/^[A-Za-z0-9_+\-\/]{1,64}$/.test(out.tz)) throw fail(400, "bad tz");
   if (!out.place) throw fail(400, "bad place");
   return out;
+}
+
+/* Life Path, Expression, Soul, Persona — each 1–9 or a master number */
+export function validateNums(n) {
+  if (!Array.isArray(n) || n.length !== 4) throw fail(400, "bad nums");
+  return n.map(x => {
+    const v = Number(x);
+    if (!NUMS_OK.has(v)) throw fail(400, "bad nums");
+    return v;
+  });
 }
 
 async function stripe(env, method, path, params) {

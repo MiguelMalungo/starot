@@ -8,7 +8,7 @@ and swirls the swarm; lift your hand and it settles back.
 
 ## The instruments
 
-The first screen is the hall: choose **Tarot reading**, **Astral map** or **Numerology**.
+The first screen is the hall: choose **Tarot reading**, **Astral map**, **Numerology** or **Your tattoos**.
 The header links switch between them at any time; the STAROT mark returns to the hall.
 
 ### Tarot reading
@@ -39,44 +39,49 @@ numbers 11 · 22 · 33 preserved. Five cards: **Life Path**, **Expression**, **S
 **Personality** and **Personal Year** (birthday and maturity numbers appear in the
 Life Path exhibit). Each number has its own geometric seal drawn in stars.
 
-## What is free, what is paid
+## Free readings, paid tattoos
 
-Tarot and numerology are free, with an optional offering (a pay-what-you-want link).
-The astral map is a free preview — the wheel in stars and the Sun reading — and
-**€7 buys a 3600 × 4500 star poster of that sky, tattoo-ready line art, and the full map**:
-Moon, Rising and Midheaven, all ten planets read in their houses, houses, aspects and
-element balance.
+Every reading is free and complete: tarot, the full astral map (all ten planets, houses,
+aspects, Moon and Rising), numerology, and a 3600 × 4500 star poster of your sky, with an
+optional offering (a pay-what-you-want link).
 
-## Tattoo-ready line art
+**The product is the tattoo flash, €7**: four designs drawn from your own readings —
+1. the natal wheel, 2. ☉ beside your Sun sign, 3. the ascendant arrow beside your Rising
+sign (needs the birth hour), 4. Life Path, Expression, Soul and Persona in a row — on a
+print-ready A3 flash sheet, plus each design as vector SVG and 4000 px PNG in a ZIP for
+the tattoo artist. The fourth door, **Your tattoos**, takes name, date, hour and place;
+every free reading also ends with **Make it a tattoo**, which carries what it already
+knows. The designs can be previewed free (watermarked), drawn in stars and on paper.
+
+Payment is Stripe Checkout through a tiny Cloudflare Worker in [`worker/`](worker/).
+There are no accounts and no database: the birth details and the four numbers (never the
+name) travel as the Checkout Session's metadata, and after paying, the page's address
+(`?sheet=cs_…`) is the buyer's permanent link to their designs, on any device. The paywall
+only switches on once `CONFIG.payApi` is set; until then the tattoo files download free.
+
+Setup and going live: [`docs/LAUNCH.md`](docs/LAUNCH.md). Photos and videos of the designs
+on skin, for the gallery: [`docs/MEDIA.md`](docs/MEDIA.md).
+
+## How the designs are drawn
 
 Every design is drawn once with the canvas 2D API; a small recorder (`SvgCtx`) replays
-the same calls as SVG paths, so the stars, the poster and the line art all come from one
-drawing. The astral map exports the natal wheel and the Big Three (Sun, Moon, Rising)
-as vector SVG and 4000 px transparent PNG; every numerology seal exports the same way,
-for free. Text inside designs uses hand-drawn single-stroke characters, so nothing
-depends on a font.
+the same calls as SVG paths, so the stars, the poster, the flash sheet and the vector
+files all come from one drawing. Text inside designs uses hand-drawn single-stroke
+characters, so nothing depends on a font.
 
 ## Languages
 
 English and Brazilian Portuguese. Portuguese-language browsers get PT automatically;
 `?lang=pt` / `?lang=en` force a language (and is what search engines index), and the
 EN/PT button in the header switches. Every reading, the city list (with ~100 Brazilian
-and Portuguese cities, each in its own historical time zone), the poster, Stripe's
-checkout page and the terms (`termos.html`) follow the language.
-
-Payment is Stripe Checkout through a tiny Cloudflare Worker in [`worker/`](worker/).
-There are no accounts and no database: the birth details travel as the Checkout
-Session's metadata, and after paying, the page's address (`?map=cs_…`) becomes the
-buyer's permanent link to that map, on any device. The paywall only switches on once
-`CONFIG.payApi` is set at the top of the script — until then the astral map is fully free.
-
-Setup, testing and going live: [`docs/LAUNCH.md`](docs/LAUNCH.md).
+and Portuguese cities, each in its own historical time zone), the designs' captions,
+Stripe's checkout page and the terms (`termos.html`) follow the language.
 
 ## Tech
 
 A self-contained `index.html` — WebGL point cloud, hand-drawn arcana, zodiac
 and planet glyphs, a small ephemeris, no build step and no dependencies beyond Google
-Fonts. `terms.html` holds the terms and privacy notice; `worker/` holds the payment
+Fonts (JSZip loads from cdnjs only when a ZIP is made). `terms.html` / `termos.html` hold the terms and privacy notice; `worker/` holds the payment
 worker (`npm test` runs it against a mock Stripe).
 
 ## Credits

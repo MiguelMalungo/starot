@@ -115,7 +115,7 @@
 
   .doors{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:10px}
   .door{
-    width:220px;padding:28px 22px 24px;border:1px solid var(--hair);border-radius:14px;
+    width:200px;padding:28px 22px 24px;border:1px solid var(--hair);border-radius:14px;
     background:rgba(5,6,9,.45);cursor:pointer;transition:all .45s cubic-bezier(.2,.7,.2,1);
     text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;color:var(--bone);
   }
@@ -380,6 +380,28 @@
   .ink p{font-size:15px;line-height:1.5;color:#cfc8b4}
   .ink-row{display:flex;gap:10px;flex-wrap:wrap}
   .ink-row .deal-btn{margin:0;padding:12px 18px 10px;font-size:9.5px;letter-spacing:.26em}
+  .ink-door{border-color:rgba(216,184,119,.42);background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.08),rgba(5,6,9,.45) 70%)}
+  .showcase{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;width:min(620px,92vw)}
+  .showcase figure{border:1px solid var(--hair);border-radius:12px;background:rgba(5,6,9,.5);padding:12px 14px 10px;display:flex;flex-direction:column;gap:8px;justify-content:center}
+  .showcase figure.big{grid-row:span 3}
+  .showcase .sc svg{width:100%;height:auto;display:block}
+  .showcase figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
+  .showcase figcaption b{color:var(--gold);font-weight:400;margin-right:8px}
+  .gallery{width:min(820px,94vw);display:flex;flex-direction:column;gap:12px;align-items:center}
+  .g-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--hair) transparent}
+  .g-row figure{flex:0 0 min(240px,64vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:6px}
+  .g-row img,.g-row video{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;border:1px solid var(--hair);background:#0b0d12}
+  .g-row figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
+  .paper.pv{margin-top:14px;cursor:zoom-in;border:none;color:inherit}
+  .paper.wm{position:relative;overflow:hidden}
+  .paper.wm::after{content:"PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT · PREVIEW · STAROT";
+    position:absolute;inset:-60%;transform:rotate(-24deg);font:500 11px/3.4 Jost,sans-serif;letter-spacing:.32em;color:rgba(20,18,16,.13);
+    pointer-events:none;text-align:center;word-spacing:.6em}
+  html[lang="pt-BR"] .paper.wm::after{content:"PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT · PRÉVIA · STAROT"}
+  .sheet-pv{margin-top:14px;width:100%;aspect-ratio:1/1.4142;border-radius:8px;overflow:hidden;background:#f4efe6;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 18px 40px -18px rgba(0,0,0,.8)}
+  .sheet-pv img{width:100%;height:100%;display:block}
+  .sheet-pv .label{color:#7a6f60}
   #toast{position:fixed;left:50%;top:22px;transform:translate(-50%,-14px);z-index:60;width:max-content;max-width:min(520px,92vw);
     padding:14px 22px;border:1px solid rgba(216,184,119,.35);border-radius:12px;background:rgba(8,10,15,.94);
     backdrop-filter:blur(8px);font-family:'Cormorant Garamond',serif;font-size:16.5px;line-height:1.5;color:var(--bone);
@@ -426,6 +448,8 @@
     .ledger>div.free{flex:0 0 34%}
     .ledger b{font-size:19px}
     .door .tag{margin-top:6px;align-self:flex-start}
+    .showcase{grid-template-columns:1fr 1fr}
+    .showcase figure.big{grid-row:auto;grid-column:span 2;max-width:260px;justify-self:center;width:100%}
     #unlock .offer-box{padding:34px 22px 24px;max-height:92vh;overflow-y:auto}
     .price b{font-size:52px}
     .head-right{display:none}
@@ -445,6 +469,7 @@
     <span class="label nav" data-go="tarot" data-t="nav.tarot">Tarot</span><span class="sep"></span>
     <span class="label nav" data-go="astro" data-t="nav.astro">Astral map</span><span class="sep"></span>
     <span class="label nav" data-go="num" data-t="nav.num">Numerology</span><span class="sep"></span>
+    <span class="label nav" data-go="ink" data-t="nav.ink">Tattoos</span><span class="sep"></span>
     <span class="count" id="counter">—</span><span class="sep"></span>
     <button class="label nav lang" id="langBtn" aria-label="Português">PT</button>
   </div>
@@ -457,8 +482,8 @@
   <div class="section on" id="menu">
     <span class="label" data-t="obs">Observatory of Fates</span>
     <h1 data-t="menu.h1">Choose your<br><em>instrument.</em></h1>
-    <p data-t="menu.p">Three ways of asking the dark. Each answer is drawn in stardust —
-       figures assembled from thousands of stars that scatter at your touch, and remember.</p>
+    <p data-t="menu.p">Three ways of asking the dark — free, and computed with real astronomy and the classical tables.
+       Each answer is drawn in stardust, and the ones that ring true can be worn as tattoos.</p>
     <div class="doors">
       <button class="door" data-go="tarot">
         <span class="glyph">✦</span>
@@ -467,15 +492,21 @@
       </button>
       <button class="door" data-go="astro">
         <span class="glyph">☉</span>
-        <div><h3 data-t="door.astro.h">Astral map</h3><p data-t="door.astro.p">The sky as it stood when you were born — drawn in stars, and as line art clean enough to tattoo.</p><span class="tag" id="astroTag" data-t="free">Free</span></div>
+        <div><h3 data-t="door.astro.h">Astral map</h3><p data-t="door.astro.p">The sky as it stood when you were born — planets, houses, the rising sign.</p><span class="tag" data-t="free">Free</span></div>
         <span class="label" data-t="door.astro.l">The wheel</span>
       </button>
       <button class="door" data-go="num">
         <span class="glyph">⁂</span>
-        <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — each with a seal you could ink.</p><span class="tag" data-t="free">Free</span></div>
+        <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag" data-t="free">Free</span></div>
         <span class="label" data-t="door.num.l">The seal</span>
       </button>
+      <button class="door ink-door" data-go="ink">
+        <span class="glyph">✒</span>
+        <div><h3 data-t="door.ink.h">Your tattoos</h3><p data-t="door.ink.p">Your sky and your numbers, drawn as four tattoo designs on one flash sheet.</p><span class="tag" id="inkTag">€7</span></div>
+        <span class="label" data-t="door.ink.l">The ink</span>
+      </button>
     </div>
+    <div class="gallery" hidden></div>
     <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span></footer>
   </div>
 
@@ -505,16 +536,20 @@
 
   <!-- ── astral map ── -->
   <div class="section" id="astroIntro">
-    <span class="label" data-t="astro.label">The sky at the hour of your birth</span>
-    <h1 data-t="astro.h1">Where were the<br><em>planets standing?</em></h1>
-    <p data-t="astro.p">Give the observatory your date, your hour and the place you first breathed.
+    <span class="label astro-only" data-t="astro.label">The sky at the hour of your birth</span>
+    <h1 class="astro-only" data-t="astro.h1">Where were the<br><em>planets standing?</em></h1>
+    <p class="astro-only" data-t="astro.p">Give the observatory your date, your hour and the place you first breathed.
        The stars will turn back to that night and draw the wheel.</p>
-    <div class="ledger" id="astroLedger" hidden>
-      <div class="free"><span><b data-t="free">Free</b></span><span data-t="ledger.free">The wheel in stars · your Sun</span></div>
-      <div><span><b id="ledgerPrice">€7</b></span><span data-t="ledger.paid">A star poster of your sky · tattoo-ready line art · Moon · Rising · houses · aspects · all ten planets read</span></div>
-    </div>
+    <span class="label ink-only" data-t="ink.label" hidden>Your readings, worn</span>
+    <h1 class="ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h1>
+    <p class="ink-only" data-t="ink.p" hidden>Four tattoo designs drawn from your own chart and your own numbers. Preview them free;
+       the print-ready flash sheet and the files for your tattoo artist are the one thing here that costs money.</p>
+    <div class="showcase ink-only" id="showcase" hidden></div>
     <div class="saved" id="savedMaps" hidden></div>
     <form class="form" id="astroForm" autocomplete="off" novalidate>
+      <div class="frow ink-only" hidden>
+        <div class="field"><label for="iName" data-t="f.iname">Full name at birth — for your numbers</label><input class="wide" id="iName" type="text" placeholder="e.g. Maria Inês Soares Costa" data-tp="ph.name"></div>
+      </div>
       <div class="frow" id="astroDate"></div>
       <div class="frow">
         <div class="field"><label for="aHour" data-t="f.hour">Hour</label><input class="w2" id="aHour" type="number" min="0" max="23" placeholder="14"></div>
@@ -535,8 +570,10 @@
         <div class="field"><label for="aTz" data-t="f.tz">Time zone</label><select id="aTz"></select></div>
       </div>
       <div class="err" id="astroErr"></div>
-      <button class="deal-btn" type="submit" data-t="cast">☉ &nbsp;Cast the chart</button>
-      <p class="privacy" data-t="privacy">Computed in your browser. Nothing leaves this page unless you choose to buy the full map.</p>
+      <button class="deal-btn astro-only" type="submit" data-t="cast">☉ &nbsp;Cast the chart</button>
+      <button class="deal-btn ink-only" type="submit" data-t="inkGo" hidden>✒ &nbsp;Draw my tattoos</button>
+      <p class="privacy" data-t="privacy">Computed in your browser. Your name never leaves this page.</p>
+      <div class="gallery ink-only" hidden></div>
       <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
     </form>
   </div>
@@ -593,22 +630,21 @@
 <div id="unlock" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
   <div class="offer-box">
     <button class="offer-close" id="unlockClose" aria-label="Close">✕</button>
-    <span class="label" data-t="unlock.label">Break the seal</span>
-    <h3 id="unlockTitle" data-t="unlock.h">Your sky, to keep</h3>
+    <span class="label" data-t="unlock.label">Your tattoo flash</span>
+    <h3 id="unlockTitle" data-t="unlock.h">Four designs, yours to wear</h3>
     <span class="for" id="unlockFor"></span>
     <ul class="gets">
-      <li><i>↓</i><span data-t="get.poster"><b>A star poster</b> of your sky — 3600 × 4500, ready to print or post</span></li>
-      <li><i>✒</i><span data-t="get.ink"><b>Tattoo-ready line art</b> of your wheel and your Big Three — vector SVG and 4000 px PNG</span></li>
-      <li><i>☽</i><span data-t="get.moon"><b>Your Moon</b> — what you need in order to feel safe</span></li>
-      <li><i>↑</i><span data-t="get.rising"><b>Rising &amp; Midheaven</b> — how you arrive, and where you are headed</span></li>
-      <li><i>✶</i><span data-t="get.planets"><b>All ten planets read</b> in their signs and houses</span></li>
-      <li><i>△</i><span data-t="get.houses"><b>Houses, aspects</b> and the balance of your elements</span></li>
+      <li><i>✶</i><span data-t="get.wheel"><b>Your natal wheel</b> — the whole sky of your birth, as one piece</span></li>
+      <li><i>☉</i><span data-t="get.sun"><b>☉ beside your Sun sign</b> — small, for a wrist or an ankle</span></li>
+      <li id="getRising"><i>↑</i><span data-t="get.rising"><b>↑ beside your Rising sign</b> — how you arrive, worn</span></li>
+      <li><i>⁂</i><span data-t="get.nums"><b>Your numbers in a row</b> — Life Path, Expression, Soul, Persona</span></li>
+      <li><i>↓</i><span data-t="get.files"><b>A print-ready flash sheet</b> with them all, and each design as vector SVG and 4000 px PNG for your tattoo artist</span></li>
     </ul>
-    <div class="price"><b id="unlockPrice">€7</b><span data-t="price.note">One payment<br>poster and map, kept for good</span></div>
-    <button class="deal-btn gold" id="unlockGo" data-t="unlockGo">✦ &nbsp;Break the seal</button>
+    <div class="price"><b id="unlockPrice">€7</b><span data-t="price.note">One payment<br>yours for good</span></div>
+    <button class="deal-btn gold" id="unlockGo" data-t="unlockGo">✒ &nbsp;Get my tattoo flash</button>
     <span id="unlockNote"></span>
     <span class="trust" data-t="trust">Secure checkout by Stripe · card · Apple Pay · Google Pay · MB WAY<br>
-      Your birth details travel with the payment so your link can reopen the map · <a href="terms.html" target="_blank">Terms</a></span>
+      Your birth details and your four numbers travel with the payment so your link can reopen the sheet — your name never does · <a href="terms.html" target="_blank">Terms</a></span>
   </div>
 </div>
 
@@ -622,6 +658,7 @@
     <div class="st-btns">
       <button class="deal-btn" id="stSvg" data-t="st.svg">↓ &nbsp;SVG · vector</button>
       <button class="deal-btn" id="stPng" data-t="st.png">↓ &nbsp;PNG · 4000 px</button>
+      <button class="deal-btn gold" id="stBuy" data-unlock hidden data-t="st.buy">✒ &nbsp;Get my tattoo flash</button>
     </div>
     <span class="trust" data-t="st.fine">Black line art on a transparent background. Your artist may adjust line weights for your skin and the size you choose.</span>
   </div>
@@ -632,10 +669,15 @@
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
 const CONFIG={
-  payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = astral map stays free
-  price:"€7",       // shown on the page; the amount actually charged lives in the worker (PRICE_CENTS)
+  payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
+  price:"€7",       // the tattoo flash — shown on the page; the amount charged lives in the worker (PRICE_CENTS)
   donationUrl:"",   // pay-what-you-want link for the offering bowl (Stripe payment link, Ko-fi…)
   goatcounter:"",   // e.g. "starot" for https://starot.goatcounter.com — empty = no analytics
+  /* photos/videos of the designs on skin (docs/MEDIA.md), e.g.
+     {src:"media/gallery/wheel-forearm.jpg", caption:"Natal wheel · forearm", captionPt:"Roda natal · antebraço", concept:true}
+     or {video:"media/gallery/sun-wrist.mp4", poster:"media/gallery/sun-wrist.jpg", caption:"…", concept:true}
+     concept:true marks AI renders, and the gallery says so */
+  gallery:[],
 };
 
 /* ═══ SMALL HELPERS — storage, analytics ══════════════════════ */
@@ -679,12 +721,13 @@ function qs(extra){
 
 const UI_PT={
   'obs':'Observatório dos Destinos',
-  'nav.tarot':'Tarô','nav.astro':'Mapa astral','nav.num':'Numerologia',
+  'nav.tarot':'Tarô','nav.astro':'Mapa astral','nav.num':'Numerologia','nav.ink':'Tatuagens',
   'menu.h1':'Escolha o seu<br><em>instrumento.</em>',
-  'menu.p':'Três maneiras de perguntar ao escuro. Cada resposta é desenhada em poeira de estrelas — figuras formadas por milhares de estrelas que se espalham ao seu toque, e se lembram.',
+  'menu.p':'Três maneiras de perguntar ao escuro — grátis, e calculadas com astronomia de verdade e as tabelas clássicas. Cada resposta é desenhada em poeira de estrelas, e as que soarem verdadeiras podem virar tatuagem.',
   'door.tarot.h':'Leitura de tarô','door.tarot.p':'Três arcanos — passado, presente, futuro — tirados dos vinte e dois.','door.tarot.l':'As cartas',
-  'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — desenhado em estrelas, e em traço limpo o bastante para tatuar.','door.astro.l':'A roda',
-  'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — cada um com um selo que você pode tatuar.','door.num.l':'O selo',
+  'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — planetas, casas, o ascendente.','door.astro.l':'A roda',
+  'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — o caminho, a voz, a porta.',
+  'door.ink.h':'As suas tatuagens','door.ink.p':'O seu céu e os seus números, desenhados como quatro tatuagens numa folha de flash.','door.ink.l':'A tinta','door.num.l':'O selo',
   'free':'Grátis',
   'legal.terms':'Termos e privacidade','legal.share':'Compartilhar o observatório','legal.ent':'Para reflexão e entretenimento',
   'tarot.label':'Uma leitura em poeira de estrelas',
@@ -703,7 +746,10 @@ const UI_PT={
   'f.manual':'Minha cidade não está na lista — informar coordenadas','f.tz':'Fuso horário',
   'ph.city':'Comece a digitar uma cidade…',
   'cast':'☉ &nbsp;Desenhar o mapa',
-  'privacy':'Calculado no seu navegador. Nada sai desta página, a menos que você decida comprar o mapa completo.',
+  'privacy':'Calculado no seu navegador. O seu nome nunca sai desta página.',
+  'ink.label':'As suas leituras, na pele','ink.h1':'Leve o seu céu<br><em>na pele.</em>',
+  'ink.p':'Quatro desenhos de tatuagem feitos a partir do seu mapa e dos seus números. Veja grátis; a folha de flash pronta para imprimir e os arquivos para o seu tatuador são a única coisa paga aqui.',
+  'f.iname':'Nome completo de nascimento — para os seus números','inkGo':'✒ &nbsp;Desenhar as minhas tatuagens',
   'num.label':'A aritmética de uma vida',
   'num.h1':'Todo nome é<br><em>um número.</em>',
   'num.p':'Escreva o nome completo que você recebeu ao nascer, e a data. As letras serão pesadas, os dígitos dobrados, e o selo do seu caminho desenhado em estrelas.',
@@ -715,9 +761,15 @@ const UI_PT={
   'offer.label':'Mantenha as lâmpadas acesas','offer.h':'Uma oferenda',
   'offer.p':'O observatório funciona com luz das estrelas e pequenas gentilezas. Se as estrelas disseram algo verdadeiro — ou algo útil, mesmo que não seja verdade — você pode deixar uma moeda no escuro. As estrelas reparam.',
   'offer.link':'✦ &nbsp;Fazer uma oferenda','offer.note':'A tigela de oferendas ainda está sendo esculpida — em breve.',
-  'unlock.label':'Quebrar o selo','unlock.h':'O seu céu, para guardar',
-  'get.poster':'<b>Um pôster em estrelas</b> do seu céu — 3600 × 4500, pronto para imprimir ou postar',
-  'get.ink':'<b>Traço pronto para tatuagem</b> da sua roda e do seu trio (Sol, Lua e Ascendente) — SVG vetorial e PNG de 4000 px',
+  'unlock.label':'A sua folha de flash','unlock.h':'Quatro desenhos, para usar na pele',
+  'get.wheel':'<b>A sua roda natal</b> — o céu inteiro do seu nascimento, numa só peça',
+  'get.sun':'<b>☉ ao lado do seu signo solar</b> — pequena, para o pulso ou o tornozelo',
+  'get.rising':'<b>↑ ao lado do seu ascendente</b> — o jeito como você chega, na pele',
+  'get.nums':'<b>Os seus números numa linha</b> — Caminho, Expressão, Alma, Persona',
+  'get.files':'<b>Uma folha de flash pronta para imprimir</b> com todos eles, e cada desenho em SVG vetorial e PNG de 4000 px para o seu tatuador',
+  'price.note':'Um pagamento só<br>seus para sempre',
+  'unlockGo':'✒ &nbsp;Quero a minha folha','st.buy':'✒ &nbsp;Quero a minha folha',
+  'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento e os seus quatro números vão junto com o pagamento, para que o seu link possa reabrir a folha — o seu nome nunca vai · <a href="termos.html" target="_blank">Termos</a>',
   'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
   'get.moon':'<b>A sua Lua</b> — o que você precisa para se sentir em segurança',
@@ -1452,9 +1504,9 @@ function showSection(id){
   $('intro').scrollTop=0;
   $('intro').classList.remove('gone');
   document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',
-    (id==='tarotIntro'&&n.dataset.go==='tarot')||(id==='astroIntro'&&n.dataset.go==='astro')||(id==='numIntro'&&n.dataset.go==='num')));
+    (id==='tarotIntro'&&n.dataset.go==='tarot')||(id==='astroIntro'&&n.dataset.go===formMode)||(id==='numIntro'&&n.dataset.go==='num')));
 }
-const SECTION={menu:'menu',tarot:'tarotIntro',astro:'astroIntro',num:'numIntro'};
+const SECTION={menu:'menu',tarot:'tarotIntro',astro:'astroIntro',num:'numIntro',ink:'astroIntro'};
 /* clear the stage: hide reading, scatter the stars, return to an intro section */
 function leaveReading(to){
   view=-1;
@@ -1472,9 +1524,9 @@ function leaveReading(to){
   $('introMain').style.display='flex';
   $('ritual').classList.remove('on');
   $('dealBtn2').classList.remove('ready');
-  setTimeout(()=>{showSection(SECTION[to]);if(to==='astro')renderSaved();},600);
+  setTimeout(()=>{if(to==='astro'||to==='ink')setFormMode(to);showSection(SECTION[to]);},600);
 }
-const REDEAL={tarot:T('↻ &nbsp;Ask again','↻ &nbsp;Perguntar de novo'),astro:T('↻ &nbsp;New chart','↻ &nbsp;Novo mapa'),num:T('↻ &nbsp;New numbers','↻ &nbsp;Novos números')};
+const REDEAL={tarot:T('↻ &nbsp;Ask again','↻ &nbsp;Perguntar de novo'),astro:T('↻ &nbsp;New chart','↻ &nbsp;Novo mapa'),num:T('↻ &nbsp;New numbers','↻ &nbsp;Novos números'),ink:T('↻ &nbsp;New tattoos','↻ &nbsp;Novas tatuagens')};
 function beginReading(){
   $('intro').classList.add('gone');
   setLens(false);
@@ -1487,7 +1539,7 @@ document.querySelectorAll('[data-go]').forEach(el=>{
   el.addEventListener('click',()=>{
     const to=el.dataset.go;
     if($('intro').classList.contains('gone'))leaveReading(to);
-    else{ $('introMain').style.display='flex';$('ritual').classList.remove('on');$('dealBtn2').classList.remove('ready');showSection(SECTION[to]);if(to==='astro')renderSaved(); }
+    else{ $('introMain').style.display='flex';$('ritual').classList.remove('on');$('dealBtn2').classList.remove('ready');if(to==='astro'||to==='ink')setFormMode(to);showSection(SECTION[to]); }
     track('open-'+to);
   });
 });
@@ -1897,58 +1949,70 @@ function localToUTC(y,m,d,h,mi,tz){
 }
 
 /* ═══ ASTRAL MAP — the reading ════════════════════════════════
-   A chart is fully described by its input; the input's key decides
-   whether this browser owns the full map. */
-let chart=null, chartMeta=null, chartInput=null, chartId='';
+   Free and complete. A chart is fully described by its input. */
+let chart=null, chartMeta=null, chartInput=null;
 function chartKey(inp){
   const s=[inp.y,inp.m,inp.d,inp.h,inp.mi,inp.nt?1:0,(+inp.lat).toFixed(3),(+inp.lon).toFixed(3),inp.tz].join('|');
   let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}
   return (h>>>0).toString(36);
 }
-const ownedMap=id=>store.get('maps',[]).find(m=>m.id===id);
-const isOpen=()=>!PAYWALL||!!ownedMap(chartId);
-function castChart(inp){
+function prepChart(inp){
   inp={...inp,place:String(inp.place||'').replace(/[<>&"]/g,'')};   /* it is written into the page */
   const utc=localToUTC(inp.y,inp.m,inp.d,inp.h,inp.mi,inp.tz);
   chart=computeChart(utc,inp.lat,inp.lon,!inp.nt);
-  chartInput=inp;chartId=chartKey(inp);
+  chartInput=inp;
   chartMeta={date:{y:inp.y,m:inp.m,d:inp.d},h:inp.h,mi:inp.mi,noTime:!!inp.nt,
     place:{name:inp.place.split(',')[0],full:inp.place,lat:inp.lat,lon:inp.lon,tz:inp.tz}};
-  const own=ownedMap(chartId);
-  history.replaceState(null,'',location.pathname+qs(own&&own.sid?{map:own.sid}:null));
-  openChart();
 }
+function castChart(inp){prepChart(inp);history.replaceState(null,'',location.pathname+qs());openChart();}
 const mon3=m=>MONTHS[m-1].slice(0,3);
-function mapLabel(inp){return `${inp.d} ${mon3(inp.m)} ${inp.y} · ${inp.place.split(',')[0]}`;}
-function renderSaved(){
-  const box=$('savedMaps'),maps=store.get('maps',[]);
-  box.hidden=!PAYWALL||!maps.length;
-  if(box.hidden)return;
-  box.innerHTML=`<span class="label">${T('Your kept maps','Os seus mapas guardados')}</span>`+maps.slice(0,6).map((m,i)=>`<button class="chip" data-i="${i}"><i>☉</i>${mapLabel(m.input)}</button>`).join('');
-  box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>castChart(maps[+c.dataset.i].input));
+
+/* one form, two doors: the astral map, and the tattoos (which also need a name) */
+let formMode='astro';
+function setFormMode(m){
+  formMode=m;
+  document.querySelectorAll('.astro-only').forEach(e=>e.hidden=m!=='astro');
+  document.querySelectorAll('.ink-only').forEach(e=>e.hidden=m!=='ink');
+  if(m==='ink'){renderShowcase();renderSaved();}
 }
-$('astroForm').onsubmit=e=>{
-  e.preventDefault();
-  const err=$('astroErr');err.textContent='';
-  const date=readDate('a',err);if(!date)return;
+function fillPlaceForm(inp){
+  $('aDay').value=inp.d;$('aMon').value=inp.m;$('aYear').value=inp.y;
+  $('aNoTime').checked=!!inp.nt;$('aHour').disabled=$('aMin').disabled=!!inp.nt;
+  if(!inp.nt){$('aHour').value=inp.h;$('aMin').value=inp.mi;}
+  const [nm,...rest]=inp.place.split(',');
+  pickedCity={name:nm.trim(),country:rest.join(',').trim(),lat:inp.lat,lon:inp.lon,tz:inp.tz};
+  cityIn.value=inp.place;$('aManual').checked=false;$('coords').classList.remove('on');
+}
+function readPlaceForm(err){
+  const date=readDate('a',err);if(!date)return null;
   const noTime=$('aNoTime').checked;
   let h=+$('aHour').value, mi=+$('aMin').value;
   if(!noTime&&($('aHour').value===''||h<0||h>23||mi<0||mi>59)){
-    err.textContent=T('Give the hour (0–23) and minute, or tick "I don\'t know the hour".','Informe a hora (0–23) e o minuto, ou marque "Não sei a hora".');return;}
+    err.textContent=T('Give the hour (0–23) and minute, or tick "I don\'t know the hour".','Informe a hora (0–23) e o minuto, ou marque "Não sei a hora".');return null;}
   if(noTime){h=12;mi=0;}
   let place;
   if($('aManual').checked){
     const lat=parseFloat($('aLat').value),lon=parseFloat($('aLon').value);
     if(isNaN(lat)||isNaN(lon)||Math.abs(lat)>89.9||Math.abs(lon)>180){
-      err.textContent=T('Latitude −90…90, longitude −180…180 (east positive).','Latitude −90…90, longitude −180…180 (leste positivo).');return;}
+      err.textContent=T('Latitude −90…90, longitude −180…180 (east positive).','Latitude −90…90, longitude −180…180 (leste positivo).');return null;}
     place={name:`${Math.abs(lat).toFixed(2)}°${lat<0?'S':'N'} ${Math.abs(lon).toFixed(2)}°${lon<0?T('W','O'):T('E','L')}`,country:'',lat,lon,tz:$('aTz').value};
   }else{
-    if(!pickedCity){err.textContent=T('Choose a birthplace from the list, or enter coordinates.','Escolha uma cidade natal da lista, ou informe as coordenadas.');return;}
+    if(!pickedCity){err.textContent=T('Choose a birthplace from the list, or enter coordinates.','Escolha uma cidade natal da lista, ou informe as coordenadas.');return null;}
     place={...pickedCity,name:cityName(pickedCity),country:countryName(pickedCity)};
   }
-  const inp={y:date.y,m:date.m,d:date.d,h,mi,nt:noTime?1:0,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4),tz:place.tz,
+  return {y:date.y,m:date.m,d:date.d,h,mi,nt:noTime?1:0,lat:+(+place.lat).toFixed(4),lon:+(+place.lon).toFixed(4),tz:place.tz,
     place:place.country?`${place.name}, ${place.country}`:place.name};
-  try{castChart(inp);}catch(ex){err.textContent=T('That time zone is unknown to this browser.','Este navegador não conhece esse fuso horário.');return;}
+}
+$('astroForm').onsubmit=e=>{
+  e.preventDefault();
+  const err=$('astroErr');err.textContent='';
+  const name=$('iName').value.trim();
+  if(formMode==='ink'&&nameNumbers(name).letters<2){err.textContent=T('Write your full name at birth — your numbers come from it.','Escreva o seu nome completo de nascimento — os seus números vêm dele.');return;}
+  const inp=readPlaceForm(err);if(!inp)return;
+  try{
+    if(formMode==='ink')castInk(inp,numsFor(name,{y:inp.y,m:inp.m,d:inp.d}));
+    else castChart(inp);
+  }catch(ex){err.textContent=T('That time zone is unknown to this browser.','Este navegador não conhece esse fuso horário.');}
 };
 
 const ASTRO_SLOTS=[{label:T('Sky','Céu'),face:'✶',big:true},{label:T('Sun','Sol'),face:'☉',big:true},{label:T('Moon','Lua'),face:'☽',big:true},{label:T('Rising','Ascendente'),face:'↑',big:true}];
@@ -1956,9 +2020,8 @@ function openChart(){
   mode='astro';
   beginReading();
   setOfferBtn();
-  track(isOpen()?'map-opened':'map-preview');
+  track('map-cast');
   setSlots(ASTRO_SLOTS,k=>showAstro(k));
-  if(!isOpen()){const cards=document.querySelectorAll('.slot .card');cards[2].classList.add('sealed');if(chart.houses)cards[3].classList.add('sealed');}
   revealSlots(380);
   setTimeout(()=>showAstro(0),1000);
   setTimeout(()=>{
@@ -1977,80 +2040,35 @@ function houseLine(b){return chart.houses?T(` It stands in the ${RN[b.house-1]} 
 const sysName=H=>H.system==='Placidus'?'Placidus':T('Equal','Iguais');
 const elMod=s=>`${EL_NAME[s.el]}, ${MOD_NAME[s.mod]}`.toUpperCase();
 const risingName=s=>T(`${s.name} rising`,`Ascendente em ${s.name}`);
-const gold=t=>`<b style="color:var(--gold);font-weight:400">${t}</b>`;
-const SEALED=T('SEALED','SELADO'), NEED_HOUR=T('HOUR NEEDED','PRECISA DA HORA');
+const NEED_HOUR=T('HOUR NEEDED','PRECISA DA HORA');
 const M={pos:T('Exhibit — ','Exposição — '),deg:T('DEGREE','GRAU'),house:T('HOUSE','CASA'),el:T('ELEMENT','ELEMENTO'),
   asc:T('ASCENDANT','ASCENDENTE'),mc:T('MIDHEAVEN','MEIO DO CÉU'),ruled:T('RULED BY','REGENTE'),born:T('BORN','NASCIMENTO'),
   place:T('PLACE','LOCAL'),houses:T('HOUSES','CASAS')};
-
-/* the sealed views: enough to see what waits, not enough to read it */
-const firstSentence=t=>{const i=t.search(/[.!?](\s|$)/);return i<0?t:t.slice(0,i+1);};
-const SEAL_K=T('Sealed in the full map','Selado no mapa completo');
-const sealBtn=()=>`<button class="deal-btn gold" data-unlock>✦ &nbsp;${T('Break the seal','Quebrar o selo')} · ${CONFIG.price}</button>
-    <span class="fine">${T('Star poster, tattoo line art and full map · kept for good','Pôster, traço para tatuagem e mapa completo · seus para sempre')}</span>`;
-function sealBox(lead){return `<div class="seal"><span class="k">${SEAL_K}</span><p>${lead}</p>${sealBtn()}</div>`;}
-function veiled(text){const f=firstSentence(text);return `${f}<span class="veil" aria-hidden="true">${text.slice(f.length)}</span>`;}
 function skyIntro(sun,moon,H){
   const s=SIGNS[sun.sign].name,m=SIGNS[moon.sign].name,a=H?SIGNS[signOf(H.asc)].name:'',p=chartMeta.place.name;
   return T(`The sky as it stood over ${p} — ${s} at the centre, ${m} in the tide${a?`, ${a} on the horizon`:''}.`,
            `O céu como estava sobre ${p} — ${s} no centro, ${m} na maré${a?`, ${a} no horizonte`:''}.`);
 }
+/* every free reading ends with the same quiet invitation */
+const inkCta=lead=>`<div class="ink"><span class="k">${T('Wear it','Leve na pele')}</span><p>${lead}</p>
+  <div class="ink-row"><button class="deal-btn gold" data-goink>✒ &nbsp;${T('Make it a tattoo','Transformar em tatuagem')}</button></div></div>`;
+const INK_LEAD_SKY=T('Your wheel, your Sun and your Rising, with your numbers — drawn as tattoo designs on one flash sheet.',
+                     'A sua roda, o seu Sol e o seu Ascendente, com os seus números — desenhados como tatuagens numa folha de flash.');
 
 function showAstro(k){
   if(view===k)return;
   view=k;
   markSlot(k);
-  const sun=chart.bodies[0],moon=chart.bodies[1],open=isOpen();
+  const sun=chart.bodies[0],moon=chart.bodies[1];
   $('counter').textContent=`☉ ${SIGNS[sun.sign].name.toUpperCase()}`;
-  if(k===2&&!open){
-    const s=SIGNS[moon.sign];
-    morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
-    setPanel({pos:M.pos+T('The Moon','A Lua'),name:T(`Moon in ${s.name}`,`Lua em ${s.name}`),
-      meta:[[M.deg,SEALED],[M.house,SEALED],[M.el,elMod(s)]],
-      prose:`<em>${T('The tide; what you need in order to feel safe.','A maré; o que você precisa para se sentir em segurança.')}</em> ${veiled(MOON_IN[moon.sign])}`+
-        sealBox(T(`Your Moon is in ${gold(s.name)}. Its reading, its house and its degree wait beneath the seal — with your Rising sign, all ten planets and a star poster of your sky.`,
-                  `A sua Lua está em ${gold(s.name)}. A leitura dela, a casa e o grau esperam sob o selo — com o seu Ascendente, os dez planetas e um pôster em estrelas do seu céu.`))});
-    return;
-  }
-  if(k===3&&!open&&chart.houses){
-    const a=signOf(chart.houses.asc),s=SIGNS[a];
-    morphTo({fn:(ctx,S)=>drawRisingSeal(ctx,S,a),fill:{desk:.66,mobile:.3}});
-    setPanel({pos:M.pos+T('The Horizon','O Horizonte'),name:risingName(s),
-      meta:[[M.asc,SEALED],[M.mc,SEALED],[M.ruled,s.ruler.replace('the ','').toUpperCase()]],
-      prose:`<em>${T('The door; how you arrive, and what the world meets first.','A porta; como você chega, e o que o mundo encontra primeiro.')}</em> ${veiled(RISING_IN[a])}`+
-        sealBox(T(`${s.name} was climbing the eastern horizon when you arrived. The full map reads it — with your Midheaven, the ruler of your chart, and where its door opens.`,
-                  `${s.name} subia no horizonte leste quando você chegou. O mapa completo lê esse signo — com o seu Meio do Céu, o regente do seu mapa e para onde a porta se abre.`))});
-    return;
-  }
-  if(k===0&&!open){
-    morphTo({fn:(ctx,S)=>drawWheel(ctx,S,chart),fill:{desk:.74,mobile:.3}});
-    const H=chart.houses,n=chart.aspects.length;
-    const rows=chart.bodies.map(b=>`<tr><td class="g">${b.ch}</td><td>${b.name}</td><td class="s">${SIGNS[b.sign].name}</td><td class="r">${b.i===0?degStr(b.lon):'·'}</td></tr>`).join('');
-    setPanel({pos:M.pos+T('The Whole Sky','O Céu Inteiro'),name:T('Your natal wheel','A sua roda natal'),
-      meta:[[M.born,bornLine()],[M.place,placeLine()],[M.houses,H?sysName(H).toUpperCase():NEED_HOUR]],
-      prose:`<em>${skyIntro(sun,moon,H)}</em>
-        <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
-        <div class="seal"><span class="k">${SEAL_K}</span>
-          <ul>
-            <li>${T('A star poster of this sky, 3600 × 4500, ready to print','Um pôster em estrelas deste céu, 3600 × 4500, pronto para imprimir')}</li>
-            <li>${T('Tattoo-ready line art of this wheel and your Big Three','Traço pronto para tatuagem desta roda e do seu trio')}</li>
-            <li>${H?T('Your Moon and Rising, read in full','A sua Lua e o seu Ascendente, lidos por inteiro'):T('Your Moon, read in full','A sua Lua, lida por inteiro')}</li>
-            <li>${H?T('All ten planets read in their houses','Os dez planetas lidos nas suas casas'):T('All ten planets read','Os dez planetas lidos')}</li>
-            ${H?`<li>${T('The twelve houses and your Midheaven','As doze casas e o seu Meio do Céu')}</li>`:''}
-            <li>${T(`${n} aspect${n===1?'':'s'} binding your planets`,`${n} aspecto${n===1?'':'s'} ligando os seus planetas`)}</li>
-            <li>${T('The balance of your elements','O equilíbrio dos seus elementos')}</li>
-          </ul>
-          ${sealBtn()}</div>`});
-    return;
-  }
   if(k===1){
     const s=SIGNS[sun.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,sun.sign,0),fill:{desk:.66,mobile:.3}});
     setPanel({pos:M.pos+T('The Sun','O Sol'),name:T(`Sun in ${s.name}`,`Sol em ${s.name}`),
-      meta:[[M.deg,`${degStr(sun.lon)} ${s.name.toUpperCase()}`],[M.house,!chart.houses?NEED_HOUR:open?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:SEALED],[M.el,elMod(s)]],
-      prose:`<em>${T('The centre; your will and the light you steer by.','O centro; a sua vontade e a luz que guia você.')}</em> ${SUN_IN[sun.sign]}${open?houseLine(sun):''}`+
-        (open?'':sealBox(T(`Your Sun is only the centre. Your Moon is in ${gold(SIGNS[moon.sign].name)}${chart.houses?` and ${gold(SIGNS[signOf(chart.houses.asc)].name)} rises`:''} — the full map reads them, with every planet and house, and draws your sky as a poster to keep.`,
-                           `O seu Sol é só o centro. A sua Lua está em ${gold(SIGNS[moon.sign].name)}${chart.houses?` e o seu Ascendente é ${gold(SIGNS[signOf(chart.houses.asc)].name)}`:''} — o mapa completo lê os dois, com cada planeta e casa, e desenha o seu céu num pôster para guardar.`)))});
+      meta:[[M.deg,`${degStr(sun.lon)} ${s.name.toUpperCase()}`],[M.house,chart.houses?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:NEED_HOUR],[M.el,elMod(s)]],
+      prose:`<em>${T('The centre; your will and the light you steer by.','O centro; a sua vontade e a luz que guia você.')}</em> ${SUN_IN[sun.sign]}${houseLine(sun)}`+
+        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of four designs drawn from your readings.`,
+                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de quatro desenhos feitos das suas leituras.`))});
   }else if(k===2){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
@@ -2058,7 +2076,8 @@ function showAstro(k){
       meta:[[M.deg,`${degStr(moon.lon)} ${s.name.toUpperCase()}`],[M.house,chart.houses?`${RN[moon.house-1]} — ${HOUSES[moon.house-1].toUpperCase()}`:NEED_HOUR],[M.el,elMod(s)]],
       prose:`<em>${T('The tide; what you need in order to feel safe.','A maré; o que você precisa para se sentir em segurança.')}</em> ${MOON_IN[moon.sign]}${houseLine(moon)}`+
         (chart.hasTime?'':`<span class="rev">${T('Without an hour the Moon is placed at noon — she moves half a degree an hour, so she may sit a few degrees to either side.',
-                                               'Sem a hora, a Lua é posicionada ao meio-dia — ela anda meio grau por hora, então pode estar alguns graus para um lado ou para o outro.')}</span>`)});
+                                               'Sem a hora, a Lua é posicionada ao meio-dia — ela anda meio grau por hora, então pode estar alguns graus para um lado ou para o outro.')}</span>`)+
+        inkCta(INK_LEAD_SKY)});
   }else if(k===3){
     if(chart.houses){
       const a=signOf(chart.houses.asc),m=signOf(chart.houses.mc),s=SIGNS[a];
@@ -2070,7 +2089,9 @@ function showAstro(k){
           (ruler?`<span class="line">${T(`The ruler of your horizon, <b>${ruler.name}</b>, sits in <b>${SIGNS[ruler.sign].name}</b> in the ${RN[ruler.house-1]} house — the door opens onto ${HOUSES[ruler.house-1]}.`,
                                         `O regente do seu horizonte, <b>${{Sol:'o Sol',Lua:'a Lua'}[ruler.name]||ruler.name}</b>, está em <b>${SIGNS[ruler.sign].name}</b> na casa ${RN[ruler.house-1]} — a porta se abre para ${HOUSES[ruler.house-1]}.`)}</span>`:'')+
           `<span class="line">${T(`Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.`,
-                                  `O seu Meio do Céu — o cume público — está em <b>${SIGNS[m].name}</b>: o mundo vai conhecer você como alguém ${SIGNS[m].flavor}.`)}</span>`});
+                                  `O seu Meio do Céu — o cume público — está em <b>${SIGNS[m].name}</b>: o mundo vai conhecer você como alguém ${SIGNS[m].flavor}.`)}</span>`+
+          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of four designs drawn from your readings.`,
+                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de quatro desenhos feitos das suas leituras.`))});
     }else{
       morphTo({fn:(ctx,S)=>{const c=S/2;ctx.lineWidth=S*.014;ctx.setLineDash([S*.03,S*.05]);ctx.beginPath();ctx.arc(c,c,S*.44,0,7);ctx.stroke();ctx.setLineDash([]);
         ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c+S*.5,c);ctx.stroke();},fill:{desk:.66,mobile:.3}});
@@ -2100,11 +2121,7 @@ function showAstro(k){
     setPanel({pos:M.pos+T('The Whole Sky','O Céu Inteiro'),name:T('Your natal wheel','A sua roda natal'),
       meta:[[M.born,bornLine()],[M.place,placeLine()],[M.houses,H?sysName(H).toUpperCase():NEED_HOUR]],
       prose:`<em>${skyIntro(sun,moon,H)}</em>
-        <button class="deal-btn" data-poster style="margin:16px 0 4px;padding:14px 26px 12px;font-size:10px">↓ &nbsp;${T('Download your star poster','Baixar o seu pôster em estrelas')}</button>
-        <div class="ink"><span class="k">${T('Ink your sky','Tatue o seu céu')}</span>
-          <p>${T('Clean line art of your chart for a tattoo artist: vector SVG that scales to any size, and a 4000 px PNG on a transparent background.',
-                 'Traço limpo do seu mapa para levar ao tatuador: SVG vetorial que escala para qualquer tamanho, e PNG de 4000 px com fundo transparente.')}</p>
-          <div class="ink-row"><button class="deal-btn" data-ink="wheel">☉ &nbsp;${T('The wheel','A roda')}</button><button class="deal-btn" data-ink="three">✶ &nbsp;${T('Your Big Three','O seu trio')}</button></div></div>
+        ${inkCta(INK_LEAD_SKY)}
         <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
         ${H?`<div class="sub">${T('Houses','Casas')} · ${sysName(H)}</div><table class="tbl">${houseRows}</table>`:''}
         <div class="sub">${T('Aspects','Aspectos')}</div>${aspRows?`<table class="tbl">${aspRows}</table>`:`<span class="line">${T('A quiet sky — no major aspects within orb.','Um céu quieto — nenhum aspecto maior dentro da órbita.')}</span>`}
@@ -2112,6 +2129,7 @@ function showAstro(k){
         <span class="line">${balance}</span>
         <span class="line">${modLine}</span>
         <div class="sub">${T('Readings','Leituras')}</div>${readings}
+        <button class="deal-btn" data-poster style="margin:22px 0 6px;padding:14px 26px 12px;font-size:10px">↓ &nbsp;${T('Your sky as a star poster','O seu céu num pôster de estrelas')}</button>
         <span class="line" style="font-size:13px;color:var(--mist)">${T('Positions computed in the browser from Keplerian elements and the principal lunar terms — good to a fraction of a degree. Planets within a degree of a cusp may be argued over by better instruments.',
           'Posições calculadas no navegador a partir de elementos keplerianos e dos termos principais da teoria lunar — precisas a uma fração de grau. Planetas a menos de um grau de uma cúspide podem ser discutidos por instrumentos melhores.')}</span>`});
   }
@@ -2182,23 +2200,28 @@ function drawNumberSigil(ctx,S,n){
 }
 
 let numbers=null;
-$('numForm').onsubmit=e=>{
-  e.preventDefault();
-  const err=$('numErr');err.textContent='';
-  const raw=$('nName').value.trim();
-  const date=readDate('n',err);if(!date)return;
-  const nm=nameNumbers(raw);
-  if(nm.letters<2){err.textContent=T('The observatory needs a name of at least two letters.','O observatório precisa de um nome com pelo menos duas letras.');return;}
-  const now=new Date();
-  numbers={
+function computeNumbers(name,date){
+  const nm=nameNumbers(name),now=new Date();
+  const n={
     life:reduceNum(reduceNum(date.m)+reduceNum(date.d)+reduceNum(date.y)),
     birthday:reduceNum(date.d),
     expr:nm.expr,soul:nm.soul,pers:nm.pers,
     year:reduceNum(reduceNum(date.m)+reduceNum(date.d)+reduceNum(now.getFullYear())),
     yearNo:now.getFullYear(),
-    name:raw,date
+    name,date
   };
-  numbers.maturity=reduceNum(numbers.life+numbers.expr);
+  n.maturity=reduceNum(n.life+n.expr);
+  return n;
+}
+/* the four that go on the skin: Life Path, Expression, Soul, Persona */
+const numsFor=(name,date)=>{const n=computeNumbers(name,date);return [n.life,n.expr,n.soul,n.pers];};
+$('numForm').onsubmit=e=>{
+  e.preventDefault();
+  const err=$('numErr');err.textContent='';
+  const raw=$('nName').value.trim();
+  const date=readDate('n',err);if(!date)return;
+  if(nameNumbers(raw).letters<2){err.textContent=T('The observatory needs a name of at least two letters.','O observatório precisa de um nome com pelo menos duas letras.');return;}
+  numbers=computeNumbers(raw,date);
   mode='num';
   beginReading();setOfferBtn();track('numbers-read');
   setSlots(NUM_POS.map(p=>({label:p.label,face:numbers[p.key],big:true})),k=>showNumber(k));
@@ -2225,29 +2248,28 @@ function showNumber(k){
   if(N_.master)extra+=`<span class="rev">`+T(
     `A master number: it carries the voltage of ${n} and the ground of ${digitSum(n)}. On tired days you will live it as a ${digitSum(n)}; that is not failure, it is rest.`,
     `Um número mestre: carrega a voltagem do ${n} e o chão do ${digitSum(n)}. Nos dias cansados, você vai vivê-lo como um ${digitSum(n)}; isso não é fracasso, é descanso.`)+`</span>`;
+  const row=[numbers.life,numbers.expr,numbers.soul,numbers.pers].join(' · ');
   setPanel({pos:`${T('Exhibit — ','Exposição — ')}${p.pos}`,name:`${n} · ${N_.title}`,meta,
     prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`+
-      `<div class="ink"><span class="k">${T('Ink your number','Tatue o seu número')}</span>
-        <p>${T(`The seal of your ${p.pos.replace(/^The /,'')} as clean line art — ready for a tattoo artist.`,`O selo ${p.pos.replace(/^O /,'do ').replace(/^A /,'da ')} em traço limpo — pronto para o tatuador.`)}</p>
-        <div class="ink-row"><button class="deal-btn" data-ink="num">⁂ &nbsp;${T('Tattoo-ready seal','Selo para tatuagem')}</button></div></div>`});
+      inkCta(T(`<b style="color:var(--gold);font-weight:400">${row}</b> — your Life Path, Expression, Soul and Persona in one line, drawn as a tattoo with your chart.`,
+               `<b style="color:var(--gold);font-weight:400">${row}</b> — o seu Caminho, Expressão, Alma e Persona numa linha, desenhados como tatuagem junto com o seu mapa.`))});
 }
 
-/* ═══ THE CORNER BUTTON — an offering, the seal, or the poster ═ */
+/* ═══ THE CORNER BUTTON — an offering, or the tattoo flash ════ */
 function setOfferBtn(){
   const b=$('offerBtn');
-  const kind=(reading&&mode==='astro')?(isOpen()?'poster':'unlock'):'offer';
+  const kind=(reading&&mode==='ink')?(sheetOpen()?'flash':'unlock'):'offer';
   b.dataset.kind=kind;
   b.classList.toggle('unlock',kind==='unlock');
-  b.innerHTML=kind==='unlock'?`☉ &nbsp;<span class="lg">${T('Poster &amp; full map','Pôster e mapa completo')} · </span><span class="sm">${T('Poster','Pôster')} · </span>${CONFIG.price}`
-    :kind==='poster'?`↓ &nbsp;${T('Star poster','Pôster')}`:`✦ &nbsp;${T('Leave an offering','Deixar uma oferenda')}`;
+  b.innerHTML=kind==='unlock'?`✒ &nbsp;<span class="lg">${T('Tattoo flash','Folha de flash')} · </span><span class="sm">${T('Flash','Flash')} · </span>${CONFIG.price}`
+    :kind==='flash'?`↓ &nbsp;${T('Flash sheet','Folha de flash')}`:`✦ &nbsp;${T('Leave an offering','Deixar uma oferenda')}`;
 }
 $('offerBtn').onclick=()=>{
   const k=$('offerBtn').dataset.kind;
   if(k==='unlock')openUnlock();
-  else if(k==='poster')downloadPoster();
+  else if(k==='flash')downloadFlash();
   else{offer.classList.add('show');track('offering-open');}
 };
-setOfferBtn();
 const offer=$('offer');
 $('offerClose').onclick=()=>offer.classList.remove('show');
 offer.addEventListener('click',e=>{if(e.target===offer)offer.classList.remove('show');});
@@ -2260,12 +2282,281 @@ if(CONFIG.donationUrl){
 }
 addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');$('stencil').classList.remove('show');}});
 
+/* ═══ THE TATTOOS — four designs drawn from your own readings ═══
+   1 the natal wheel · 2 ☉ beside the Sun's sign · 3 the ascendant arrow beside
+   the rising sign · 4 Life Path, Expression, Soul and Persona in one row.
+   Free to preview; the flash sheet and the files are the product. */
+function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the horizon */
+  ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(-.78,.82);ctx.lineTo(.78,.82);ctx.moveTo(0,.82);ctx.lineTo(0,-.9);
+  ctx.moveTo(-.4,-.5);ctx.lineTo(0,-.92);ctx.lineTo(.4,-.5);ctx.stroke();ctx.restore();
+}
+function drawSunPair(ctx,W,H,sign){glyphPlanet(ctx,0,W*.29,H/2,H*.34,H*.05);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*.05);}
+function drawRisingPair(ctx,W,H,sign){glyphAsc(ctx,W*.29,H/2,H*.36,H*.05);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*.05);}
+function drawNumberRow(ctx,W,H,nums){
+  let h=H*.62,s=h/2;const lw=H*.05,strs=nums.map(String);
+  const gw=t=>1.4*s*(t.length-1)+1.1*s,G=()=>1.9*s;
+  let total=strs.reduce((a,t)=>a+gw(t),0)+G()*(strs.length-1);
+  if(total>W*.94){const f=W*.94/total;h*=f;s=h/2;total*=f;}
+  let x=(W-total)/2;
+  strs.forEach((t,i)=>{
+    const w=gw(t);glyphText(ctx,t,x+w/2,H/2,h,lw);x+=w;
+    if(i<strs.length-1){ctx.beginPath();ctx.arc(x+G()/2,H/2,lw*.8,0,7);ctx.fill();x+=G();}
+  });
+}
+
+let inkNums=null,sheetId='',inkList=[];
+const sheetKey=(inp,nums)=>chartKey(inp)+'-'+nums.join('.');
+const ownedSheet=id=>store.get('sheets',[]).find(x=>x.id===id);
+const sheetOpen=()=>!PAYWALL||!!ownedSheet(sheetId);
+const slug=t=>fold(t).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+function inkDesigns(){
+  const sun=chart.bodies[0],H=chart.houses,ss=SIGNS[sun.sign];
+  const list=[
+    {kind:'wheel',w:1,h:1,draw:(c,W)=>drawWheel(c,W,chart,.6),title:T('Your natal wheel','A sua roda natal'),file:'natal-wheel',size:10,
+     place:T('upper back, forearm, thigh','costas, antebraço, coxa'),intro:T('The whole sky of your birth, as one piece.','O céu inteiro do seu nascimento, numa só peça.')},
+    {kind:'sun',w:2,h:1,draw:(c,W,h)=>drawSunPair(c,W,h,sun.sign),title:T(`Sun in ${ss.name}`,`Sol em ${ss.name}`),file:`sun-${slug(ss.name)}`,size:3,
+     place:T('wrist, ankle, behind the ear','pulso, tornozelo, atrás da orelha'),intro:T('☉ — the circle with its centre — beside the sign the Sun stood in.','☉ — o círculo com o seu centro — ao lado do signo onde o Sol estava.')}];
+  if(H){const rs=SIGNS[signOf(H.asc)];
+    list.push({kind:'rising',w:2,h:1,draw:(c,W,h)=>drawRisingPair(c,W,h,signOf(H.asc)),title:risingName(rs),file:`rising-${slug(rs.name)}`,size:3,
+      place:T('collarbone, inner arm, nape','clavícula, parte interna do braço, nuca'),intro:T('The ascendant arrow over the horizon, beside the sign that was rising when you arrived.','A seta do ascendente sobre o horizonte, ao lado do signo que subia quando você chegou.')});}
+  list.push({kind:'nums',w:4,h:1,draw:(c,W,h)=>drawNumberRow(c,W,h,inkNums),title:`${T('Your numbers','Os seus números')} · ${inkNums.join(' ')}`,file:`numbers-${inkNums.join('-')}`,size:4,
+    place:T('wrist, ribs, along a finger','pulso, costelas, ao longo de um dedo'),intro:T('Life Path · Expression · Soul · Persona, in one line.','Caminho · Expressão · Alma · Persona, numa linha.')});
+  return list;
+}
+function flashLine(){
+  const {date,h,mi,noTime}=chartMeta;
+  return T(`${date.d} ${MONTHS[date.m-1]} ${date.y}`,`${date.d} de ${MONTHS[date.m-1].toLowerCase()} de ${date.y}`)+(noTime?'':` · ${hhmm(h,mi)}`)+` · ${chartMeta.place.full}`;
+}
+/* the sheet's layout, used both for print and for the star figure (A-series proportions) */
+function layoutFlash(ctx,W,txt){
+  const f=W/3508,by=k=>inkList.find(d=>d.kind===k);
+  const box=(dz,cx,top,w)=>{const h=w*dz.h/dz.w;ctx.save();ctx.translate(cx-w/2,top);dz.draw(ctx,w,h);ctx.restore();};
+  const wheel=by('wheel'),sun=by('sun'),ris=by('rising'),nums=by('nums');
+  box(wheel,W/2,760*f,2300*f);
+  if(ris){box(sun,W*.28,3330*f,1350*f);box(ris,W*.72,3330*f,1350*f);}else box(sun,W/2,3330*f,1350*f);
+  box(nums,W/2,4150*f,1800*f);
+  if(txt)txt(f,{wheel,sun,ris,nums});
+}
+async function renderFlash(W=3508,wm=false){
+  try{await Promise.all(["300 60px 'Cormorant Garamond'","italic 300 60px 'Cormorant Garamond'","400 30px Jost","400 30px Marcellus"].map(f=>document.fonts.load(f)));}catch(e){}
+  const H=Math.round(W*1.4142),c=document.createElement('canvas');c.width=W;c.height=H;
+  const x=c.getContext('2d'),f=W/3508,K=v=>Math.max(1,Math.round(v*f));
+  x.fillStyle='#f4efe6';x.fillRect(0,0,W,H);
+  for(let i=0,n=W*H/2400;i<n;i++){x.fillStyle=`rgba(120,100,70,${Math.random()*.05})`;x.fillRect(Math.random()*W,Math.random()*H,K(2),K(2));}
+  const ink='#161412',soft='#7a6f60',gold='#8a7448';
+  const t=(s,font,col,y,sp,xx=W/2)=>{x.font=font;x.fillStyle=col;x.textAlign='center';x.textBaseline='alphabetic';
+    if('letterSpacing' in x)x.letterSpacing=sp||'0px';x.fillText(s,xx,y);if('letterSpacing' in x)x.letterSpacing='0px';};
+  x.strokeStyle=x.fillStyle=ink;
+  layoutFlash(x,W,(f,dz)=>{
+    t('STAROT',`400 ${K(52)}px Marcellus`,gold,K(300),`${K(26)}px`);
+    t(T('Tattoo flash','Folha de flash'),`italic 300 ${K(150)}px 'Cormorant Garamond'`,ink,K(480));
+    t(flashLine().toUpperCase(),`400 ${K(40)}px Jost`,soft,K(575),`${K(10)}px`);
+    x.fillStyle=soft;x.fillRect(W/2-K(160),K(640),K(320),K(3));
+    const lab=(n,s,xx,y)=>t(`${n} · ${s}`.toUpperCase(),`400 ${K(38)}px Jost`,soft,y,`${K(9)}px`,xx);
+    let n=1;const from=T('from','a partir de');
+    lab(n++,`${dz.wheel.title} · ${from} 10 cm`,W/2,K(3160));
+    if(dz.ris){lab(n++,`${dz.sun.title} · 3 cm`,W*.28,K(4080));lab(n++,`${dz.ris.title} · 3 cm`,W*.72,K(4080));}
+    else lab(n++,`${dz.sun.title} · ${from} 3 cm`,W/2,K(4080));
+    lab(n,`${T('Life Path · Expression · Soul · Persona','Caminho · Expressão · Alma · Persona')} · 4 cm`,W/2,K(4690));
+    t(T('Line art for personal use — the SVG files scale to any size for your tattoo artist.','Traço para uso pessoal — os arquivos SVG escalam para qualquer tamanho para o seu tatuador.'),
+      `italic 300 ${K(46)}px 'Cormorant Garamond'`,soft,K(4800));
+    t((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),`400 ${K(28)}px Jost`,gold,K(4885),`${K(8)}px`);
+  });
+  if(wm){  /* the preview carries a watermark; the sheet you buy does not */
+    x.save();x.translate(W/2,H/2);x.rotate(-.42);x.font=`500 ${K(84)}px Jost`;x.fillStyle='rgba(22,20,18,.09)';x.textAlign='center';
+    if('letterSpacing' in x)x.letterSpacing=`${K(16)}px`;
+    const row=Array(8).fill(T('PREVIEW · STAROT','PRÉVIA · STAROT')).join('   ·   ');
+    for(let y=-H;y<H;y+=K(300))x.fillText(row,0,y);
+    x.restore();
+  }
+  return c;
+}
+
+const INK_FACES={wheel:'✶',sun:'☉',rising:'↑',nums:'⁂'};
+const INK_LABELS={wheel:T('Map','Mapa'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),nums:T('Numbers','Números')};
+function castInk(inp,nums){
+  prepChart(inp);inkNums=nums;sheetId=sheetKey(chartInput,nums);
+  const own=ownedSheet(sheetId);
+  history.replaceState(null,'',location.pathname+qs(own&&own.sid?{sheet:own.sid}:null));
+  openInkReading();
+}
+function openInkReading(){
+  mode='ink';
+  inkList=inkDesigns();
+  beginReading();setOfferBtn();track('ink-preview');
+  setSlots([...inkList.map(d=>({label:INK_LABELS[d.kind],face:INK_FACES[d.kind],big:true})),{label:T('Sheet','Folha'),face:'✒',big:true}],k=>showInk(k));
+  revealSlots(380);
+  setTimeout(()=>showInk(0),1000);
+  setTimeout(()=>{
+    const s=SIGNS[chart.bodies[0].sign].name,r=chart.houses?SIGNS[signOf(chart.houses.asc)].name:'';
+    showSynth(T(`Your flash: ☉ <b>${s}</b>`+(r?`, ↑ <b>${r}</b>`:'')+`, and <b>${inkNums.join(' · ')}</b> — around your natal wheel.`,
+                `A sua folha: ☉ <b>${s}</b>`+(r?`, ↑ <b>${r}</b>`:'')+` e <b>${inkNums.join(' · ')}</b> — em volta da sua roda natal.`));
+  },2600);
+}
+function inkBuy(own){
+  if(own)return `<div class="ink"><span class="k">${T('Yours to wear','Seus para usar')}</span>
+    <div class="ink-row"><button class="deal-btn" data-flash>↓ &nbsp;${T('Flash sheet','Folha de flash')}</button><button class="deal-btn" data-zip>↓ &nbsp;${T('All files · ZIP','Todos os arquivos · ZIP')}</button></div>
+    <span class="fine">${T('Tap a design to see it on paper and save it on its own.','Toque num desenho para vê-lo no papel e salvá-lo sozinho.')}</span></div>`;
+  return `<div class="seal"><span class="k">${T('Your tattoo flash','A sua folha de flash')}</span>
+    <p>${T(`All ${inkList.length} designs on one print-ready sheet, plus each one as vector SVG and 4000 px PNG for your tattoo artist.`,
+           `Os ${inkList.length} desenhos numa folha pronta para imprimir, e cada um em SVG vetorial e PNG de 4000 px para o seu tatuador.`)}</p>
+    <button class="deal-btn gold" data-unlock>✒ &nbsp;${T('Get my tattoo flash','Quero a minha folha')} · ${CONFIG.price}</button>
+    <span class="fine">${T('One payment · yours for good','Um pagamento · seus para sempre')}</span></div>`;
+}
+const centredWide=dz=>(ctx,S)=>{const h=S*dz.h/dz.w;ctx.save();ctx.translate(0,(S-h)/2);dz.draw(ctx,S,h);ctx.restore();};
+function showInk(k){
+  if(view===k)return;
+  view=k;
+  markSlot(k);
+  const own=sheetOpen(),n=inkList.length;
+  $('counter').textContent=`✒ ${Math.min(k+1,n)} / ${n}`;
+  if(k===n){
+    morphTo({fn:(ctx,S)=>{const w=S/1.4142;ctx.save();ctx.translate((S-w)/2,0);layoutFlash(ctx,w);ctx.restore();},fill:{desk:.82,mobile:.34}});
+    setPanel({pos:T('Your tattoo flash','A sua folha de flash'),name:T('All on one sheet','Tudo numa folha'),
+      meta:[[T('FORMAT','FORMATO'),'A3 · 300 DPI · PNG'],[T('FILES','ARQUIVOS'),T(`${n} DESIGNS · SVG + PNG`,`${n} DESENHOS · SVG + PNG`)],[T('FOR','PARA'),bornLine()]],
+      prose:`<em>${T('Print it, take it to your tattoo artist, or frame it.','Imprima, leve ao seu tatuador, ou emoldure.')}</em>
+        <div class="sheet-pv" id="sheetPv"><span class="label">${T('Drawing your sheet…','Desenhando a sua folha…')}</span></div>`+inkBuy(own)});
+    setTimeout(async()=>{
+      const c=await renderFlash(1100,!own),box=$('sheetPv');
+      if(box&&view===k&&mode==='ink'){box.innerHTML='';const im=new Image();im.src=c.toDataURL('image/jpeg',.86);im.alt=T('Your tattoo flash sheet','A sua folha de flash');box.appendChild(im);}
+      c.width=c.height=0;
+    },420);
+    return;
+  }
+  const dz=inkList[k];
+  morphTo({fn:centredWide(dz),fill:{desk:dz.w>1?.9:.7,mobile:dz.w>1?.42:.3}});
+  setPanel({pos:T(`Tattoo ${k+1} of ${n}`,`Tatuagem ${k+1} de ${n}`),name:dz.title,
+    meta:[[T('SIZE','TAMANHO'),T(`FROM ${dz.size} CM`,`A PARTIR DE ${dz.size} CM`)],[T('PLACEMENT','LOCAL'),dz.place.toUpperCase()],[T('STYLE','ESTILO'),T('FINE LINE, BLACK','TRAÇO FINO, PRETO')]],
+    prose:`<em>${dz.intro}</em>
+      <button class="paper pv${own?'':' wm'}${dz.w>dz.h?' wide':''}" data-ink="${dz.kind}" aria-label="${T('View on paper','Ver no papel')}">${inkSVG(dz)}</button>`+inkBuy(own)});
+}
+/* kept sheets, reopened with one tap */
+function sheetLabel(x){return `${x.input.d} ${mon3(x.input.m)} ${x.input.y} · ${x.input.place.split(',')[0]} · ${x.nums.join(' ')}`;}
+function renderSaved(){
+  const box=$('savedMaps'),list=store.get('sheets',[]);
+  box.hidden=!PAYWALL||!list.length||formMode!=='ink';
+  if(box.hidden)return;
+  box.innerHTML=`<span class="label">${T('Your tattoo sheets','As suas folhas')}</span>`+list.slice(0,6).map((x,i)=>`<button class="chip" data-i="${i}"><i>✒</i>${sheetLabel(x)}</button>`).join('');
+  box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{const x=list[+c.dataset.i];castInk(x.input,x.nums);});
+}
+/* from any free reading to the tattoo form, carrying what we already know */
+function goInk(){
+  if(mode==='num'&&numbers){$('iName').value=numbers.name;const {d,m,y}=numbers.date;$('aDay').value=d;$('aMon').value=m;$('aYear').value=y;}
+  if(mode==='astro'&&chartInput)fillPlaceForm(chartInput);
+  track('goink-'+mode);
+  leaveReading('ink');
+  if(!matchMedia('(pointer:coarse)').matches)setTimeout(()=>{
+    const el=!$('iName').value?$('iName'):(!pickedCity&&!$('aManual').checked)?$('aCity'):null;if(el)el.focus();},700);
+}
+/* example designs on the tattoo door, drawn from a sample chart */
+let showcaseDone=false;
+function renderShowcase(){
+  if(showcaseDone)return;showcaseDone=true;
+  const ch=computeChart(Date.UTC(1990,5,21,8,15),38.72,-9.14,true),nums=[8,6,5,3];
+  const items=[[1,(c,W)=>drawWheel(c,W,ch,.6),T('Natal wheel','Roda natal')],[2,(c,W,H)=>drawSunPair(c,W,H,ch.bodies[0].sign),T('☉ + your Sun sign','☉ + o seu signo solar')],
+    [2,(c,W,H)=>drawRisingPair(c,W,H,signOf(ch.houses.asc)),T('↑ + your Rising sign','↑ + o seu ascendente')],[4,(c,W,H)=>drawNumberRow(c,W,H,nums),T('Your numbers in a row','Os seus números numa linha')]];
+  $('showcase').innerHTML=items.map(([w,draw,cap],i)=>{
+    const W=400,H=Math.round(400/w),c=new SvgCtx(W,H);c.strokeStyle=c.fillStyle='#d8b877';draw(c,W,H);
+    return `<figure class="${w>1?'wide':'big'}"><div class="sc">${c.svg()}</div><figcaption><b>${i+1}</b>${cap}</figcaption></figure>`;}).join('');
+}
+
+/* line art files: margin of 5% so no stroke touches the edge of the stencil */
+function inkPaint(ctx,dz,W,H){
+  const m=Math.round(Math.min(W,H)*.05);
+  ctx.strokeStyle=ctx.fillStyle='#111';
+  ctx.save();ctx.translate(m,m);dz.draw(ctx,W-2*m,H-2*m);ctx.restore();
+}
+function inkSVG(dz,base=1000){
+  const W=base,H=Math.round(base*dz.h/dz.w),c=new SvgCtx(W,H);
+  inkPaint(c,dz,W,H);
+  return c.svg(`STAROT · ${dz.title}`);
+}
+function inkPNG(dz,base=4000){
+  const W=base,H=Math.round(base*dz.h/dz.w),cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  inkPaint(cv.getContext('2d'),dz,W,H);
+  return new Promise(r=>cv.toBlob(b=>{cv.width=cv.height=0;r(b);},'image/png'));
+}
+const fileName=dz=>`${inkList.indexOf(dz)+1}-${dz.file}`;
+
+/* the paper view of one design */
+const stencil=$('stencil');let inkKind='wheel';
+function openInkModal(kind){
+  const dz=inkList.find(d=>d.kind===kind);if(!dz)return;
+  inkKind=kind;const own=sheetOpen();
+  $('stTitle').textContent=dz.title;
+  $('stPaper').innerHTML=inkSVG(dz);
+  $('stPaper').classList.toggle('wide',dz.w>dz.h);
+  $('stPaper').classList.toggle('wm',!own);
+  $('stNote').textContent=dz.size>=10
+    ?T('Show this to your tattoo artist. Tattoo lines spread a little over the years, so give the full wheel at least 10 cm across.','Mostre ao seu tatuador. As linhas de tatuagem se espalham um pouco com os anos, então dê à roda completa pelo menos 10 cm de largura.')
+    :T(`Show this to your tattoo artist. A design like this holds its shape from about ${dz.size} cm across.`,`Mostre ao seu tatuador. Um desenho assim mantém a forma a partir de uns ${dz.size} cm de largura.`);
+  $('stSvg').hidden=$('stPng').hidden=!own;$('stBuy').hidden=own;
+  stencil.classList.add('show');
+  track('ink-view-'+kind);
+}
+$('stClose').onclick=()=>stencil.classList.remove('show');
+stencil.addEventListener('click',e=>{if(e.target===stencil)stencil.classList.remove('show');});
+$('stSvg').onclick=()=>{
+  if(!sheetOpen())return;const dz=inkList.find(d=>d.kind===inkKind);track('ink-svg');
+  saveBlob(new Blob([inkSVG(dz)],{type:'image/svg+xml'}),fileName(dz)+'.svg');
+  toast(T('Saved — take it to your tattoo artist.','Salvo — leve ao seu tatuador.'));
+};
+$('stPng').onclick=async()=>{
+  if(!sheetOpen())return;const dz=inkList.find(d=>d.kind===inkKind);track('ink-png');
+  if(await shareOrSave(await inkPNG(dz),fileName(dz)+'.png',dz.title))toast(T('Saved — take it to your tattoo artist.','Salvo — leve ao seu tatuador.'));
+};
+async function downloadFlash(){
+  if(!sheetOpen())return openUnlock();
+  track('flash');
+  toast(T('Inking your sheet…','Passando a tinta na sua folha…'),0);
+  await new Promise(r=>setTimeout(r,60));
+  const c=await renderFlash(3508,false),blob=await new Promise(r=>c.toBlob(r,'image/png'));c.width=c.height=0;
+  $('toast').classList.remove('show');
+  if(await shareOrSave(blob,`starot-flash-${ymd(chartInput)}.png`,T('My tattoo flash','A minha folha de flash')))
+    toast(T('Your flash sheet is saved — A3 at 300 dpi.','A sua folha de flash foi salva — A3 a 300 dpi.'));
+}
+let zipLib=null;
+function loadZip(){
+  if(window.JSZip)return Promise.resolve(window.JSZip);
+  return zipLib||(zipLib=new Promise((res,rej)=>{const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';s.onload=()=>res(window.JSZip);s.onerror=()=>{zipLib=null;rej();};document.head.appendChild(s);}));
+}
+async function downloadZip(){
+  if(!sheetOpen())return openUnlock();
+  track('zip');
+  toast(T('Packing your files…','Juntando os seus arquivos…'),0);
+  try{
+    const JSZip=await loadZip(),z=new JSZip(),d=ymd(chartInput);
+    const c=await renderFlash(3508,false);z.file(`starot-flash-${d}.png`,await new Promise(r=>c.toBlob(r,'image/png')));c.width=c.height=0;
+    for(const dz of inkList){z.file(fileName(dz)+'.svg',inkSVG(dz));z.file(fileName(dz)+'.png',await inkPNG(dz));}
+    z.file(T('READ-ME.txt','LEIA-ME.txt'),T(
+      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel from 10 cm across; the Sun, Rising and numbers designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
+      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal a partir de 10 cm; os desenhos do Sol, Ascendente e números a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
+    const blob=await z.generateAsync({type:'blob'});
+    $('toast').classList.remove('show');
+    saveBlob(blob,`starot-tattoos-${d}.zip`);
+    toast(T('Saved — everything your tattoo artist needs.','Salvo — tudo o que o seu tatuador precisa.'));
+  }catch(e){
+    toast(T('The files could not be packed. Try the flash sheet, or each design on its own.','Não foi possível juntar os arquivos. Tente a folha, ou cada desenho sozinho.'),9000);
+  }
+}
+document.addEventListener('click',e=>{
+  const t=e.target;
+  const ink=t.closest('[data-ink]');if(ink)openInkModal(ink.dataset.ink);
+  if(t.closest('[data-goink]'))goInk();
+  if(t.closest('[data-flash]'))downloadFlash();
+  if(t.closest('[data-zip]'))downloadZip();
+});
+
 /* ═══ THE UNLOCK — Stripe Checkout through the payment worker ═══ */
 const unlockEl=$('unlock');
 function openUnlock(){
-  if(!PAYWALL||!chartInput)return;
-  $('unlockFor').textContent=`${T('For the sky of','Para o céu de')} ${bornLine()} · ${chartMeta.place.full}`;
+  if(!PAYWALL||!chartInput||!inkNums)return;
+  $('unlockFor').textContent=`${T('For','Para')} ${bornLine()} · ${chartMeta.place.full}`;
+  $('getRising').hidden=!chart.houses;
   $('unlockNote').textContent='';
+  stencil.classList.remove('show');
   unlockEl.classList.add('show');
   track('unlock-open');
 }
@@ -2273,27 +2564,42 @@ $('unlockClose').onclick=()=>unlockEl.classList.remove('show');
 unlockEl.addEventListener('click',e=>{if(e.target===unlockEl)unlockEl.classList.remove('show');});
 $('unlockGo').onclick=async()=>{
   const btn=$('unlockGo'),note=$('unlockNote');
-  btn.disabled=true;btn.innerHTML=T('Opening the vault…','Abrindo o cofre…');note.textContent='';
+  btn.disabled=true;btn.innerHTML=T('Opening checkout…','Abrindo o pagamento…');note.textContent='';
   track('checkout-start');
-  store.set('pending',chartInput);
+  store.set('pending',{input:chartInput,nums:inkNums});
   try{
-    const r=await fetch(PAY_API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:chartInput,lang:LANG})});
+    /* the four numbers travel, the name never does */
+    const r=await fetch(PAY_API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:chartInput,nums:inkNums,lang:LANG})});
     const j=await r.json().catch(()=>({}));
     /* only ever hand the visitor to Stripe's own checkout page */
     const safe=j.url&&(/^https:\/\/checkout\.stripe\.com\//.test(j.url)||(IS_LOCAL&&/^http:\/\/localhost[:/]/.test(j.url)));
     if(!r.ok||!safe)throw new Error(j.error||'checkout unavailable');
     location.href=j.url;
   }catch(e){
-    note.textContent=T('The vault would not open — please try again in a moment.','O cofre não abriu — tente de novo daqui a pouco.');
-    btn.disabled=false;btn.innerHTML=T('✦ &nbsp;Break the seal','✦ &nbsp;Quebrar o selo');
+    note.textContent=T('Checkout would not open — please try again in a moment.','O pagamento não abriu — tente de novo daqui a pouco.');
+    btn.disabled=false;btn.innerHTML=T('✒ &nbsp;Get my tattoo flash','✒ &nbsp;Quero a minha folha');
   }
 };
-$('ledgerPrice').textContent=$('unlockPrice').textContent=CONFIG.price;
-if(PAYWALL){
-  $('astroLedger').hidden=false;
-  $('astroTag').textContent=T(`Free preview · poster & map ${CONFIG.price}`,`Prévia grátis · pôster e mapa ${CONFIG.price}`);
-  $('astroTag').classList.add('paid');
-}
+$('unlockPrice').textContent=CONFIG.price;
+$('inkTag').textContent=PAYWALL?T(`${CONFIG.price} · tattoo flash`,`${CONFIG.price} · folha de flash`):T('Free preview','Prévia grátis');
+if(PAYWALL)$('inkTag').classList.add('paid');
+
+/* ═══ ON SKIN — photos of the designs, worn (CONFIG.gallery) ═══ */
+(function gallery(){
+  const items=CONFIG.gallery||[];
+  document.querySelectorAll('.gallery').forEach(g=>{
+    g.hidden=!items.length;if(!items.length)return;
+    const concept=items.some(it=>it.concept);
+    g.innerHTML=`<span class="label">${T('On skin','Na pele')}</span>`+
+      (concept?`<span class="privacy" style="margin-top:-6px">${T('Concept renders, made with AI — your designs, imagined on skin.','Imagens conceituais, feitas com IA — os seus desenhos, imaginados na pele.')}</span>`:'')+
+      `<div class="g-row">`+items.map(it=>{
+      const cap=(PT?it.captionPt:it.caption)||'';
+      return it.video
+        ?`<figure><video src="${it.video}" ${it.poster?`poster="${it.poster}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
+        :`<figure><img src="${it.src}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
+    }).join('')+`</div>`;
+  });
+})();
 
 /* ═══ SAVING FILES — phones get the share sheet, computers a download ═══ */
 function saveBlob(blob,name){
@@ -2309,9 +2615,9 @@ async function shareOrSave(blob,name,title){
 }
 const ymd=inp=>`${inp.y}-${String(inp.m).padStart(2,'0')}-${String(inp.d).padStart(2,'0')}`;
 
-/* ═══ THE STAR POSTER — the wheel drawn at print size, then scattered as stars ═══ */
+/* ═══ THE STAR POSTER — free: the wheel drawn at print size, then scattered as stars ═══ */
 async function downloadPoster(){
-  if(!chart||!isOpen())return;
+  if(!chart)return;
   track('poster');
   toast(T('Gathering the stars for your poster…','Juntando as estrelas para o seu pôster…'),0);
   await new Promise(r=>setTimeout(r,60));
@@ -2363,121 +2669,45 @@ async function renderPoster(){
   return c;
 }
 
-/* ═══ TATTOO-READY LINE ART — the same drawings, as clean black strokes ═══ */
-/* Sun, Moon and Rising in a row: the "Big Three", a classic small tattoo */
-function drawBigThree(ctx,W,H,ch){
-  const items=[[ch.bodies[0].sign,'sun'],[ch.bodies[1].sign,'moon']];
-  if(ch.houses)items.push([signOf(ch.houses.asc),'asc']);
-  const xs=items.length===3?[W/6,W/2,W*5/6]:[W*.32,W*.68];
-  ctx.lineCap='round';ctx.lineJoin='round';
-  items.forEach(([sign,kind],i)=>{
-    const x=xs[i];
-    glyphSign(ctx,sign,x,H*.56,H*.25,H*.034);
-    if(kind==='sun')glyphPlanet(ctx,0,x,H*.13,H*.075,H*.02);
-    else if(kind==='moon')glyphPlanet(ctx,1,x,H*.13,H*.075,H*.02);
-    else{ /* the horizon, with the rising arrow */
-      ctx.lineWidth=H*.02;ctx.beginPath();ctx.moveTo(x-H*.09,H*.2);ctx.lineTo(x+H*.09,H*.2);ctx.stroke();
-      ctx.beginPath();ctx.moveTo(x,H*.2);ctx.lineTo(x,H*.05);ctx.moveTo(x-H*.04,H*.09);ctx.lineTo(x,H*.05);ctx.lineTo(x+H*.04,H*.09);ctx.stroke();
-    }
-  });
-  ctx.lineWidth=H*.012;ctx.beginPath();ctx.moveTo(xs[0]-H*.28,H*.94);ctx.lineTo(xs[xs.length-1]+H*.28,H*.94);ctx.stroke();
-  for(const x of xs){ctx.beginPath();ctx.arc(x,H*.94,H*.022,0,7);ctx.fill();}
-}
-let inkKind='wheel';
-function inkDesign(kind){
-  if(kind==='num'){
-    const p=NUM_POS[view<0?0:view],n=numbers[p.key];
-    return {w:1,h:1,draw:(c,W)=>drawNumberSigil(c,W,n),
-      title:`${n} · ${NUMBERS[n].title}`,file:`starot-seal-${n}-${p.key}`,small:true};
-  }
-  if(kind==='three')return {w:3,h:1,draw:(c,W,H)=>drawBigThree(c,W,H,chart),
-    title:T('Your Big Three','O seu trio: Sol, Lua e Ascendente'),file:`starot-big-three-${ymd(chartInput)}`,small:true};
-  return {w:1,h:1,draw:(c,W)=>drawWheel(c,W,chart,.6),title:T('Your natal wheel','A sua roda natal'),file:`starot-wheel-${ymd(chartInput)}`};
-}
-/* margin of 5% so no stroke touches the edge of the stencil */
-function inkPaint(ctx,dz,W,H){
-  const m=Math.round(Math.min(W,H)*.05);
-  ctx.strokeStyle=ctx.fillStyle='#111';
-  ctx.save();ctx.translate(m,m);dz.draw(ctx,W-2*m,H-2*m);ctx.restore();
-}
-function inkSVG(dz,base=1000){
-  const W=base,H=Math.round(base*dz.h/dz.w),c=new SvgCtx(W,H);
-  inkPaint(c,dz,W,H);
-  return c.svg(`STAROT · ${dz.title}`);
-}
-function inkPNG(dz,base=4000){
-  const W=base,H=Math.round(base*dz.h/dz.w),cv=document.createElement('canvas');cv.width=W;cv.height=H;
-  inkPaint(cv.getContext('2d'),dz,W,H);
-  return new Promise(r=>cv.toBlob(b=>{cv.width=cv.height=0;r(b);},'image/png'));
-}
-const stencil=$('stencil');
-function openInk(kind){
-  if(kind!=='num'&&!(chart&&isOpen()))return;
-  if(kind==='num'&&!numbers)return;
-  inkKind=kind;
-  const dz=inkDesign(kind);
-  $('stTitle').textContent=dz.title;
-  $('stPaper').innerHTML=inkSVG(dz);
-  $('stPaper').classList.toggle('wide',dz.w>dz.h);
-  $('stNote').textContent=dz.small
-    ?T('Show this to your tattoo artist. A design like this holds its shape from about 4 cm across.','Mostre ao seu tatuador. Um desenho assim mantém a forma a partir de uns 4 cm de largura.')
-    :T('Show this to your tattoo artist. Tattoo lines spread a little over the years, so give the full wheel at least 10 cm across.','Mostre ao seu tatuador. As linhas de tatuagem se espalham um pouco com os anos, então dê à roda completa pelo menos 10 cm de largura.');
-  stencil.classList.add('show');
-  track('ink-'+kind);
-}
-$('stClose').onclick=()=>stencil.classList.remove('show');
-stencil.addEventListener('click',e=>{if(e.target===stencil)stencil.classList.remove('show');});
-$('stSvg').onclick=()=>{
-  const dz=inkDesign(inkKind);track('ink-svg');
-  saveBlob(new Blob([inkSVG(dz)],{type:'image/svg+xml'}),dz.file+'.svg');
-  toast(T('Saved — take it to your tattoo artist.','Salvo — leve ao seu tatuador.'));
-};
-$('stPng').onclick=async()=>{
-  const dz=inkDesign(inkKind);track('ink-png');
-  const blob=await inkPNG(dz);
-  if(await shareOrSave(blob,dz.file+'.png',dz.title))toast(T('Saved — take it to your tattoo artist.','Salvo — leve ao seu tatuador.'));
-};
-document.addEventListener('click',e=>{const b=e.target.closest('[data-ink]');if(b)openInk(b.dataset.ink);});
-
-/* ═══ RETURNING FROM CHECKOUT — ?map=<session> is the map's own link ═══ */
+/* ═══ RETURNING FROM CHECKOUT — ?sheet=<session> is the sheet's own link ═══ */
 (async function arrive(){
   const q=new URLSearchParams(location.search);
   if(q.has('canceled')){
     history.replaceState(null,'',location.pathname+qs());
     const p=store.get('pending',null);
-    if(p){try{castChart(p);toast(T('No payment was taken. The seal will wait whenever you are ready.','Nenhum pagamento foi feito. O selo vai esperar até você estar pronto.'));}catch(e){}}
+    if(p&&p.input&&p.nums){try{castInk(p.input,p.nums);toast(T('No payment was taken. Your designs will wait whenever you are ready.','Nenhum pagamento foi feito. Os seus desenhos vão esperar até você estar pronto.'));}catch(e){}}
     return;
   }
-  const sid=q.get('map');
+  const sid=q.get('sheet');
   if(!sid)return;
-  const local=store.get('maps',[]).find(m=>m.sid===sid);
-  if(local){try{castChart(local.input);}catch(e){}return;}
+  const local=store.get('sheets',[]).find(x=>x.sid===sid);
+  if(local){try{castInk(local.input,local.nums);}catch(e){}return;}
   if(!PAYWALL){history.replaceState(null,'',location.pathname+qs());return;}
-  toast(T('Opening your map…','Abrindo o seu mapa…'),0);
+  toast(T('Opening your tattoo flash…','Abrindo a sua folha de flash…'),0);
   /* some methods (wallets, Pix) confirm a few seconds after the redirect: keep asking for ~40s */
   let j={},r;
   for(let tries=0;tries<9;tries++){
-    try{r=await fetch(`${PAY_API}/map?id=${encodeURIComponent(sid)}`);j=await r.json().catch(()=>({}));}catch(e){j={error:'network'};}
+    try{r=await fetch(`${PAY_API}/sheet?id=${encodeURIComponent(sid)}`);j=await r.json().catch(()=>({}));}catch(e){j={error:'network'};}
     if(r&&r.ok&&j.ok&&j.input)break;
     if(j.error!=='unpaid'||tries===8)break;
-    if(tries===1)toast(T('Your payment is confirming — the map opens in a moment…','O seu pagamento está sendo confirmado — o mapa abre em instantes…'),0);
+    if(tries===1)toast(T('Your payment is confirming — your designs open in a moment…','O seu pagamento está sendo confirmado — os seus desenhos abrem em instantes…'),0);
     await new Promise(res=>setTimeout(res,5000));
   }
-  if(!(j.ok&&j.input)){
+  if(!(j.ok&&j.input&&j.nums)){
     history.replaceState(null,'',location.pathname+qs());
     toast(j.error==='unpaid'
       ?T('Your payment is still settling — open this link again in a few minutes.','O seu pagamento ainda está sendo processado — abra este link de novo daqui a alguns minutos.')
-      :T('That map could not be opened. If you paid, write to us from the Terms page and we will reopen it.','Não foi possível abrir esse mapa. Se você pagou, escreva para nós pela página de Termos e vamos reabri-lo.'),12000);
+      :T('That sheet could not be opened. If you paid, write to us from the Terms page and we will reopen it.','Não foi possível abrir essa folha. Se você pagou, escreva para nós pela página de Termos e vamos reabri-la.'),12000);
     return;
   }
-  const inp=j.input,id=chartKey(inp),maps=store.get('maps',[]);
-  if(!maps.some(m=>m.id===id)){maps.unshift({id,sid,input:inp,at:Date.now()});store.set('maps',maps);}
-  const pending=store.get('pending',null),justPaid=pending&&chartKey(pending)===id;
+  const inp=j.input,nums=j.nums,id=sheetKey(inp,nums),list=store.get('sheets',[]);
+  if(!list.some(x=>x.id===id)){list.unshift({id,sid,input:inp,nums,at:Date.now()});store.set('sheets',list);}
+  const p=store.get('pending',null),justPaid=p&&p.input&&p.nums&&sheetKey(p.input,p.nums)===id;
   if(justPaid){store.set('pending',null);track('paid');}
-  castChart(inp);
-  toast(justPaid?T('<b>The seal is broken.</b> This page’s address is now your map — bookmark it to open it on any device. Your poster is under “Star poster”.',
-                   '<b>O selo foi quebrado.</b> O endereço desta página agora é o seu mapa — salve nos favoritos para abri-lo em qualquer aparelho. O seu pôster está em “Pôster”.')
-                :T('Your map, as the stars left it.','O seu mapa, como as estrelas o deixaram.'),justPaid?12000:5000);
+  castInk(inp,nums);
+  toast(justPaid?T('<b>Your tattoo flash is yours.</b> This page’s address reopens it on any device — bookmark it.',
+                   '<b>A sua folha de flash é sua.</b> O endereço desta página reabre a folha em qualquer aparelho — salve nos favoritos.')
+                :T('Your tattoo flash, as you left it.','A sua folha de flash, como você a deixou.'),justPaid?12000:5000);
 })();
 </script>
 </body>
