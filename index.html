@@ -276,12 +276,12 @@
   #offerBtn.unlock:hover{color:#000;box-shadow:0 0 44px -4px rgba(243,227,187,.75)}
   @keyframes gild{0%,100%{background-position:0 0}50%{background-position:100% 0}}
   #offerBtn .sm{display:none}
-  #offer,#unlock,#stencil{
+  #offer,#unlock,#stencil,#examples{
     position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
     background:rgba(3,4,6,.72);backdrop-filter:blur(7px);
     opacity:0;visibility:hidden;transition:all .5s;
   }
-  #offer.show,#unlock.show,#stencil.show{opacity:1;visibility:visible}
+  #offer.show,#unlock.show,#stencil.show,#examples.show{opacity:1;visibility:visible}
   .offer-box{
     position:relative;width:min(400px,86vw);text-align:center;
     border:1px solid var(--hair);border-radius:14px;padding:44px 36px 38px;
@@ -290,7 +290,7 @@
     display:flex;flex-direction:column;align-items:center;gap:18px;
     transform:translateY(14px);transition:transform .5s cubic-bezier(.2,.7,.2,1);
   }
-  #offer.show .offer-box,#unlock.show .offer-box,#stencil.show .offer-box{transform:none}
+  #offer.show .offer-box,#unlock.show .offer-box,#stencil.show .offer-box,#examples.show .offer-box{transform:none}
   .offer-box h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin-top:-6px}
   .offer-box p{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
     font-size:16.5px;line-height:1.6;color:var(--mist)}
@@ -380,6 +380,17 @@
   .ink p{font-size:15px;line-height:1.5;color:#cfc8b4}
   .ink-row{display:flex;gap:10px;flex-wrap:wrap}
   .ink-row .deal-btn{margin:0;padding:12px 18px 10px;font-size:9.5px;letter-spacing:.26em}
+  .ex-box{width:min(1000px,95vw)!important;max-height:94vh;overflow-y:auto;gap:16px!important;padding:38px 30px 28px!important}
+  .ex-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:18px;width:100%;align-items:start;text-align:left}
+  .ex-grid.solo{grid-template-columns:minmax(0,520px);justify-content:center}
+  .ex-sheet,.ex-photos figure{margin:0;display:flex;flex-direction:column;gap:7px}
+  .ex-sheet img{width:100%;border-radius:8px;box-shadow:0 18px 40px -18px rgba(0,0,0,.85)}
+  .ex-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .ex-photos figure.wide{grid-column:span 2}
+  .ex-photos img,.ex-photos video{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:1px solid var(--hair);background:#0b0d12}
+  .ex-photos figure.wide img,.ex-photos figure.wide video{aspect-ratio:16/10}
+  .ex-box figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);line-height:1.6}
+  .ex-note{grid-column:span 2;font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(139,136,120,.75)}
   .ink-door{border-color:rgba(216,184,119,.42);background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.08),rgba(5,6,9,.45) 70%)}
   .showcase{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;width:min(620px,92vw)}
   .showcase figure{border:1px solid var(--hair);border-radius:12px;background:rgba(5,6,9,.5);padding:12px 14px 10px;display:flex;flex-direction:column;gap:8px;justify-content:center}
@@ -449,6 +460,8 @@
     .ledger b{font-size:19px}
     .door .tag{margin-top:6px;align-self:flex-start}
     .showcase{grid-template-columns:1fr 1fr}
+    .ex-grid{grid-template-columns:1fr}
+    .ex-box{padding:32px 18px 22px!important}
     .showcase figure.big{grid-row:auto;grid-column:span 2;max-width:260px;justify-self:center;width:100%}
     #unlock .offer-box{padding:34px 22px 24px;max-height:92vh;overflow-y:auto}
     .price b{font-size:52px}
@@ -506,6 +519,7 @@
         <span class="label" data-t="door.ink.l">The ink</span>
       </button>
     </div>
+    <button class="linkish" data-examples style="margin-top:-8px" data-t="ex.open">✒ &nbsp;See the tattoos on skin</button>
     <div class="gallery" hidden></div>
     <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span></footer>
   </div>
@@ -545,6 +559,7 @@
     <p class="ink-only" data-t="ink.p" hidden>Five tattoo designs drawn from your own chart and your own numbers. Preview them free;
        the print-ready flash sheet and the files for your tattoo artist are the one thing here that costs money.</p>
     <div class="showcase ink-only" id="showcase" hidden></div>
+    <button class="linkish ink-only" data-examples hidden data-t="ex.open2">✒ &nbsp;See an example sheet and the tattoos on skin</button>
     <div class="saved" id="savedMaps" hidden></div>
     <form class="form" id="astroForm" autocomplete="off" novalidate>
       <div class="frow ink-only" hidden>
@@ -665,6 +680,20 @@
   </div>
 </div>
 
+<div id="examples" role="dialog" aria-modal="true" aria-labelledby="exTitle">
+  <div class="offer-box ex-box">
+    <button class="offer-close" id="exClose" aria-label="Close">✕</button>
+    <span class="label" data-t="ex.label">The tattoo flash</span>
+    <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
+    <div class="ex-grid" id="exGrid">
+      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg" alt="An example STAROT tattoo flash sheet with five designs" data-ta="ex.alt" loading="lazy">
+        <figcaption data-t="ex.sheet">An example flash sheet: five designs from one birth chart and one name, ready to print.</figcaption></figure>
+      <div class="ex-photos" id="exPhotos"></div>
+    </div>
+    <button class="deal-btn gold" id="exGo" data-t="ex.go">✒ &nbsp;Draw mine</button>
+  </div>
+</div>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -771,6 +800,9 @@ const UI_PT={
   'unlockGo':'✒ &nbsp;Quero a minha folha','st.buy':'✒ &nbsp;Quero a minha folha',
   'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento e os seus quatro números vão junto com o pagamento, para que o seu link possa reabrir a folha — o seu nome nunca vai · <a href="termos.html" target="_blank">Termos</a>',
   'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
+  'ex.label':'A folha de flash','ex.h':'As suas leituras, na pele',
+  'ex.sheet':'Um exemplo de folha de flash: cinco desenhos de um mapa e um nome, prontos para imprimir.',
+  'ex.go':'✒ &nbsp;Desenhar a minha','ex.open':'✒ &nbsp;Ver as tatuagens na pele','ex.open2':'✒ &nbsp;Ver um exemplo de folha e as tatuagens na pele','ex.alt':'Um exemplo de folha de flash STAROT com cinco desenhos',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
 };
 
@@ -1423,6 +1455,7 @@ if(PT){
   if(md)md.content='Tarô, mapa astral e numerologia desenhados em poeira de estrelas. Tire três arcanos, descubra os números do seu nome ou veja o céu como estava quando você nasceu.';
   document.querySelectorAll('[data-t]').forEach(el=>{const v=UI_PT[el.dataset.t];if(v!=null)el.innerHTML=v;});
   document.querySelectorAll('[data-tp]').forEach(el=>{const v=UI_PT[el.dataset.tp];if(v!=null)el.placeholder=v;});
+  document.querySelectorAll('[data-ta]').forEach(el=>{const v=UI_PT[el.dataset.ta];if(v!=null)el.alt=v;});
 }
 /* the other language, one tap away; a map link keeps its map */
 document.querySelectorAll('.lang').forEach(b=>{
@@ -1525,7 +1558,7 @@ function beginReading(){
   setLens(false);
   reading=true;
   $('redeal').innerHTML=REDEAL[mode];
-  $('unlock').classList.remove('show');$('offer').classList.remove('show');$('stencil').classList.remove('show');
+  $('unlock').classList.remove('show');$('offer').classList.remove('show');$('stencil').classList.remove('show');$('examples').classList.remove('show');
   document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',n.dataset.go===mode));
 }
 document.querySelectorAll('[data-go]').forEach(el=>{
@@ -2295,6 +2328,10 @@ function drawSkyRow(ctx,W,H,sunSign,ascSign){
 }
 /* the four numbers as their seals — circle, figure and numeral, as drawn in the readings */
 const SEAL_ROW=4.4;   /* width ÷ height of the row */
+function drawSealColumn(ctx,W,H,nums){   /* the same seals stacked, numerals upright */
+  const S=Math.min(W,H/SEAL_ROW),g=(H-nums.length*S)/(nums.length-1),x=(W-S)/2;
+  nums.forEach((n,i)=>{ctx.save();ctx.translate(x,i*(S+g));drawNumberSigil(ctx,S,n,1.8);ctx.restore();});
+}
 function drawSealRow(ctx,W,H,nums){
   const S=Math.min(H,W/SEAL_ROW),g=(W-nums.length*S)/(nums.length-1),y=(H-S)/2;
   nums.forEach((n,i)=>{ctx.save();ctx.translate(i*(S+g),y);drawNumberSigil(ctx,S,n,1.8);ctx.restore();});
@@ -2400,12 +2437,14 @@ function openInkReading(){
 function inkBuy(own){
   if(own)return `<div class="ink"><span class="k">${T('Yours to wear','Seus para usar')}</span>
     <div class="ink-row"><button class="deal-btn" data-flash>↓ &nbsp;${T('Flash sheet','Folha de flash')}</button><button class="deal-btn" data-zip>↓ &nbsp;${T('All files · ZIP','Todos os arquivos · ZIP')}</button></div>
-    <span class="fine">${T('Tap a design to see it on paper and save it on its own.','Toque num desenho para vê-lo no papel e salvá-lo sozinho.')}</span></div>`;
+    <span class="fine">${T('Tap a design to see it on paper and save it on its own.','Toque num desenho para vê-lo no papel e salvá-lo sozinho.')}</span>
+    <button class="linkish" data-examples style="margin-top:2px">${T('See them on skin','Ver na pele')}</button></div>`;
   return `<div class="seal"><span class="k">${T('Your tattoo flash','A sua folha de flash')}</span>
     <p>${T(`All ${inkList.length} designs on one print-ready sheet, plus each one as vector SVG and 4000 px PNG for your tattoo artist.`,
            `Os ${inkList.length} desenhos numa folha pronta para imprimir, e cada um em SVG vetorial e PNG de 4000 px para o seu tatuador.`)}</p>
     <button class="deal-btn gold" data-unlock>✒ &nbsp;${T('Get my tattoo flash','Quero a minha folha')} · ${CONFIG.price}</button>
-    <span class="fine">${T('One payment · yours for good','Um pagamento · seus para sempre')}</span></div>`;
+    <span class="fine">${T('One payment · yours for good','Um pagamento · seus para sempre')}</span>
+    <button class="linkish" data-examples style="margin-top:2px">${T('See them on skin','Ver na pele')}</button></div>`;
 }
 const centredWide=dz=>(ctx,S)=>{const h=S*dz.h/dz.w;ctx.save();ctx.translate(0,(S-h)/2);dz.draw(ctx,S,h);ctx.restore();};
 function showInk(k){
@@ -2537,9 +2576,11 @@ async function downloadZip(){
     const JSZip=await loadZip(),z=new JSZip(),d=ymd(chartInput);
     const c=await renderFlash(3508,false);z.file(`starot-flash-${d}.png`,await new Promise(r=>c.toBlob(r,'image/png')));c.width=c.height=0;
     for(const dz of inkList){z.file(fileName(dz)+'.svg',inkSVG(dz));z.file(fileName(dz)+'.png',await inkPNG(dz));}
+    const sl=inkList.find(d=>d.kind==='seals'),col={w:1,h:SEAL_ROW,title:sl.title,draw:(c,W,h)=>drawSealColumn(c,W,h,inkNums)};
+    z.file(fileName(sl)+'-vertical.svg',inkSVG(col));z.file(fileName(sl)+'-vertical.png',await inkPNG(col,1400));
     z.file(T('READ-ME.txt','LEIA-ME.txt'),T(
-      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel from 10 cm across; the Sun, Rising and numbers designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
-      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal a partir de 10 cm; os desenhos do Sol, Ascendente e números a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
+      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nThe numbers also come as a vertical line (…-vertical), for the side of the body or the spine.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel from 10 cm across; the Sun, Rising and numbers designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
+      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs números também vêm numa linha vertical (…-vertical), para a lateral do corpo ou a coluna.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal a partir de 10 cm; os desenhos do Sol, Ascendente e números a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
     const blob=await z.generateAsync({type:'blob'});
     $('toast').classList.remove('show');
     saveBlob(blob,`starot-tattoos-${d}.zip`);
@@ -2591,6 +2632,31 @@ $('unlockGo').onclick=async()=>{
 $('unlockPrice').textContent=CONFIG.price;
 $('inkTag').textContent=PAYWALL?T(`${CONFIG.price} · tattoo flash`,`${CONFIG.price} · folha de flash`):T('Free preview','Prévia grátis');
 if(PAYWALL)$('inkTag').classList.add('paid');
+
+/* ═══ THE EXAMPLES POPUP — the flash sheet and the designs worn ═══ */
+const exEl=$('examples');
+function figHTML(it){
+  const cap=(PT?it.captionPt:it.caption)||'',alt=(PT?it.altPt:it.alt)||cap;
+  return `<figure class="${it.wide?'wide':''}">`+(it.video
+    ?`<video src="${it.video}" ${it.poster?`poster="${it.poster}"`:''} muted loop playsinline autoplay preload="metadata"></video>`
+    :`<img src="${it.src}" alt="${alt}" loading="lazy">`)+(cap?`<figcaption>${cap}</figcaption>`:'')+`</figure>`;
+}
+function openExamples(){
+  const items=CONFIG.gallery||[];
+  $('exGrid').classList.toggle('solo',!items.length);
+  $('exPhotos').hidden=!items.length;
+  $('exPhotos').innerHTML=items.map(figHTML).join('')+(items.some(it=>it.concept)
+    ?`<span class="ex-note">${T('Concept renders, made with AI — the designs, imagined on skin.','Imagens conceituais, feitas com IA — os desenhos, imaginados na pele.')}</span>`:'');
+  $('exGo').innerHTML=(reading&&mode==='ink')?T('Back to my designs','Voltar aos meus desenhos'):T('✒ &nbsp;Draw mine','✒ &nbsp;Desenhar a minha');
+  $('unlock').classList.remove('show');stencil.classList.remove('show');
+  exEl.classList.add('show');
+  track('examples');
+}
+$('exClose').onclick=()=>exEl.classList.remove('show');
+exEl.addEventListener('click',e=>{if(e.target===exEl)exEl.classList.remove('show');});
+$('exGo').onclick=()=>{exEl.classList.remove('show');if(!(reading&&mode==='ink'))document.querySelector('.door[data-go=ink]').click();};
+document.addEventListener('click',e=>{if(e.target.closest('[data-examples]'))openExamples();});
+addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show');});
 
 /* ═══ ON SKIN — photos of the designs, worn (CONFIG.gallery) ═══ */
 (function gallery(){

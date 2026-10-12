@@ -22,7 +22,22 @@ the flash sheet being slid across the desk.
 The designs are black line art on a transparent background, for uploading as the
 reference image.
 
-## Prompts
+## Generating them with the API
+
+`tools/higgsfield/` uses the official Higgsfield SDK. Put `HF_CREDENTIALS=key-id:key-secret`
+in `tools/higgsfield/.env.local` (git-ignored), then:
+
+```bash
+cd tools/higgsfield && npm install
+npm run tattoos                  # the seven studio shots, one variant each
+npm run tattoos -- hands-pair    # just one shot
+```
+
+It sends each shot to Grok Image 2.0 with our own design file as the reference image, and
+saves the results in `media/gallery/raw/` (git-ignored) for review. `npm run example` is the
+Seedance 2.5 setup check. Every generation is billed to your Higgsfield credits.
+
+## Prompts (for the Higgsfield website)
 
 Upload the design as the reference image, then use one of these prompts and adjust
 the placement and size.

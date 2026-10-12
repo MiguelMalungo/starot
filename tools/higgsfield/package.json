@@ -1,0 +1,18 @@
+{
+  "name": "starot-higgsfield",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "example": "tsx index.ts",
+    "tattoos": "tsx tattoos.ts"
+  },
+  "dependencies": {
+    "@higgsfield/client": "^0.2.6",
+    "dotenv": "^18.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}
