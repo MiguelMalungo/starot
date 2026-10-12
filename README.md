@@ -43,8 +43,18 @@ Life Path exhibit). Each number has its own geometric seal drawn in stars.
 
 Tarot and numerology are free, with an optional offering (a pay-what-you-want link).
 The astral map is a free preview — the wheel in stars and the Sun reading — and
-**€7 buys a 2400 × 3000 star poster of that sky plus the full map**: Moon, Rising and
-Midheaven, all ten planets read in their houses, houses, aspects and element balance.
+**€7 buys a 3600 × 4500 star poster of that sky, tattoo-ready line art, and the full map**:
+Moon, Rising and Midheaven, all ten planets read in their houses, houses, aspects and
+element balance.
+
+## Tattoo-ready line art
+
+Every design is drawn once with the canvas 2D API; a small recorder (`SvgCtx`) replays
+the same calls as SVG paths, so the stars, the poster and the line art all come from one
+drawing. The astral map exports the natal wheel and the Big Three (Sun, Moon, Rising)
+as vector SVG and 4000 px transparent PNG; every numerology seal exports the same way,
+for free. Text inside designs uses hand-drawn single-stroke characters, so nothing
+depends on a font.
 
 ## Languages
 

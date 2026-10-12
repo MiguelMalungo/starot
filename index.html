@@ -276,12 +276,12 @@
   #offerBtn.unlock:hover{color:#000;box-shadow:0 0 44px -4px rgba(243,227,187,.75)}
   @keyframes gild{0%,100%{background-position:0 0}50%{background-position:100% 0}}
   #offerBtn .sm{display:none}
-  #offer,#unlock{
+  #offer,#unlock,#stencil{
     position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
     background:rgba(3,4,6,.72);backdrop-filter:blur(7px);
     opacity:0;visibility:hidden;transition:all .5s;
   }
-  #offer.show,#unlock.show{opacity:1;visibility:visible}
+  #offer.show,#unlock.show,#stencil.show{opacity:1;visibility:visible}
   .offer-box{
     position:relative;width:min(400px,86vw);text-align:center;
     border:1px solid var(--hair);border-radius:14px;padding:44px 36px 38px;
@@ -290,7 +290,7 @@
     display:flex;flex-direction:column;align-items:center;gap:18px;
     transform:translateY(14px);transition:transform .5s cubic-bezier(.2,.7,.2,1);
   }
-  #offer.show .offer-box,#unlock.show .offer-box{transform:none}
+  #offer.show .offer-box,#unlock.show .offer-box,#stencil.show .offer-box{transform:none}
   .offer-box h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:34px;margin-top:-6px}
   .offer-box p{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
     font-size:16.5px;line-height:1.6;color:var(--mist)}
@@ -367,6 +367,19 @@
   .trust a{color:var(--gold-dim)}
   #unlockNote{color:#c9917c;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;min-height:0}
 
+  #stencil .offer-box{width:min(520px,94vw);gap:14px;padding:38px 30px 26px;max-height:94vh;overflow-y:auto}
+  .paper{width:100%;aspect-ratio:1;background:#f7f5f0;border-radius:10px;padding:6%;display:flex;align-items:center;justify-content:center;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 18px 40px -18px rgba(0,0,0,.8)}
+  .paper.wide{aspect-ratio:2.2}
+  .paper svg{width:100%;height:100%;display:block}
+  .st-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--mist);max-width:44ch}
+  .st-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .st-btns .deal-btn{margin:0;padding:14px 22px 12px;font-size:10px}
+  .ink{margin-top:16px;padding:18px 20px 16px;border:1px solid var(--hair);border-radius:12px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .ink .k{font-family:'Jost';font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .ink p{font-size:15px;line-height:1.5;color:#cfc8b4}
+  .ink-row{display:flex;gap:10px;flex-wrap:wrap}
+  .ink-row .deal-btn{margin:0;padding:12px 18px 10px;font-size:9.5px;letter-spacing:.26em}
   #toast{position:fixed;left:50%;top:22px;transform:translate(-50%,-14px);z-index:60;width:max-content;max-width:min(520px,92vw);
     padding:14px 22px;border:1px solid rgba(216,184,119,.35);border-radius:12px;background:rgba(8,10,15,.94);
     backdrop-filter:blur(8px);font-family:'Cormorant Garamond',serif;font-size:16.5px;line-height:1.5;color:var(--bone);
@@ -454,12 +467,12 @@
       </button>
       <button class="door" data-go="astro">
         <span class="glyph">☉</span>
-        <div><h3 data-t="door.astro.h">Astral map</h3><p data-t="door.astro.p">The sky as it stood when you were born — planets, houses, the rising sign.</p><span class="tag" id="astroTag" data-t="free">Free</span></div>
+        <div><h3 data-t="door.astro.h">Astral map</h3><p data-t="door.astro.p">The sky as it stood when you were born — drawn in stars, and as line art clean enough to tattoo.</p><span class="tag" id="astroTag" data-t="free">Free</span></div>
         <span class="label" data-t="door.astro.l">The wheel</span>
       </button>
       <button class="door" data-go="num">
         <span class="glyph">⁂</span>
-        <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag" data-t="free">Free</span></div>
+        <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — each with a seal you could ink.</p><span class="tag" data-t="free">Free</span></div>
         <span class="label" data-t="door.num.l">The seal</span>
       </button>
     </div>
@@ -498,7 +511,7 @@
        The stars will turn back to that night and draw the wheel.</p>
     <div class="ledger" id="astroLedger" hidden>
       <div class="free"><span><b data-t="free">Free</b></span><span data-t="ledger.free">The wheel in stars · your Sun</span></div>
-      <div><span><b id="ledgerPrice">€7</b></span><span data-t="ledger.paid">A star poster of your sky, ready to print · Moon · Rising · houses · aspects · all ten planets read</span></div>
+      <div><span><b id="ledgerPrice">€7</b></span><span data-t="ledger.paid">A star poster of your sky · tattoo-ready line art · Moon · Rising · houses · aspects · all ten planets read</span></div>
     </div>
     <div class="saved" id="savedMaps" hidden></div>
     <form class="form" id="astroForm" autocomplete="off" novalidate>
@@ -584,7 +597,8 @@
     <h3 id="unlockTitle" data-t="unlock.h">Your sky, to keep</h3>
     <span class="for" id="unlockFor"></span>
     <ul class="gets">
-      <li><i>↓</i><span data-t="get.poster"><b>A star poster</b> of your sky — 2400 × 3000, ready to print or post</span></li>
+      <li><i>↓</i><span data-t="get.poster"><b>A star poster</b> of your sky — 3600 × 4500, ready to print or post</span></li>
+      <li><i>✒</i><span data-t="get.ink"><b>Tattoo-ready line art</b> of your wheel and your Big Three — vector SVG and 4000 px PNG</span></li>
       <li><i>☽</i><span data-t="get.moon"><b>Your Moon</b> — what you need in order to feel safe</span></li>
       <li><i>↑</i><span data-t="get.rising"><b>Rising &amp; Midheaven</b> — how you arrive, and where you are headed</span></li>
       <li><i>✶</i><span data-t="get.planets"><b>All ten planets read</b> in their signs and houses</span></li>
@@ -595,6 +609,21 @@
     <span id="unlockNote"></span>
     <span class="trust" data-t="trust">Secure checkout by Stripe · card · Apple Pay · Google Pay · MB WAY<br>
       Your birth details travel with the payment so your link can reopen the map · <a href="terms.html" target="_blank">Terms</a></span>
+  </div>
+</div>
+
+<div id="stencil" role="dialog" aria-modal="true" aria-labelledby="stTitle">
+  <div class="offer-box">
+    <button class="offer-close" id="stClose" aria-label="Close">✕</button>
+    <span class="label" data-t="st.label">Tattoo-ready</span>
+    <h3 id="stTitle"></h3>
+    <div class="paper" id="stPaper"></div>
+    <p class="st-note" id="stNote"></p>
+    <div class="st-btns">
+      <button class="deal-btn" id="stSvg" data-t="st.svg">↓ &nbsp;SVG · vector</button>
+      <button class="deal-btn" id="stPng" data-t="st.png">↓ &nbsp;PNG · 4000 px</button>
+    </div>
+    <span class="trust" data-t="st.fine">Black line art on a transparent background. Your artist may adjust line weights for your skin and the size you choose.</span>
   </div>
 </div>
 
@@ -654,8 +683,8 @@ const UI_PT={
   'menu.h1':'Escolha o seu<br><em>instrumento.</em>',
   'menu.p':'Três maneiras de perguntar ao escuro. Cada resposta é desenhada em poeira de estrelas — figuras formadas por milhares de estrelas que se espalham ao seu toque, e se lembram.',
   'door.tarot.h':'Leitura de tarô','door.tarot.p':'Três arcanos — passado, presente, futuro — tirados dos vinte e dois.','door.tarot.l':'As cartas',
-  'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — planetas, casas, o ascendente.','door.astro.l':'A roda',
-  'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — o caminho, a voz, a porta.','door.num.l':'O selo',
+  'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — desenhado em estrelas, e em traço limpo o bastante para tatuar.','door.astro.l':'A roda',
+  'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — cada um com um selo que você pode tatuar.','door.num.l':'O selo',
   'free':'Grátis',
   'legal.terms':'Termos e privacidade','legal.share':'Compartilhar o observatório','legal.ent':'Para reflexão e entretenimento',
   'tarot.label':'Uma leitura em poeira de estrelas',
@@ -669,7 +698,7 @@ const UI_PT={
   'astro.h1':'Onde estavam<br><em>os planetas?</em>',
   'astro.p':'Conte ao observatório a sua data, a sua hora e o lugar onde você respirou pela primeira vez. As estrelas vão voltar àquela noite e desenhar a roda.',
   'ledger.free':'A roda em estrelas · o seu Sol',
-  'ledger.paid':'Um pôster em estrelas do seu céu, pronto para imprimir · Lua · Ascendente · casas · aspectos · os dez planetas lidos',
+  'ledger.paid':'Um pôster em estrelas do seu céu · traço pronto para tatuagem · Lua · Ascendente · casas · aspectos · os dez planetas lidos',
   'f.hour':'Hora','f.min':'Minuto','f.notime':'Não sei a hora','f.place':'Cidade natal',
   'f.manual':'Minha cidade não está na lista — informar coordenadas','f.tz':'Fuso horário',
   'ph.city':'Comece a digitar uma cidade…',
@@ -687,7 +716,10 @@ const UI_PT={
   'offer.p':'O observatório funciona com luz das estrelas e pequenas gentilezas. Se as estrelas disseram algo verdadeiro — ou algo útil, mesmo que não seja verdade — você pode deixar uma moeda no escuro. As estrelas reparam.',
   'offer.link':'✦ &nbsp;Fazer uma oferenda','offer.note':'A tigela de oferendas ainda está sendo esculpida — em breve.',
   'unlock.label':'Quebrar o selo','unlock.h':'O seu céu, para guardar',
-  'get.poster':'<b>Um pôster em estrelas</b> do seu céu — 2400 × 3000, pronto para imprimir ou postar',
+  'get.poster':'<b>Um pôster em estrelas</b> do seu céu — 3600 × 4500, pronto para imprimir ou postar',
+  'get.ink':'<b>Traço pronto para tatuagem</b> da sua roda e do seu trio (Sol, Lua e Ascendente) — SVG vetorial e PNG de 4000 px',
+  'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
+  'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
   'get.moon':'<b>A sua Lua</b> — o que você precisa para se sentir em segurança',
   'get.rising':'<b>Ascendente e Meio do Céu</b> — como você chega, e para onde vai',
   'get.planets':'<b>Os dez planetas lidos</b> nos seus signos e casas',
@@ -1081,7 +1113,7 @@ function glyphPlanet(ctx,i,x,y,s,lw){
   ctx.beginPath();
   switch(i){
   case 0:/*Sun*/ ctx.arc(0,0,.8,0,7);ctx.stroke();ctx.beginPath();ctx.arc(0,0,.16,0,7);ctx.fill();break;
-  case 1:/*Moon*/ ctx.arc(0,0,.85,-Math.PI*.62,Math.PI*.62,false);ctx.arc(.37,0,.63,Math.PI*.55,-Math.PI*.55,true);ctx.closePath();ctx.fill();break;
+  case 1:/*Moon*/ ctx.arc(0,0,.85,2.186,-2.186,true);ctx.arc(-.4,0,.7,-1.700,1.700,false);ctx.closePath();ctx.fill();break;
   case 2:/*Mercury*/ ctx.arc(0,-.05,.45,0,7);ctx.moveTo(0,.4);ctx.lineTo(0,1);ctx.moveTo(-.38,.72);ctx.lineTo(.38,.72);
     ctx.moveTo(.45*Math.cos(Math.PI*.15),-.95+.45*Math.sin(Math.PI*.15));ctx.arc(0,-.95,.45,Math.PI*.15,Math.PI*.85);break;
   case 3:/*Venus*/ ctx.arc(0,-.3,.55,0,7);ctx.moveTo(0,.25);ctx.lineTo(0,1);ctx.moveTo(-.4,.65);ctx.lineTo(.4,.65);break;
@@ -1098,6 +1130,77 @@ function glyphPlanet(ctx,i,x,y,s,lw){
     ctx.moveTo(0,-.02);ctx.lineTo(0,1);ctx.moveTo(-.4,.62);ctx.lineTo(.4,.62);break;
   }
   ctx.stroke();ctx.restore();
+}
+
+/* single-stroke characters (unit box x −.55….55, y −1…1) for the numbers and
+   labels inside designs — fonts don't survive as a tattoo stencil */
+const STROKE_CH=Object.fromEntries(Object.entries({
+  '0':'M 0 -1 C .62 -1 .62 1 0 1 C -.62 1 -.62 -1 0 -1 Z',
+  '1':'M -.28 -.62 L .06 -1 L .06 1 M -.32 1 L .44 1',
+  '2':'M -.46 -.52 C -.46 -1.08 .5 -1.1 .46 -.48 C .42 -.06 -.12 .3 -.5 1 L .5 1',
+  '3':'M -.44 -.7 C -.24 -1.08 .48 -1.06 .44 -.56 C .41 -.2 .12 -.1 -.06 -.06 M -.06 -.06 C .58 -.04 .6 .6 .32 .84 C .02 1.1 -.42 1 -.5 .66',
+  '4':'M .22 1 L .22 -1 L -.52 .42 L .54 .42',
+  '5':'M .44 -1 L -.32 -1 L -.42 -.08 C -.08 -.3 .5 -.22 .5 .36 C .5 .96 -.18 1.14 -.5 .72',
+  '6':'M .38 -.92 C .08 -1.12 -.5 -.88 -.5 .2 C -.5 1.06 .5 1.06 .5 .42 C .5 -.16 -.12 -.24 -.48 .14',
+  '7':'M -.5 -1 L .5 -1 L -.08 1',
+  '8':'M 0 -.04 C -.56 -.14 -.5 -1 0 -1 C .5 -1 .56 -.14 0 -.04 C -.62 .06 -.6 1 0 1 C .6 1 .62 .06 0 -.04 Z',
+  '9':'M -.38 .92 C -.08 1.12 .5 .88 .5 -.2 C .5 -1.06 -.5 -1.06 -.5 -.42 C -.5 .16 .12 .24 .48 -.14',
+  'A':'M -.5 1 L 0 -1 L .5 1 M -.28 .3 L .28 .3',
+  'C':'M .48 -.62 C .2 -1.1 -.5 -1.05 -.5 0 C -.5 1.05 .2 1.1 .48 .62',
+  'M':'M -.55 1 L -.55 -1 L 0 .35 L .55 -1 L .55 1',
+}).map(([k,v])=>[k,v.split(' ').map(t=>isNaN(+t)?t:+t)]));
+function glyphText(ctx,str,x,y,h,lw){
+  const s=h/2,adv=1.4*s,w=adv*(str.length-1);
+  [...str].forEach((ch,i)=>{
+    const P=STROKE_CH[ch];if(!P)return;
+    ctx.save();ctx.translate(x-w/2+i*adv,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.beginPath();
+    for(let k=0;k<P.length;){const op=P[k++];
+      if(op==='M'){ctx.moveTo(P[k],P[k+1]);k+=2;}
+      else if(op==='L'){ctx.lineTo(P[k],P[k+1]);k+=2;}
+      else if(op==='C'){ctx.bezierCurveTo(P[k],P[k+1],P[k+2],P[k+3],P[k+4],P[k+5]);k+=6;}
+      else if(op==='Z')ctx.closePath();}
+    ctx.stroke();ctx.restore();
+  });
+}
+
+/* A stand-in for the canvas 2D context that records what is drawn as SVG paths.
+   The same drawing functions feed the stars, the poster and the vector line art.
+   Transforms are translate + uniform scale only, which is all the drawings use. */
+class SvgCtx{
+  constructor(W,H){this.W=W;this.H=H;this.out=[];this.k=1;this.tx=0;this.ty=0;this.st=[];this.d='';this.has=false;
+    this.lineWidth=1;this.strokeStyle='#111';this.fillStyle='#111';this.lineCap='round';this.lineJoin='round';this.globalAlpha=1;}
+  f(n){return +n.toFixed(2);}
+  P(x,y){return [this.tx+x*this.k,this.ty+y*this.k];}
+  save(){this.st.push([this.k,this.tx,this.ty,this.lineWidth]);}
+  restore(){[this.k,this.tx,this.ty,this.lineWidth]=this.st.pop();}
+  translate(x,y){this.tx+=x*this.k;this.ty+=y*this.k;}
+  scale(sx){this.k*=sx;}
+  beginPath(){this.d='';this.has=false;}
+  moveTo(x,y){const[a,b]=this.P(x,y);this.d+=`M${this.f(a)} ${this.f(b)}`;this.has=true;}
+  lineTo(x,y){const[a,b]=this.P(x,y);this.d+=`${this.has?'L':'M'}${this.f(a)} ${this.f(b)}`;this.has=true;}
+  bezierCurveTo(a,b,c,d,e,g){const f=n=>this.f(n),p=this.P(a,b),q=this.P(c,d),r=this.P(e,g);this.d+=`C${f(p[0])} ${f(p[1])} ${f(q[0])} ${f(q[1])} ${f(r[0])} ${f(r[1])}`;}
+  quadraticCurveTo(a,b,c,d){const f=n=>this.f(n),p=this.P(a,b),q=this.P(c,d);this.d+=`Q${f(p[0])} ${f(p[1])} ${f(q[0])} ${f(q[1])}`;}
+  closePath(){this.d+='Z';}
+  ellipse(x,y,rx,ry,rot,a0,a1,ccw){this._arc(x,y,rx,ry,a0,a1,ccw);}
+  arc(x,y,r,a0,a1,ccw){this._arc(x,y,r,r,a0,a1,ccw);}
+  _arc(x,y,rx,ry,a0,a1,ccw){
+    const TAU=Math.PI*2;let d=ccw?a0-a1:a1-a0;
+    d=d>=TAU?TAU:((d%TAU)+TAU)%TAU;if(ccw)d=-d;
+    const[cx,cy]=this.P(x,y),RX=rx*this.k,RY=ry*this.k,pt=a=>[this.f(cx+RX*Math.cos(a)),this.f(cy+RY*Math.sin(a))];
+    const s0=pt(a0);this.d+=`${this.has?'L':'M'}${s0[0]} ${s0[1]}`;this.has=true;
+    if(Math.abs(d)<1e-9)return;
+    const sw=d>0?1:0,A=(e,large)=>`A${this.f(RX)} ${this.f(RY)} 0 ${large} ${sw} ${e[0]} ${e[1]}`;
+    if(Math.abs(d)>TAU-1e-6)this.d+=A(pt(a0+d/2),0)+A(pt(a0+d),0);
+    else this.d+=A(pt(a0+d),Math.abs(d)>Math.PI?1:0);
+  }
+  rect(x,y,w,h){this.moveTo(x,y);this.lineTo(x+w,y);this.lineTo(x+w,y+h);this.lineTo(x,y+h);this.closePath();}
+  strokeRect(x,y,w,h){this.beginPath();this.rect(x,y,w,h);this.stroke();}
+  stroke(){if(this.d)this.out.push(`<path d="${this.d}" fill="none" stroke="${this.strokeStyle}" stroke-width="${this.f(this.lineWidth*this.k)}" stroke-linecap="round" stroke-linejoin="round"/>`);}
+  fill(){if(this.d)this.out.push(`<path d="${this.d}" fill="${this.fillStyle}"/>`);}
+  clearRect(){} fillRect(){} setLineDash(){} fillText(){} strokeText(){}
+  svg(title){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${this.W} ${this.H}" width="${this.W}" height="${this.H}">`+
+    (title?`<title>${title}</title>`:'')+this.out.join('')+`</svg>`;}
 }
 
 /* ═══ WEBGL STAR ENGINE ═══════════════════════════════════════ */
@@ -1377,7 +1480,7 @@ function beginReading(){
   setLens(false);
   reading=true;
   $('redeal').innerHTML=REDEAL[mode];
-  $('unlock').classList.remove('show');$('offer').classList.remove('show');
+  $('unlock').classList.remove('show');$('offer').classList.remove('show');$('stencil').classList.remove('show');
   document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',n.dataset.go===mode));
 }
 document.querySelectorAll('[data-go]').forEach(el=>{
@@ -1657,22 +1760,25 @@ function drawWheel(ctx,S,ch,fine=1){   /* fine<1 thins the glyph strokes for pri
   if(ch.houses){
     const H=ch.houses;
     ctx.lineWidth=S*.007;
-    for(let i=0;i<12;i++)if(i%3)line(pos(H.cusps[i],Ra),pos(H.cusps[i],R2));
+    /* house lines break around the planet band so glyphs never sit on a line */
+    for(let i=0;i<12;i++)if(i%3){line(pos(H.cusps[i],Ra),pos(H.cusps[i],Rp-S*.04));line(pos(H.cusps[i],Rp+S*.04),pos(H.cusps[i],R2));}
     ctx.lineWidth=S*.016;
-    line(pos(H.asc,S*.03),pos(H.asc,R2));line(pos(H.asc+180,S*.03),pos(H.asc+180,R2));
-    line(pos(H.mc,S*.03),pos(H.mc,R2));line(pos(H.mc+180,S*.03),pos(H.mc+180,R2));
-    ctx.font=`500 ${S*.03}px Jost, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-    const la=pos(H.asc+7,Ra-S*.05),lm=pos(H.mc-7,Ra-S*.05);
-    ctx.fillText('AC',la[0],la[1]);ctx.fillText('MC',lm[0],lm[1]);
+    for(const a of [H.asc,H.asc+180,H.mc,H.mc+180]){line(pos(a,S*.03),pos(a,Rp-S*.04));line(pos(a,Rp+S*.04),pos(a,R2));}
+    const la=pos(H.asc+9,Ra-S*.055),lm=pos(H.mc-11,Ra-S*.06);
+    glyphText(ctx,'AC',la[0],la[1],S*.026,S*.0045);glyphText(ctx,'MC',lm[0],lm[1],S*.026,S*.0045);
   }
-  /* planets — neighbours closer than 7° alternate radius */
-  const sorted=ch.bodies.slice().sort((a,b)=>a.lon-b.lon);
-  let prev=-99,inner=false;
-  ctx.lineWidth=S*.008;
-  for(const b of sorted){
-    inner=(b.lon-prev<7)?!inner:false;prev=b.lon;
-    line(pos(b.lon,R2),pos(b.lon,R2-S*.02));
-    glyphPlanet(ctx,b.i,...pos(b.lon,inner?Rp2:Rp),S*.024,S*.018*fine);
+  /* planets — crowded glyphs are eased apart around the band (at least 12° between
+     neighbours); the tick on the zodiac ring always marks the true degree */
+  const sorted=ch.bodies.slice().sort((a,b)=>a.lon-b.lon),n=sorted.length,MIN=12;
+  const disp=sorted.map(b=>b.lon);
+  for(let it=0;it<80;it++){let moved=false;
+    for(let i=0;i<n;i++){const j=(i+1)%n;let gap=disp[j]-disp[i];if(j===0)gap+=360;
+      if(gap<MIN){const push=(MIN-gap)/2;disp[i]-=push;disp[j]+=push;moved=true;}}
+    if(!moved)break;}
+  for(let i=0;i<n;i++){
+    const b=sorted[i],d=disp[i];
+    ctx.lineWidth=S*.008;line(pos(b.lon,R2),pos(b.lon,R2-S*.02));
+    glyphPlanet(ctx,b.i,...pos(d,Rp),S*.024,S*.018*fine);
   }
   /* aspects */
   ctx.lineWidth=S*.005;
@@ -1881,7 +1987,7 @@ const M={pos:T('Exhibit — ','Exposição — '),deg:T('DEGREE','GRAU'),house:T
 const firstSentence=t=>{const i=t.search(/[.!?](\s|$)/);return i<0?t:t.slice(0,i+1);};
 const SEAL_K=T('Sealed in the full map','Selado no mapa completo');
 const sealBtn=()=>`<button class="deal-btn gold" data-unlock>✦ &nbsp;${T('Break the seal','Quebrar o selo')} · ${CONFIG.price}</button>
-    <span class="fine">${T('Star poster and full map · kept for good','Pôster em estrelas e mapa completo · seus para sempre')}</span>`;
+    <span class="fine">${T('Star poster, tattoo line art and full map · kept for good','Pôster, traço para tatuagem e mapa completo · seus para sempre')}</span>`;
 function sealBox(lead){return `<div class="seal"><span class="k">${SEAL_K}</span><p>${lead}</p>${sealBtn()}</div>`;}
 function veiled(text){const f=firstSentence(text);return `${f}<span class="veil" aria-hidden="true">${text.slice(f.length)}</span>`;}
 function skyIntro(sun,moon,H){
@@ -1926,7 +2032,8 @@ function showAstro(k){
         <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
         <div class="seal"><span class="k">${SEAL_K}</span>
           <ul>
-            <li>${T('A star poster of this sky, 2400 × 3000, ready to print','Um pôster em estrelas deste céu, 2400 × 3000, pronto para imprimir')}</li>
+            <li>${T('A star poster of this sky, 3600 × 4500, ready to print','Um pôster em estrelas deste céu, 3600 × 4500, pronto para imprimir')}</li>
+            <li>${T('Tattoo-ready line art of this wheel and your Big Three','Traço pronto para tatuagem desta roda e do seu trio')}</li>
             <li>${H?T('Your Moon and Rising, read in full','A sua Lua e o seu Ascendente, lidos por inteiro'):T('Your Moon, read in full','A sua Lua, lida por inteiro')}</li>
             <li>${H?T('All ten planets read in their houses','Os dez planetas lidos nas suas casas'):T('All ten planets read','Os dez planetas lidos')}</li>
             ${H?`<li>${T('The twelve houses and your Midheaven','As doze casas e o seu Meio do Céu')}</li>`:''}
@@ -1994,6 +2101,10 @@ function showAstro(k){
       meta:[[M.born,bornLine()],[M.place,placeLine()],[M.houses,H?sysName(H).toUpperCase():NEED_HOUR]],
       prose:`<em>${skyIntro(sun,moon,H)}</em>
         <button class="deal-btn" data-poster style="margin:16px 0 4px;padding:14px 26px 12px;font-size:10px">↓ &nbsp;${T('Download your star poster','Baixar o seu pôster em estrelas')}</button>
+        <div class="ink"><span class="k">${T('Ink your sky','Tatue o seu céu')}</span>
+          <p>${T('Clean line art of your chart for a tattoo artist: vector SVG that scales to any size, and a 4000 px PNG on a transparent background.',
+                 'Traço limpo do seu mapa para levar ao tatuador: SVG vetorial que escala para qualquer tamanho, e PNG de 4000 px com fundo transparente.')}</p>
+          <div class="ink-row"><button class="deal-btn" data-ink="wheel">☉ &nbsp;${T('The wheel','A roda')}</button><button class="deal-btn" data-ink="three">✶ &nbsp;${T('Your Big Three','O seu trio')}</button></div></div>
         <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
         ${H?`<div class="sub">${T('Houses','Casas')} · ${sysName(H)}</div><table class="tbl">${houseRows}</table>`:''}
         <div class="sub">${T('Aspects','Aspectos')}</div>${aspRows?`<table class="tbl">${aspRows}</table>`:`<span class="line">${T('A quiet sky — no major aspects within orb.','Um céu quieto — nenhum aspecto maior dentro da órbita.')}</span>`}
@@ -2052,22 +2163,22 @@ function drawNumberSigil(ctx,S,n){
   const tri=rot=>poly(3,1,rot);
   ctx.lineWidth=S*.012;
   switch(n){
-    case 1:ctx.beginPath();ctx.moveTo(c,c-R);ctx.lineTo(c,c+R);ctx.stroke();ctx.beginPath();ctx.arc(c,c,S*.03,0,7);ctx.fill();break;
+    case 1:ctx.beginPath();ctx.moveTo(c,c-R*.95);ctx.lineTo(c,c-R*.34);ctx.moveTo(c,c+R*.34);ctx.lineTo(c,c+R*.95);ctx.stroke();ctx.beginPath();ctx.arc(c,c-R*.95,S*.022,0,7);ctx.fill();break;
     case 2:for(const dx of [-R*.32,R*.32]){ctx.beginPath();ctx.arc(c+dx,c,R*.66,0,7);ctx.stroke();}break;
     case 3:tri(0);break;
     case 4:poly(4,1,45);break;
     case 5:poly(5,2,0);break;
     case 6:tri(0);tri(180);break;
-    case 7:poly(7,3,0);break;
+    case 7:poly(7,2,0);break;   /* {7/2}: a heptagram with an open centre */
     case 8:poly(8,3,0);break;
-    case 9:poly(9,4,0);break;
-    case 11:for(const dx of [-R*.5,R*.5]){ctx.beginPath();ctx.moveTo(c+dx,c-R*.9);ctx.lineTo(c+dx,c+R*.9);ctx.stroke();}
-      ctx.beginPath();ctx.arc(c,c-R*.9,R*.5,Math.PI,Math.PI*2);ctx.stroke();break;
+    case 9:poly(9,2,0);break;   /* {9/2}: a nine-point star with an open centre */
+    case 11:for(const dx of [-R*.5,R*.5]){ctx.beginPath();ctx.moveTo(c+dx,c-R*.5);ctx.lineTo(c+dx,c+R*.85);ctx.stroke();}
+      ctx.beginPath();ctx.arc(c,c-R*.5,R*.5,Math.PI,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(c-R*.78,c+R*.85);ctx.lineTo(c+R*.78,c+R*.85);ctx.stroke();break;
     case 22:poly(4,1,45);poly(4,1,0);break;
-    case 33:tri(0);tri(30);tri(60);break;
+    case 33:tri(0);tri(40);tri(80);break;   /* three triangles, evenly turned: a nine-point star */
   }
-  ctx.font=`300 ${S*.2}px 'Cormorant Garamond', Georgia, serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.lineWidth=S*.011;ctx.strokeText(String(n),c,c+S*.01);
+  glyphText(ctx,String(n),c,c,n>9?S*.12:S*.15,S*.012);
 }
 
 let numbers=null;
@@ -2115,7 +2226,10 @@ function showNumber(k){
     `A master number: it carries the voltage of ${n} and the ground of ${digitSum(n)}. On tired days you will live it as a ${digitSum(n)}; that is not failure, it is rest.`,
     `Um número mestre: carrega a voltagem do ${n} e o chão do ${digitSum(n)}. Nos dias cansados, você vai vivê-lo como um ${digitSum(n)}; isso não é fracasso, é descanso.`)+`</span>`;
   setPanel({pos:`${T('Exhibit — ','Exposição — ')}${p.pos}`,name:`${n} · ${N_.title}`,meta,
-    prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`});
+    prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`+
+      `<div class="ink"><span class="k">${T('Ink your number','Tatue o seu número')}</span>
+        <p>${T(`The seal of your ${p.pos.replace(/^The /,'')} as clean line art — ready for a tattoo artist.`,`O selo ${p.pos.replace(/^O /,'do ').replace(/^A /,'da ')} em traço limpo — pronto para o tatuador.`)}</p>
+        <div class="ink-row"><button class="deal-btn" data-ink="num">⁂ &nbsp;${T('Tattoo-ready seal','Selo para tatuagem')}</button></div></div>`});
 }
 
 /* ═══ THE CORNER BUTTON — an offering, the seal, or the poster ═ */
@@ -2144,7 +2258,7 @@ if(CONFIG.donationUrl){
   $('offerLink').style.display='none';
   $('offerNote').style.display='block';
 }
-addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');$('stencil').classList.remove('show');}});
 
 /* ═══ THE UNLOCK — Stripe Checkout through the payment worker ═══ */
 const unlockEl=$('unlock');
@@ -2181,63 +2295,149 @@ if(PAYWALL){
   $('astroTag').classList.add('paid');
 }
 
-/* ═══ THE STAR POSTER — the wheel resampled at print size ═══════ */
+/* ═══ SAVING FILES — phones get the share sheet, computers a download ═══ */
+function saveBlob(blob,name){
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+async function shareOrSave(blob,name,title){
+  const file=new File([blob],name,{type:blob.type});
+  if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[file]})){
+    try{await navigator.share({files:[file],title});return true;}catch(e){if(e.name==='AbortError')return false;}
+  }
+  saveBlob(blob,name);return true;
+}
+const ymd=inp=>`${inp.y}-${String(inp.m).padStart(2,'0')}-${String(inp.d).padStart(2,'0')}`;
+
+/* ═══ THE STAR POSTER — the wheel drawn at print size, then scattered as stars ═══ */
 async function downloadPoster(){
   if(!chart||!isOpen())return;
   track('poster');
   toast(T('Gathering the stars for your poster…','Juntando as estrelas para o seu pôster…'),0);
   await new Promise(r=>setTimeout(r,60));
   const c=await renderPoster();
-  const inp=chartInput;
   const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.93));
-  const name=`starot-sky-${inp.y}-${String(inp.m).padStart(2,'0')}-${String(inp.d).padStart(2,'0')}.jpg`;
-  const file=new File([blob],name,{type:'image/jpeg'});
+  c.width=c.height=0;
   $('toast').classList.remove('show');
-  /* phones: the share sheet saves to photos or posts straight to a story */
-  if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files:[file]})){
-    try{await navigator.share({files:[file],title:T('My sky, drawn in stars','O meu céu, desenhado em estrelas')});return;}catch(e){if(e.name==='AbortError')return;}
-  }
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
-  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
-  toast(T('Your star poster is saved — 2400 × 3000, ready to print.','O seu pôster foi salvo — 2400 × 3000, pronto para imprimir.'));
+  if(await shareOrSave(blob,`starot-sky-${ymd(chartInput)}.jpg`,T('My sky, drawn in stars','O meu céu, desenhado em estrelas')))
+    toast(T('Your star poster is saved — 3600 × 4500, ready to print.','O seu pôster foi salvo — 3600 × 4500, pronto para imprimir.'));
 }
 async function renderPoster(){
   try{await Promise.all(["300 60px 'Cormorant Garamond'","italic 300 60px 'Cormorant Garamond'","400 30px Jost","400 30px Marcellus"].map(f=>document.fonts.load(f)));}catch(e){}
-  const PW=2400,PH=3000,c=document.createElement('canvas');c.width=PW;c.height=PH;
+  const PW=3600,PH=4500,k=PW/2400,c=document.createElement('canvas');c.width=PW;c.height=PH;
   const x=c.getContext('2d');
   x.fillStyle='#050609';x.fillRect(0,0,PW,PH);
   for(const [gx,gy,r,col] of [[.66,.36,.75,'rgba(84,66,38,.30)'],[.2,.86,.7,'rgba(38,44,66,.34)']]){
     const g=x.createRadialGradient(PW*gx,PH*gy,0,PW*gx,PH*gy,PW*r);g.addColorStop(0,col);g.addColorStop(1,'rgba(5,6,9,0)');
     x.fillStyle=g;x.fillRect(0,0,PW,PH);
   }
+  const size=3060,ox0=(PW-size)/2,oy0=PH*.42-size/2;
+  /* a faint, crisp line of light under the stars keeps every edge sharp */
+  x.save();x.translate(ox0,oy0);x.globalAlpha=.32;x.strokeStyle=x.fillStyle='#f6e7c4';
+  x.shadowColor='rgba(246,231,196,.85)';x.shadowBlur=22;drawWheel(x,size,chart,.55);x.restore();
   x.globalCompositeOperation='lighter';
   const dot=(px,py,r,a,cool)=>{x.fillStyle=cool?`rgba(209,219,242,${a})`:`rgba(250,235,199,${a})`;x.beginPath();x.arc(px,py,r,0,7);x.fill();};
-  for(let i=0;i<9000;i++)dot(Math.random()*PW,Math.random()*PH,.6+Math.random()*1.5,.08+Math.random()*.45,Math.random()<.2);
-  /* the wheel, sampled pixel by pixel at 1400px and scattered as stars */
-  const S=1400,o=document.createElement('canvas');o.width=o.height=S;
-  const ox=o.getContext('2d',{willReadFrequently:true});ox.strokeStyle=ox.fillStyle='#fff';drawWheel(ox,S,chart,.55);
-  const d=ox.getImageData(0,0,S,S).data,pts=[];
-  for(let y=0;y<S;y++)for(let xx=0;xx<S;xx++)if(d[(y*S+xx)*4+3]>110)pts.push(xx,y);
-  const size=2040,cx=PW/2,cy=PH*.42,k=size/S,n=Math.min(pts.length/2,120000);
-  for(let i=0;i<n;i++){
-    const j=(Math.random()*pts.length/2|0)*2;
-    const tw=Math.random();
-    dot(cx+(pts[j]-S/2)*k+(Math.random()-.5)*5,cy+(pts[j+1]-S/2)*k+(Math.random()-.5)*5,.7+tw*1.9,.25+tw*.65,Math.random()<.16);
+  for(let i=0;i<20000;i++)dot(Math.random()*PW,Math.random()*PH,.6+Math.random()*1.6,.08+Math.random()*.45,Math.random()<.2);
+  /* the wheel at full poster resolution, pixel by pixel, becomes the star field */
+  const o=document.createElement('canvas');o.width=o.height=size;
+  const ox=o.getContext('2d',{willReadFrequently:true});ox.strokeStyle=ox.fillStyle='#fff';drawWheel(ox,size,chart,.55);
+  const d=ox.getImageData(0,0,size,size).data;o.width=o.height=0;
+  let n=0;for(let i=3;i<d.length;i+=4)if(d[i]>110)n++;
+  const pts=new Uint32Array(n);n=0;for(let i=3,p=0;i<d.length;i+=4,p++)if(d[i]>110)pts[n++]=p;
+  const count=Math.min(n,260000);
+  for(let i=0;i<count;i++){
+    const p=pts[(Math.random()*n)|0],tw=Math.random();
+    dot(ox0+(p%size)+(Math.random()-.5)*2.4,oy0+((p/size)|0)+(Math.random()-.5)*2.4,.55+tw*1.6,.3+tw*.65,Math.random()<.16);
   }
   x.globalCompositeOperation='source-over';
-  /* the legend */
   const txt=(t,font,color,y,spacing)=>{x.font=font;x.fillStyle=color;x.textAlign='center';x.textBaseline='alphabetic';
     if('letterSpacing' in x)x.letterSpacing=spacing||'0px';x.fillText(t,PW/2,y);if('letterSpacing' in x)x.letterSpacing='0px';};
-  const inp=chartInput,sun=chart.bodies[0],moon=chart.bodies[1];
-  txt('STAROT',"400 34px Marcellus",'#d8b877',150,'18px');
-  txt(T(`The sky over ${chartMeta.place.name}`,`O céu sobre ${chartMeta.place.name}`),"italic 300 132px 'Cormorant Garamond'",'#e9e2d2',2560);
+  const inp=chartInput,sun=chart.bodies[0],moon=chart.bodies[1],K=v=>Math.round(v*k);
+  txt('STAROT',`400 ${K(34)}px Marcellus`,'#d8b877',K(150),`${K(18)}px`);
+  txt(T(`The sky over ${chartMeta.place.name}`,`O céu sobre ${chartMeta.place.name}`),`italic 300 ${K(132)}px 'Cormorant Garamond'`,'#e9e2d2',K(2560));
   const when=T(`${inp.d} ${MONTHS[inp.m-1]} ${inp.y}`,`${inp.d} de ${MONTHS[inp.m-1].toLowerCase()} de ${inp.y}`)+(inp.nt?'':` · ${hhmm(inp.h,inp.mi)}`);
-  txt(`${when} · ${chartMeta.place.full}`.toUpperCase(),"400 34px Jost",'#8f7b52',2660,'10px');
+  txt(`${when} · ${chartMeta.place.full}`.toUpperCase(),`400 ${K(34)}px Jost`,'#8f7b52',K(2660),`${K(10)}px`);
   txt(T(`Sun in ${SIGNS[sun.sign].name}  ·  Moon in ${SIGNS[moon.sign].name}`,`Sol em ${SIGNS[sun.sign].name}  ·  Lua em ${SIGNS[moon.sign].name}`)+(chart.houses?`  ·  ${risingName(SIGNS[signOf(chart.houses.asc)])}`:''),
-    "300 62px 'Cormorant Garamond'",'#d8b877',2780);
-  txt((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),"400 24px Jost",'rgba(143,123,82,.8)',2910,'8px');
+    `300 ${K(62)}px 'Cormorant Garamond'`,'#d8b877',K(2780));
+  txt((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),`400 ${K(24)}px Jost`,'rgba(143,123,82,.8)',K(2910),`${K(8)}px`);
   return c;
 }
+
+/* ═══ TATTOO-READY LINE ART — the same drawings, as clean black strokes ═══ */
+/* Sun, Moon and Rising in a row: the "Big Three", a classic small tattoo */
+function drawBigThree(ctx,W,H,ch){
+  const items=[[ch.bodies[0].sign,'sun'],[ch.bodies[1].sign,'moon']];
+  if(ch.houses)items.push([signOf(ch.houses.asc),'asc']);
+  const xs=items.length===3?[W/6,W/2,W*5/6]:[W*.32,W*.68];
+  ctx.lineCap='round';ctx.lineJoin='round';
+  items.forEach(([sign,kind],i)=>{
+    const x=xs[i];
+    glyphSign(ctx,sign,x,H*.56,H*.25,H*.034);
+    if(kind==='sun')glyphPlanet(ctx,0,x,H*.13,H*.075,H*.02);
+    else if(kind==='moon')glyphPlanet(ctx,1,x,H*.13,H*.075,H*.02);
+    else{ /* the horizon, with the rising arrow */
+      ctx.lineWidth=H*.02;ctx.beginPath();ctx.moveTo(x-H*.09,H*.2);ctx.lineTo(x+H*.09,H*.2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x,H*.2);ctx.lineTo(x,H*.05);ctx.moveTo(x-H*.04,H*.09);ctx.lineTo(x,H*.05);ctx.lineTo(x+H*.04,H*.09);ctx.stroke();
+    }
+  });
+  ctx.lineWidth=H*.012;ctx.beginPath();ctx.moveTo(xs[0]-H*.28,H*.94);ctx.lineTo(xs[xs.length-1]+H*.28,H*.94);ctx.stroke();
+  for(const x of xs){ctx.beginPath();ctx.arc(x,H*.94,H*.022,0,7);ctx.fill();}
+}
+let inkKind='wheel';
+function inkDesign(kind){
+  if(kind==='num'){
+    const p=NUM_POS[view<0?0:view],n=numbers[p.key];
+    return {w:1,h:1,draw:(c,W)=>drawNumberSigil(c,W,n),
+      title:`${n} · ${NUMBERS[n].title}`,file:`starot-seal-${n}-${p.key}`,small:true};
+  }
+  if(kind==='three')return {w:3,h:1,draw:(c,W,H)=>drawBigThree(c,W,H,chart),
+    title:T('Your Big Three','O seu trio: Sol, Lua e Ascendente'),file:`starot-big-three-${ymd(chartInput)}`,small:true};
+  return {w:1,h:1,draw:(c,W)=>drawWheel(c,W,chart,.6),title:T('Your natal wheel','A sua roda natal'),file:`starot-wheel-${ymd(chartInput)}`};
+}
+/* margin of 5% so no stroke touches the edge of the stencil */
+function inkPaint(ctx,dz,W,H){
+  const m=Math.round(Math.min(W,H)*.05);
+  ctx.strokeStyle=ctx.fillStyle='#111';
+  ctx.save();ctx.translate(m,m);dz.draw(ctx,W-2*m,H-2*m);ctx.restore();
+}
+function inkSVG(dz,base=1000){
+  const W=base,H=Math.round(base*dz.h/dz.w),c=new SvgCtx(W,H);
+  inkPaint(c,dz,W,H);
+  return c.svg(`STAROT · ${dz.title}`);
+}
+function inkPNG(dz,base=4000){
+  const W=base,H=Math.round(base*dz.h/dz.w),cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  inkPaint(cv.getContext('2d'),dz,W,H);
+  return new Promise(r=>cv.toBlob(b=>{cv.width=cv.height=0;r(b);},'image/png'));
+}
+const stencil=$('stencil');
+function openInk(kind){
+  if(kind!=='num'&&!(chart&&isOpen()))return;
+  if(kind==='num'&&!numbers)return;
+  inkKind=kind;
+  const dz=inkDesign(kind);
+  $('stTitle').textContent=dz.title;
+  $('stPaper').innerHTML=inkSVG(dz);
+  $('stPaper').classList.toggle('wide',dz.w>dz.h);
+  $('stNote').textContent=dz.small
+    ?T('Show this to your tattoo artist. A design like this holds its shape from about 4 cm across.','Mostre ao seu tatuador. Um desenho assim mantém a forma a partir de uns 4 cm de largura.')
+    :T('Show this to your tattoo artist. Tattoo lines spread a little over the years, so give the full wheel at least 10 cm across.','Mostre ao seu tatuador. As linhas de tatuagem se espalham um pouco com os anos, então dê à roda completa pelo menos 10 cm de largura.');
+  stencil.classList.add('show');
+  track('ink-'+kind);
+}
+$('stClose').onclick=()=>stencil.classList.remove('show');
+stencil.addEventListener('click',e=>{if(e.target===stencil)stencil.classList.remove('show');});
+$('stSvg').onclick=()=>{
+  const dz=inkDesign(inkKind);track('ink-svg');
+  saveBlob(new Blob([inkSVG(dz)],{type:'image/svg+xml'}),dz.file+'.svg');
+  toast(T('Saved — take it to your tattoo artist.','Salvo — leve ao seu tatuador.'));
+};
+$('stPng').onclick=async()=>{
+  const dz=inkDesign(inkKind);track('ink-png');
+  const blob=await inkPNG(dz);
+  if(await shareOrSave(blob,dz.file+'.png',dz.title))toast(T('Saved — take it to your tattoo artist.','Salvo — leve ao seu tatuador.'));
+};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ink]');if(b)openInk(b.dataset.ink);});
 
 /* ═══ RETURNING FROM CHECKOUT — ?map=<session> is the map's own link ═══ */
 (async function arrive(){
