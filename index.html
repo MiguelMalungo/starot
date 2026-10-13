@@ -463,9 +463,10 @@
   .g-wrap .g-row{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 70px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 70px),transparent)}
   .g-wrap.at-end .g-row{-webkit-mask-image:none;mask-image:none}
   .g-nav{position:absolute;top:calc(50% - 32px);z-index:2;width:42px;height:42px;border-radius:50%;border:1px solid rgba(216,184,119,.45);
-    background:rgba(5,6,9,.78);color:var(--gold-bright);font:300 26px/1 'Cormorant Garamond',serif;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    background:rgba(5,6,9,.78);color:var(--gold-bright);padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
     transition:opacity .3s,border-color .3s;backdrop-filter:blur(4px)}
   .g-nav:hover{border-color:var(--gold)}
+  .g-nav svg{display:block}
   .g-nav.prev{left:-20px}.g-nav.next{right:-20px}
   .g-wrap.at-start .prev,.g-wrap.at-end .next{opacity:0;pointer-events:none}
   @media (pointer:coarse){.g-nav{display:none}}
@@ -822,7 +823,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="25";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="26";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -3191,13 +3192,13 @@ function wireStrip(scope){
     requestAnimationFrame(tick);};
   requestAnimationFrame(tick);
 }
-const stripHTML=(items,captions)=>`<div class="g-wrap"><button class="g-nav prev" type="button" aria-label="${T('Previous photos','Fotos anteriores')}">‹</button>`+
+const stripHTML=(items,captions)=>`<div class="g-wrap"><button class="g-nav prev" type="button" aria-label="${T('Previous photos','Fotos anteriores')}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`+
   `<div class="g-row">`+items.map(it=>{
     const cap=(PT?it.captionPt:it.caption)||'',alt=(PT?it.altPt:it.alt)||cap,c=captions&&cap?`<figcaption>${cap}</figcaption>`:'';
     return it.video
       ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${c}</figure>`
       :`<figure${it.wide?' class="wide"':''}><img src="${mv(it.src)}" alt="${alt}" loading="lazy">${c}</figure>`;
-  }).join('')+`</div><button class="g-nav next" type="button" aria-label="${T('More photos','Mais fotos')}">›</button></div>`;
+  }).join('')+`</div><button class="g-nav next" type="button" aria-label="${T('More photos','Mais fotos')}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
 /* ═══ ON SKIN — the photos, on the tattoo screen and on the menu's featured card ═══ */
 (function gallery(){
   const items=CONFIG.gallery||[],concept=items.some(it=>it.concept);
