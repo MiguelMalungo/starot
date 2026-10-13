@@ -820,6 +820,11 @@
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
 const MEDIA_V="23";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
+/* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
+   reload once if this copy is older */
+(()=>{try{if(sessionStorage.getItem('starot.reloaded')===MEDIA_V)return;
+  fetch('version.txt?'+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(v=>{v=v.trim();
+    if(v&&v!==MEDIA_V&&+v>+MEDIA_V){sessionStorage.setItem('starot.reloaded',MEDIA_V);location.reload();}}).catch(()=>{});}catch(e){}})();
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
   price:"€7",       // the tattoo flash — shown on the page; the amount charged lives in the worker (PRICE_CENTS)
