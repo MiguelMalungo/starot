@@ -43,7 +43,8 @@ script, and the ink is multiplied into the skin so its texture shows through.
 The neck line goes the same way (`neck-plate-man`, then `python3 tools/higgsfield/composite-neck.py`),
 because the model keeps redrawing the ascendant ↑ as ♐. The woman's bare-back plate is refused by
 the moderation filter, so her plate is an earlier tattoo render with the AI tattoo patched out
-(`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`).
+(`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`); her line
+is restacked upright and runs down behind her ear, in a close-up crop.
 The calf wheel and the woman's inner-forearm line come from earlier renders too
 (`python3 tools/higgsfield/composite-wheel-forearm.py`): the AI wheel inpainted off the calf, and the
 forearm render cropped below its wheel. Still to shoot once credits are topped up: the wheel on a
