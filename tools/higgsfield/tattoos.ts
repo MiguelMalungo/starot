@@ -46,6 +46,8 @@ const SHOTS: Shot[] = [
     prompt: `A woman seated on a pale stone plinth, seen from the front, one leg forward, the front of her thigh clearly visible from knee to hip, wearing black high-waisted tailored shorts, smooth even skin on the front of the thigh. No tattoos, no jewellery. ${STUDIO}` },
   { id: "calf-plate-man", refs: [], aspect: "3:4",
     prompt: `A man's lower leg seen straight from behind, standing on a pale stone plinth, the back of his calf clearly visible from the back of the knee to the ankle, neutral linen shorts just visible at the top, smooth skin with light natural hair. No tattoos, no jewellery, no socks. ${STUDIO}` },
+  { id: "neck-side-plate-woman", refs: [], aspect: "3:4",
+    prompt: `Side profile portrait of a woman, seen from her right side, head turned slightly away from the camera, hair gathered up in a low bun, the side of her neck below and behind the ear clearly visible and well lit, from the ear down to the collarbone, wearing a black silk top with thin straps. No tattoos, no jewellery, no earrings. ${STUDIO}` },
   { id: "wheel-calf-man", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
     prompt: `${TATTOO} A man's lower leg seen from behind and slightly to the side, the round natal-wheel tattoo about 12 cm wide on the back of his calf, standing on a plinth, bare leg, neutral linen shorts just visible. ${STUDIO}` },
   { id: "wheel-forearm-woman", refs: ["design-1-natal-wheel.png"], aspect: "3:4",

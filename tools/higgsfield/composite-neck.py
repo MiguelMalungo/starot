@@ -17,8 +17,8 @@ DESIGN = DES / "design-4-sun-and-rising-gemini-leo.png"
 # layout ("row" as drawn, or "stack": the symbols upright, one under the other), crop box or None
 PLACES = [
     ("neck-plate-man-v13.png", "neck-composite-man.png", (895, 1370), 330, 0, "row", None),
-    # hers runs down behind the right ear, from beside the ear to below the lobe; close-up crop
-    ("neck-plate-woman-clean.png", "ear-composite-woman.png", (1305, 525), 330, 4, "stack", (850, 0, 1726, 1100)),
+    # hers runs down the side of the neck below the right ear, behind the jaw; close-up crop
+    ("neck-plate-woman-clean.png", "ear-composite-woman.png", (1158, 850), 290, 2, "stack", (850, 0, 1726, 1100)),
 ]
 INK = (26, 28, 34)
 STRENGTH = 1.6

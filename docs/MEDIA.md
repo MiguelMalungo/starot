@@ -44,7 +44,8 @@ The neck line goes the same way (`neck-plate-man`, then `python3 tools/higgsfiel
 because the model keeps redrawing the ascendant ↑ as ♐. The woman's bare-back plate is refused by
 the moderation filter, so her plate is an earlier tattoo render with the AI tattoo patched out
 (`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`); her line
-is restacked upright and runs down behind her ear, in a close-up crop.
+is restacked upright and runs down the side of her neck below the ear, in a close-up crop. A side-profile plate
+(`neck-side-plate-woman`) is ready to render once credits are topped up.
 The calf wheel and the woman's inner-forearm line come from earlier renders too
 (`python3 tools/higgsfield/composite-wheel-forearm.py`): the AI wheel inpainted off the calf, and the
 forearm render cropped below its wheel. Still to shoot once credits are topped up: the wheel on a
