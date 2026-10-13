@@ -16,7 +16,7 @@ DESIGN = DES / "design-4-sun-and-rising-gemini-leo.png"
 # plate, output, centre (x, y), width in px (~3.5 cm on that neck), rotation in degrees
 PLACES = [
     ("neck-plate-man-v13.png", "neck-composite-man.png", (895, 1370), 330, 0),
-    ("neck-plate-woman-clean.png", "neck-composite-woman.png", (890, 1175), 290, 0),
+    ("neck-plate-woman-clean.png", "neck-composite-woman.png", (838, 1175), 290, 0),   # centre measured between the neck edges
 ]
 INK = (26, 28, 34)
 STRENGTH = 1.6

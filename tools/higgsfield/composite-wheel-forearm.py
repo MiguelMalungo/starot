@@ -14,31 +14,34 @@ RAW = ROOT / "media/gallery/raw"
 DES = ROOT / "media/designs"
 
 # plate, crop box (or None), design, output, centre (x, y) in the plate, width px, x-squash for the
-# curve of the limb, rotation in degrees (counter-clockwise)
+# curve of the limb, rotation in degrees (counter-clockwise), extra line weight in px (a tattoo
+# artist opens up the lines when a design goes on smaller)
 JOBS = [
     ("calf-plate-man-clean.png", None, "design-1-natal-wheel.png", "wheel-calf-composite-man.png",
-     (918, 1010), 280, .95, -2),
+     (918, 1020), 420, .95, -2, 3),
     ("wheel-forearm-woman-v1.png", (0, 1445, 1362, 2363), "design-4-sun-and-rising-gemini-leo.png",
-     "line-forearm-composite-woman.png", (681, 1676), 440, 1, 59),   # the forearm's axis, measured edge to edge
+     "line-forearm-composite-woman.png", (681, 1676), 440, 1, 59, 0),   # the forearm's axis, measured edge to edge
 ]
 INK = (26, 28, 34)
 STRENGTH = 1.6
 OPACITY = 0.92
 
-def ink_layer(path, width, squash, angle):
+def ink_layer(path, width, squash, angle, bolder=0):
     a = Image.open(path).convert("RGBA").getchannel("A")
     a = a.crop(a.getbbox())
     h = round(a.height * width / a.width)
     a = a.resize((round(width * squash), h), Image.LANCZOS)
+    if bolder:
+        a = a.filter(ImageFilter.MaxFilter(bolder))
     a = a.rotate(angle, resample=Image.BICUBIC, expand=True)
     a = a.filter(ImageFilter.GaussianBlur(0.9))
     noise = Image.effect_noise(a.size, 22).filter(ImageFilter.GaussianBlur(1.2))
     return ImageChops.multiply(a, noise.point(lambda v: 205 + v * 50 // 255))
 
 tint = tuple(min(255, round(c * STRENGTH)) for c in INK)
-for plate, crop, design, out, (cx, cy), width, squash, angle in JOBS:
+for plate, crop, design, out, (cx, cy), width, squash, angle, bolder in JOBS:
     base = Image.open(RAW / plate).convert("RGB")
-    a = ink_layer(DES / design, width, squash, angle).point(lambda v: round(v * OPACITY))
+    a = ink_layer(DES / design, width, squash, angle, bolder).point(lambda v: round(v * OPACITY))
     x, y = cx - a.width // 2, cy - a.height // 2
     region = base.crop((x, y, x + a.width, y + a.height))
     inked = ImageChops.multiply(region, Image.new("RGB", a.size, tint))
