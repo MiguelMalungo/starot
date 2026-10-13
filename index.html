@@ -818,7 +818,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="22";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="23";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
@@ -832,8 +832,8 @@ const CONFIG={
   gallery:[
     {src:"media/gallery/hands-sun-rising.jpg",kind:"sun",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
      alt:"Two people holding hands; his hand has the Sun and Gemini symbols, hers the ascendant arrow and Leo",altPt:"Duas pessoas de mãos dadas; na mão dele o Sol e Gêmeos, na dela a seta do ascendente e Leão"},
-    {src:"media/gallery/numbers-obliques-woman.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
-     alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
+    {src:"media/gallery/numbers-obliques-man.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+     alt:"Four numerology seals in a vertical line down the side of a man's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de um homem"},
     {src:"media/gallery/maya-trecena-back-woman.jpg",kind:"mtrecena",concept:true,caption:"Maya trecena · 1 Chikchan · middle of the back",captionPt:"Trecena maia · 1 Chikchan · meio das costas",
      alt:"The trecena sign 1 Chikchan, a serpent in a cartouche, tattooed on the spine between a woman's shoulder blades",altPt:"O signo da trecena 1 Chikchan, uma serpente num cartucho, tatuado na coluna entre as omoplatas de uma mulher"},
     {src:"media/gallery/wheel-calf-man.jpg",kind:"wheel",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
@@ -848,8 +848,8 @@ const CONFIG={
      alt:"A row of four astrological symbols low on the back of a man's neck",altPt:"Uma linha de quatro símbolos astrológicos na nuca de um homem"},
     {src:"media/gallery/line-forearm-man.jpg",kind:"line",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
      alt:"A row of four astrological symbols along a man's inner forearm",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de um homem"},
-    {src:"media/gallery/numbers-obliques-man.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
-     alt:"Four numerology seals in a vertical line down the side of a man's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de um homem"},
+    {src:"media/gallery/numbers-obliques-woman.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+     alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
     {src:"media/gallery/maya-day-chest-man.jpg",kind:"maya",concept:true,caption:"Maya day sign · 12 Kib · chest",captionPt:"Nawal maia · 12 Kib · peito",
      alt:"The Maya day sign 12 Kib, an owl in a cartouche under two bars and two dots, tattooed over a man's heart",altPt:"O nawal maia 12 Kib, uma coruja num cartucho sob duas barras e dois pontos, tatuado sobre o coração de um homem"},
     {src:"media/gallery/maya-tone-forearm-woman.jpg",kind:"mtone",wide:true,concept:true,caption:"Maya tone · 12 · upper inner forearm",captionPt:"Tom maia · 12 · parte interna do antebraço",
@@ -3180,9 +3180,24 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
     g.querySelector('.next').onclick=()=>row.scrollBy({left:row.clientWidth*.8,behavior:'smooth'});
     row.addEventListener('scroll',edge,{passive:true});
     if(window.ResizeObserver)new ResizeObserver(edge).observe(row);else addEventListener('resize',edge);   /* the strip is hidden at load; measure it once it shows */
-    /* the first time the strip comes into view it slides a little, so it is plain that it scrolls */
-    if(window.IntersectionObserver){let nudged=false;new IntersectionObserver(es=>{if(nudged||!es.some(e=>e.isIntersecting))return;if(row.scrollWidth<=row.clientWidth+4)return;nudged=true;
-      setTimeout(()=>{row.scrollBy({left:Math.min(220,row.clientWidth*.45),behavior:'smooth'});setTimeout(()=>row.scrollTo({left:0,behavior:'smooth'}),900);},500);},{threshold:.6}).observe(row);}
+    /* the strip drifts slowly on its own, so it is plain that there is more; a touch, a hover or an arrow
+       pauses it for a while, and at the end it glides back to the start */
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      let seen=false,hold=0,pos=0,last=0;
+      const pause=ms=>{hold=performance.now()+ms;pos=row.scrollLeft;};
+      for(const ev of ['pointerdown','touchstart','wheel'])row.addEventListener(ev,()=>pause(6000),{passive:true});
+      row.addEventListener('mouseenter',()=>pause(1e9));row.addEventListener('mouseleave',()=>pause(1500));
+      g.querySelectorAll('.g-nav').forEach(b=>b.addEventListener('click',()=>pause(8000)));
+      if(window.IntersectionObserver)new IntersectionObserver(es=>{seen=es.some(e=>e.isIntersecting);},{threshold:.3}).observe(row);
+      const tick=t=>{const dt=Math.min(64,t-(last||t));last=t;
+        if(seen&&t>hold&&row.scrollWidth>row.clientWidth+4){
+          const max=row.scrollWidth-row.clientWidth;
+          if(row.scrollLeft>=max-1){pause(2500);setTimeout(()=>{row.scrollTo({left:0,behavior:'smooth'});pos=0;},2400);}
+          else{pos+=dt*.03;row.style.scrollSnapType='none';row.scrollLeft=pos;}
+        }else row.style.scrollSnapType='';
+        requestAnimationFrame(tick);};
+      requestAnimationFrame(tick);
+    }
   });
   /* the menu's featured card: the hands and the calf, the two most telling photos */
   const pick=k=>items.find(it=>it.kind===k&&it.src);
