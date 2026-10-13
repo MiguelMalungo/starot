@@ -22,7 +22,7 @@ JOBS = {
     "maya-day-chest-man":      ("chest-plate-man-v25.png", MAYA / "maya-day.png", (1290, 990), 250, 1, 1, 0, None, None),
     "maya-trecena-back-woman": ("back-plate-woman-v25.png", MAYA / "maya-trecena.png", (932, 1010), 220, 1, 1, 0, None, None),
     "maya-tone-forearm-woman": ("forearm-upper-plate-woman-v24.png", MAYA / "maya-tone.png", (1600, 875), 220, 1, .92, 11, None, None),
-    "maya-cross-deltoid-man":  ("deltoid-plate-man-v24.png", MAYA / "maya-cross.png", (950, 1165), 560, 1, .95, 0, None, None, .5),   # upright: the arm runs straight down (centre x ≈ 925)
+    "maya-cross-deltoid-man":  ("deltoid-plate-man-v24.png", MAYA / "maya-cross.png", (950, 1165), 560, 1, .95, 20, None, None, .5),   # tilted 20° counter-clockwise, as asked
     # the sky
     "wheel-thigh-woman":       ("thigh-plate-woman-v25.png", DES / "design-1-natal-wheel.png", (975, 1360), 330, 1, .86, 29, None, None),
     "line-forearm-man":        ("forearm-plate-man-v24.png", DES / "design-4-sun-and-rising-gemini-leo.png", (1400, 1010), 490, 1, 1, -2, None, None),
