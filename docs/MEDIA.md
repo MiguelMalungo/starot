@@ -39,7 +39,11 @@ saves the results in `media/gallery/raw/` (git-ignored) for review.
 Small symbols on hands are where the model fails most (it moves, resizes and redraws them).
 For those, generate a clean plate (`npm run tattoos -- hands-plate`) and lay the exact designs on
 with `python3 tools/higgsfield/composite-hands.py`: positions, size and angle are set in the
-script, and the ink is multiplied into the skin so its texture shows through. `npm run example` is the
+script, and the ink is multiplied into the skin so its texture shows through.
+The neck line goes the same way (`neck-plate-man`, then `python3 tools/higgsfield/composite-neck.py`),
+because the model keeps redrawing the ascendant ↑ as ♐. The woman's bare-back plate is refused by
+the moderation filter, so her plate is an earlier tattoo render with the AI tattoo patched out
+(`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`). `npm run example` is the
 Seedance 2.5 setup check. Every generation is billed to your Higgsfield credits.
 
 ## Prompts (for the Higgsfield website)

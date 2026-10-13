@@ -15,8 +15,8 @@ PLATE = RAW / "hands-plate-v10.png"
 
 # design file, centre (x, y), length in px (~3 cm on that hand), rotation in degrees (counter-clockwise)
 PLACES = [
-    ("design-2-sun-gemini.png", (650, 690), 250, 30),     # his right hand: ☉ by the wrist, ♊ towards the index finger
-    ("design-3-rising-leo.png", (1895, 925), 225, -33),   # her left hand: along her index finger
+    ("design-2-sun-gemini.png", (700, 845), 250, 30),     # his right hand: ☉ by the wrist, ♊ towards the index finger
+    ("design-3-rising-leo.png", (1765, 985), 225, -30),   # her left hand: along her index finger
 ]
 INK = (26, 28, 34)        # blue-black, the colour healed black ink settles to
 STRENGTH = 1.6            # how far the ink darkens the skin under it (lower = darker)
