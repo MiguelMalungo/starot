@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STAROT · Observatory of Fates</title>
-<meta name="description" content="Tarot, astral maps and numerology drawn in stardust. Deal three arcana, read the numbers in your name, or see the sky as it stood when you were born.">
+<meta name="description" content="Tarot, astral maps, numerology and the Maya count, drawn in stardust. Deal three arcana, read the numbers in your name, find your Maya day sign, or see the sky as it stood when you were born.">
 <meta name="theme-color" content="#050609">
 <link rel="alternate" hreflang="en" href="https://miguelmalungo.github.io/starot/">
 <link rel="alternate" hreflang="pt-BR" href="https://miguelmalungo.github.io/starot/?lang=pt">
@@ -14,7 +14,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="pt_BR">
 <meta property="og:title" content="STAROT · Observatory of Fates">
-<meta property="og:description" content="Tarot, astral maps and numerology — every answer drawn in thousands of stars.">
+<meta property="og:description" content="Tarot, astral maps, numerology and the Maya count — every answer drawn in thousands of stars.">
 <meta property="og:url" content="https://miguelmalungo.github.io/starot/">
 <meta property="og:image" content="https://miguelmalungo.github.io/starot/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -127,6 +127,7 @@
   .door:hover{border-color:var(--gold);box-shadow:0 0 34px -8px rgba(216,184,119,.45);
     transform:translateY(-5px);background:rgba(216,184,119,.05)}
   .door .glyph{font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);line-height:1}
+  .door .glyph svg{width:40px;height:40px;display:block;margin:-2px 0}
   .door h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:25px;letter-spacing:.02em}
   .door p{font-size:14.5px!important;line-height:1.45!important}
   .door .label{margin:0!important;font-size:9px}
@@ -434,9 +435,9 @@
   .ex-box figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);line-height:1.6}
   .ex-note{grid-column:span 2;font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(139,136,120,.75)}
   .ink-door{border-color:rgba(216,184,119,.42);background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.08),rgba(5,6,9,.45) 70%)}
-  .showcase{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;width:min(780px,94vw)}
+  .showcase{display:grid;grid-template-columns:1.25fr .8fr 1fr;grid-template-areas:"wheel maya sun" "wheel maya rising" "sky sky seals";gap:10px;width:min(820px,94vw)}
   .showcase figure{border:1px solid var(--hair);border-radius:12px;background:rgba(5,6,9,.5);padding:12px 14px 10px;display:flex;flex-direction:column;gap:8px;justify-content:center}
-  .showcase figure.big{grid-row:span 2}
+  .showcase .sc svg{max-height:100%}
   .showcase figure.big .sc{flex:1;display:flex;align-items:center}
   .showcase .sc svg{width:100%;height:auto;display:block}
   .showcase figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
@@ -476,7 +477,8 @@
     #intro{padding-top:126px;gap:24px}
     .section{margin:0}
     #intro h1{font-size:clamp(38px,10vw,56px)}
-    .doors{flex-wrap:nowrap;width:100%;max-width:440px;gap:8px}
+    .doors{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:440px;gap:8px}
+    .door .glyph svg{width:30px;height:30px}
     .door{flex:1 1 0;width:auto;min-width:0;padding:16px 6px 13px;gap:7px}
     .door:hover{transform:none}
     .door .glyph{font-size:26px}
@@ -524,10 +526,10 @@
     .door .tag{margin-top:6px;align-self:center}
     .ink-row .deal-btn{padding:11px 15px 9px;letter-spacing:.18em}
     .ink-ph{flex-basis:84px}
-    .showcase{grid-template-columns:1fr 1fr}
+    .showcase{grid-template-columns:1fr 1fr;grid-template-areas:"wheel wheel" "maya sun" "maya rising" "sky sky" "seals seals"}
     .ex-grid{grid-template-columns:1fr}
     .ex-box{padding:32px 18px 22px!important}
-    .showcase figure.big{grid-row:auto;grid-column:span 2;max-width:260px;justify-self:center;width:100%}
+    .showcase figure[style*=wheel]{max-width:260px;justify-self:center;width:100%}
     #unlock .offer-box{padding:34px 22px 24px;max-height:92vh;overflow-y:auto}
     .price b{font-size:52px}
     .head-right{display:none}
@@ -547,6 +549,7 @@
     <span class="label nav" data-go="tarot" data-t="nav.tarot">Tarot</span><span class="sep"></span>
     <span class="label nav" data-go="astro" data-t="nav.astro">Astral map</span><span class="sep"></span>
     <span class="label nav" data-go="num" data-t="nav.num">Numerology</span><span class="sep"></span>
+    <span class="label nav" data-go="maya" data-t="nav.maya">Maya</span><span class="sep"></span>
     <span class="label nav" data-go="ink" data-t="nav.ink">Tattoos</span><span class="sep"></span>
     <span class="count" id="counter"></span><span class="sep"></span>
     <button class="label nav lang" id="langBtn" aria-label="Português">PT</button>
@@ -560,7 +563,7 @@
   <div class="section on" id="menu">
     <span class="label" data-t="obs">Observatory of Fates</span>
     <h1 data-t="menu.h1">Choose your<br><em>instrument.</em></h1>
-    <p data-t="menu.p">Three ways of asking the dark — free, and computed with real astronomy and the classical tables.
+    <p data-t="menu.p">Four ways of asking the dark — free, and computed with real astronomy and the classical tables.
        Each answer is drawn in stardust, and the ones that ring true can be worn as tattoos.</p>
     <div class="doors">
       <button class="door" data-go="tarot">
@@ -578,13 +581,18 @@
         <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag" data-t="free">Free</span></div>
         <span class="label" data-t="door.num.l">The seal</span>
       </button>
+      <button class="door" data-go="maya">
+        <span class="glyph" id="mayaDoorGlyph">◈</span>
+        <div><h3 data-t="door.maya.h">Mayan sign</h3><p data-t="door.maya.p">Your day in the sacred count of 260 — its sign, its tone, its cross.</p><span class="tag" data-t="free">Free</span></div>
+        <span class="label" data-t="door.maya.l">The count</span>
+      </button>
     </div>
     <section class="feature" aria-labelledby="featH">
       <div class="f-photos" id="featPhotos"></div>
       <div class="f-text">
         <span class="label" data-t="feat.label">Your readings, worn</span>
         <h2 id="featH" data-t="feat.h">Wear your <em>sky.</em></h2>
-        <p data-t="feat.p">Your wheel, your Sun and Rising signs and your numbers, drawn as five tattoo designs on one flash sheet.</p>
+        <p data-t="feat.p">Your wheel, your Sun and Rising signs, your Maya day sign and your numbers, drawn as six tattoo designs on one flash sheet.</p>
         <div class="f-price" id="featPrice"></div>
         <div class="f-cta"><button class="deal-btn gold" data-go="ink" id="featGo">↓ &nbsp;Get my tattoo files</button>
           <button class="linkish" data-examples data-t="ex.open">See the tattoos on skin</button></div>
@@ -626,7 +634,7 @@
        The stars will turn back to that night and draw the wheel.</p>
     <span class="label ink-only" data-t="ink.label" hidden>Your readings, worn</span>
     <h1 class="ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h1>
-    <p class="ink-only" data-t="ink.p" hidden>Five tattoo designs drawn from your own chart and your own numbers —
+    <p class="ink-only" data-t="ink.p" hidden>Six tattoo designs drawn from your chart, your Maya day sign and your numbers —
        a print-ready flash sheet and the files for your tattoo artist.</p>
     <div class="f-price ink-only" id="inkPrice" hidden></div>
     <div class="gallery ink-only" hidden></div>
@@ -658,7 +666,7 @@
       <button class="deal-btn astro-only" type="submit" data-t="cast">☉ &nbsp;Cast the chart</button>
       <button class="deal-btn gold ink-only" type="submit" data-t="inkGo" hidden>✒ &nbsp;Preview my tattoos — free</button>
       <p class="privacy" data-t="privacy">Computed in your browser. Your name never leaves this page.</p>
-      <span class="label ink-only sc-label" data-t="sc.label" hidden>The five designs on your sheet</span>
+      <span class="label ink-only sc-label" data-t="sc.label" hidden>The six designs on your sheet</span>
       <div class="showcase ink-only" id="showcase" hidden></div>
       <button class="linkish ink-only" data-examples hidden data-t="ex.open2">See an example flash sheet</button>
       <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
@@ -678,6 +686,21 @@
       <div class="frow" id="numDate"></div>
       <div class="err" id="numErr"></div>
       <button class="deal-btn" type="submit" data-t="numGo">⁂ &nbsp;Read the numbers</button>
+      <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
+    </form>
+  </div>
+
+  <!-- ── maya ── -->
+  <div class="section" id="mayaIntro">
+    <span class="label" data-t="maya.label">The count of days</span>
+    <h1 data-t="maya.h1">Every day has<br><em>a face.</em></h1>
+    <p data-t="maya.p">The Maya count of 260 days gives every day a sign and a number. Give the observatory the day
+       you were born, and it will find yours — with its tone, its trecena and the four signs that frame it.</p>
+    <form class="form" id="mayaForm" autocomplete="off" novalidate>
+      <div class="frow" id="mayaDate"></div>
+      <div class="err" id="mayaErr"></div>
+      <button class="deal-btn" type="submit" data-t="mayaGo">◈ &nbsp;Find my day sign</button>
+      <p class="privacy" data-t="maya.note">Counted the K’iche’ way, as Maya daykeepers in Guatemala still count it.</p>
       <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
     </form>
   </div>
@@ -722,6 +745,7 @@
     <span class="for" id="unlockFor"></span>
     <ul class="gets">
       <li><i>✶</i><span data-t="get.wheel"><b>Your natal wheel</b> — the whole sky of your birth, as one piece</span></li>
+      <li><i>◈</i><span data-t="get.maya"><b>Your Maya day sign</b> — the nawal of your birthday in its cartouche, its tone in bars and dots</span></li>
       <li><i>☉</i><span data-t="get.sun"><b>☉ beside your Sun sign</b> — small, for a wrist or an ankle</span></li>
       <li id="getRising"><i>↑</i><span data-t="get.rising"><b>↑ beside your Rising sign</b> — how you arrive, worn</span></li>
       <li id="getSky"><i>☉</i><span data-t="get.sky"><b>Both in one line</b> — ☉ and ↑ with their signs, side by side</span></li>
@@ -758,8 +782,8 @@
     <span class="label" data-t="ex.label">The tattoo flash</span>
     <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
     <div class="ex-grid" id="exGrid">
-      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=11" alt="An example STAROT tattoo flash sheet with five designs" data-ta="ex.alt" loading="lazy">
-        <figcaption data-t="ex.sheet">An example flash sheet: five designs from one birth chart and one name, ready to print.</figcaption></figure>
+      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=12" alt="An example STAROT tattoo flash sheet with six designs" data-ta="ex.alt" loading="lazy">
+        <figcaption data-t="ex.sheet">An example flash sheet: six designs from one birth chart and one name, ready to print.</figcaption></figure>
       <div class="ex-photos" id="exPhotos"></div>
     </div>
     <button class="deal-btn gold" id="exGo" data-t="ex.go">✒ &nbsp;Draw mine</button>
@@ -770,7 +794,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="11";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="12";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
@@ -843,7 +867,7 @@ const UI_PT={
   'obs':'Observatório dos Destinos',
   'nav.tarot':'Tarô','nav.astro':'Mapa astral','nav.num':'Numerologia','nav.ink':'Tatuagens',
   'menu.h1':'Escolha o seu<br><em>instrumento.</em>',
-  'menu.p':'Três maneiras de perguntar ao escuro — grátis, e calculadas com astronomia de verdade e as tabelas clássicas. Cada resposta é desenhada em poeira de estrelas, e as que soarem verdadeiras podem virar tatuagem.',
+  'menu.p':'Quatro maneiras de perguntar ao escuro — grátis, e calculadas com astronomia de verdade e as tabelas clássicas. Cada resposta é desenhada em poeira de estrelas, e as que soarem verdadeiras podem virar tatuagem.',
   'door.tarot.h':'Leitura de tarô','door.tarot.p':'Três arcanos — passado, presente, futuro — tirados dos vinte e dois.','door.tarot.l':'As cartas',
   'door.astro.h':'Mapa astral','door.astro.p':'O céu como estava quando você nasceu — planetas, casas, o ascendente.','door.astro.l':'A roda',
   'door.num.h':'Numerologia','door.num.p':'Os números escondidos no seu nome e na sua data — o caminho, a voz, a porta.',
@@ -866,13 +890,17 @@ const UI_PT={
   'cast':'☉ &nbsp;Desenhar o mapa',
   'privacy':'Calculado no seu navegador. O seu nome nunca sai desta página.',
   'ink.label':'As suas leituras, na pele','ink.h1':'Leve o seu céu<br><em>na pele.</em>',
-  'ink.p':'Cinco desenhos de tatuagem feitos a partir do seu mapa e dos seus números — uma folha de flash pronta para imprimir e os arquivos para o seu tatuador.',
+  'ink.p':'Seis desenhos de tatuagem feitos a partir do seu mapa, do seu nawal maia e dos seus números — uma folha de flash pronta para imprimir e os arquivos para o seu tatuador.',
   'f.iname':'Nome completo de nascimento — para os seus números','inkGo':'✒ &nbsp;Ver as minhas tatuagens — grátis',
   'num.label':'A aritmética de uma vida',
   'num.h1':'Todo nome é<br><em>um número.</em>',
   'num.p':'Escreva o nome completo que você recebeu ao nascer, e a data. As letras serão pesadas, os dígitos dobrados, e o selo do seu caminho desenhado em estrelas.',
   'f.name':'Nome completo de nascimento','ph.name':'ex.: Maria Eduarda Souza Lima',
   'numGo':'⁂ &nbsp;Ler os números',
+  'nav.maya':'Maia','door.maya.h':'Signo maia','door.maya.p':'O seu dia na contagem sagrada de 260 — o seu signo, o seu tom, a sua cruz.','door.maya.l':'A contagem',
+  'maya.label':'A contagem dos dias','maya.h1':'Todo dia tem<br><em>um rosto.</em>',
+  'maya.p':'A contagem maia de 260 dias dá a cada dia um signo e um número. Diga ao observatório o dia em que você nasceu, e ele encontra o seu — com o tom, a trecena e os quatro signos que o emolduram.',
+  'mayaGo':'◈ &nbsp;Encontrar o meu nawal','maya.note':'Contado à maneira k’iche’, como os guardiões dos dias maias da Guatemala ainda contam.',
   'foot.a':'Amostragem celeste','foot.b':'estrelas',
   'share':'✦ &nbsp;Compartilhar o observatório',
   'hint':'Toque na figura — as estrelas se lembram',
@@ -882,6 +910,7 @@ const UI_PT={
   'unlock.label':'A sua folha de flash','unlock.h':'Os seus desenhos, para usar na pele',
   'get.wheel':'<b>A sua roda natal</b> — o céu inteiro do seu nascimento, numa só peça',
   'get.sun':'<b>☉ ao lado do seu signo solar</b> — pequena, para o pulso ou o tornozelo',
+  'get.maya':'<b>O seu nawal maia</b> — o signo do dia em que você nasceu no seu cartucho, com o tom em barras e pontos',
   'get.rising':'<b>↑ ao lado do seu ascendente</b> — o jeito como você chega, na pele',
   'get.sky':'<b>Os dois numa linha</b> — ☉ e ↑ com os seus signos, lado a lado',
   'get.nums':'<b>Os seus números em selos, numa linha</b> — Caminho, Expressão, Alma, Persona, como na sua leitura',
@@ -891,11 +920,11 @@ const UI_PT={
   'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento e os seus quatro números vão junto com o pagamento, para que o seu link possa reabrir a folha — o seu nome nunca vai · <a href="termos.html" target="_blank">Termos</a>',
   'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
   'ex.label':'A folha de flash','ex.h':'As suas leituras, na pele',
-  'ex.sheet':'Um exemplo de folha de flash: cinco desenhos de um mapa e um nome, prontos para imprimir.',
+  'ex.sheet':'Um exemplo de folha de flash: seis desenhos de um mapa e um nome, prontos para imprimir.',
   'ex.go':'✒ &nbsp;Desenhar a minha','ex.open':'Ver as tatuagens na pele','ex.open2':'Ver um exemplo de folha de flash',
   'feat.label':'As suas leituras, na pele','feat.h':'Leve o seu céu <em>na pele.</em>',
-  'feat.p':'A sua roda, os seus signos de Sol e Ascendente e os seus números, desenhados como cinco tatuagens numa folha de flash.',
-'sc.label':'Os cinco desenhos da sua folha','ex.alt':'Um exemplo de folha de flash STAROT com cinco desenhos',
+  'feat.p':'A sua roda, os seus signos de Sol e Ascendente, o seu nawal maia e os seus números, desenhados como seis tatuagens numa folha de flash.',
+'sc.label':'Os seis desenhos da sua folha','ex.alt':'Um exemplo de folha de flash STAROT com seis desenhos',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
 };
 
@@ -1576,7 +1605,7 @@ async function shareSite(){
   track('share');
   try{
     if(navigator.share){await navigator.share({title:T('STAROT · Observatory of Fates','STAROT · Observatório dos Destinos'),
-      text:T('Tarot, astral maps and numerology — drawn in stardust.','Tarô, mapa astral e numerologia — desenhados em poeira de estrelas.'),url});return;}
+      text:T('Tarot, astral maps, numerology and the Maya count — drawn in stardust.','Tarô, mapa astral, numerologia e a contagem maia — desenhados em poeira de estrelas.'),url});return;}
     await navigator.clipboard.writeText(url);toast(T('Link copied — pass it on.','Link copiado — passe adiante.'));
   }catch(e){}
 }
@@ -1624,9 +1653,9 @@ function showSection(id){
   $('intro').scrollTop=0;
   $('intro').classList.remove('gone');
   document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',
-    (id==='tarotIntro'&&n.dataset.go==='tarot')||(id==='astroIntro'&&n.dataset.go===formMode)||(id==='numIntro'&&n.dataset.go==='num')));
+    (id==='tarotIntro'&&n.dataset.go==='tarot')||(id==='astroIntro'&&n.dataset.go===formMode)||(id==='numIntro'&&n.dataset.go==='num')||(id==='mayaIntro'&&n.dataset.go==='maya')));
 }
-const SECTION={menu:'menu',tarot:'tarotIntro',astro:'astroIntro',num:'numIntro',ink:'astroIntro'};
+const SECTION={menu:'menu',tarot:'tarotIntro',astro:'astroIntro',num:'numIntro',maya:'mayaIntro',ink:'astroIntro'};
 /* clear the stage: hide reading, scatter the stars, return to an intro section */
 function leaveReading(to){
   view=-1;
@@ -1646,7 +1675,7 @@ function leaveReading(to){
   $('dealBtn2').classList.remove('ready');
   setTimeout(()=>{if(to==='astro'||to==='ink')setFormMode(to);showSection(SECTION[to]);},600);
 }
-const REDEAL={tarot:T('↻ &nbsp;Ask again','↻ &nbsp;Perguntar de novo'),astro:T('↻ &nbsp;New chart','↻ &nbsp;Novo mapa'),num:T('↻ &nbsp;New numbers','↻ &nbsp;Novos números'),ink:T('↻ &nbsp;New tattoos','↻ &nbsp;Novas tatuagens')};
+const REDEAL={tarot:T('↻ &nbsp;Ask again','↻ &nbsp;Perguntar de novo'),astro:T('↻ &nbsp;New chart','↻ &nbsp;Novo mapa'),num:T('↻ &nbsp;New numbers','↻ &nbsp;Novos números'),maya:T('↻ &nbsp;Another day','↻ &nbsp;Outro dia'),ink:T('↻ &nbsp;New tattoos','↻ &nbsp;Novas tatuagens')};
 function beginReading(){
   $('intro').classList.add('gone');
   setLens(false);
@@ -2172,7 +2201,7 @@ function skyIntro(sun,moon,H){
 }
 /* every free reading ends with the same quiet invitation */
 const inkCta=(lead,kind='sun')=>{
-  const g=(CONFIG.gallery||[]).find(it=>it.kind===kind&&it.src)||(CONFIG.gallery||[]).find(it=>it.src);
+  const all=CONFIG.gallery||[],g=all.find(it=>it.kind===kind&&it.src)||(kind==='maya'?null:all.find(it=>it.src));
   return `<div class="ink${g?' has-ph':''}">${g?`<button class="ink-ph" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}"><img src="${mv(g.src)}" alt="" loading="lazy"></button>`:''}
   <div class="ink-body"><span class="k">${T('Wear it','Leve na pele')}</span><p>${lead}</p>
   <div class="ink-row"><button class="deal-btn gold" data-goink>✒ &nbsp;${T('Make it a tattoo','Virar tatuagem')}</button></div></div></div>`;};
@@ -2191,8 +2220,8 @@ function showAstro(k){
     setPanel({pos:M.pos+T('The Sun','O Sol'),name:T(`Sun in ${s.name}`,`Sol em ${s.name}`),
       meta:[[M.deg,`${degStr(sun.lon)} ${s.name.toUpperCase()}`],[M.house,chart.houses?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:NEED_HOUR],[M.el,elMod(s)]],
       prose:`<em>${T('The centre; your will and the light you steer by.','O centro; a sua vontade e a luz que guia você.')}</em> ${SUN_IN[sun.sign]}${houseLine(sun)}`+
-        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of five designs drawn from your readings.`,
-                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de cinco desenhos feitos das suas leituras.`))});
+        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of six designs drawn from your readings.`,
+                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de seis desenhos feitos das suas leituras.`))});
   }else if(k===2){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
@@ -2214,8 +2243,8 @@ function showAstro(k){
                                         `O regente do seu horizonte, <b>${{Sol:'o Sol',Lua:'a Lua'}[ruler.name]||ruler.name}</b>, está em <b>${SIGNS[ruler.sign].name}</b> na casa ${RN[ruler.house-1]} — a porta se abre para ${HOUSES[ruler.house-1]}.`)}</span>`:'')+
           `<span class="line">${T(`Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.`,
                                   `O seu Meio do Céu — o cume público — está em <b>${SIGNS[m].name}</b>: o mundo vai conhecer você como alguém ${SIGNS[m].flavor}.`)}</span>`+
-          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of five designs drawn from your readings.`,
-                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de cinco desenhos feitos das suas leituras.`))});
+          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of six designs drawn from your readings.`,
+                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de seis desenhos feitos das suas leituras.`))});
     }else{
       morphTo({fn:(ctx,S)=>{const c=S/2;ctx.lineWidth=S*.014;ctx.setLineDash([S*.03,S*.05]);ctx.beginPath();ctx.arc(c,c,S*.44,0,7);ctx.stroke();ctx.setLineDash([]);
         ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c+S*.5,c);ctx.stroke();},fill:{desk:.66,mobile:.3}});
@@ -2379,6 +2408,278 @@ function showNumber(k){
                `<b style="color:var(--gold);font-weight:400">${row}</b> — o seu Caminho, Expressão, Alma e Persona em selos numa linha, desenhados como tatuagem junto com o seu mapa.`),'seals')});
 }
 
+/* ═══ MAYA — the Tzolk'in, the count of 260 days ═══════════════
+   Counted the way K'iche' daykeepers in Guatemala still count it, with the
+   Goodman–Martínez–Thompson correlation (Julian day 584283 = 13.0.0.0.0, 4 Ajaw).
+   20 day signs × 13 tones. The trecena is the sign that opened your thirteen days;
+   the cross adds the four signs that frame yours (−8 and +8 days: youth and maturity;
+   −6 and +6: the masculine and feminine sides). Our own drawings of the signs. */
+const MAYA_GMT=584283;
+function jdnOf(y,m,d){const a=Math.floor((14-m)/12),Y=y+4800-a,M=m+12*a-3;
+  return d+Math.floor((153*M+2)/5)+365*Y+Math.floor(Y/4)-Math.floor(Y/100)+Math.floor(Y/400)-32045;}
+const modp=(a,n)=>((a%n)+n)%n;
+const kinOf=dn=>({tone:modp(dn+3,13)+1,sign:modp(dn+19,20)});
+function mayaOf(date){
+  const dn=jdnOf(date.y,date.m,date.d)-MAYA_GMT,k=kinOf(dn);
+  return {...k,dn,date,trecena:kinOf(dn-(k.tone-1)).sign,lord:modp(dn+8,9)+1,dir:k.sign%4,
+    cross:{youth:kinOf(dn-8),mature:kinOf(dn+8),male:kinOf(dn-6),female:kinOf(dn+6)}};
+}
+
+/* one day sign inside its cartouche, on the three-lobed stand of the Maya day signs.
+   (cx,cy) is the centre of the cartouche, s its width */
+function mayaGlyph(ctx,i,cx,cy,s,lw){
+  const w=s,h=s*.88,rr=s*.2,x0=cx-w/2,y0=cy-h/2,PI=Math.PI;
+  ctx.lineWidth=lw;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(x0+rr,y0);ctx.lineTo(x0+w-rr,y0);ctx.arc(x0+w-rr,y0+rr,rr,-PI/2,0);
+  ctx.lineTo(x0+w,y0+h-rr);ctx.arc(x0+w-rr,y0+h-rr,rr,0,PI/2);ctx.lineTo(x0+rr,y0+h);
+  ctx.arc(x0+rr,y0+h-rr,rr,PI/2,PI);ctx.lineTo(x0,y0+rr);ctx.arc(x0+rr,y0+rr,rr,PI,PI*1.5);ctx.closePath();ctx.stroke();
+  for(const dx of [-.19,0,.19]){ctx.beginPath();ctx.arc(cx+dx*s,y0+h,s*.085,0,PI);ctx.stroke();}   /* the stand */
+  mayaMotif(ctx,i,cx,cy-s*.02,s*.34);
+}
+function mayaMotif(ctx,i,cx,cy,r){
+  const PI=Math.PI,X=u=>cx+u*r,Y=v=>cy+v*r;
+  const ln=(...p)=>{ctx.beginPath();p.forEach(([u,v],k)=>ctx[k?'lineTo':'moveTo'](X(u),Y(v)));ctx.stroke();};
+  const ring=(u,v,q)=>{ctx.beginPath();ctx.arc(X(u),Y(v),q*r,0,PI*2);ctx.stroke();};
+  const dot=(u,v,q)=>{ctx.beginPath();ctx.arc(X(u),Y(v),q*r,0,PI*2);ctx.fill();};
+  const curve=(u0,v0,...qs)=>{ctx.beginPath();ctx.moveTo(X(u0),Y(v0));for(let k=0;k<qs.length;k+=4)ctx.quadraticCurveTo(X(qs[k]),Y(qs[k+1]),X(qs[k+2]),Y(qs[k+3]));ctx.stroke();};
+  const wave=(v,a=.6)=>curve(-a,v,-a*.75,v-.13,-a*.5,v,-a*.25,v+.13,0,v,a*.25,v-.13,a*.5,v,a*.75,v+.13,a,v);
+  const spiral=(u,v,R,turns)=>{ctx.beginPath();const n=60*turns;for(let k=0;k<=n;k++){const t=k/n,a=t*turns*PI*2,q=(.08+.92*t)*R;ctx[k?'lineTo':'moveTo'](X(u+q*Math.cos(a)),Y(v+q*Math.sin(a)));}ctx.stroke();};
+  switch(i){
+    case 0:   /* Imix · the crocodile rising from the first water */
+      ctx.beginPath();ctx.moveTo(X(-.66),Y(.12));ctx.arc(X(0),Y(.12),.66*r,PI,0);ctx.closePath();ctx.stroke();
+      dot(0,-.2,.11);wave(.48,.66);wave(.8,.5);break;
+    case 1:   /* Ik' · the T-shaped window of the wind */
+      ln([-.7,-.55],[.7,-.55]);ln([0,-.55],[0,.75]);ln([-.3,.75],[.3,.75]);break;
+    case 2:{  /* Ak'bal · the night: a crescent over three stars */
+      ctx.beginPath();ctx.arc(X(0),Y(-.14),.6*r,-PI/3,PI/3,true);ctx.arc(X(.33),Y(-.14),.52*r,1.623,-1.623);ctx.closePath();ctx.stroke();
+      for(const u of [-.32,0,.32])dot(u,.68,.08);break;}
+    case 3:   /* K'an · the seed, with its cross */
+      ctx.beginPath();ctx.ellipse(X(0),Y(0),.54*r,.76*r,0,0,PI*2);ctx.stroke();ln([0,-.42],[0,.42]);ln([-.3,0],[.3,0]);break;
+    case 4:   /* Chikchan · the serpent */
+      curve(-.05,.8,.8,.52,0,.2,-.8,-.12,0,-.4);ring(.04,-.6,.17);ln([.04,-.77],[.04,-.88]);break;
+    case 5:   /* Kimi · the skull, eyes closed in peace */
+      ctx.beginPath();ctx.arc(X(0),Y(-.06),.62*r,PI*.9,PI*.1);ctx.lineTo(X(.4),Y(.6));ctx.lineTo(X(-.4),Y(.6));ctx.closePath();ctx.stroke();
+      ring(-.25,-.08,.14);ring(.25,-.08,.14);ln([-.07,.26],[0,.14],[.07,.26]);ln([0,.46],[0,.6]);break;
+    case 6:   /* Manik' · the deer's antlers */
+      for(const s of [-1,1]){curve(0,.78,s*-.12,.15,s*.36,-.2,s*.54,-.46,s*.58,-.78);ln([s*.26,-.06],[s*.66,-.2]);ln([s*.47,-.42],[s*.22,-.7]);}break;
+    case 7:   /* Lamat · the morning star */
+      ln([0,-.78],[.2,-.2],[.78,0],[.2,.2],[0,.78],[-.2,.2],[-.78,0],[-.2,-.2],[0,-.78]);
+      for(const [u,v] of [[-.45,-.45],[.45,-.45],[.45,.45],[-.45,.45]])dot(u,v,.08);break;
+    case 8:   /* Muluk · the water drop */
+      ctx.beginPath();ctx.moveTo(X(0),Y(-.74));ctx.lineTo(X(.352),Y(-.06));ctx.arc(X(0),Y(.13),.4*r,-.4957,PI+.4957);ctx.closePath();ctx.stroke();wave(.8,.6);break;
+    case 9:   /* Ok · the dog's paw */
+      ring(0,.34,.3);for(const [u,v] of [[-.5,-.12],[-.19,-.46],[.19,-.46],[.5,-.12]])dot(u,v,.14);break;
+    case 10:  /* Chuwen · the monkey's spiral, the thread of time */
+      spiral(0,0,.7,2.5);break;
+    case 11:  /* Eb · the stairway of the road */
+      ln([-.72,.7],[-.36,.7],[-.36,.34],[0,.34],[0,-.02],[.36,-.02],[.36,-.38],[.72,-.38],[.72,-.74]);break;
+    case 12:  /* Ben · the reeds */
+      for(const [u,top,v] of [[-.42,-.5,.12],[0,-.78,-.18],[.42,-.5,.12]]){ln([u,.74],[u,top]);ln([u-.12,v],[u+.12,v]);}break;
+    case 13:  /* Ix · the jaguar's spots */
+      for(const [u,v] of [[-.38,.3],[.38,.3],[0,-.38]]){ring(u,v,.24);dot(u,v,.08);}break;
+    case 14:{ /* Men · the eagle's feather */
+      const P0=[-.36,.78],P1=[.06,.1],P2=[.42,-.76];curve(...P0,...P1,...P2);
+      for(const t of [.34,.56,.78]){const b=(a,k)=>(1-t)*(1-t)*P0[k]+2*(1-t)*t*P1[k]+t*t*P2[k];
+        const tx=2*(1-t)*(P1[0]-P0[0])+2*t*(P2[0]-P1[0]),ty=2*(1-t)*(P1[1]-P0[1])+2*t*(P2[1]-P1[1]),n=Math.hypot(tx,ty);
+        const ux=tx/n,uy=ty/n,px=b(0,0),py=b(0,1),L=.3*(1.05-t*.35);
+        ln([px,py],[px-uy*L+ux*.14,py+ux*L+uy*.14]);ln([px,py],[px+uy*L+ux*.14,py-ux*L+uy*.14]);}break;}
+    case 15:  /* Kib · the owl's eyes */
+      for(const s of [-1,1]){ring(s*.32,-.04,.27);dot(s*.32,-.04,.09);ln([s*.66,-.62],[s*.46,-.38]);}ln([-.08,.32],[0,.48],[.08,.32]);break;
+    case 16:  /* Kaban · the earth, and the curl of what moves in it */
+      curve(-.8,.6,-.26,-.8,.28,.6);curve(.12,.243,.45,-.12,.8,.6);ln([-.8,.6],[.8,.6]);break;
+    case 17:  /* Etz'nab · the flint blade */
+      curve(0,-.8,.6,0,0,.8);curve(0,.8,-.6,0,0,-.8);ln([0,-.5],[0,.5]);break;
+    case 18:  /* Kawak · the storm cloud and its rain */
+      ctx.beginPath();ctx.moveTo(X(-.66),Y(-.06));ctx.arc(X(-.45),Y(-.06),.21*r,PI,0);ctx.arc(X(0),Y(-.06),.24*r,PI,0);ctx.arc(X(.45),Y(-.06),.21*r,PI,0);ctx.closePath();ctx.stroke();
+      for(const u of [-.36,0,.36])ln([u,.18],[u-.13,.62]);break;
+    case 19:  /* Ajaw · the face of the lord, the sun */
+      ring(0,0,.34);for(let k=0;k<8;k++){const a=k*PI/4;ln([.5*Math.cos(a),.5*Math.sin(a)],[.74*Math.cos(a),.74*Math.sin(a)]);}dot(0,0,.1);break;
+  }
+}
+/* the tone in Maya numerals: a dot is one, a bar is five */
+function mayaNumH(n,w,lw){const bars=Math.floor(n/5),dots=n%5,bh=Math.max(lw*1.4,w*.11);return (dots?bh*1.1:0)+bars*bh+(bars+(dots?1:0)-1)*bh*.9;}
+function mayaNumeral(ctx,n,cx,cy,w,lw){
+  const bars=Math.floor(n/5),dots=n%5,bh=Math.max(lw*1.4,w*.11),gap=bh*.9,dr=bh*.55;
+  const H=mayaNumH(n,w,lw);
+  let y=cy-H/2;
+  if(dots){const step=Math.min(w/Math.max(dots,1),dr*3.2),x0=cx-(dots-1)*step/2;
+    for(let k=0;k<dots;k++){ctx.beginPath();ctx.arc(x0+k*step,y+dr,dr,0,Math.PI*2);ctx.fill();}y+=dr*2+gap;}
+  for(let k=0;k<bars;k++){ctx.beginPath();ctx.lineCap='round';ctx.lineWidth=bh;ctx.moveTo(cx-w/2+bh/2,y+bh/2);ctx.lineTo(cx+w/2-bh/2,y+bh/2);ctx.stroke();y+=bh+gap;}
+  return H;
+}
+/* the day sign with its tone above: the shape of a Maya date, and the tattoo */
+const NAWAL_H=1.27;   /* height ÷ width */
+function drawNawal(ctx,W,H,sign,tone,lwk=.05){
+  const u=Math.min(W,H/NAWAL_H),cx=W/2,bot=(H+u*NAWAL_H)/2,s=u*.84,lw=u*lwk;
+  const cy=bot-lw/2-s*.085-s*.44,ctop=cy-s*.44,nw=s*.72,nh=mayaNumH(tone,nw,lw);
+  ctx.lineCap='round';ctx.lineJoin='round';
+  mayaNumeral(ctx,tone,cx,ctop-lw/2-u*.06-nh/2,nw,lw);
+  ctx.lineWidth=lw;mayaGlyph(ctx,sign,cx,cy,s,lw);
+}
+/* the cross: your sign in the middle, youth above, maturity below, the two sides to each hand */
+function drawMayaCross(ctx,S,m,lwk=.011){
+  const c=S/2,d=S*.31,lw=S*lwk;
+  const at=[[m,0,0,1],[m.cross.youth,0,-d,.7],[m.cross.mature,0,d,.7],[m.cross.male,-d,0,.7],[m.cross.female,d,0,.7]];
+  for(const [k,dx,dy,z] of at){const s=S*.2*z,u=s/.84,cy=c+dy+u*.12,nw=s*.72,l=lw*z,nh=mayaNumH(k.tone,nw,l);
+    mayaNumeral(ctx,k.tone,c+dx,cy-s*.44-l/2-u*.05-nh/2,nw,l);ctx.lineWidth=l;mayaGlyph(ctx,k.sign,c+dx,cy,s,l);}
+}
+/* the tone alone, large, inside a ring — for the stars */
+function drawMayaTone(ctx,S,tone){
+  const c=S/2;ctx.lineWidth=S*.012;ctx.beginPath();ctx.arc(c,c,S*.44,0,Math.PI*2);ctx.stroke();
+  mayaNumeral(ctx,tone,c,c,S*.5,S*.02);
+}
+
+/* the twenty day signs — Yucatec names, as most books print them */
+const MAYA_SIGNS=[
+{y:"Imix",en:"Crocodile",pt:"Crocodilo",keys:T("the source, nourishment, beginnings","a fonte, o alimento, os começos"),
+ prose:T("Imix is the first day: the primordial water and the crocodile floating on it, the earth before it had a shape. Born under it, you nourish — ideas, people and projects begin near you. Your gift is starting what is alive; your shadow is mothering everything and finishing little.",
+         "Imix é o primeiro dia: a água primordial e o crocodilo que flutua nela, a terra antes de ter forma. Quem nasce sob ele alimenta — ideias, pessoas e projetos começam perto de você. O seu dom é dar início ao que está vivo; a sua sombra é cuidar de tudo e terminar pouco.")},
+{y:"Ik'",en:"Wind",pt:"Vento",keys:T("breath, spirit, the word","o sopro, o espírito, a palavra"),
+ prose:T("Ik' is breath — the wind that carries words, rain and spirit. You are a messenger: you move ideas between people, and you feel the air of a room before anyone speaks. Your gift is inspiration; your shadow is scattering like weather.",
+         "Ik' é o sopro — o vento que leva as palavras, a chuva e o espírito. Você é mensageiro: leva ideias de uma pessoa a outra e sente o ar de uma sala antes de alguém falar. O seu dom é a inspiração; a sua sombra é se espalhar como o tempo que muda.")},
+{y:"Ak'bal",en:"Night",pt:"Noite",keys:T("the inner house, dreams, mystery","a casa interior, os sonhos, o mistério"),
+ prose:T("Ak'bal is the night and the house — the dark where things rest before they are born. You keep an inner room few people enter: dreams, intuition, a gift for keeping. Your gift is depth and shelter; your shadow is hiding inside your own house.",
+         "Ak'bal é a noite e a casa — o escuro onde as coisas descansam antes de nascer. Você guarda um quarto interior onde poucos entram: sonhos, intuição, o dom de guardar. O seu dom é a profundidade e o abrigo; a sua sombra é se esconder dentro da própria casa.")},
+{y:"K'an",en:"Seed",pt:"Semente",keys:T("growth, abundance, what is waiting to ripen","o crescimento, a fartura, o que espera para amadurecer"),
+ prose:T("K'an is the maize seed, the yellow of ripeness, the net that gathers. You hold potential the way a seed holds a field — patient, sure that what is planted comes up. Your gift is growth and plenty; your shadow is waiting for a harvest you have not sown.",
+         "K'an é a semente do milho, o amarelo do que amadurece, a rede que recolhe. Você guarda potencial como uma semente guarda um campo — com paciência, certo de que o que se planta nasce. O seu dom é o crescimento e a fartura; a sua sombra é esperar uma colheita que não semeou.")},
+{y:"Chikchan",en:"Serpent",pt:"Serpente",keys:T("life force, instinct, the body's wisdom","a força vital, o instinto, a sabedoria do corpo"),
+ prose:T("Chikchan is the serpent — life force running up the spine, instinct older than thought. You feel the truth in your body before your mind catches up. Your gift is vitality and sharp perception; your shadow is striking before you look.",
+         "Chikchan é a serpente — a força vital subindo pela coluna, um instinto mais antigo que o pensamento. Você sente a verdade no corpo antes de a mente alcançar. O seu dom é a vitalidade e a percepção afiada; a sua sombra é dar o bote antes de olhar.")},
+{y:"Kimi",en:"Death",pt:"Morte",keys:T("transformation, the ancestors, renewal","a transformação, os ancestrais, a renovação"),
+ prose:T("Kimi is death as the Maya meant it: not an end but a turning, with the ancestors close at hand. You are a bridge between what was and what comes, calm where others panic. Your gift is renewal and wise counsel; your shadow is holding on to what has already left.",
+         "Kimi é a morte como os maias a entendiam: não um fim, mas uma virada, com os ancestrais por perto. Você é ponte entre o que foi e o que vem, calmo onde os outros se assustam. O seu dom é a renovação e o bom conselho; a sua sombra é segurar o que já partiu.")},
+{y:"Manik'",en:"Deer",pt:"Veado",keys:T("healing, grace, the hand that helps","a cura, a graça, a mão que ajuda"),
+ prose:T("Manik' is the deer and the hand that holds it — grace, healing, the guardian of wild places. You were made to tend and to guide gently. Your gift is a healer's touch and sure footing in the forest; your shadow is running at the first sound.",
+         "Manik' é o veado e a mão que o segura — a graça, a cura, o guardião dos lugares selvagens. Você foi feito para cuidar e guiar com delicadeza. O seu dom é a mão que cura e o passo firme na mata; a sua sombra é fugir ao primeiro barulho.")},
+{y:"Lamat",en:"Star",pt:"Estrela",keys:T("harmony, fertility, multiplication","a harmonia, a fertilidade, a multiplicação"),
+ prose:T("Lamat is the star — Venus, bright at dawn and at dusk — and the rabbit who multiplies. What you touch grows in number: friends, ideas, money, children of every kind. Your gift is abundance and charm; your shadow is excess.",
+         "Lamat é a estrela — Vênus, que brilha no amanhecer e no anoitecer — e o coelho que se multiplica. O que você toca cresce em número: amigos, ideias, dinheiro, filhos de toda espécie. O seu dom é a fartura e o encanto; a sua sombra é o excesso.")},
+{y:"Muluk",en:"Water",pt:"Água",keys:T("feeling, offering, purification","o sentimento, a oferenda, a purificação"),
+ prose:T("Muluk is water — rain, the jade drop, the offering that comes back multiplied. You feel deeply and you give, and the giving clears the water around you. Your gift is emotional truth and generosity; your shadow is the flood.",
+         "Muluk é a água — a chuva, a gota de jade, a oferenda que volta multiplicada. Você sente fundo e se doa, e a doação limpa a água à sua volta. O seu dom é a verdade dos sentimentos e a generosidade; a sua sombra é a enchente.")},
+{y:"Ok",en:"Dog",pt:"Cachorro",keys:T("loyalty, love, companionship","a lealdade, o amor, a companhia"),
+ prose:T("Ok is the dog — the faithful companion who guides souls across the dark river. You love with your whole body, and you stay when others go. Your gift is loyalty and warmth; your shadow is guarding a door long after the house has emptied.",
+         "Ok é o cachorro — o companheiro fiel que guia as almas pelo rio escuro. Você ama com o corpo inteiro e fica quando os outros vão. O seu dom é a lealdade e o calor; a sua sombra é guardar uma porta muito depois de a casa ficar vazia.")},
+{y:"Chuwen",en:"Monkey",pt:"Macaco",keys:T("creativity, play, the arts","a criatividade, o brincar, as artes"),
+ prose:T("Chuwen is the monkey, the weaver of time, patron of artists and storytellers. You make things — out of thread, words, music, mischief. Your gift is creativity and play; your shadow is the joke that hides the wound.",
+         "Chuwen é o macaco, o tecelão do tempo, padroeiro dos artistas e contadores de histórias. Você cria — com fio, palavras, música, travessura. O seu dom é a criatividade e o brincar; a sua sombra é a piada que esconde a ferida.")},
+{y:"Eb",en:"Road",pt:"Caminho",keys:T("the path, destiny, community","a estrada, o destino, a comunidade"),
+ prose:T("Eb is the road — the human path, the stairway of a life, the grass that grows where people walk. You are a traveller and a gatherer of people. Your gift is a sense of direction and of service; your shadow is mistaking other people's roads for your own.",
+         "Eb é o caminho — a trilha humana, a escada de uma vida, a grama que cresce onde as pessoas passam. Você é viajante e alguém que reúne gente. O seu dom é o senso de direção e de serviço; a sua sombra é confundir o caminho dos outros com o seu.")},
+{y:"Ben",en:"Reed",pt:"Junco",keys:T("home, authority, growing upward","o lar, a autoridade, o crescer para o alto"),
+ prose:T("Ben is the reed — the growing stalk, the staff of authority, the cane walls of the home. You grow straight, and you hold a household together. Your gift is leadership and roots; your shadow is rigidity.",
+         "Ben é o junco — o caule que cresce, o bastão da autoridade, as paredes de cana da casa. Você cresce reto e mantém a casa de pé. O seu dom é a liderança e as raízes; a sua sombra é a rigidez.")},
+{y:"Ix",en:"Jaguar",pt:"Jaguar",keys:T("the earth's power, night sight, magic","o poder da terra, a visão noturna, a magia"),
+ prose:T("Ix is the jaguar — spirit of the night forest, the one who sees in the dark. You carry a quiet, feline power and a bond with the earth. Your gift is intuition and inner strength; your shadow is secrecy.",
+         "Ix é o jaguar — o espírito da mata à noite, aquele que enxerga no escuro. Você carrega uma força felina e silenciosa e uma ligação com a terra. O seu dom é a intuição e a força interior; a sua sombra é o segredo.")},
+{y:"Men",en:"Eagle",pt:"Águia",keys:T("vision, ambition, freedom","a visão, a ambição, a liberdade"),
+ prose:T("Men is the eagle — the high flight, the long view, the bird that sees the whole valley. You aim high and see far ahead. Your gift is vision and ambition; your shadow is never landing.",
+         "Men é a águia — o voo alto, o olhar longo, a ave que vê o vale inteiro. Você mira alto e enxerga longe. O seu dom é a visão e a ambição; a sua sombra é nunca pousar.")},
+{y:"Kib",en:"Owl",pt:"Coruja",keys:T("wisdom, forgiveness, the elders","a sabedoria, o perdão, os mais velhos"),
+ prose:T("Kib is the owl, the wax and the candle — the wisdom that comes from the elders and from the dark. You are old in spirit, and you know how to forgive. Your gift is discernment; your shadow is carrying everyone's past.",
+         "Kib é a coruja, a cera e a vela — a sabedoria que vem dos mais velhos e do escuro. Você tem alma antiga e sabe perdoar. O seu dom é o discernimento; a sua sombra é carregar o passado de todo mundo.")},
+{y:"Kaban",en:"Earth",pt:"Terra",keys:T("thought, movement, synchronicity","o pensamento, o movimento, a sincronicidade"),
+ prose:T("Kaban is the earth in motion — the tremor, the curl of incense, the mind that knows. You notice the signs and coincidences that others call chance. Your gift is clear thinking and good timing; your shadow is overthinking every tremor.",
+         "Kaban é a terra em movimento — o tremor, a voluta do incenso, a mente que sabe. Você repara nos sinais e coincidências que os outros chamam de acaso. O seu dom é o pensamento claro e o senso de hora certa; a sua sombra é pensar demais em cada tremor.")},
+{y:"Etz'nab",en:"Flint",pt:"Pederneira",keys:T("truth, clarity, the clean cut","a verdade, a clareza, o corte limpo"),
+ prose:T("Etz'nab is flint — the blade that cuts, the mirror that does not lie. You see clearly, and you say so. Your gift is truth and courage; your shadow is cutting what only needed untying.",
+         "Etz'nab é a pederneira — a lâmina que corta, o espelho que não mente. Você vê com clareza e diz. O seu dom é a verdade e a coragem; a sua sombra é cortar o que só precisava ser desatado.")},
+{y:"Kawak",en:"Storm",pt:"Tempestade",keys:T("renewal, family, the healing rain","a renovação, a família, a chuva que cura"),
+ prose:T("Kawak is the storm — thunder, rain, the cleansing that turns the land green. You bring change, and you gather the family under one roof. Your gift is renewal and healing; your shadow is the storm that never passes.",
+         "Kawak é a tempestade — o trovão, a chuva, a limpeza que deixa a terra verde. Você traz mudança e reúne a família debaixo do mesmo teto. O seu dom é a renovação e a cura; a sua sombra é a tempestade que não passa.")},
+{y:"Ajaw",en:"Sun",pt:"Sol",keys:T("wholeness, light, the lord","a plenitude, a luz, o senhor"),
+ prose:T("Ajaw is the sun and the lord — the face of the ancestors, the light that completes the count. You shine, and others find their way by you. Your gift is wholeness and a generous heart; your shadow is needing to be seen.",
+         "Ajaw é o sol e o senhor — o rosto dos ancestrais, a luz que completa a contagem. Você brilha, e os outros se orientam por você. O seu dom é a plenitude e o coração generoso; a sua sombra é precisar ser visto.")}];
+/* the thirteen tones */
+const MAYA_TONES=[null,
+{t:T("Unity","Unidade"),keys:T("purpose, beginning","propósito, começo"),prose:T("One is the seed of the count — unity, purpose, the first step. Your energy begins things and holds them to a single aim.","O um é a semente da contagem — unidade, propósito, o primeiro passo. A sua energia começa as coisas e as mantém num só rumo.")},
+{t:T("Duality","Dualidade"),keys:T("choice, polarity","escolha, polaridade"),prose:T("Two is the pair — polarity, choice, the tension that asks for balance. You see both sides; that is your wisdom and your trouble.","O dois é o par — polaridade, escolha, a tensão que pede equilíbrio. Você vê os dois lados; essa é a sua sabedoria e o seu tormento.")},
+{t:T("Movement","Movimento"),keys:T("action, rhythm","ação, ritmo"),prose:T("Three is movement — action, rhythm, the drum that gets things going. You set things off; around you, things start to happen.","O três é movimento — ação, ritmo, o tambor que põe tudo para andar. Você dá a partida; à sua volta as coisas começam a acontecer.")},
+{t:T("Form","Forma"),keys:T("stability, order","estabilidade, ordem"),prose:T("Four is form — the four directions, the frame that holds. You give shape and order to what others only imagine.","O quatro é forma — as quatro direções, a moldura que sustenta. Você dá forma e ordem ao que os outros só imaginam.")},
+{t:T("Centre","Centro"),keys:T("power, mastery","poder, domínio"),prose:T("Five is the centre and the hand — five fingers that grasp, power that gathers. You collect what is needed and make it work.","O cinco é o centro e a mão — cinco dedos que seguram, a força que reúne. Você junta o que é preciso e faz funcionar.")},
+{t:T("Flow","Fluxo"),keys:T("balance in motion","equilíbrio em movimento"),prose:T("Six is flow — balance in motion, the steady walk. You move with grace and keep things going.","O seis é fluxo — equilíbrio em movimento, o passo constante. Você se move com graça e mantém as coisas andando.")},
+{t:T("Summit","Cume"),keys:T("reflection, mystery","reflexão, mistério"),prose:T("Seven is the summit — the middle of the thirteen, where you see both slopes. You reflect, and you are drawn to what is hidden.","O sete é o cume — o meio dos treze, de onde se veem as duas encostas. Você reflete e é atraído pelo que está escondido.")},
+{t:T("Harmony","Harmonia"),keys:T("justice, the right measure","justiça, a medida certa"),prose:T("Eight is harmony and justice — the order behind things. You are fair, and you look for the right measure.","O oito é harmonia e justiça — a ordem por trás das coisas. Você é justo e procura a medida certa.")},
+{t:T("Patience","Paciência"),keys:T("the long cycle, completion","o ciclo longo, a conclusão"),prose:T("Nine is patience and the long cycle — the nine lords of the night, the slow ripening. You finish things, and you see the larger arc.","O nove é paciência e o ciclo longo — os nove senhores da noite, o amadurecer lento. Você termina o que começa e enxerga o arco maior.")},
+{t:T("Manifestation","Manifestação"),keys:T("making real","tornar real"),prose:T("Ten is manifestation — the idea made solid in the world. You make things real, and you answer for them.","O dez é manifestação — a ideia que ganha corpo no mundo. Você torna as coisas reais e responde por elas.")},
+{t:T("Release","Libertação"),keys:T("change, letting go","mudança, desapego"),prose:T("Eleven is release — dissolving, changing, letting go in order to be free. You break moulds and clear the way.","O onze é libertação — dissolver, mudar, soltar para ficar livre. Você quebra moldes e abre caminho.")},
+{t:T("Understanding","Entendimento"),keys:T("cooperation, shared wisdom","cooperação, sabedoria partilhada"),prose:T("Twelve is understanding — the shared table, the wisdom of the group. You gather what was learned and pass it on.","O doze é entendimento — a mesa partilhada, a sabedoria do grupo. Você junta o que foi aprendido e passa adiante.")},
+{t:T("Completion","Plenitude"),keys:T("the whole cycle, the step beyond","o ciclo inteiro, o passo além"),prose:T("Thirteen is the full count — the thirteen heavens, completion and the step beyond. You carry the whole cycle in you, and the beginning of the next.","O treze é a contagem completa — os treze céus, a conclusão e o passo além. Você carrega o ciclo inteiro e o começo do próximo.")}];
+/* each day sign faces a direction, turning east, north, west, south */
+const MAYA_DIRS=[
+{n:T('East','Leste'),c:T('red','vermelho'),line:T('the east, the red of dawn — where things begin','o leste, o vermelho do amanhecer — onde as coisas começam')},
+{n:T('North','Norte'),c:T('white','branco'),line:T('the north, the white of air and of the ancestors’ wisdom','o norte, o branco do ar e da sabedoria dos ancestrais')},
+{n:T('West','Oeste'),c:T('black','preto'),line:T('the west, the black of night — where things are transformed','o oeste, o preto da noite — onde as coisas se transformam')},
+{n:T('South','Sul'),c:T('yellow','amarelo'),line:T('the south, the yellow of ripe maize — where things come to fullness','o sul, o amarelo do milho maduro — onde as coisas chegam à plenitude')}];
+const mWord=i=>T(MAYA_SIGNS[i].en,MAYA_SIGNS[i].pt);
+const mName=k=>`${k.tone} ${MAYA_SIGNS[k.sign].y}`;
+const mBars=n=>{const b=Math.floor(n/5),d=n%5;return [b?T(`${b} bar${b>1?'s':''}`,`${b} barra${b>1?'s':''}`):'',d?T(`${d} dot${d>1?'s':''}`,`${d} ponto${d>1?'s':''}`):''].filter(Boolean).join(T(' and ',' e '));};
+const MAYA_POS=[
+ {label:T('Day sign','Nawal'),face:m=>String(m.tone),big:true},
+ {label:T('Tone','Tom'),face:m=>'•',big:true},
+ {label:T('Trecena','Trecena'),face:m=>'1',big:true},
+ {label:T('Cross','Cruz'),face:m=>'✛',big:true}];
+
+let maya=null;
+$('mayaDate').innerHTML=dateFields('m');
+$('mayaForm').onsubmit=e=>{
+  e.preventDefault();
+  const err=$('mayaErr');err.textContent='';
+  const date=readDate('m',err);if(!date)return;
+  maya=mayaOf(date);
+  mode='maya';
+  beginReading();setOfferBtn();track('maya-read');
+  setSlots(MAYA_POS.map(p=>({label:p.label,face:p.face(maya),big:p.big})),k=>showMaya(k));
+  revealSlots(420);
+  setTimeout(()=>showMaya(0),1000);
+  const S=MAYA_SIGNS[maya.sign],R=MAYA_SIGNS[maya.trecena],D=MAYA_DIRS[maya.dir];
+  setTimeout(()=>showSynth(T(`Your day: <b>${maya.tone} ${S.y}</b>, ${S.en.toLowerCase()} — in the trecena of <b>${R.y}</b>, facing the <b>${D.n.toLowerCase()}</b>.`,
+    `O seu dia: <b>${maya.tone} ${S.y}</b>, ${S.pt.toLowerCase()} — na trecena de <b>${R.y}</b>, voltado para o <b>${D.n.toLowerCase()}</b>.`)),2600);
+};
+function showMaya(k){
+  if(view===k)return;
+  view=k;markSlot(k);
+  const m=maya,S=MAYA_SIGNS[m.sign],Tn=MAYA_TONES[m.tone],D=MAYA_DIRS[m.dir],R=MAYA_SIGNS[m.trecena];
+  const born=`${m.date.d} · ${m.date.m} · ${m.date.y}`,fill={desk:.5,mobile:.3};
+  $('counter').textContent=`◈ ${m.tone} ${S.y.toUpperCase()}`;
+  const cta=inkCta(T(`<b style="color:var(--gold);font-weight:400">${mName(m)}</b> — your day sign in its cartouche, with its tone in Maya bars and dots: one of the tattoos drawn from your readings.`,
+                     `<b style="color:var(--gold);font-weight:400">${mName(m)}</b> — o seu nawal no seu cartucho, com o tom em barras e pontos maias: uma das tatuagens desenhadas das suas leituras.`),'maya');
+  if(k===0){
+    const nx=kinOf(m.dn+1);
+    morphTo({fn:(ctx,s)=>drawNawal(ctx,s,s,m.sign,m.tone,.032),fill});
+    setPanel({pos:T('Exhibit — Your day sign','Exposição — O seu nawal'),name:`${mName(m)} · ${mWord(m.sign)}`,
+      meta:[[T('BORN','NASCIMENTO'),born],[T('DAY SIGN','NAWAL'),`${S.y} · ${mWord(m.sign)}`.toUpperCase()],[T('TONE','TOM'),`${m.tone} · ${Tn.t}`.toUpperCase()],[T('DIRECTION','DIREÇÃO'),`${D.n} · ${D.c}`.toUpperCase()]],
+      prose:`<em>${T('The face of the day you were born — your nawal, the companion spirit that, the daykeepers say, walks beside you.','O rosto do dia em que você nasceu — o seu nawal, o espírito companheiro que, dizem os guardiões dos dias, caminha ao seu lado.')}</em> ${S.prose}
+        <span class="line">${T(`Your sign faces ${D.line}.`,`O seu nawal está voltado para ${D.line}.`)}</span>
+        <span class="rev">${T(`Counted the K’iche’ way, with the correlation most scholars and daykeepers use (GMT 584283). The “Dreamspell” count found in many apps is a modern system and gives a different sign. Born after sunset? Some daykeepers count the evening as the next day — that would make you <b>${mName(nx)}</b>.`,
+          `Contado à maneira k’iche’, com a correlação que a maioria dos estudiosos e guardiões dos dias usa (GMT 584283). A contagem “Dreamspell” de muitos aplicativos é um sistema moderno e dá outro signo. Nasceu depois do pôr do sol? Alguns guardiões contam a noite como o dia seguinte — você seria <b>${mName(nx)}</b>.`)}</span>`+cta});
+  }else if(k===1){
+    morphTo({fn:(ctx,s)=>drawMayaTone(ctx,s,m.tone),fill});
+    setPanel({pos:T('Exhibit — The tone','Exposição — O tom'),name:`${m.tone} · ${Tn.t}`,
+      meta:[[T('TONE','TOM'),`${m.tone} ${T('OF','DE')} 13`],[T('WRITTEN','ESCRITO'),mBars(m.tone).toUpperCase()],[T('SPEAKS OF','FALA DE'),Tn.keys.toUpperCase()]],
+      prose:`<em>${T('The number your day carried — one of thirteen, the way your sign moves through the world.','O número que o seu dia carregava — um de treze, o jeito como o seu nawal se move pelo mundo.')}</em> ${Tn.prose}
+        <span class="line">${T(`In Maya numerals a dot is one and a bar is five: your ${m.tone} is written with ${mBars(m.tone)}.`,`Nos números maias um ponto vale um e uma barra vale cinco: o seu ${m.tone} se escreve com ${mBars(m.tone)}.`)}</span>`+cta});
+  }else if(k===2){
+    morphTo({fn:(ctx,s)=>drawNawal(ctx,s,s,m.trecena,1,.032),fill});
+    setPanel({pos:T('Exhibit — The trecena','Exposição — A trecena'),name:`${T('The trecena of','A trecena de')} ${R.y} · ${mWord(m.trecena)}`,
+      meta:[[T('OPENED BY','ABERTA POR'),`1 ${R.y}`.toUpperCase()],[T('YOUR DAY','O SEU DIA'),T(`${m.tone} OF 13`,`${m.tone} DE 13`)],[T('SPEAKS OF','FALA DE'),R.keys.toUpperCase()]],
+      prose:`<em>${T('The count moves in weeks of thirteen days. Yours was opened by this sign, and its weather lies over all thirteen.','A contagem anda em semanas de treze dias. A sua foi aberta por este signo, e o clima dele cobre os treze.')}</em>
+        ${T(`Beneath your own sign, like ground: <b>${R.keys}</b>. You arrived on day ${m.tone} of the thirteen.`,`Por baixo do seu nawal, como um chão: <b>${R.keys}</b>. Você chegou no dia ${m.tone} dos treze.`)}
+        <span class="line">${R.prose.split('. ').slice(0,2).join('. ')}.</span>`+cta});
+  }else{
+    const c=m.cross,row=(lab,x)=>`<span class="line"><b>${lab}</b> · ${mName(x)}, ${mWord(x.sign).toLowerCase()} — ${MAYA_SIGNS[x.sign].keys}.</span>`;
+    morphTo({fn:(ctx,s)=>drawMayaCross(ctx,s,m,.009),fill:{desk:.55,mobile:.34}});
+    setPanel({pos:T('Exhibit — Your cross','Exposição — A sua cruz'),name:T('The signs around yours','Os signos à volta do seu'),
+      meta:[[T('ABOVE · YOUTH','ACIMA · JUVENTUDE'),mName(c.youth).toUpperCase()],[T('BELOW · MATURITY','ABAIXO · MATURIDADE'),mName(c.mature).toUpperCase()],
+            [T('LEFT · MASCULINE','ESQUERDA · MASCULINO'),mName(c.male).toUpperCase()],[T('RIGHT · FEMININE','DIREITA · FEMININO'),mName(c.female).toUpperCase()]],
+      prose:`<em>${T('Four signs frame yours, as many K’iche’ daykeepers read them: your youth above, your maturity below, the masculine and feminine sides of your nature to either hand.','Quatro signos emolduram o seu, como muitos guardiões k’iche’ os leem: a juventude acima, a maturidade abaixo, os lados masculino e feminino da sua natureza de cada lado.')}</em>`+
+        row(T('Youth','Juventude'),c.youth)+row(T('Maturity','Maturidade'),c.mature)+row(T('Masculine side','Lado masculino'),c.male)+row(T('Feminine side','Lado feminino'),c.female)+cta});
+  }
+}
+/* the door's glyph: Ajaw, the sun lord, drawn in our own line */
+(function(){const c=new SvgCtx(48,48);c.strokeStyle=c.fillStyle='currentColor';mayaGlyph(c,19,24,21,34,2.6);$('mayaDoorGlyph').innerHTML=c.svg();})();
+
 /* ═══ THE CORNER BUTTON — an offering, or the tattoo flash ════ */
 function setOfferBtn(){
   const b=$('offerBtn');
@@ -2406,10 +2707,10 @@ if(CONFIG.donationUrl){
 }
 addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');$('stencil').classList.remove('show');}});
 
-/* ═══ THE TATTOOS — five designs drawn from your own readings ═══
-   1 the natal wheel · 2 ☉ beside the Sun's sign · 3 the ascendant arrow beside the
-   rising sign · 4 both in one line · 5 Life Path, Expression, Soul and Persona as
-   their seals, in a row. Without a birth hour 3 and 4 can't exist, so the sheet has three.
+/* ═══ THE TATTOOS — six designs drawn from your own readings ═══
+   1 the natal wheel · 2 the Maya day sign with its tone · 3 ☉ beside the Sun's sign ·
+   4 the ascendant arrow beside the rising sign · 5 both in one line · 6 Life Path, Expression,
+   Soul and Persona as their seals, in a row. Without a birth hour 4 and 5 can't exist, so the sheet has four.
    Free to preview; the flash sheet and the files are the product. */
 function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the horizon */
   ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
@@ -2449,6 +2750,10 @@ function inkDesigns(){
      place:T('upper back, forearm, thigh','costas, antebraço, coxa'),intro:T('The whole sky of your birth, as one piece.','O céu inteiro do seu nascimento, numa só peça.')},
     {kind:'sun',w:2,h:1,draw:(c,W,h)=>drawSunPair(c,W,h,sun.sign),title:T(`Sun in ${ss.name}`,`Sol em ${ss.name}`),file:`sun-${slug(ss.name)}`,size:3,
      place:T('wrist, ankle, behind the ear','pulso, tornozelo, atrás da orelha'),intro:T('☉ — the circle with its centre — beside the sign the Sun stood in.','☉ — o círculo com o seu centro — ao lado do signo onde o Sol estava.')}];
+  const mk=mayaOf(chartMeta.date),ms=MAYA_SIGNS[mk.sign];
+  list.splice(1,0,{kind:'maya',w:1,h:NAWAL_H,draw:(c,W,h)=>drawNawal(c,W,h,mk.sign,mk.tone),title:`${T('Your day sign','O seu nawal')} · ${mName(mk)}`,file:`maya-${mk.tone}-${slug(ms.y)}`,size:4,
+    place:T('wrist, behind the ear, ankle','pulso, atrás da orelha, tornozelo'),
+    intro:T(`${mName(mk)}, ${ms.en.toLowerCase()} — your Maya day sign in its cartouche, with its tone in bars and dots.`,`${mName(mk)}, ${ms.pt.toLowerCase()} — o seu nawal maia no seu cartucho, com o tom em barras e pontos.`)});
   if(H){const ra=signOf(H.asc),rs=SIGNS[ra];
     list.push({kind:'rising',w:2,h:1,draw:(c,W,h)=>drawRisingPair(c,W,h,ra),title:risingName(rs),file:`rising-${slug(rs.name)}`,size:3,
       place:T('collarbone, inner arm, nape','clavícula, parte interna do braço, nuca'),intro:T('The ascendant arrow over the horizon, beside the sign that was rising when you arrived.','A seta do ascendente sobre o horizonte, ao lado do signo que subia quando você chegou.')});
@@ -2469,13 +2774,13 @@ function flashLine(){
 function flashSlots(){
   const by=k=>inkList.find(d=>d.kind===k);
   return by('rising')?[
-    [by('wheel'),.5,700,1750,2530],
+    [by('wheel'),.37,700,1700,2530],[by('maya'),.8,1075,740,2150],
     [by('sun'),.28,2620,1100,3245],[by('rising'),.72,2620,1100,3245],
     [by('sky'),.5,3330,2200,3955],
     [by('seals'),.5,4040,2500,4690]]:[
-    [by('wheel'),.5,720,2150,2955],
-    [by('sun'),.5,3120,1250,3825],
-    [by('seals'),.5,3980,2600,4660]];
+    [by('wheel'),.37,720,1900,2750],[by('maya'),.8,1150,820,2305],
+    [by('sun'),.5,2950,1250,3700],
+    [by('seals'),.5,3900,2600,4610]];
 }
 function layoutFlash(ctx,W,txt){
   const f=W/3508,slots=flashSlots();
@@ -2513,8 +2818,8 @@ async function renderFlash(W=3508,wm=false){
   return c;
 }
 
-const INK_FACES={wheel:'✶',sun:'☉',rising:'↑',sky:'☉↑',seals:'⁂'};
-const INK_LABELS={wheel:T('Map','Mapa'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),sky:T('Line','Linha'),seals:T('Numbers','Números')};
+const INK_FACES={wheel:'✶',maya:'◈',sun:'☉',rising:'↑',sky:'☉↑',seals:'⁂'};
+const INK_LABELS={wheel:T('Map','Mapa'),maya:T('Nawal','Nawal'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),sky:T('Line','Linha'),seals:T('Numbers','Números')};
 function castInk(inp,nums){
   prepChart(inp);inkNums=nums;sheetId=sheetKey(chartInput,nums);
   const own=ownedSheet(sheetId);
@@ -2530,8 +2835,9 @@ function openInkReading(){
   setTimeout(()=>showInk(0),1000);
   setTimeout(()=>{
     const s=SIGNS[chart.bodies[0].sign].name,r=chart.houses?SIGNS[signOf(chart.houses.asc)].name:'';
-    showSynth(T(`Your flash: ☉ <b>${s}</b>`+(r?`, ↑ <b>${r}</b>`:'')+`, and <b>${inkNums.join(' · ')}</b> — around your natal wheel.`,
-                `A sua folha: ☉ <b>${s}</b>`+(r?`, ↑ <b>${r}</b>`:'')+` e <b>${inkNums.join(' · ')}</b> — em volta da sua roda natal.`));
+    const mz=mName(mayaOf(chartMeta.date));
+    showSynth(T(`Your flash: ☉ <b>${s}</b>`+(r?`, ↑ <b>${r}</b>`:'')+`, ◈ <b>${mz}</b> and <b>${inkNums.join(' · ')}</b> — around your natal wheel.`,
+                `A sua folha: ☉ <b>${s}</b>`+(r?`, ↑ <b>${r}</b>`:'')+`, ◈ <b>${mz}</b> e <b>${inkNums.join(' · ')}</b> — em volta da sua roda natal.`));
   },2600);
 }
 function inkBuy(own){
@@ -2546,7 +2852,7 @@ function inkBuy(own){
     <span class="fine">${T('One payment · yours for good · the watermark goes','Um pagamento · seus para sempre · sem marca d’água')}</span>
     <button class="linkish" data-examples style="margin-top:2px">${T('See them on skin','Ver na pele')}</button></div>`;
 }
-const centredWide=dz=>(ctx,S)=>{const h=S*dz.h/dz.w;ctx.save();ctx.translate(0,(S-h)/2);dz.draw(ctx,S,h);ctx.restore();};
+const centredWide=dz=>(ctx,S)=>{const w=S*Math.min(1,dz.w/dz.h),h=w*dz.h/dz.w;ctx.save();ctx.translate((S-w)/2,(S-h)/2);dz.draw(ctx,w,h);ctx.restore();};
 function showInk(k){
   if(view===k)return;
   view=k;
@@ -2567,7 +2873,7 @@ function showInk(k){
     return;
   }
   const dz=inkList[k];
-  morphTo({fn:centredWide(dz),fill:{desk:dz.w>1?.9:.7,mobile:dz.w>1?.42:.3}});
+  morphTo({fn:centredWide(dz),fill:{desk:dz.w>1?.9:dz.h>dz.w?.5:.7,mobile:dz.w>1?.42:.3}});
   setPanel({pos:T(`Tattoo ${k+1} of ${n}`,`Tatuagem ${k+1} de ${n}`),name:dz.title,
     meta:[[T('SIZE','TAMANHO'),T(`FROM ${dz.size} CM`,`A PARTIR DE ${dz.size} CM`)],[T('PLACEMENT','LOCAL'),dz.place.toUpperCase()],[T('STYLE','ESTILO'),T('FINE LINE, BLACK','TRAÇO FINO, PRETO')]],
     prose:`<em>${dz.intro}</em>
@@ -2586,6 +2892,7 @@ function renderSaved(){
 function goInk(){
   if(mode==='num'&&numbers){$('iName').value=numbers.name;const {d,m,y}=numbers.date;$('aDay').value=d;$('aMon').value=m;$('aYear').value=y;}
   if(mode==='astro'&&chartInput)fillPlaceForm(chartInput);
+  if(mode==='maya'&&maya){const {d,m,y}=maya.date;$('aDay').value=d;$('aMon').value=m;$('aYear').value=y;}
   track('goink-'+mode);
   leaveReading('ink');
   if(!matchMedia('(pointer:coarse)').matches)setTimeout(()=>{
@@ -2597,14 +2904,16 @@ function renderShowcase(){
   if(showcaseDone)return;showcaseDone=true;
   const ch=computeChart(Date.UTC(1990,5,21,8,15),38.72,-9.14,true),nums=[8,6,5,3];
   const sun=ch.bodies[0].sign,asc=signOf(ch.houses.asc);
-  const items=[[1,(c,W)=>drawWheel(c,W,ch,WHEEL_INK),T('Natal wheel','Roda natal')],
-    [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar')],
-    [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente')],
-    [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha')],
-    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos')]];
-  $('showcase').innerHTML=items.map(([w,draw,cap],i)=>{
+  const mk=mayaOf({y:1990,m:6,d:21});
+  const items=[[1,(c,W)=>drawWheel(c,W,ch,WHEEL_INK),T('Natal wheel','Roda natal'),'wheel'],
+    [1/NAWAL_H,(c,W,H)=>drawNawal(c,W,H,mk.sign,mk.tone),T('Your Maya day sign','O seu nawal maia'),'maya'],
+    [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar'),'sun'],
+    [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente'),'rising'],
+    [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha'),'sky'],
+    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos'),'seals']];
+  $('showcase').innerHTML=items.map(([w,draw,cap,key],i)=>{
     const W=400,H=Math.round(400/w),c=new SvgCtx(W,H);c.strokeStyle=c.fillStyle='#d8b877';draw(c,W,H);
-    return `<figure class="${w>1?'wide':'big'}"><div class="sc">${c.svg()}</div><figcaption><b>${i+1}</b>${cap}</figcaption></figure>`;}).join('');
+    return `<figure class="${w>1?'wide':'big'}" style="grid-area:${key}"><div class="sc">${c.svg()}</div><figcaption><b>${i+1}</b>${cap}</figcaption></figure>`;}).join('');
 }
 
 /* line art files: margin of 5% so no stroke touches the edge of the stencil */
@@ -2679,8 +2988,8 @@ async function downloadZip(){
     const sl=inkList.find(d=>d.kind==='seals'),col={w:1,h:SEAL_ROW,title:sl.title,draw:(c,W,h)=>drawSealColumn(c,W,h,inkNums)};
     z.file(fileName(sl)+'-vertical.svg',inkSVG(col));z.file(fileName(sl)+'-vertical.png',await inkPNG(col,1400));
     z.file(T('READ-ME.txt','LEIA-ME.txt'),T(
-      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nThe numbers also come as a vertical line (…-vertical), for the side of the body or the spine.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel from 10 cm across; the Sun, Rising and numbers designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
-      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs números também vêm numa linha vertical (…-vertical), para a lateral do corpo ou a coluna.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal a partir de 10 cm; os desenhos do Sol, Ascendente e números a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
+      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nThe numbers also come as a vertical line (…-vertical), for the side of the body or the spine.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel from 10 cm across; the Maya day sign, the Sun, Rising and numbers designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
+      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs números também vêm numa linha vertical (…-vertical), para a lateral do corpo ou a coluna.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal a partir de 10 cm; o nawal maia e os desenhos do Sol, Ascendente e números a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
     const blob=await z.generateAsync({type:'blob'});
     $('toast').classList.remove('show');
     saveBlob(blob,`starot-tattoos-${d}.zip`);
@@ -2703,7 +3012,8 @@ function openUnlock(){
   if(!PAYWALL||!chartInput||!inkNums)return;
   $('unlockFor').textContent=`${T('For','Para')} ${bornLine()} · ${chartMeta.place.full}`;
   $('getRising').hidden=$('getSky').hidden=!chart.houses;
-  $('unlockTitle').textContent=T(`${inkList.length===5?'Five':'Three'} designs, yours to wear`,`${inkList.length===5?'Cinco':'Três'} desenhos, para usar na pele`);
+  const nw={6:['Six','Seis'],4:['Four','Quatro']}[inkList.length]||[String(inkList.length),String(inkList.length)];
+  $('unlockTitle').textContent=T(`${nw[0]} designs, yours to wear`,`${nw[1]} desenhos, para usar na pele`);
   $('unlockNote').textContent='';
   stencil.classList.remove('show');
   unlockEl.classList.add('show');

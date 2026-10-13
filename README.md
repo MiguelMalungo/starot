@@ -33,6 +33,13 @@ Positions come from Meeus' solar theory, the principal terms of the lunar theory
 JPL Keplerian elements for the planets (valid 1800–2050) — good to a fraction of a
 degree. Time zones and historical DST are resolved by the browser's `Intl` tables.
 
+### Maya day sign
+Enter the birth date. The Tzolk'in, the 260-day count, as K'iche' daykeepers keep it
+(GMT correlation 584283 — checked against 21 Dec 2012 = 4 Ajaw). Four cards: the **day sign**
+(nawal) with its tone, the **tone** in bar-and-dot numerals, the **trecena** and the **cross**
+(the signs 8 and 6 days either side). The twenty day signs are our own drawings, each in a
+cartouche on the three-lobed stand of the Maya day signs.
+
 ### Numerology
 Enter the full name given at birth and the date. Pythagorean letter values, master
 numbers 11 · 22 · 33 preserved. Five cards: **Life Path**, **Expression**, **Soul Urge**,
@@ -42,13 +49,13 @@ Life Path exhibit). Each number has its own geometric seal drawn in stars.
 ## Free readings, paid tattoos
 
 Every reading is free and complete: tarot, the full astral map (all ten planets, houses,
-aspects, Moon and Rising), numerology, and a 3600 × 4500 star poster of your sky, with an
+aspects, Moon and Rising), numerology, the Maya day sign, and a 3600 × 4500 star poster of your sky, with an
 optional offering (a pay-what-you-want link).
 
-**The product is the tattoo flash, €7**: five designs drawn from your own readings —
-1. the natal wheel, 2. ☉ beside your Sun sign, 3. the ascendant arrow beside your Rising
-sign, 4. both of those in one line, 5. Life Path, Expression, Soul and Persona as their
-seals in a row (3 and 4 need the birth hour) — on a
+**The product is the tattoo flash, €7**: six designs drawn from your own readings —
+1. the natal wheel, 2. the Maya day sign with its tone, 3. ☉ beside your Sun sign, 4. the
+ascendant arrow beside your Rising sign, 5. both of those in one line, 6. Life Path,
+Expression, Soul and Persona as their seals in a row (4 and 5 need the birth hour) — on a
 print-ready A3 flash sheet, plus each design as vector SVG and 4000 px PNG in a ZIP for
 the tattoo artist. The fourth door, **Your tattoos**, takes name, date, hour and place;
 every free reading also ends with **Make it a tattoo**, which carries what it already
