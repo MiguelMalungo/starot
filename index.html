@@ -709,8 +709,8 @@ const CONFIG={
   gallery:[
     {src:"media/gallery/hands-sun-rising.jpg",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
      alt:"Two people holding hands; his hand has the Sun and Gemini symbols, hers the ascendant arrow and Leo",altPt:"Duas pessoas de mãos dadas; na mão dele o Sol e Gêmeos, na dela a seta do ascendente e Leão"},
-    {src:"media/gallery/wheel-forearm-woman.jpg",concept:true,caption:"Natal wheel · inner forearm",captionPt:"Roda natal · parte interna do antebraço",
-     alt:"A natal wheel tattoo on a woman's inner forearm",altPt:"Tatuagem de roda natal na parte interna do antebraço de uma mulher"},
+    {src:"media/gallery/line-forearm-woman.jpg",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
+     alt:"A row of four astrological symbols along a woman's inner forearm, above the wrist",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de uma mulher, acima do pulso"},
     {src:"media/gallery/wheel-calf-man.jpg",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
      alt:"A natal wheel tattoo on the back of a man's calf",altPt:"Tatuagem de roda natal na panturrilha de um homem"},
     {src:"media/gallery/line-neck-woman.jpg",concept:true,caption:"Sun and Rising in one line · back of the neck",captionPt:"Sol e Ascendente numa linha · nuca",
@@ -1835,6 +1835,7 @@ function computeChart(utcMs,lat,lon,hasTime){
 
 /* ═══ THE WHEEL — drawn, then sampled into stars ══════════════ */
 function drawWheel(ctx,S,ch,fine=1){   /* fine<1 thins the glyph strokes for print sizes */
+  const gs=S*(fine<.5?.028:.024);   /* the thin tattoo line reads better a touch larger */
   const c=S/2, R1=S*.475, R2=S*.395, Rp=S*.335, Rp2=S*.285, Ra=S*.235;
   const asc=ch.houses?ch.houses.asc:0;
   const pos=(l,r)=>{const a=Math.PI+(l-asc)*D2R;return [c+r*Math.cos(a),c-r*Math.sin(a)];};
@@ -1846,7 +1847,7 @@ function drawWheel(ctx,S,ch,fine=1){   /* fine<1 thins the glyph strokes for pri
   ctx.lineWidth=S*.007;ctx.beginPath();ctx.arc(c,c,Ra,0,7);ctx.stroke();
   /* zodiac band: sign divisions, glyphs, 10° ticks */
   ctx.lineWidth=S*.010;
-  for(let i=0;i<12;i++){line(pos(i*30,R2),pos(i*30,R1));glyphSign(ctx,i,...pos(i*30+15,(R1+R2)/2),S*.024,S*.017*fine);}
+  for(let i=0;i<12;i++){line(pos(i*30,R2),pos(i*30,R1));glyphSign(ctx,i,...pos(i*30+15,(R1+R2)/2),gs,S*.017*fine);}
   ctx.lineWidth=S*.006;
   for(let d=0;d<360;d+=10)if(d%30)line(pos(d,R2),pos(d,R2+S*.012));
   /* houses */
@@ -1871,7 +1872,7 @@ function drawWheel(ctx,S,ch,fine=1){   /* fine<1 thins the glyph strokes for pri
   for(let i=0;i<n;i++){
     const b=sorted[i],d=disp[i];
     ctx.lineWidth=S*.008;line(pos(b.lon,R2),pos(b.lon,R2-S*.02));
-    glyphPlanet(ctx,b.i,...pos(d,Rp),S*.024,S*.018*fine);
+    glyphPlanet(ctx,b.i,...pos(d,Rp),gs,S*.018*fine);
   }
   /* aspects */
   ctx.lineWidth=S*.005;
@@ -2333,6 +2334,7 @@ function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the ho
   ctx.beginPath();ctx.moveTo(-.78,.82);ctx.lineTo(.78,.82);ctx.moveTo(0,.82);ctx.lineTo(0,-.9);
   ctx.moveTo(-.4,-.5);ctx.lineTo(0,-.92);ctx.lineTo(.4,-.5);ctx.stroke();ctx.restore();
 }
+const WHEEL_INK=.32;  /* glyph weight of the tattoo wheel: fine line, like the house lines */
 const PAIR_LW=.075;   /* stroke of the sign designs, as a share of their height — bold enough to read small on skin */
 function drawSunPair(ctx,W,H,sign){glyphPlanet(ctx,0,W*.29,H/2,H*.34,H*PAIR_LW);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*PAIR_LW);}
 function drawRisingPair(ctx,W,H,sign){glyphAsc(ctx,W*.29,H/2,H*.36,H*PAIR_LW);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*PAIR_LW);}
@@ -2361,7 +2363,7 @@ const slug=t=>fold(t).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 function inkDesigns(){
   const sun=chart.bodies[0],H=chart.houses,ss=SIGNS[sun.sign],from=T('from','a partir de');
   const list=[
-    {kind:'wheel',w:1,h:1,draw:(c,W)=>drawWheel(c,W,chart,.6),title:T('Your natal wheel','A sua roda natal'),file:'natal-wheel',size:10,
+    {kind:'wheel',w:1,h:1,draw:(c,W)=>drawWheel(c,W,chart,WHEEL_INK),title:T('Your natal wheel','A sua roda natal'),file:'natal-wheel',size:10,
      place:T('upper back, forearm, thigh','costas, antebraço, coxa'),intro:T('The whole sky of your birth, as one piece.','O céu inteiro do seu nascimento, numa só peça.')},
     {kind:'sun',w:2,h:1,draw:(c,W,h)=>drawSunPair(c,W,h,sun.sign),title:T(`Sun in ${ss.name}`,`Sol em ${ss.name}`),file:`sun-${slug(ss.name)}`,size:3,
      place:T('wrist, ankle, behind the ear','pulso, tornozelo, atrás da orelha'),intro:T('☉ — the circle with its centre — beside the sign the Sun stood in.','☉ — o círculo com o seu centro — ao lado do signo onde o Sol estava.')}];
@@ -2513,7 +2515,7 @@ function renderShowcase(){
   if(showcaseDone)return;showcaseDone=true;
   const ch=computeChart(Date.UTC(1990,5,21,8,15),38.72,-9.14,true),nums=[8,6,5,3];
   const sun=ch.bodies[0].sign,asc=signOf(ch.houses.asc);
-  const items=[[1,(c,W)=>drawWheel(c,W,ch,.6),T('Natal wheel','Roda natal')],
+  const items=[[1,(c,W)=>drawWheel(c,W,ch,WHEEL_INK),T('Natal wheel','Roda natal')],
     [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar')],
     [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente')],
     [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha')],

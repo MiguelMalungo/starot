@@ -43,7 +43,12 @@ script, and the ink is multiplied into the skin so its texture shows through.
 The neck line goes the same way (`neck-plate-man`, then `python3 tools/higgsfield/composite-neck.py`),
 because the model keeps redrawing the ascendant ↑ as ♐. The woman's bare-back plate is refused by
 the moderation filter, so her plate is an earlier tattoo render with the AI tattoo patched out
-(`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`). `npm run example` is the
+(`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`).
+The calf wheel and the woman's inner-forearm line come from earlier renders too
+(`python3 tools/higgsfield/composite-wheel-forearm.py`): the AI wheel inpainted off the calf, and the
+forearm render cropped below its wheel. Still to shoot once credits are topped up: the wheel on a
+woman's front thigh (`thigh-plate-woman`) and the line on a man's inner forearm (`forearm-plate-man`),
+then composite them the same way. `npm run example` is the
 Seedance 2.5 setup check. Every generation is billed to your Higgsfield credits.
 
 ## Prompts (for the Higgsfield website)

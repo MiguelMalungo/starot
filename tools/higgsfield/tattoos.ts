@@ -38,6 +38,14 @@ const SHOTS: Shot[] = [
     prompt: `The back of a man's neck and upper shoulders, head slightly bowed, short hair, smooth even skin on the back of the neck with plenty of bare skin, viewed straight on from behind. No tattoos, no jewellery, clean bare skin. ${STUDIO}` },
   { id: "neck-plate-woman", refs: [], aspect: "3:4",
     prompt: `Portrait of a woman seen from behind, hair gathered up in a low bun, wearing an elegant black silk dress with a low scooped back, the nape of her neck and upper back clearly visible, viewed straight on. No tattoos, no jewellery. ${STUDIO}` },
+  { id: "forearm-plate-man", refs: [], aspect: "3:2",
+    prompt: `A man's inner forearm, arm extended horizontally across the frame from left (elbow) to right (wrist), palm facing up, resting on a pale stone plinth, a rolled-up white linen shirt sleeve at the elbow, smooth even skin on the inner forearm clearly visible. No tattoos, no jewellery, no watch. ${STUDIO}` },
+  { id: "forearm-plate-woman", refs: [], aspect: "3:2",
+    prompt: `A woman's inner forearm, arm extended horizontally across the frame from left (elbow) to right (wrist), palm facing up, resting on a pale stone plinth, a pushed-up oatmeal knit sleeve at the elbow, smooth even skin on the inner forearm clearly visible. No tattoos, no jewellery, no watch. ${STUDIO}` },
+  { id: "thigh-plate-woman", refs: [], aspect: "3:4",
+    prompt: `A woman seated on a pale stone plinth, seen from the front, one leg forward, the front of her thigh clearly visible from knee to hip, wearing black high-waisted tailored shorts, smooth even skin on the front of the thigh. No tattoos, no jewellery. ${STUDIO}` },
+  { id: "calf-plate-man", refs: [], aspect: "3:4",
+    prompt: `A man's lower leg seen straight from behind, standing on a pale stone plinth, the back of his calf clearly visible from the back of the knee to the ankle, neutral linen shorts just visible at the top, smooth skin with light natural hair. No tattoos, no jewellery, no socks. ${STUDIO}` },
   { id: "wheel-calf-man", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
     prompt: `${TATTOO} A man's lower leg seen from behind and slightly to the side, the round natal-wheel tattoo about 12 cm wide on the back of his calf, standing on a plinth, bare leg, neutral linen shorts just visible. ${STUDIO}` },
   { id: "wheel-forearm-woman", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
@@ -61,7 +69,7 @@ async function generate(shot: Shot, n: number): Promise<Outcome> {
       withPolling: true,
     });
     const status = r.status as string, url = r.images?.[0]?.url;
-    if (status !== "completed" || !url) return { id: shot.id, n, status, request: r.request_id };
+    if (status !== "completed" || !url) { console.error(shot.id, JSON.stringify(r).slice(0, 600)); return { id: shot.id, n, status, request: r.request_id }; }
     const img = await fetch(url);
     const ext = (img.headers.get("content-type") || "").includes("jpeg") ? "jpg" : "png";
     const file = `${shot.id}-v${n}.${ext}`;
