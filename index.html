@@ -443,7 +443,10 @@
   .ex-box figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);line-height:1.6}
   .ex-note{grid-column:span 2;font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(139,136,120,.75)}
   .ink-door{border-color:rgba(216,184,119,.42);background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.08),rgba(5,6,9,.45) 70%)}
-  .showcase{display:grid;grid-template-columns:1.25fr .8fr 1fr;grid-template-areas:"wheel maya sun" "wheel maya rising" "sky sky seals";gap:10px;width:min(820px,94vw)}
+  .showcase{display:grid;grid-template-columns:repeat(4,1fr);grid-template-areas:"wheel wheel sun rising" "wheel wheel sky sky" "seals seals seals seals" "mday mtone mtrecena mcross";gap:10px;width:min(820px,94vw)}
+  .showcase figure[style*="seals"] .sc{max-width:560px;margin:0 auto;width:100%}
+  #showcase figure[style*="grid-area:m"] .sc{height:170px;flex:none;display:flex;justify-content:center;align-items:center}
+  #showcase figure[style*="grid-area:m"] .sc svg{width:auto;height:100%;max-width:100%}
   .showcase figure{border:1px solid var(--hair);border-radius:12px;background:rgba(5,6,9,.5);padding:12px 14px 10px;display:flex;flex-direction:column;gap:8px;justify-content:center}
   .showcase .sc svg{max-height:100%}
   .showcase figure.big .sc{flex:1;display:flex;align-items:center}
@@ -554,7 +557,8 @@
     .door .tag{margin-top:6px;align-self:center}
     .ink-row .deal-btn{padding:11px 15px 9px;letter-spacing:.18em}
     .ink-ph{flex-basis:84px}
-    .showcase{grid-template-columns:1fr 1fr;grid-template-areas:"wheel wheel" "maya sun" "maya rising" "sky sky" "seals seals"}
+    .showcase{grid-template-columns:1fr 1fr;grid-template-areas:"wheel wheel" "sun rising" "sky sky" "seals seals" "mday mtone" "mtrecena mcross"}
+    #showcase figure[style*="grid-area:m"] .sc{height:120px}
     .ex-grid{grid-template-columns:1fr}
     .ex-box{padding:32px 18px 22px!important}
     .showcase figure[style*=wheel]{max-width:260px;justify-self:center;width:100%}
@@ -823,7 +827,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="27";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="28";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -2991,13 +2995,16 @@ function renderShowcase(){
   if(showcaseDone)return;showcaseDone=true;
   const ch=computeChart(Date.UTC(1990,5,21,8,15),38.72,-9.14,true),nums=[8,6,5,3];
   const sun=ch.bodies[0].sign,asc=signOf(ch.houses.asc);
-  const mk=mayaOf({y:1990,m:6,d:21});
+  const mk=mayaOf({y:1992,m:3,d:17});   /* 12 Kib: the same example as the photos, with a tone worth showing */
   const items=[[1,(c,W)=>drawWheel(c,W,ch,WHEEL_INK),T('Natal wheel','Roda natal'),'wheel','1'],
-    [1,(c,W)=>drawMayaCross(c,W,mk,.012),T('Your Maya signs · 4 designs','Os seus signos maias · 4 desenhos'),'maya','6–9'],
     [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar'),'sun','2'],
     [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente'),'rising','3'],
     [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha'),'sky','4'],
-    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos'),'seals','5']];
+    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos'),'seals','5'],
+    [1/NAWAL_H,(c,W,H)=>drawNawal(c,W,H,mk.sign,mk.tone),T('Maya day sign','Nawal maia'),'mday','6'],
+    [1,(c,W,H)=>drawToneSeal(c,W,H,mk.tone),T('Maya tone','Tom maia'),'mtone','7'],
+    [1/NAWAL_H,(c,W,H)=>drawNawal(c,W,H,mk.trecena,1),T('Maya trecena','Trecena maia'),'mtrecena','8'],
+    [1,(c,W)=>drawMayaCross(c,W,mk,.012),T('Maya cross','Cruz maia'),'mcross','9']];
   $('showcase').innerHTML=items.map(([w,draw,cap,key,num])=>{
     const W=400,H=Math.round(400/w),c=new SvgCtx(W,H);c.strokeStyle=c.fillStyle='#d8b877';draw(c,W,H);
     return `<figure class="${w>1?'wide':'big'}" style="grid-area:${key}"><div class="sc">${c.svg()}</div><figcaption><b>${num}</b>${cap}</figcaption></figure>`;}).join('');
