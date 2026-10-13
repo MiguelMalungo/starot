@@ -1,7 +1,7 @@
 # Launching the tattoo flash
 
-Every reading is free. The one paid thing is the €7 tattoo flash (six designs, a print-ready
-sheet and the files). The code is ready; nothing charges money until you finish these steps.
+Every reading is free. The one paid thing is the €7 tattoo flash (nine designs on two print-ready
+sheets and the files). The code is ready; nothing charges money until you finish these steps.
 
 ## 0 · Before you sell anything (Portugal)
 

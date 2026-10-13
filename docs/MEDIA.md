@@ -46,6 +46,10 @@ the moderation filter, so her plate is an earlier tattoo render with the AI tatt
 (`neck-plate-woman-clean.png`, a skin patch from just below, blended with OpenCV `seamlessClone`); her line
 is restacked upright and runs down the side of her neck below the ear, in a close-up crop. A side-profile plate
 (`neck-side-plate-woman`) is ready to render once credits are topped up.
+Everything since then goes through one script, `python3 tools/higgsfield/composite-gallery.py`
+(the wheel on her thigh, the line on his forearm and on the side of her neck, and the four Maya
+designs — 12 Kib, from `media/designs/maya-example/` — on his chest, her back, her inner forearm and
+his shoulder): positions are measured on each plate and kept in the script.
 The calf wheel and the woman's inner-forearm line come from earlier renders too
 (`python3 tools/higgsfield/composite-wheel-forearm.py`): the AI wheel inpainted off the calf, and the
 forearm render cropped below its wheel. Still to shoot once credits are topped up: the wheel on a

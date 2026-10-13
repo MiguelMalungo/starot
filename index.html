@@ -409,13 +409,15 @@
   .paper{width:100%;aspect-ratio:1;background:#f7f5f0;border-radius:10px;padding:6%;display:flex;align-items:center;justify-content:center;
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 18px 40px -18px rgba(0,0,0,.8)}
   .paper.wide{aspect-ratio:2.2}
-  .paper svg{width:100%;height:100%;display:block}
+  .paper svg{width:100%;height:100%;display:block;min-height:0}
+  .paper{overflow:hidden}   /* keeps the square: a tall design scales down instead of stretching the paper */
   .st-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--mist);max-width:44ch}
   .st-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
   .st-btns .deal-btn{margin:0;padding:14px 22px 12px;font-size:10px}
   .ink{margin-top:16px;padding:18px 20px 16px;border:1px solid rgba(216,184,119,.32);border-radius:12px;display:flex;gap:16px;align-items:center;
     background:radial-gradient(ellipse 80% 120% at 0% 0%,rgba(216,184,119,.07),transparent 70%)}
   .ink.has-ph{padding:12px 16px 12px 12px}
+  .ink:not(.has-ph){flex-direction:column;align-items:flex-start;gap:10px}
   .ink-body{display:flex;flex-direction:column;gap:10px;align-items:flex-start;min-width:0}
   .ink-ph{flex:0 0 92px;align-self:stretch;min-height:118px;padding:0;border:1px solid var(--hair);border-radius:9px;overflow:hidden;cursor:zoom-in;background:#0b0d12}
   .ink-ph img{width:100%;height:100%;object-fit:cover;display:block}
@@ -428,6 +430,7 @@
   .ex-grid.solo{grid-template-columns:minmax(0,520px);justify-content:center}
   .ex-sheet,.ex-photos figure{margin:0;display:flex;flex-direction:column;gap:7px}
   .ex-sheet img{width:100%;border-radius:8px;box-shadow:0 18px 40px -18px rgba(0,0,0,.85)}
+  .ex-sheet img+img{margin-top:4px}
   .ex-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .ex-photos figure.wide{grid-column:span 2}
   .ex-photos img,.ex-photos video{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:1px solid var(--hair);background:#0b0d12}
@@ -463,6 +466,10 @@
   .sheet-pv{margin-top:14px;width:100%;aspect-ratio:1/1.4142;border-radius:8px;overflow:hidden;background:#f4efe6;display:flex;align-items:center;justify-content:center;
     box-shadow:0 18px 40px -18px rgba(0,0,0,.8)}
   .sheet-pv img{width:100%;height:100%;display:block}
+  .pv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .pv-grid figure{margin:0;display:flex;flex-direction:column;gap:6px}
+  .pv-grid .paper.pv{margin-top:0}
+  .pv-grid figcaption{font-family:'Jost';font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-dim);line-height:1.5}
   .sheet-pv .label{color:#7a6f60}
   #toast{position:fixed;left:50%;top:22px;transform:translate(-50%,-14px);z-index:60;width:max-content;max-width:min(520px,92vw);
     padding:14px 22px;border:1px solid rgba(216,184,119,.35);border-radius:12px;background:rgba(8,10,15,.94);
@@ -509,7 +516,7 @@
     #panel h2{font-size:26px;margin-bottom:12px}
     #panel .prose{font-size:15px;max-width:none}
     #panel .foot{margin-top:14px}
-    #spread{gap:8px;bottom:20px;left:50%}
+    #spread{gap:5px;bottom:20px;left:50%}
     .slot .label{font-size:8px;letter-spacing:.16em}
     .card{width:50px;height:78px}
     .card .num{font-size:16px}
@@ -592,7 +599,7 @@
       <div class="f-text">
         <span class="label" data-t="feat.label">Your readings, worn</span>
         <h2 id="featH" data-t="feat.h">Wear your <em>sky.</em></h2>
-        <p data-t="feat.p">Your wheel, your Sun and Rising signs, your Maya day sign and your numbers, drawn as six tattoo designs on one flash sheet.</p>
+        <p data-t="feat.p">Your wheel, your Sun and Rising signs, your numbers and your Maya signs, drawn as nine tattoo designs on two flash sheets.</p>
         <div class="f-price" id="featPrice"></div>
         <div class="f-cta"><button class="deal-btn gold" data-go="ink" id="featGo">↓ &nbsp;Get my tattoo files</button>
           <button class="linkish" data-examples data-t="ex.open">See the tattoos on skin</button></div>
@@ -634,8 +641,8 @@
        The stars will turn back to that night and draw the wheel.</p>
     <span class="label ink-only" data-t="ink.label" hidden>Your readings, worn</span>
     <h1 class="ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h1>
-    <p class="ink-only" data-t="ink.p" hidden>Six tattoo designs drawn from your chart, your Maya day sign and your numbers —
-       a print-ready flash sheet and the files for your tattoo artist.</p>
+    <p class="ink-only" data-t="ink.p" hidden>Nine tattoo designs drawn from your chart, your numbers and your Maya signs —
+       two print-ready flash sheets and the files for your tattoo artist.</p>
     <div class="f-price ink-only" id="inkPrice" hidden></div>
     <div class="gallery ink-only" hidden></div>
     <div class="saved" id="savedMaps" hidden></div>
@@ -666,7 +673,7 @@
       <button class="deal-btn astro-only" type="submit" data-t="cast">☉ &nbsp;Cast the chart</button>
       <button class="deal-btn gold ink-only" type="submit" data-t="inkGo" hidden>✒ &nbsp;Preview my tattoos — free</button>
       <p class="privacy" data-t="privacy">Computed in your browser. Your name never leaves this page.</p>
-      <span class="label ink-only sc-label" data-t="sc.label" hidden>The six designs on your sheet</span>
+      <span class="label ink-only sc-label" data-t="sc.label" hidden>The designs on your sheets</span>
       <div class="showcase ink-only" id="showcase" hidden></div>
       <button class="linkish ink-only" data-examples hidden data-t="ex.open2">See an example flash sheet</button>
       <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
@@ -745,12 +752,12 @@
     <span class="for" id="unlockFor"></span>
     <ul class="gets">
       <li><i>✶</i><span data-t="get.wheel"><b>Your natal wheel</b> — the whole sky of your birth, as one piece</span></li>
-      <li><i>◈</i><span data-t="get.maya"><b>Your Maya day sign</b> — the nawal of your birthday in its cartouche, its tone in bars and dots</span></li>
+      <li><i>◈</i><span data-t="get.maya"><b>Your Maya signs</b> — your day sign, your tone, your trecena and your cross: four designs on a sheet of their own</span></li>
       <li><i>☉</i><span data-t="get.sun"><b>☉ beside your Sun sign</b> — small, for a wrist or an ankle</span></li>
       <li id="getRising"><i>↑</i><span data-t="get.rising"><b>↑ beside your Rising sign</b> — how you arrive, worn</span></li>
       <li id="getSky"><i>☉</i><span data-t="get.sky"><b>Both in one line</b> — ☉ and ↑ with their signs, side by side</span></li>
       <li><i>⁂</i><span data-t="get.nums"><b>Your numbers as seals, in a row</b> — Life Path, Expression, Soul, Persona, as drawn in your reading</span></li>
-      <li><i>↓</i><span data-t="get.files"><b>A print-ready flash sheet</b> with them all, and each design as vector SVG and 4000 px PNG for your tattoo artist</span></li>
+      <li><i>↓</i><span data-t="get.files"><b>Two print-ready flash sheets</b> with them all, and each design as vector SVG and 4000 px PNG for your tattoo artist</span></li>
     </ul>
     <div class="price"><b id="unlockPrice">€7</b><span data-t="price.note">One payment<br>yours for good</span></div>
     <button class="deal-btn gold" id="unlockGo" data-t="unlockGo">↓ &nbsp;Get my tattoo files</button>
@@ -782,8 +789,9 @@
     <span class="label" data-t="ex.label">The tattoo flash</span>
     <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
     <div class="ex-grid" id="exGrid">
-      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=12" alt="An example STAROT tattoo flash sheet with six designs" data-ta="ex.alt" loading="lazy">
-        <figcaption data-t="ex.sheet">An example flash sheet: six designs from one birth chart and one name, ready to print.</figcaption></figure>
+      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=14" alt="An example of the STAROT tattoo flash sheets" data-ta="ex.alt" loading="lazy">
+        <img id="exImg1" src="media/examples/flash-sheet-example-maya.jpg?v=14" alt="" loading="lazy">
+        <figcaption data-t="ex.sheet">Example flash sheets: nine designs from one birth chart and one name, ready to print.</figcaption></figure>
       <div class="ex-photos" id="exPhotos"></div>
     </div>
     <button class="deal-btn gold" id="exGo" data-t="ex.go">✒ &nbsp;Draw mine</button>
@@ -794,7 +802,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="12";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="14";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
@@ -808,18 +816,30 @@ const CONFIG={
   gallery:[
     {src:"media/gallery/hands-sun-rising.jpg",kind:"sun",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
      alt:"Two people holding hands; his hand has the Sun and Gemini symbols, hers the ascendant arrow and Leo",altPt:"Duas pessoas de mãos dadas; na mão dele o Sol e Gêmeos, na dela a seta do ascendente e Leão"},
-    {src:"media/gallery/line-forearm-woman.jpg",kind:"line",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
-     alt:"A row of four astrological symbols along a woman's inner forearm, above the wrist",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de uma mulher, acima do pulso"},
     {src:"media/gallery/wheel-calf-man.jpg",kind:"wheel",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
      alt:"A natal wheel tattoo on the back of a man's calf",altPt:"Tatuagem de roda natal na panturrilha de um homem"},
-    {src:"media/gallery/line-ear-woman.jpg",kind:"line",concept:true,caption:"Sun and Rising in one line · side of the neck",captionPt:"Sol e Ascendente numa linha · lateral do pescoço",
+    {src:"media/gallery/wheel-thigh-woman.jpg",kind:"wheel",concept:true,caption:"Natal wheel · front of the thigh",captionPt:"Roda natal · frente da coxa",
+     alt:"A natal wheel tattoo on the front of a woman's thigh",altPt:"Tatuagem de roda natal na frente da coxa de uma mulher"},
+    {src:"media/gallery/line-forearm-woman.jpg",kind:"line",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
+     alt:"A row of four astrological symbols along a woman's inner forearm, above the wrist",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de uma mulher, acima do pulso"},
+    {src:"media/gallery/line-neck-side-woman.jpg",kind:"line",concept:true,caption:"Sun and Rising in one line · side of the neck",captionPt:"Sol e Ascendente numa linha · lateral do pescoço",
      alt:"Four astrological symbols in a vertical line on the side of a woman's neck, below the ear",altPt:"Quatro símbolos astrológicos em linha vertical na lateral do pescoço de uma mulher, abaixo da orelha"},
     {src:"media/gallery/line-neck-man.jpg",kind:"line",concept:true,caption:"Sun and Rising in one line · back of the neck",captionPt:"Sol e Ascendente numa linha · nuca",
      alt:"A row of four astrological symbols low on the back of a man's neck",altPt:"Uma linha de quatro símbolos astrológicos na nuca de um homem"},
+    {src:"media/gallery/line-forearm-man.jpg",kind:"line",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
+     alt:"A row of four astrological symbols along a man's inner forearm",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de um homem"},
     {src:"media/gallery/numbers-obliques-woman.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
      alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
     {src:"media/gallery/numbers-obliques-man.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
      alt:"Four numerology seals in a vertical line down the side of a man's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de um homem"},
+    {src:"media/gallery/maya-day-chest-man.jpg",kind:"maya",concept:true,caption:"Maya day sign · 12 Kib · chest",captionPt:"Nawal maia · 12 Kib · peito",
+     alt:"The Maya day sign 12 Kib, an owl in a cartouche under two bars and two dots, tattooed over a man's heart",altPt:"O nawal maia 12 Kib, uma coruja num cartucho sob duas barras e dois pontos, tatuado sobre o coração de um homem"},
+    {src:"media/gallery/maya-trecena-back-woman.jpg",kind:"mtrecena",concept:true,caption:"Maya trecena · 1 Chikchan · middle of the back",captionPt:"Trecena maia · 1 Chikchan · meio das costas",
+     alt:"The trecena sign 1 Chikchan, a serpent in a cartouche, tattooed on the spine between a woman's shoulder blades",altPt:"O signo da trecena 1 Chikchan, uma serpente num cartucho, tatuado na coluna entre as omoplatas de uma mulher"},
+    {src:"media/gallery/maya-tone-forearm-woman.jpg",kind:"mtone",wide:true,concept:true,caption:"Maya tone · 12 · upper inner forearm",captionPt:"Tom maia · 12 · parte interna do antebraço",
+     alt:"The Maya tone 12, two bars and two dots in a ring, tattooed on a woman's inner forearm near the elbow",altPt:"O tom maia 12, duas barras e dois pontos num anel, tatuado na parte interna do antebraço de uma mulher, perto do cotovelo"},
+    {src:"media/gallery/maya-cross-deltoid-man.jpg",kind:"mcross",wide:true,concept:true,caption:"Maya cross · shoulder",captionPt:"Cruz maia · ombro",
+     alt:"A Maya cross of five day signs tattooed on a man's shoulder",altPt:"Uma cruz maia de cinco nawales tatuada no ombro de um homem"},
   ],
 };
 
@@ -890,7 +910,7 @@ const UI_PT={
   'cast':'☉ &nbsp;Desenhar o mapa',
   'privacy':'Calculado no seu navegador. O seu nome nunca sai desta página.',
   'ink.label':'As suas leituras, na pele','ink.h1':'Leve o seu céu<br><em>na pele.</em>',
-  'ink.p':'Seis desenhos de tatuagem feitos a partir do seu mapa, do seu nawal maia e dos seus números — uma folha de flash pronta para imprimir e os arquivos para o seu tatuador.',
+  'ink.p':'Nove desenhos de tatuagem feitos a partir do seu mapa, dos seus números e dos seus signos maias — duas folhas de flash prontas para imprimir e os arquivos para o seu tatuador.',
   'f.iname':'Nome completo de nascimento — para os seus números','inkGo':'✒ &nbsp;Ver as minhas tatuagens — grátis',
   'num.label':'A aritmética de uma vida',
   'num.h1':'Todo nome é<br><em>um número.</em>',
@@ -910,21 +930,21 @@ const UI_PT={
   'unlock.label':'A sua folha de flash','unlock.h':'Os seus desenhos, para usar na pele',
   'get.wheel':'<b>A sua roda natal</b> — o céu inteiro do seu nascimento, numa só peça',
   'get.sun':'<b>☉ ao lado do seu signo solar</b> — pequena, para o pulso ou o tornozelo',
-  'get.maya':'<b>O seu nawal maia</b> — o signo do dia em que você nasceu no seu cartucho, com o tom em barras e pontos',
+  'get.maya':'<b>Os seus signos maias</b> — o seu nawal, o seu tom, a sua trecena e a sua cruz: quatro desenhos numa folha só deles',
   'get.rising':'<b>↑ ao lado do seu ascendente</b> — o jeito como você chega, na pele',
   'get.sky':'<b>Os dois numa linha</b> — ☉ e ↑ com os seus signos, lado a lado',
   'get.nums':'<b>Os seus números em selos, numa linha</b> — Caminho, Expressão, Alma, Persona, como na sua leitura',
-  'get.files':'<b>Uma folha de flash pronta para imprimir</b> com todos eles, e cada desenho em SVG vetorial e PNG de 4000 px para o seu tatuador',
+  'get.files':'<b>Duas folhas de flash prontas para imprimir</b> com todos eles, e cada desenho em SVG vetorial e PNG de 4000 px para o seu tatuador',
   'price.note':'Um pagamento só<br>seus para sempre',
   'unlockGo':'↓ &nbsp;Quero os meus arquivos','st.buy':'↓ &nbsp;Quero os meus arquivos',
   'trust':'Pagamento seguro pela Stripe · cartão · Apple Pay · Google Pay<br>Os dados do seu nascimento e os seus quatro números vão junto com o pagamento, para que o seu link possa reabrir a folha — o seu nome nunca vai · <a href="termos.html" target="_blank">Termos</a>',
   'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
   'ex.label':'A folha de flash','ex.h':'As suas leituras, na pele',
-  'ex.sheet':'Um exemplo de folha de flash: seis desenhos de um mapa e um nome, prontos para imprimir.',
+  'ex.sheet':'Exemplos de folhas de flash: nove desenhos de um mapa e um nome, prontos para imprimir.',
   'ex.go':'✒ &nbsp;Desenhar a minha','ex.open':'Ver as tatuagens na pele','ex.open2':'Ver um exemplo de folha de flash',
   'feat.label':'As suas leituras, na pele','feat.h':'Leve o seu céu <em>na pele.</em>',
-  'feat.p':'A sua roda, os seus signos de Sol e Ascendente, o seu nawal maia e os seus números, desenhados como seis tatuagens numa folha de flash.',
-'sc.label':'Os seis desenhos da sua folha','ex.alt':'Um exemplo de folha de flash STAROT com seis desenhos',
+  'feat.p':'A sua roda, os seus signos de Sol e Ascendente, os seus números e os seus signos maias, desenhados como nove tatuagens em duas folhas de flash.',
+'sc.label':'Os desenhos das suas folhas','ex.alt':'Um exemplo das folhas de flash STAROT',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
 };
 
@@ -1579,6 +1599,7 @@ if(PT){
   document.querySelectorAll('[data-tp]').forEach(el=>{const v=UI_PT[el.dataset.tp];if(v!=null)el.placeholder=v;});
   document.querySelectorAll('[data-ta]').forEach(el=>{const v=UI_PT[el.dataset.ta];if(v!=null)el.alt=v;});
   const exImg=document.querySelector('.ex-sheet img');if(exImg)exImg.src=mv('media/examples/flash-sheet-example-pt.jpg');
+  const exImg1=document.getElementById('exImg1');if(exImg1)exImg1.src=mv('media/examples/flash-sheet-example-maya-pt.jpg');
 }
 /* the other language, one tap away; a map link keeps its map */
 document.querySelectorAll('.lang').forEach(b=>{
@@ -2201,7 +2222,8 @@ function skyIntro(sun,moon,H){
 }
 /* every free reading ends with the same quiet invitation */
 const inkCta=(lead,kind='sun')=>{
-  const all=CONFIG.gallery||[],g=all.find(it=>it.kind===kind&&it.src)||(kind==='maya'?null:all.find(it=>it.src));
+  const all=CONFIG.gallery||[],isMaya=k=>/^m/.test(k||'');   /* maya, mtone, mtrecena, mcross */
+  const g=all.find(it=>it.kind===kind&&it.src)||(isMaya(kind)?all.find(it=>isMaya(it.kind)&&it.src):all.find(it=>it.src));
   return `<div class="ink${g?' has-ph':''}">${g?`<button class="ink-ph" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}"><img src="${mv(g.src)}" alt="" loading="lazy"></button>`:''}
   <div class="ink-body"><span class="k">${T('Wear it','Leve na pele')}</span><p>${lead}</p>
   <div class="ink-row"><button class="deal-btn gold" data-goink>✒ &nbsp;${T('Make it a tattoo','Virar tatuagem')}</button></div></div></div>`;};
@@ -2220,8 +2242,8 @@ function showAstro(k){
     setPanel({pos:M.pos+T('The Sun','O Sol'),name:T(`Sun in ${s.name}`,`Sol em ${s.name}`),
       meta:[[M.deg,`${degStr(sun.lon)} ${s.name.toUpperCase()}`],[M.house,chart.houses?`${RN[sun.house-1]} — ${HOUSES[sun.house-1].toUpperCase()}`:NEED_HOUR],[M.el,elMod(s)]],
       prose:`<em>${T('The centre; your will and the light you steer by.','O centro; a sua vontade e a luz que guia você.')}</em> ${SUN_IN[sun.sign]}${houseLine(sun)}`+
-        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of six designs drawn from your readings.`,
-                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de seis desenhos feitos das suas leituras.`))});
+        inkCta(T(`☉ beside ${s.name}: a small tattoo for a wrist or an ankle — one of nine designs drawn from your readings.`,
+                 `☉ ao lado de ${s.name}: uma tatuagem pequena para o pulso ou o tornozelo — um de nove desenhos feitos das suas leituras.`))});
   }else if(k===2){
     const s=SIGNS[moon.sign];
     morphTo({fn:(ctx,S)=>drawSeal(ctx,S,moon.sign,1),fill:{desk:.66,mobile:.3}});
@@ -2243,8 +2265,8 @@ function showAstro(k){
                                         `O regente do seu horizonte, <b>${{Sol:'o Sol',Lua:'a Lua'}[ruler.name]||ruler.name}</b>, está em <b>${SIGNS[ruler.sign].name}</b> na casa ${RN[ruler.house-1]} — a porta se abre para ${HOUSES[ruler.house-1]}.`)}</span>`:'')+
           `<span class="line">${T(`Your Midheaven — the public summit — is in <b>${SIGNS[m].name}</b>: the world will know you as ${SIGNS[m].flavor}.`,
                                   `O seu Meio do Céu — o cume público — está em <b>${SIGNS[m].name}</b>: o mundo vai conhecer você como alguém ${SIGNS[m].flavor}.`)}</span>`+
-          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of six designs drawn from your readings.`,
-                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de seis desenhos feitos das suas leituras.`))});
+          inkCta(T(`The ascendant arrow beside ${s.name}: how you arrive, worn — one of nine designs drawn from your readings.`,
+                   `A seta do ascendente ao lado de ${s.name}: o jeito como você chega, na pele — um de nove desenhos feitos das suas leituras.`))});
     }else{
       morphTo({fn:(ctx,S)=>{const c=S/2;ctx.lineWidth=S*.014;ctx.setLineDash([S*.03,S*.05]);ctx.beginPath();ctx.arc(c,c,S*.44,0,7);ctx.stroke();ctx.setLineDash([]);
         ctx.lineWidth=S*.03;ctx.beginPath();ctx.moveTo(c-S*.5,c);ctx.lineTo(c+S*.5,c);ctx.stroke();},fill:{desk:.66,mobile:.3}});
@@ -2523,6 +2545,12 @@ function drawMayaCross(ctx,S,m,lwk=.011){
   for(const [k,dx,dy,z] of at){const s=S*.2*z,u=s/.84,cy=c+dy+u*.12,nw=s*.72,l=lw*z,nh=mayaNumH(k.tone,nw,l);
     mayaNumeral(ctx,k.tone,c+dx,cy-s*.44-l/2-u*.05-nh/2,nw,l);ctx.lineWidth=l;mayaGlyph(ctx,k.sign,c+dx,cy,s,l);}
 }
+/* the tone as a tattoo: its bars and dots inside a ring, like the number seals */
+function drawToneSeal(ctx,W,H,tone){
+  const S=Math.min(W,H);ctx.save();ctx.translate((W-S)/2,(H-S)/2);
+  ctx.lineCap='round';ctx.lineWidth=S*.034;ctx.beginPath();ctx.arc(S/2,S/2,S*.44,0,Math.PI*2);ctx.stroke();
+  mayaNumeral(ctx,tone,S/2,S/2,S*.5,S*.05);ctx.restore();
+}
 /* the tone alone, large, inside a ring — for the stars */
 function drawMayaTone(ctx,S,tone){
   const c=S/2;ctx.lineWidth=S*.012;ctx.beginPath();ctx.arc(c,c,S*.44,0,Math.PI*2);ctx.stroke();
@@ -2643,8 +2671,8 @@ function showMaya(k){
   const m=maya,S=MAYA_SIGNS[m.sign],Tn=MAYA_TONES[m.tone],D=MAYA_DIRS[m.dir],R=MAYA_SIGNS[m.trecena];
   const born=`${m.date.d} · ${m.date.m} · ${m.date.y}`,fill={desk:.5,mobile:.3};
   $('counter').textContent=`◈ ${m.tone} ${S.y.toUpperCase()}`;
-  const cta=inkCta(T(`<b style="color:var(--gold);font-weight:400">${mName(m)}</b> — your day sign in its cartouche, with its tone in Maya bars and dots: one of the tattoos drawn from your readings.`,
-                     `<b style="color:var(--gold);font-weight:400">${mName(m)}</b> — o seu nawal no seu cartucho, com o tom em barras e pontos maias: uma das tatuagens desenhadas das suas leituras.`),'maya');
+  const cta=inkCta(T(`<b style="color:var(--gold);font-weight:400">${mName(m)}</b> — your day sign, your tone, your trecena and your cross become four tattoo designs, on a sheet of their own.`,
+                     `<b style="color:var(--gold);font-weight:400">${mName(m)}</b> — o seu nawal, o seu tom, a sua trecena e a sua cruz viram quatro desenhos de tatuagem, numa folha só deles.`),['maya','mtone','mtrecena','mcross'][k]);
   if(k===0){
     const nx=kinOf(m.dn+1);
     morphTo({fn:(ctx,s)=>drawNawal(ctx,s,s,m.sign,m.tone,.032),fill});
@@ -2707,10 +2735,11 @@ if(CONFIG.donationUrl){
 }
 addEventListener('keydown',e=>{if(e.key==='Escape'){offer.classList.remove('show');$('unlock').classList.remove('show');$('stencil').classList.remove('show');}});
 
-/* ═══ THE TATTOOS — six designs drawn from your own readings ═══
-   1 the natal wheel · 2 the Maya day sign with its tone · 3 ☉ beside the Sun's sign ·
-   4 the ascendant arrow beside the rising sign · 5 both in one line · 6 Life Path, Expression,
-   Soul and Persona as their seals, in a row. Without a birth hour 4 and 5 can't exist, so the sheet has four.
+/* ═══ THE TATTOOS — nine designs drawn from your own readings ═══
+   1 the natal wheel · 2 ☉ beside the Sun's sign · 3 the ascendant arrow beside the rising sign ·
+   4 both in one line · 5 Life Path, Expression, Soul and Persona as their seals, in a row ·
+   and the Maya count on a second sheet: 6 the day sign with its tone · 7 the tone · 8 the trecena ·
+   9 the cross. Without a birth hour 3 and 4 can't exist, so there are seven.
    Free to preview; the flash sheet and the files are the product. */
 function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the horizon */
   ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=lw/s;ctx.lineCap='round';ctx.lineJoin='round';
@@ -2750,10 +2779,6 @@ function inkDesigns(){
      place:T('upper back, forearm, thigh','costas, antebraço, coxa'),intro:T('The whole sky of your birth, as one piece.','O céu inteiro do seu nascimento, numa só peça.')},
     {kind:'sun',w:2,h:1,draw:(c,W,h)=>drawSunPair(c,W,h,sun.sign),title:T(`Sun in ${ss.name}`,`Sol em ${ss.name}`),file:`sun-${slug(ss.name)}`,size:3,
      place:T('wrist, ankle, behind the ear','pulso, tornozelo, atrás da orelha'),intro:T('☉ — the circle with its centre — beside the sign the Sun stood in.','☉ — o círculo com o seu centro — ao lado do signo onde o Sol estava.')}];
-  const mk=mayaOf(chartMeta.date),ms=MAYA_SIGNS[mk.sign];
-  list.splice(1,0,{kind:'maya',w:1,h:NAWAL_H,draw:(c,W,h)=>drawNawal(c,W,h,mk.sign,mk.tone),title:`${T('Your day sign','O seu nawal')} · ${mName(mk)}`,file:`maya-${mk.tone}-${slug(ms.y)}`,size:4,
-    place:T('wrist, behind the ear, ankle','pulso, atrás da orelha, tornozelo'),
-    intro:T(`${mName(mk)}, ${ms.en.toLowerCase()} — your Maya day sign in its cartouche, with its tone in bars and dots.`,`${mName(mk)}, ${ms.pt.toLowerCase()} — o seu nawal maia no seu cartucho, com o tom em barras e pontos.`)});
   if(H){const ra=signOf(H.asc),rs=SIGNS[ra];
     list.push({kind:'rising',w:2,h:1,draw:(c,W,h)=>drawRisingPair(c,W,h,ra),title:risingName(rs),file:`rising-${slug(rs.name)}`,size:3,
       place:T('collarbone, inner arm, nape','clavícula, parte interna do braço, nuca'),intro:T('The ascendant arrow over the horizon, beside the sign that was rising when you arrived.','A seta do ascendente sobre o horizonte, ao lado do signo que subia quando você chegou.')});
@@ -2762,7 +2787,23 @@ function inkDesigns(){
   list.push({kind:'seals',w:SEAL_ROW,h:1,draw:(c,W,h)=>drawSealRow(c,W,h,inkNums),title:`${T('Your numbers','Os seus números')} · ${inkNums.join(' · ')}`,file:`numbers-${inkNums.join('-')}`,size:8,
     place:T('forearm, along the spine, ribs','antebraço, ao longo da coluna, costelas'),
     intro:T('Life Path · Expression · Soul · Persona — each number with its seal, as in your reading, in one row.','Caminho · Expressão · Alma · Persona — cada número com o seu selo, como na sua leitura, numa linha.')});
-  for(const d of list)d.cap=d.kind==='wheel'?`${d.title} · ${from} 10 cm`:d.kind==='seals'?`${T('Life Path · Expression · Soul · Persona','Caminho · Expressão · Alma · Persona')} · ${d.size} cm`:`${d.title} · ${d.size} cm`;
+  /* the Maya count: day sign, tone, trecena and cross — four designs with their own sheet */
+  const mk=mayaOf(chartMeta.date),ms=MAYA_SIGNS[mk.sign],mr=MAYA_SIGNS[mk.trecena];
+  list.push(
+    {kind:'maya',group:'maya',w:1,h:NAWAL_H,draw:(c,W,h)=>drawNawal(c,W,h,mk.sign,mk.tone),title:`${T('Your day sign','O seu nawal')} · ${mName(mk)}`,file:`maya-day-${mk.tone}-${slug(ms.y)}`,size:4,
+     place:T('chest, wrist, behind the ear','peito, pulso, atrás da orelha'),
+     intro:T(`${mName(mk)}, ${ms.en.toLowerCase()} — your day sign in its cartouche, with its tone in bars and dots above.`,`${mName(mk)}, ${ms.pt.toLowerCase()} — o seu nawal no seu cartucho, com o tom em barras e pontos por cima.`)},
+    {kind:'mtone',group:'maya',w:1,h:1,draw:(c,W,h)=>drawToneSeal(c,W,h,mk.tone),title:`${T('Your tone','O seu tom')} · ${mk.tone}`,file:`maya-tone-${mk.tone}`,size:3,
+     place:T('upper inner forearm, wrist, ankle','parte interna do antebraço, pulso, tornozelo'),
+     intro:T(`${mk.tone} in Maya numerals — a dot is one, a bar is five — inside a ring.`,`${mk.tone} em números maias — um ponto vale um, uma barra vale cinco — dentro de um anel.`)},
+    {kind:'mtrecena',group:'maya',w:1,h:NAWAL_H,draw:(c,W,h)=>drawNawal(c,W,h,mk.trecena,1),title:`${T('Your trecena','A sua trecena')} · 1 ${mr.y}`,file:`maya-trecena-1-${slug(mr.y)}`,size:4,
+     place:T('middle of the back, between the shoulder blades','meio das costas, entre as omoplatas'),
+     intro:T(`1 ${mr.y}, ${mr.en.toLowerCase()} — the sign that opened your thirteen days.`,`1 ${mr.y}, ${mr.pt.toLowerCase()} — o signo que abriu os seus treze dias.`)},
+    {kind:'mcross',group:'maya',w:1,h:1,draw:(c,W,h)=>{const S=Math.min(W,h);c.save();c.translate((W-S)/2,(h-S)/2);drawMayaCross(c,S,mk,.012);c.restore();},
+     title:T('Your Maya cross','A sua cruz maia'),file:`maya-cross-${mk.tone}-${slug(ms.y)}`,size:8,
+     place:T('shoulder, upper back, thigh','ombro, costas, coxa'),
+     intro:T(`${mName(mk)} at the centre, with your youth above, your maturity below and your two sides to either hand.`,`${mName(mk)} ao centro, com a juventude acima, a maturidade abaixo e os seus dois lados de cada mão.`)});
+  for(const d of list)d.cap=d.kind==='wheel'?`${d.title} · ${from} 10 cm`:d.kind==='seals'?`${T('Life Path · Expression · Soul · Persona','Caminho · Expressão · Alma · Persona')} · ${d.size} cm`:d.kind==='mcross'?`${d.title} · ${from} ${d.size} cm`:`${d.title} · ${d.size} cm`;
   return list;
 }
 function flashLine(){
@@ -2771,23 +2812,26 @@ function flashLine(){
 }
 /* the sheet's layout (A3 at 300 dpi = 3508 px wide), used for print and for the star figure.
    Each entry: design, centre x (fraction of width), top, width, caption baseline. */
-function flashSlots(){
+function flashSlots(page=0){
   const by=k=>inkList.find(d=>d.kind===k);
+  if(page===1)return [
+    [by('maya'),.2,800,700,1830],[by('mtone'),.5,880,700,1830],[by('mtrecena'),.8,800,700,1830],
+    [by('mcross'),.5,2000,2560,4680]];
   return by('rising')?[
-    [by('wheel'),.37,700,1700,2530],[by('maya'),.8,1075,740,2150],
+    [by('wheel'),.5,700,1750,2530],
     [by('sun'),.28,2620,1100,3245],[by('rising'),.72,2620,1100,3245],
     [by('sky'),.5,3330,2200,3955],
     [by('seals'),.5,4040,2500,4690]]:[
-    [by('wheel'),.37,720,1900,2750],[by('maya'),.8,1150,820,2305],
-    [by('sun'),.5,2950,1250,3700],
-    [by('seals'),.5,3900,2600,4610]];
+    [by('wheel'),.5,720,2150,2955],
+    [by('sun'),.5,3120,1250,3825],
+    [by('seals'),.5,3980,2600,4660]];
 }
-function layoutFlash(ctx,W,txt){
-  const f=W/3508,slots=flashSlots();
+function layoutFlash(ctx,W,txt,page=0){
+  const f=W/3508,slots=flashSlots(page);
   for(const [dz,cx,top,w] of slots){const h=w*f*dz.h/dz.w;ctx.save();ctx.translate(cx*W-w*f/2,top*f);dz.draw(ctx,w*f,h);ctx.restore();}
   if(txt)txt(f,slots);
 }
-async function renderFlash(W=3508,wm=false){
+async function renderFlash(W=3508,wm=false,page=0){
   try{await Promise.all(["300 60px 'Cormorant Garamond'","italic 300 60px 'Cormorant Garamond'","400 30px Jost","400 30px Marcellus"].map(f=>document.fonts.load(f)));}catch(e){}
   const H=Math.round(W*1.4142),c=document.createElement('canvas');c.width=W;c.height=H;
   const x=c.getContext('2d'),f=W/3508,K=v=>Math.max(1,Math.round(v*f));
@@ -2799,15 +2843,15 @@ async function renderFlash(W=3508,wm=false){
   x.strokeStyle=x.fillStyle=ink;
   layoutFlash(x,W,(f,dz)=>{   /* dz: the slots, in order */
     t('STAROT',`400 ${K(52)}px Marcellus`,gold,K(300),`${K(26)}px`);
-    t(T('Tattoo flash','Folha de flash'),`italic 300 ${K(150)}px 'Cormorant Garamond'`,ink,K(480));
-    t(flashLine().toUpperCase(),`400 ${K(40)}px Jost`,soft,K(575),`${K(10)}px`);
+    t(page?T('Maya flash','Folha maia'):T('Tattoo flash','Folha de flash'),`italic 300 ${K(150)}px 'Cormorant Garamond'`,ink,K(480));
+    t(((page?T('The Maya count · ','A contagem maia · '):'')+flashLine()).toUpperCase(),`400 ${K(40)}px Jost`,soft,K(575),`${K(10)}px`);
     x.fillStyle=soft;x.fillRect(W/2-K(160),K(640),K(320),K(3));
     const lab=(n,s,xx,y)=>t(`${n} · ${s}`.toUpperCase(),`400 ${K(38)}px Jost`,soft,y,`${K(9)}px`,xx);
-    dz.forEach(([d,cx,,,ly],i)=>lab(i+1,d.cap,cx*W,K(ly)));
+    dz.forEach(([d,cx,,,ly])=>lab(inkList.indexOf(d)+1,d.cap,cx*W,K(ly)));
     t(T('Line art for personal use — the SVG files scale to any size for your tattoo artist.','Traço para uso pessoal — os arquivos SVG escalam para qualquer tamanho para o seu tatuador.'),
       `italic 300 ${K(46)}px 'Cormorant Garamond'`,soft,K(4800));
     t(SITE_LABEL,`400 ${K(28)}px Jost`,gold,K(4885),`${K(8)}px`);
-  });
+  },page);
   if(wm){  /* the preview carries a watermark; the sheet you buy does not */
     x.save();x.translate(W/2,H/2);x.rotate(-.42);x.font=`500 ${K(84)}px Jost`;x.fillStyle='rgba(22,20,18,.09)';x.textAlign='center';
     if('letterSpacing' in x)x.letterSpacing=`${K(16)}px`;
@@ -2818,8 +2862,11 @@ async function renderFlash(W=3508,wm=false){
   return c;
 }
 
-const INK_FACES={wheel:'✶',maya:'◈',sun:'☉',rising:'↑',sky:'☉↑',seals:'⁂'};
-const INK_LABELS={wheel:T('Map','Mapa'),maya:T('Nawal','Nawal'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),sky:T('Line','Linha'),seals:T('Numbers','Números')};
+const INK_FACES={wheel:'✶',sun:'☉',rising:'↑',sky:'☉↑',seals:'⁂',maya:'◈'};
+const INK_LABELS={wheel:T('Map','Mapa'),sun:T('Sun','Sol'),rising:T('Rising','Ascendente'),sky:T('Line','Linha'),seals:T('Numbers','Números'),maya:T('Maya','Maia')};
+/* the cards: one per design, except the Maya set, which shares a card */
+let inkCards=[];
+function groupInk(list){const out=[];for(const d of list){const g=d.group&&out.find(x=>x.group===d.group);if(g)g.items.push(d);else out.push({group:d.group,items:[d]});}return out;}
 function castInk(inp,nums){
   prepChart(inp);inkNums=nums;sheetId=sheetKey(chartInput,nums);
   const own=ownedSheet(sheetId);
@@ -2828,9 +2875,9 @@ function castInk(inp,nums){
 }
 function openInkReading(){
   mode='ink';
-  inkList=inkDesigns();
+  inkList=inkDesigns();inkCards=groupInk(inkList);
   beginReading();setOfferBtn();track('ink-preview');
-  setSlots([...inkList.map(d=>({label:INK_LABELS[d.kind],face:INK_FACES[d.kind],big:true})),{label:T('Sheet','Folha'),face:'✒',big:true}],k=>showInk(k));
+  setSlots([...inkCards.map(c=>{const k=c.group||c.items[0].kind;return {label:INK_LABELS[k],face:INK_FACES[k],big:true};}),{label:T('Sheets','Folhas'),face:'✒',big:true}],k=>showInk(k));
   revealSlots(380);
   setTimeout(()=>showInk(0),1000);
   setTimeout(()=>{
@@ -2846,8 +2893,8 @@ function inkBuy(own){
     <span class="fine">${T('Tap a design to see it on paper and save it on its own.','Toque num desenho para vê-lo no papel e salvá-lo sozinho.')}</span>
     <button class="linkish" data-examples style="margin-top:2px">${T('See them on skin','Ver na pele')}</button></div>`;
   return `<div class="seal"><span class="k">${T('Your tattoo files','Os seus arquivos de tatuagem')}</span>
-    <p>${T(`All ${inkList.length} designs on one print-ready sheet, plus each one as vector SVG and 4000 px PNG for your tattoo artist.`,
-           `Os ${inkList.length} desenhos numa folha pronta para imprimir, e cada um em SVG vetorial e PNG de 4000 px para o seu tatuador.`)}</p>
+    <p>${T(`All ${inkList.length} designs on two print-ready sheets, plus each one as vector SVG and 4000 px PNG for your tattoo artist.`,
+           `Os ${inkList.length} desenhos em duas folhas prontas para imprimir, e cada um em SVG vetorial e PNG de 4000 px para o seu tatuador.`)}</p>
     <button class="deal-btn gold buy" data-unlock>↓ &nbsp;${T('Get my files','Baixar arquivos')} · ${CONFIG.price}</button>
     <span class="fine">${T('One payment · yours for good · the watermark goes','Um pagamento · seus para sempre · sem marca d’água')}</span>
     <button class="linkish" data-examples style="margin-top:2px">${T('See them on skin','Ver na pele')}</button></div>`;
@@ -2857,24 +2904,38 @@ function showInk(k){
   if(view===k)return;
   view=k;
   markSlot(k);
-  const own=sheetOpen(),n=inkList.length;
+  const own=sheetOpen(),n=inkCards.length,N=inkList.length;
   $('counter').textContent=`✒ ${Math.min(k+1,n)} / ${n}`;
   if(k===n){
     morphTo({fn:(ctx,S)=>{const w=S/1.4142;ctx.save();ctx.translate((S-w)/2,0);layoutFlash(ctx,w);ctx.restore();},fill:{desk:.82,mobile:.34}});
-    setPanel({pos:T('Your tattoo flash','A sua folha de flash'),name:T('All on one sheet','Tudo numa folha'),
-      meta:[[T('FORMAT','FORMATO'),'A3 · 300 DPI · PNG'],[T('FILES','ARQUIVOS'),T(`${n} DESIGNS · SVG + PNG`,`${n} DESENHOS · SVG + PNG`)],[T('FOR','PARA'),bornLine()]],
-      prose:`<em>${T('Print it, take it to your tattoo artist, or frame it.','Imprima, leve ao seu tatuador, ou emoldure.')}</em>
-        <div class="sheet-pv" id="sheetPv"><span class="label">${T('Drawing your sheet…','Desenhando a sua folha…')}</span></div>`+inkBuy(own)});
+    setPanel({pos:T('Your tattoo flash','A sua folha de flash'),name:T('Two sheets, every design','Duas folhas, todos os desenhos'),
+      meta:[[T('FORMAT','FORMATO'),T('2 × A3 · 300 DPI · PNG','2 × A3 · 300 DPI · PNG')],[T('FILES','ARQUIVOS'),T(`${N} DESIGNS · SVG + PNG`,`${N} DESENHOS · SVG + PNG`)],[T('FOR','PARA'),bornLine()]],
+      prose:`<em>${T('Print them, take them to your tattoo artist, or frame them.','Imprima, leve ao seu tatuador, ou emoldure.')}</em>
+        <div class="sheet-pv" id="sheetPv0"><span class="label">${T('Drawing your sheet…','Desenhando a sua folha…')}</span></div>
+        <div class="sheet-pv" id="sheetPv1"><span class="label">${T('Drawing your Maya sheet…','Desenhando a sua folha maia…')}</span></div>`+inkBuy(own)});
     setTimeout(async()=>{
-      const c=await renderFlash(1100,!own),box=$('sheetPv');
-      if(box&&view===k&&mode==='ink'){box.innerHTML='';const im=new Image();im.src=c.toDataURL('image/jpeg',.86);im.alt=T('Your tattoo flash sheet','A sua folha de flash');box.appendChild(im);}
-      c.width=c.height=0;
+      for(const pg of [0,1]){
+        const c=await renderFlash(1100,!own,pg),box=$('sheetPv'+pg);
+        if(box&&view===k&&mode==='ink'){box.innerHTML='';const im=new Image();im.src=c.toDataURL('image/jpeg',.86);im.alt=pg?T('Your Maya flash sheet','A sua folha maia'):T('Your tattoo flash sheet','A sua folha de flash');box.appendChild(im);}
+        c.width=c.height=0;
+      }
     },420);
     return;
   }
-  const dz=inkList[k];
+  const card=inkCards[k];
+  if(card.group==='maya'){
+    const mk=mayaOf(chartMeta.date),cross=card.items.find(d=>d.kind==='mcross');
+    morphTo({fn:(ctx,S)=>drawMayaCross(ctx,S,mk,.009),fill:{desk:.55,mobile:.34}});
+    const first=inkList.indexOf(card.items[0])+1,last=first+card.items.length-1;
+    setPanel({pos:T(`Tattoos ${first}–${last} of ${N}`,`Tatuagens ${first}–${last} de ${N}`),name:T('Your Maya signs','Os seus signos maias'),
+      meta:[[T('DESIGNS','DESENHOS'),T('DAY SIGN · TONE · TRECENA · CROSS','NAWAL · TOM · TRECENA · CRUZ')],[T('SIZE','TAMANHO'),T('FROM 3 CM · THE CROSS FROM 8 CM','A PARTIR DE 3 CM · A CRUZ A PARTIR DE 8 CM')],[T('STYLE','ESTILO'),T('FINE LINE, BLACK','TRAÇO FINO, PRETO')]],
+      prose:`<em>${T(`The four signs of your Maya reading — ${mName(mk)} — each its own tattoo, on a sheet of their own. Tap one to see it on paper.`,`Os quatro signos da sua leitura maia — ${mName(mk)} — cada um a sua tatuagem, numa folha só deles. Toque num para vê-lo no papel.`)}</em>
+        <div class="pv-grid">${card.items.map(dz=>`<figure><button class="paper pv${own?'':' wm'}" data-ink="${dz.kind}" aria-label="${dz.title}">${inkSVG(dz,600)}</button><figcaption>${inkList.indexOf(dz)+1} · ${dz.title}</figcaption></figure>`).join('')}</div>`+inkBuy(own)});
+    return;
+  }
+  const dz=card.items[0];
   morphTo({fn:centredWide(dz),fill:{desk:dz.w>1?.9:dz.h>dz.w?.5:.7,mobile:dz.w>1?.42:.3}});
-  setPanel({pos:T(`Tattoo ${k+1} of ${n}`,`Tatuagem ${k+1} de ${n}`),name:dz.title,
+  setPanel({pos:T(`Tattoo ${inkList.indexOf(dz)+1} of ${N}`,`Tatuagem ${inkList.indexOf(dz)+1} de ${N}`),name:dz.title,
     meta:[[T('SIZE','TAMANHO'),T(`FROM ${dz.size} CM`,`A PARTIR DE ${dz.size} CM`)],[T('PLACEMENT','LOCAL'),dz.place.toUpperCase()],[T('STYLE','ESTILO'),T('FINE LINE, BLACK','TRAÇO FINO, PRETO')]],
     prose:`<em>${dz.intro}</em>
       <button class="paper pv${own?'':' wm'}${dz.w>dz.h?' wide':''}" data-ink="${dz.kind}" aria-label="${T('View on paper','Ver no papel')}">${inkSVG(dz)}</button>`+inkBuy(own)});
@@ -2905,15 +2966,15 @@ function renderShowcase(){
   const ch=computeChart(Date.UTC(1990,5,21,8,15),38.72,-9.14,true),nums=[8,6,5,3];
   const sun=ch.bodies[0].sign,asc=signOf(ch.houses.asc);
   const mk=mayaOf({y:1990,m:6,d:21});
-  const items=[[1,(c,W)=>drawWheel(c,W,ch,WHEEL_INK),T('Natal wheel','Roda natal'),'wheel'],
-    [1/NAWAL_H,(c,W,H)=>drawNawal(c,W,H,mk.sign,mk.tone),T('Your Maya day sign','O seu nawal maia'),'maya'],
-    [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar'),'sun'],
-    [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente'),'rising'],
-    [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha'),'sky'],
-    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos'),'seals']];
-  $('showcase').innerHTML=items.map(([w,draw,cap,key],i)=>{
+  const items=[[1,(c,W)=>drawWheel(c,W,ch,WHEEL_INK),T('Natal wheel','Roda natal'),'wheel','1'],
+    [1,(c,W)=>drawMayaCross(c,W,mk,.012),T('Your Maya signs · 4 designs','Os seus signos maias · 4 desenhos'),'maya','6–9'],
+    [2,(c,W,H)=>drawSunPair(c,W,H,sun),T('☉ + your Sun sign','☉ + o seu signo solar'),'sun','2'],
+    [2,(c,W,H)=>drawRisingPair(c,W,H,asc),T('↑ + your Rising sign','↑ + o seu ascendente'),'rising','3'],
+    [4,(c,W,H)=>drawSkyRow(c,W,H,sun,asc),T('Both, in one line','Os dois, numa linha'),'sky','4'],
+    [SEAL_ROW,(c,W,H)=>drawSealRow(c,W,H,nums),T('Your numbers as seals','Os seus números em selos'),'seals','5']];
+  $('showcase').innerHTML=items.map(([w,draw,cap,key,num])=>{
     const W=400,H=Math.round(400/w),c=new SvgCtx(W,H);c.strokeStyle=c.fillStyle='#d8b877';draw(c,W,H);
-    return `<figure class="${w>1?'wide':'big'}" style="grid-area:${key}"><div class="sc">${c.svg()}</div><figcaption><b>${i+1}</b>${cap}</figcaption></figure>`;}).join('');
+    return `<figure class="${w>1?'wide':'big'}" style="grid-area:${key}"><div class="sc">${c.svg()}</div><figcaption><b>${num}</b>${cap}</figcaption></figure>`;}).join('');
 }
 
 /* line art files: margin of 5% so no stroke touches the edge of the stencil */
@@ -2966,10 +3027,11 @@ async function downloadFlash(){
   track('flash');
   toast(T('Inking your sheet…','Passando a tinta na sua folha…'),0);
   await new Promise(r=>setTimeout(r,60));
-  const c=await renderFlash(3508,false),blob=await new Promise(r=>c.toBlob(r,'image/png'));c.width=c.height=0;
+  const list=[],d=ymd(chartInput);
+  for(const pg of [0,1]){const c=await renderFlash(3508,false,pg);list.push({blob:await new Promise(r=>c.toBlob(r,'image/png')),name:`starot-flash-${pg?'maya-':''}${d}.png`});c.width=c.height=0;}
   $('toast').classList.remove('show');
-  if(await shareOrSave(blob,`starot-flash-${ymd(chartInput)}.png`,T('My tattoo flash','A minha folha de flash')))
-    toast(T('Your flash sheet is saved — A3 at 300 dpi.','A sua folha de flash foi salva — A3 a 300 dpi.'));
+  if(await shareOrSaveMany(list,T('My tattoo flash','A minha folha de flash')))
+    toast(T('Your two flash sheets are saved — A3 at 300 dpi.','As suas duas folhas de flash foram salvas — A3 a 300 dpi.'));
 }
 let zipLib=null;
 function loadZip(){
@@ -2983,13 +3045,13 @@ async function downloadZip(){
   toast(T('Packing your files…','Juntando os seus arquivos…'),0);
   try{
     const JSZip=await loadZip(),z=new JSZip(),d=ymd(chartInput);
-    const c=await renderFlash(3508,false);z.file(`starot-flash-${d}.png`,await new Promise(r=>c.toBlob(r,'image/png')));c.width=c.height=0;
+    for(const pg of [0,1]){const c=await renderFlash(3508,false,pg);z.file(`starot-flash-${pg?'maya-':''}${d}.png`,await new Promise(r=>c.toBlob(r,'image/png')));c.width=c.height=0;}
     for(const dz of inkList){z.file(fileName(dz)+'.svg',inkSVG(dz));z.file(fileName(dz)+'.png',await inkPNG(dz));}
     const sl=inkList.find(d=>d.kind==='seals'),col={w:1,h:SEAL_ROW,title:sl.title,draw:(c,W,h)=>drawSealColumn(c,W,h,inkNums)};
     z.file(fileName(sl)+'-vertical.svg',inkSVG(col));z.file(fileName(sl)+'-vertical.png',await inkPNG(col,1400));
     z.file(T('READ-ME.txt','LEIA-ME.txt'),T(
-      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nThe numbers also come as a vertical line (…-vertical), for the side of the body or the spine.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel from 10 cm across; the Maya day sign, the Sun, Rising and numbers designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
-      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs números também vêm numa linha vertical (…-vertical), para a lateral do corpo ou a coluna.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal a partir de 10 cm; o nawal maia e os desenhos do Sol, Ascendente e números a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
+      `STAROT · tattoo flash · ${flashLine()}\n\nSVG files are vector line art: they scale to any size without losing sharpness.\nThe numbers also come as a vertical line (…-vertical), for the side of the body or the spine.\nPNG files are 4000 px, black on a transparent background.\n\nSizes: the natal wheel and the Maya cross from 8–10 cm across; the other designs from 3–4 cm.\nYour tattoo artist may adjust line weights for your skin and the size you choose.\n\nFor personal use. Please don't resell the designs.\n`,
+      `STAROT · folha de flash · ${flashLine()}\n\nOs arquivos SVG são traço vetorial: escalam para qualquer tamanho sem perder nitidez.\nOs números também vêm numa linha vertical (…-vertical), para a lateral do corpo ou a coluna.\nOs arquivos PNG têm 4000 px, preto em fundo transparente.\n\nTamanhos: a roda natal e a cruz maia a partir de 8–10 cm; os outros desenhos a partir de 3–4 cm.\nO seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.\n\nPara uso pessoal. Por favor, não revenda os desenhos.\n`));
     const blob=await z.generateAsync({type:'blob'});
     $('toast').classList.remove('show');
     saveBlob(blob,`starot-tattoos-${d}.zip`);
@@ -3012,7 +3074,7 @@ function openUnlock(){
   if(!PAYWALL||!chartInput||!inkNums)return;
   $('unlockFor').textContent=`${T('For','Para')} ${bornLine()} · ${chartMeta.place.full}`;
   $('getRising').hidden=$('getSky').hidden=!chart.houses;
-  const nw={6:['Six','Seis'],4:['Four','Quatro']}[inkList.length]||[String(inkList.length),String(inkList.length)];
+  const nw={9:['Nine','Nove'],7:['Seven','Sete']}[inkList.length]||[String(inkList.length),String(inkList.length)];
   $('unlockTitle').textContent=T(`${nw[0]} designs, yours to wear`,`${nw[1]} desenhos, para usar na pele`);
   $('unlockNote').textContent='';
   stencil.classList.remove('show');
@@ -3107,6 +3169,14 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
 function saveBlob(blob,name){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
   document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+async function shareOrSaveMany(list,title){
+  const files=list.map(x=>new File([x.blob],x.name,{type:x.blob.type}));
+  if(matchMedia('(pointer:coarse)').matches&&navigator.canShare&&navigator.canShare({files})){
+    try{await navigator.share({files,title});return true;}catch(e){if(e.name==='AbortError')return false;}
+  }
+  for(const x of list){saveBlob(x.blob,x.name);await new Promise(r=>setTimeout(r,500));}
+  return true;
 }
 async function shareOrSave(blob,name,title){
   const file=new File([blob],name,{type:blob.type});
