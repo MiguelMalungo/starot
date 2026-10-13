@@ -454,7 +454,6 @@
   .g-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--hair) transparent}
   .g-row figure{flex:0 0 min(240px,56vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:6px}
   .g-row figure.wide{flex-basis:min(400px,74vw)}
-  .g-row figure{cursor:zoom-in}
   .g-wrap{position:relative;width:100%}
   .g-wrap .g-row{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 70px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 70px),transparent)}
   .g-wrap.at-end .g-row{-webkit-mask-image:none;mask-image:none}
@@ -818,7 +817,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="23";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="24";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -3174,7 +3173,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
       const cap=(PT?it.captionPt:it.caption)||'';
       return it.video
         ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
-        :`<figure${it.wide?' class="wide"':''} data-examples><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
+        :`<figure${it.wide?' class="wide"':''}><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
     }).join('')+`</div><button class="g-nav next" type="button" aria-label="${T('More photos','Mais fotos')}">›</button></div>`+
       `<div class="g-hint"><span class="g-swipe">${matchMedia('(pointer:coarse)').matches?T(`Swipe for all ${items.length} photos`,`Deslize para ver as ${items.length} fotos`):T(`Scroll for all ${items.length} photos`,`Role para ver as ${items.length} fotos`)} <i>→</i></span>`+
       `<button class="linkish g-all" type="button" data-examples>${T('see them all','ver todas')}</button></div>`;
