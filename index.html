@@ -452,8 +452,8 @@
   #inkPrice{justify-content:center;margin-top:-10px}
   .sc-label{margin-top:18px}
   .g-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--hair) transparent}
-  .g-row figure{flex:0 0 min(240px,64vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:6px}
-  .g-row figure.wide{flex-basis:min(400px,86vw)}
+  .g-row figure{flex:0 0 min(240px,56vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:6px}
+  .g-row figure.wide{flex-basis:min(400px,74vw)}
   .g-row figure{cursor:zoom-in}
   .g-wrap{position:relative;width:100%}
   .g-wrap .g-row{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 70px),transparent);mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 70px),transparent)}
@@ -465,7 +465,11 @@
   .g-nav.prev{left:-20px}.g-nav.next{right:-20px}
   .g-wrap.at-start .prev,.g-wrap.at-end .next{opacity:0;pointer-events:none}
   @media (pointer:coarse){.g-nav{display:none}}
-  .g-all{margin-top:2px}
+  .g-hint{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:2px}
+  .g-swipe{font-family:'Jost';font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+  .g-swipe i{font-style:normal;display:inline-block;animation:gswipe 1.6s ease-in-out infinite}
+  @keyframes gswipe{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+  .g-hint .g-all{margin:0;color:var(--gold-dim)}
   .g-row figure.wide img{aspect-ratio:auto;height:min(300px,80vw)}
   .g-row img,.g-row video{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;border:1px solid var(--hair);background:#0b0d12}
   .g-row figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
@@ -814,7 +818,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="21";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="22";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
@@ -828,6 +832,10 @@ const CONFIG={
   gallery:[
     {src:"media/gallery/hands-sun-rising.jpg",kind:"sun",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
      alt:"Two people holding hands; his hand has the Sun and Gemini symbols, hers the ascendant arrow and Leo",altPt:"Duas pessoas de mãos dadas; na mão dele o Sol e Gêmeos, na dela a seta do ascendente e Leão"},
+    {src:"media/gallery/numbers-obliques-woman.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+     alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
+    {src:"media/gallery/maya-trecena-back-woman.jpg",kind:"mtrecena",concept:true,caption:"Maya trecena · 1 Chikchan · middle of the back",captionPt:"Trecena maia · 1 Chikchan · meio das costas",
+     alt:"The trecena sign 1 Chikchan, a serpent in a cartouche, tattooed on the spine between a woman's shoulder blades",altPt:"O signo da trecena 1 Chikchan, uma serpente num cartucho, tatuado na coluna entre as omoplatas de uma mulher"},
     {src:"media/gallery/wheel-calf-man.jpg",kind:"wheel",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
      alt:"A natal wheel tattoo on the back of a man's calf",altPt:"Tatuagem de roda natal na panturrilha de um homem"},
     {src:"media/gallery/wheel-thigh-woman.jpg",kind:"wheel",concept:true,caption:"Natal wheel · front of the thigh",captionPt:"Roda natal · frente da coxa",
@@ -840,14 +848,10 @@ const CONFIG={
      alt:"A row of four astrological symbols low on the back of a man's neck",altPt:"Uma linha de quatro símbolos astrológicos na nuca de um homem"},
     {src:"media/gallery/line-forearm-man.jpg",kind:"line",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
      alt:"A row of four astrological symbols along a man's inner forearm",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de um homem"},
-    {src:"media/gallery/numbers-obliques-woman.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
-     alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
     {src:"media/gallery/numbers-obliques-man.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
      alt:"Four numerology seals in a vertical line down the side of a man's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de um homem"},
     {src:"media/gallery/maya-day-chest-man.jpg",kind:"maya",concept:true,caption:"Maya day sign · 12 Kib · chest",captionPt:"Nawal maia · 12 Kib · peito",
      alt:"The Maya day sign 12 Kib, an owl in a cartouche under two bars and two dots, tattooed over a man's heart",altPt:"O nawal maia 12 Kib, uma coruja num cartucho sob duas barras e dois pontos, tatuado sobre o coração de um homem"},
-    {src:"media/gallery/maya-trecena-back-woman.jpg",kind:"mtrecena",concept:true,caption:"Maya trecena · 1 Chikchan · middle of the back",captionPt:"Trecena maia · 1 Chikchan · meio das costas",
-     alt:"The trecena sign 1 Chikchan, a serpent in a cartouche, tattooed on the spine between a woman's shoulder blades",altPt:"O signo da trecena 1 Chikchan, uma serpente num cartucho, tatuado na coluna entre as omoplatas de uma mulher"},
     {src:"media/gallery/maya-tone-forearm-woman.jpg",kind:"mtone",wide:true,concept:true,caption:"Maya tone · 12 · upper inner forearm",captionPt:"Tom maia · 12 · parte interna do antebraço",
      alt:"The Maya tone 12, two bars and two dots in a ring, tattooed on a woman's inner forearm near the elbow",altPt:"O tom maia 12, duas barras e dois pontos num anel, tatuado na parte interna do antebraço de uma mulher, perto do cotovelo"},
     {src:"media/gallery/maya-cross-deltoid-man.jpg",kind:"mcross",wide:true,concept:true,caption:"Maya cross · shoulder",captionPt:"Cruz maia · ombro",
@@ -3167,7 +3171,8 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
         ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
         :`<figure${it.wide?' class="wide"':''} data-examples><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
     }).join('')+`</div><button class="g-nav next" type="button" aria-label="${T('More photos','Mais fotos')}">›</button></div>`+
-      `<button class="linkish g-all" type="button" data-examples>${T(`${items.length} photos · see them all`,`${items.length} fotos · ver todas`)}</button>`;
+      `<div class="g-hint"><span class="g-swipe">${matchMedia('(pointer:coarse)').matches?T(`Swipe for all ${items.length} photos`,`Deslize para ver as ${items.length} fotos`):T(`Scroll for all ${items.length} photos`,`Role para ver as ${items.length} fotos`)} <i>→</i></span>`+
+      `<button class="linkish g-all" type="button" data-examples>${T('see them all','ver todas')}</button></div>`;
     /* the strip scrolls sideways: arrows on computers, a fade that says there is more */
     const row=g.querySelector('.g-row'),wrap=g.querySelector('.g-wrap');
     const edge=()=>{const max=row.scrollWidth-row.clientWidth-4;wrap.classList.toggle('at-start',row.scrollLeft<=4);wrap.classList.toggle('at-end',row.scrollLeft>=max);};
@@ -3175,6 +3180,9 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
     g.querySelector('.next').onclick=()=>row.scrollBy({left:row.clientWidth*.8,behavior:'smooth'});
     row.addEventListener('scroll',edge,{passive:true});
     if(window.ResizeObserver)new ResizeObserver(edge).observe(row);else addEventListener('resize',edge);   /* the strip is hidden at load; measure it once it shows */
+    /* the first time the strip comes into view it slides a little, so it is plain that it scrolls */
+    if(window.IntersectionObserver){let nudged=false;new IntersectionObserver(es=>{if(nudged||!es.some(e=>e.isIntersecting))return;if(row.scrollWidth<=row.clientWidth+4)return;nudged=true;
+      setTimeout(()=>{row.scrollBy({left:Math.min(220,row.clientWidth*.45),behavior:'smooth'});setTimeout(()=>row.scrollTo({left:0,behavior:'smooth'}),900);},500);},{threshold:.6}).observe(row);}
   });
   /* the menu's featured card: the hands and the calf, the two most telling photos */
   const pick=k=>items.find(it=>it.kind===k&&it.src);
