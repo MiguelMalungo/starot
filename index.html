@@ -137,7 +137,12 @@
     padding:22px;border:1px solid rgba(216,184,119,.38);border-radius:18px;margin-top:4px;
     background:radial-gradient(ellipse 90% 120% at 100% 0%,rgba(216,184,119,.09),transparent 60%),rgba(5,6,9,.62);
     box-shadow:0 30px 80px -40px rgba(0,0,0,.9),0 0 60px -30px rgba(216,184,119,.35)}
-  .f-photos{display:grid;grid-template-columns:2fr 1fr;gap:10px;position:relative}
+  .f-photos{position:relative;min-width:0}
+  .f-photos .g-row figure,.f-photos .g-row figure.wide{flex:0 0 auto}
+  #featPhotos .g-row img{height:300px;width:auto;aspect-ratio:auto;max-width:none}
+  .f-photos .g-nav.prev{left:-12px}.f-photos .g-nav.next{right:-12px}
+  .f-photo-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .f-photo-foot .f-note{position:static;color:rgba(139,136,120,.8);text-shadow:none}
   .f-ph{padding:0;border:1px solid var(--hair);border-radius:12px;overflow:hidden;cursor:zoom-in;background:#0b0d12;
     aspect-ratio:3/4;transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s}
   .f-ph.w{aspect-ratio:auto}
@@ -509,7 +514,7 @@
     .door p{display:none}
     .door .label{display:none}
     .feature{grid-template-columns:1fr;gap:18px;padding:12px 12px 20px;max-width:440px}
-    .f-photos{height:200px}
+    #featPhotos .g-row img{height:220px}
     .f-ph,.f-ph.w{aspect-ratio:auto}
     .f-text{padding:0 8px;gap:11px}
     .f-text h2{font-size:36px}
@@ -817,7 +822,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="24";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="25";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -3161,56 +3166,57 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-examples]'))ope
 addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show');});
 
 /* ═══ ON SKIN — photos of the designs, worn (CONFIG.gallery) ═══ */
+/* a strip of photos that scrolls sideways: arrows on computers, a fade while there is more,
+   and a slow drift on its own; a touch, a hover or an arrow pauses it, and at the end it glides back */
+function wireStrip(scope){
+  const row=scope.querySelector('.g-row'),wrap=scope.querySelector('.g-wrap');
+  const edge=()=>{const max=row.scrollWidth-row.clientWidth-4;wrap.classList.toggle('at-start',row.scrollLeft<=4);wrap.classList.toggle('at-end',row.scrollLeft>=max);};
+  scope.querySelector('.prev').onclick=()=>row.scrollBy({left:-row.clientWidth*.8,behavior:'smooth'});
+  scope.querySelector('.next').onclick=()=>row.scrollBy({left:row.clientWidth*.8,behavior:'smooth'});
+  row.addEventListener('scroll',edge,{passive:true});
+  if(window.ResizeObserver)new ResizeObserver(edge).observe(row);else addEventListener('resize',edge);   /* hidden at load; measured once it shows */
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  let seen=false,hold=0,pos=0,last=0;
+  const pause=ms=>{hold=performance.now()+ms;pos=row.scrollLeft;};
+  for(const ev of ['pointerdown','touchstart','wheel'])row.addEventListener(ev,()=>pause(6000),{passive:true});
+  row.addEventListener('mouseenter',()=>pause(1e9));row.addEventListener('mouseleave',()=>pause(1500));
+  scope.querySelectorAll('.g-nav').forEach(b=>b.addEventListener('click',()=>pause(8000)));
+  if(window.IntersectionObserver)new IntersectionObserver(es=>{seen=es.some(e=>e.isIntersecting);},{threshold:.3}).observe(row);
+  const tick=t=>{const dt=Math.min(64,t-(last||t));last=t;
+    if(seen&&t>hold&&row.scrollWidth>row.clientWidth+4){
+      const max=row.scrollWidth-row.clientWidth;
+      if(row.scrollLeft>=max-1){pause(2500);setTimeout(()=>{row.scrollTo({left:0,behavior:'smooth'});pos=0;},2400);}
+      else{pos+=dt*.03;row.style.scrollSnapType='none';row.scrollLeft=pos;}
+    }else row.style.scrollSnapType='';
+    requestAnimationFrame(tick);};
+  requestAnimationFrame(tick);
+}
+const stripHTML=(items,captions)=>`<div class="g-wrap"><button class="g-nav prev" type="button" aria-label="${T('Previous photos','Fotos anteriores')}">‹</button>`+
+  `<div class="g-row">`+items.map(it=>{
+    const cap=(PT?it.captionPt:it.caption)||'',alt=(PT?it.altPt:it.alt)||cap,c=captions&&cap?`<figcaption>${cap}</figcaption>`:'';
+    return it.video
+      ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${c}</figure>`
+      :`<figure${it.wide?' class="wide"':''}><img src="${mv(it.src)}" alt="${alt}" loading="lazy">${c}</figure>`;
+  }).join('')+`</div><button class="g-nav next" type="button" aria-label="${T('More photos','Mais fotos')}">›</button></div>`;
+/* ═══ ON SKIN — the photos, on the tattoo screen and on the menu's featured card ═══ */
 (function gallery(){
-  const items=CONFIG.gallery||[];
+  const items=CONFIG.gallery||[],concept=items.some(it=>it.concept);
+  const swipe=matchMedia('(pointer:coarse)').matches?T(`Swipe for all ${items.length} photos`,`Deslize para ver as ${items.length} fotos`):T(`Scroll for all ${items.length} photos`,`Role para ver as ${items.length} fotos`);
   document.querySelectorAll('.gallery').forEach(g=>{
     g.hidden=!items.length;if(!items.length)return;
-    const concept=items.some(it=>it.concept);
     g.innerHTML=`<div class="g-head"><span class="label">${T('On skin','Na pele')}</span>`+
       (concept?`<span class="g-note">${T('Concept images made with AI — the designs are exactly what you get.','Imagens conceituais feitas com IA — os desenhos são exatamente os que recebe.')}</span>`:'')+`</div>`+
-      `<div class="g-wrap"><button class="g-nav prev" type="button" aria-label="${T('Previous photos','Fotos anteriores')}">‹</button>`+
-      `<div class="g-row">`+items.map(it=>{
-      const cap=(PT?it.captionPt:it.caption)||'';
-      return it.video
-        ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
-        :`<figure${it.wide?' class="wide"':''}><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
-    }).join('')+`</div><button class="g-nav next" type="button" aria-label="${T('More photos','Mais fotos')}">›</button></div>`+
-      `<div class="g-hint"><span class="g-swipe">${matchMedia('(pointer:coarse)').matches?T(`Swipe for all ${items.length} photos`,`Deslize para ver as ${items.length} fotos`):T(`Scroll for all ${items.length} photos`,`Role para ver as ${items.length} fotos`)} <i>→</i></span>`+
-      `<button class="linkish g-all" type="button" data-examples>${T('see them all','ver todas')}</button></div>`;
-    /* the strip scrolls sideways: arrows on computers, a fade that says there is more */
-    const row=g.querySelector('.g-row'),wrap=g.querySelector('.g-wrap');
-    const edge=()=>{const max=row.scrollWidth-row.clientWidth-4;wrap.classList.toggle('at-start',row.scrollLeft<=4);wrap.classList.toggle('at-end',row.scrollLeft>=max);};
-    g.querySelector('.prev').onclick=()=>row.scrollBy({left:-row.clientWidth*.8,behavior:'smooth'});
-    g.querySelector('.next').onclick=()=>row.scrollBy({left:row.clientWidth*.8,behavior:'smooth'});
-    row.addEventListener('scroll',edge,{passive:true});
-    if(window.ResizeObserver)new ResizeObserver(edge).observe(row);else addEventListener('resize',edge);   /* the strip is hidden at load; measure it once it shows */
-    /* the strip drifts slowly on its own, so it is plain that there is more; a touch, a hover or an arrow
-       pauses it for a while, and at the end it glides back to the start */
-    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-      let seen=false,hold=0,pos=0,last=0;
-      const pause=ms=>{hold=performance.now()+ms;pos=row.scrollLeft;};
-      for(const ev of ['pointerdown','touchstart','wheel'])row.addEventListener(ev,()=>pause(6000),{passive:true});
-      row.addEventListener('mouseenter',()=>pause(1e9));row.addEventListener('mouseleave',()=>pause(1500));
-      g.querySelectorAll('.g-nav').forEach(b=>b.addEventListener('click',()=>pause(8000)));
-      if(window.IntersectionObserver)new IntersectionObserver(es=>{seen=es.some(e=>e.isIntersecting);},{threshold:.3}).observe(row);
-      const tick=t=>{const dt=Math.min(64,t-(last||t));last=t;
-        if(seen&&t>hold&&row.scrollWidth>row.clientWidth+4){
-          const max=row.scrollWidth-row.clientWidth;
-          if(row.scrollLeft>=max-1){pause(2500);setTimeout(()=>{row.scrollTo({left:0,behavior:'smooth'});pos=0;},2400);}
-          else{pos+=dt*.03;row.style.scrollSnapType='none';row.scrollLeft=pos;}
-        }else row.style.scrollSnapType='';
-        requestAnimationFrame(tick);};
-      requestAnimationFrame(tick);
-    }
+      stripHTML(items,true)+
+      `<div class="g-hint"><span class="g-swipe">${swipe} <i>→</i></span><button class="linkish g-all" type="button" data-examples>${T('see them all','ver todas')}</button></div>`;
+    wireStrip(g);
   });
-  /* the menu's featured card: the hands and the calf, the two most telling photos */
-  const pick=k=>items.find(it=>it.kind===k&&it.src);
-  const fp=[pick('sun'),pick('wheel')].filter(Boolean);
+  /* the menu card: every photo, in the same drifting strip, without captions */
   const box=$('featPhotos');
-  if(!fp.length){box.hidden=true;return;}
-  box.innerHTML=fp.map((it,i)=>`<button class="f-ph${i?'':' w'}" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}">
-      <img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||''}" loading="lazy"></button>`).join('')+
-    (items.some(it=>it.concept)?`<span class="f-note">${T('Concept images · made with AI','Imagens conceituais · feitas com IA')}</span>`:'');
+  if(!items.length){box.hidden=true;return;}
+  box.innerHTML=stripHTML(items,false)+
+    `<div class="f-photo-foot"><span class="g-swipe">${swipe} <i>→</i></span>`+
+    (concept?`<span class="f-note">${T('Concept images · made with AI','Imagens conceituais · feitas com IA')}</span>`:'')+`</div>`;
+  wireStrip(box);
 })();
 
 /* ═══ SAVING FILES — phones get the share sheet, computers a download ═══ */
