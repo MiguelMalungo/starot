@@ -58,6 +58,8 @@ const SHOTS: Shot[] = [
     prompt: `A man's bare shoulder and upper arm seen from the side, slightly from behind, the rounded deltoid muscle of the shoulder clearly visible and well lit, arm relaxed at his side, smooth skin, head turned away out of frame. No tattoos, no jewellery. ${STUDIO}` },
   { id: "plexus-plate-woman", refs: [], aspect: "3:4",
     prompt: `A woman's torso seen from the front, standing relaxed, wearing a black bandeau top and black high-waisted tailored trousers, the bare midriff and the solar plexus between the bottom of the top and the navel clearly visible and softly lit, smooth skin, cropped at the chin and the hips. No tattoos, no jewellery, no piercings. ${STUDIO}` },
+  { id: "plexus-plate-man", refs: [], aspect: "3:4",
+    prompt: `A man's bare torso seen straight from the front, standing relaxed, lean natural build, smooth skin, the lower chest and the solar plexus — the hollow where the breastbone ends between the lower ribs — clearly visible and softly lit, cropped at the collarbones and just below the navel, dark trousers at the bottom edge. No tattoos, no jewellery. ${STUDIO}` },
   { id: "wheel-calf-man", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
     prompt: `${TATTOO} A man's lower leg seen from behind and slightly to the side, the round natal-wheel tattoo about 12 cm wide on the back of his calf, standing on a plinth, bare leg, neutral linen shorts just visible. ${STUDIO}` },
   { id: "wheel-forearm-woman", refs: ["design-1-natal-wheel.png"], aspect: "3:4",
