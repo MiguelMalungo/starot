@@ -59,6 +59,10 @@
     position:fixed;top:0;left:0;right:0;z-index:30;
     display:flex;justify-content:space-between;align-items:center;padding:26px 40px;
   }
+  /* while the menu and forms scroll under it, the header keeps a dark backdrop so text never collides */
+  header::before{content:"";position:absolute;left:0;right:0;top:0;height:96px;z-index:-1;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(5,6,9,.95) 0,rgba(5,6,9,.85) 60%,rgba(5,6,9,0) 100%)}
+  body:has(#intro.gone) header::before{display:none}
   .brand{display:flex;align-items:center;gap:11px;font-family:'Marcellus',serif;
     font-size:15px;letter-spacing:.42em;color:var(--bone);cursor:pointer;background:none;border:none}
   .brand i{width:7px;height:7px;border-radius:50%;background:var(--gold);
@@ -66,6 +70,7 @@
   .head-right{display:flex;gap:16px;align-items:center}
   .head-right .sep{width:3px;height:3px;border-radius:50%;background:var(--gold-dim);opacity:.6}
   .head-right .count{color:var(--gold);letter-spacing:.3em;font-size:10px}
+  .head-right .count:empty,.head-right .count:empty+.sep{display:none}
   .head-right .nav{cursor:pointer;transition:color .3s}
   .head-right .nav:hover,.head-right .nav.here{color:var(--gold-bright)}
   .lang{background:none;border:1px solid var(--hair);border-radius:999px;padding:4px 9px 3px;cursor:pointer;
@@ -125,6 +130,34 @@
   .door h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:25px;letter-spacing:.02em}
   .door p{font-size:14.5px!important;line-height:1.45!important}
   .door .label{margin:0!important;font-size:9px}
+
+  /* the tattoo flash — the one thing for sale, so it gets its own card under the free doors */
+  .feature{width:min(880px,94vw);display:grid;grid-template-columns:1.1fr 1fr;gap:30px;align-items:center;text-align:left;
+    padding:22px;border:1px solid rgba(216,184,119,.38);border-radius:18px;margin-top:4px;
+    background:radial-gradient(ellipse 90% 120% at 100% 0%,rgba(216,184,119,.09),transparent 60%),rgba(5,6,9,.62);
+    box-shadow:0 30px 80px -40px rgba(0,0,0,.9),0 0 60px -30px rgba(216,184,119,.35)}
+  .f-photos{display:grid;grid-template-columns:2fr 1fr;gap:10px;position:relative}
+  .f-ph{padding:0;border:1px solid var(--hair);border-radius:12px;overflow:hidden;cursor:zoom-in;background:#0b0d12;
+    aspect-ratio:3/4;transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .4s}
+  .f-ph.w{aspect-ratio:auto}
+  .f-ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .f-ph:hover{border-color:var(--gold)}
+  .f-ph:hover img{transform:scale(1.04)}
+  .f-note{position:absolute;left:10px;bottom:8px;font-family:'Jost';font-size:8px;letter-spacing:.2em;text-transform:uppercase;
+    color:rgba(233,226,210,.78);text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none}
+  .f-text{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  #intro .f-text .label{margin:0}
+  .f-text h2{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(34px,3.6vw,46px);line-height:1.02;letter-spacing:.01em}
+  .f-text h2 em{font-style:italic;color:var(--gold)}
+  #intro .f-text p{font-size:17px;line-height:1.5;max-width:none;color:#cfc8b4}
+  .f-price{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-family:'Jost';font-size:9px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--gold-dim)}
+  .f-price span{padding:5px 11px 4px;border:1px solid var(--hair);border-radius:999px}
+  .f-price b{color:var(--gold-bright);font-weight:500;letter-spacing:.12em}
+  .f-price i{display:none}
+  .f-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:4px}
+  .f-cta .deal-btn{margin:0;padding:15px 26px 13px}
+  .f-cta .linkish{margin:0}
 
   /* ── forms ─────────────────────────────── */
   .form{display:flex;flex-direction:column;gap:26px;align-items:center;width:min(620px,92vw)}
@@ -375,11 +408,16 @@
   .st-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;line-height:1.5;color:var(--mist);max-width:44ch}
   .st-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
   .st-btns .deal-btn{margin:0;padding:14px 22px 12px;font-size:10px}
-  .ink{margin-top:16px;padding:18px 20px 16px;border:1px solid var(--hair);border-radius:12px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .ink{margin-top:16px;padding:18px 20px 16px;border:1px solid rgba(216,184,119,.32);border-radius:12px;display:flex;gap:16px;align-items:center;
+    background:radial-gradient(ellipse 80% 120% at 0% 0%,rgba(216,184,119,.07),transparent 70%)}
+  .ink.has-ph{padding:12px 16px 12px 12px}
+  .ink-body{display:flex;flex-direction:column;gap:10px;align-items:flex-start;min-width:0}
+  .ink-ph{flex:0 0 92px;align-self:stretch;min-height:118px;padding:0;border:1px solid var(--hair);border-radius:9px;overflow:hidden;cursor:zoom-in;background:#0b0d12}
+  .ink-ph img{width:100%;height:100%;object-fit:cover;display:block}
   .ink .k{font-family:'Jost';font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
   .ink p{font-size:15px;line-height:1.5;color:#cfc8b4}
   .ink-row{display:flex;gap:10px;flex-wrap:wrap}
-  .ink-row .deal-btn{margin:0;padding:12px 18px 10px;font-size:9.5px;letter-spacing:.26em}
+  .ink-row .deal-btn{margin:0;padding:12px 18px 10px;font-size:9.5px;letter-spacing:.26em;white-space:nowrap}
   .ex-box{width:min(1000px,95vw)!important;max-height:94vh;overflow-y:auto;gap:16px!important;padding:38px 30px 28px!important}
   .ex-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:18px;width:100%;align-items:start;text-align:left}
   .ex-grid.solo{grid-template-columns:minmax(0,520px);justify-content:center}
@@ -392,15 +430,23 @@
   .ex-box figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);line-height:1.6}
   .ex-note{grid-column:span 2;font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(139,136,120,.75)}
   .ink-door{border-color:rgba(216,184,119,.42);background:radial-gradient(ellipse 120% 90% at 50% 0%,rgba(216,184,119,.08),rgba(5,6,9,.45) 70%)}
-  .showcase{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;width:min(620px,92vw)}
+  .showcase{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;width:min(780px,94vw)}
   .showcase figure{border:1px solid var(--hair);border-radius:12px;background:rgba(5,6,9,.5);padding:12px 14px 10px;display:flex;flex-direction:column;gap:8px;justify-content:center}
-  .showcase figure.big{grid-row:span 4}
+  .showcase figure.big{grid-row:span 2}
+  .showcase figure.big .sc{flex:1;display:flex;align-items:center}
   .showcase .sc svg{width:100%;height:auto;display:block}
   .showcase figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
   .showcase figcaption b{color:var(--gold);font-weight:400;margin-right:8px}
   .gallery{width:min(820px,94vw);display:flex;flex-direction:column;gap:12px;align-items:center}
+  .g-head{display:flex;flex-direction:column;align-items:center;gap:6px}
+  #intro .g-head .label{margin:0}
+  .g-note{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(139,136,120,.75);text-align:center}
+  #inkPrice{justify-content:center;margin-top:-10px}
+  .sc-label{margin-top:18px}
   .g-row{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:var(--hair) transparent}
   .g-row figure{flex:0 0 min(240px,64vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:6px}
+  .g-row figure.wide{flex-basis:min(400px,86vw)}
+  .g-row figure.wide img{aspect-ratio:auto;height:min(300px,80vw)}
   .g-row img,.g-row video{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:12px;border:1px solid var(--hair);background:#0b0d12}
   .g-row figcaption{font-family:'Jost';font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);text-align:left}
   .paper.pv{margin-top:14px;cursor:zoom-in;border:none;color:inherit}
@@ -426,13 +472,24 @@
     #intro{padding-top:126px;gap:24px}
     .section{margin:0}
     #intro h1{font-size:clamp(38px,10vw,56px)}
-    .doors{flex-direction:column;width:100%;max-width:360px;gap:12px}
-    .door{width:100%;flex-direction:row;text-align:left;padding:16px 18px;gap:16px;align-items:center}
-    .door .glyph{font-size:30px;width:34px;text-align:center}
-    .door div{display:flex;flex-direction:column;gap:3px}
-    .door h3{font-size:21px}
-    .door p{font-size:13.5px!important}
+    .doors{flex-wrap:nowrap;width:100%;max-width:440px;gap:8px}
+    .door{flex:1 1 0;width:auto;min-width:0;padding:16px 6px 13px;gap:7px}
+    .door:hover{transform:none}
+    .door .glyph{font-size:26px}
+    .door div{display:flex;flex-direction:column;align-items:center;gap:2px}
+    .door h3{font-size:17px;line-height:1.12}
+    .door p{display:none}
     .door .label{display:none}
+    .feature{grid-template-columns:1fr;gap:18px;padding:12px 12px 20px;max-width:440px}
+    .f-photos{height:200px}
+    .f-ph,.f-ph.w{aspect-ratio:auto}
+    .f-text{padding:0 8px;gap:11px}
+    .f-text h2{font-size:36px}
+    #intro .f-text p{font-size:16px}
+    .f-cta{gap:14px}
+    .f-cta .deal-btn{width:100%}
+    .f-cta .linkish{align-self:center;margin:0 auto}
+    header::before{height:140px;background:linear-gradient(to bottom,rgba(5,6,9,.98) 0,rgba(5,6,9,.95) 76%,rgba(5,6,9,0) 100%)}
     #panel{
       left:16px;right:16px;width:auto;top:45vh;bottom:124px;max-height:none;
       transform:translateY(12px);overflow-y:auto;
@@ -458,7 +515,9 @@
     .ledger>div{padding:10px 12px;gap:3px;line-height:1.65}
     .ledger>div.free{flex:0 0 34%}
     .ledger b{font-size:19px}
-    .door .tag{margin-top:6px;align-self:flex-start}
+    .door .tag{margin-top:6px;align-self:center}
+    .ink-row .deal-btn{padding:11px 15px 9px;letter-spacing:.18em}
+    .ink-ph{flex-basis:84px}
     .showcase{grid-template-columns:1fr 1fr}
     .ex-grid{grid-template-columns:1fr}
     .ex-box{padding:32px 18px 22px!important}
@@ -483,7 +542,7 @@
     <span class="label nav" data-go="astro" data-t="nav.astro">Astral map</span><span class="sep"></span>
     <span class="label nav" data-go="num" data-t="nav.num">Numerology</span><span class="sep"></span>
     <span class="label nav" data-go="ink" data-t="nav.ink">Tattoos</span><span class="sep"></span>
-    <span class="count" id="counter">—</span><span class="sep"></span>
+    <span class="count" id="counter"></span><span class="sep"></span>
     <button class="label nav lang" id="langBtn" aria-label="Português">PT</button>
   </div>
   <button class="label lang lang-m" id="langBtnM" aria-label="Português">PT</button>
@@ -513,13 +572,18 @@
         <div><h3 data-t="door.num.h">Numerology</h3><p data-t="door.num.p">The numbers hidden in your name and your date — the path, the voice, the door.</p><span class="tag" data-t="free">Free</span></div>
         <span class="label" data-t="door.num.l">The seal</span>
       </button>
-      <button class="door ink-door" data-go="ink">
-        <span class="glyph">✒</span>
-        <div><h3 data-t="door.ink.h">Your tattoos</h3><p data-t="door.ink.p">Your sky and your numbers, drawn as five tattoo designs on one flash sheet.</p><span class="tag" id="inkTag">€7</span></div>
-        <span class="label" data-t="door.ink.l">The ink</span>
-      </button>
     </div>
-    <button class="linkish" data-examples style="margin-top:-8px" data-t="ex.open">✒ &nbsp;See the tattoos on skin</button>
+    <section class="feature" aria-labelledby="featH">
+      <div class="f-photos" id="featPhotos"></div>
+      <div class="f-text">
+        <span class="label" data-t="feat.label">Your readings, worn</span>
+        <h2 id="featH" data-t="feat.h">Wear your <em>sky.</em></h2>
+        <p data-t="feat.p">Your wheel, your Sun and Rising signs and your numbers, drawn as five tattoo designs on one flash sheet.</p>
+        <div class="f-price" id="featPrice"></div>
+        <div class="f-cta"><button class="deal-btn gold" data-go="ink" data-t="feat.go">✒ &nbsp;Draw my tattoos</button>
+          <button class="linkish" data-examples data-t="ex.open">See the tattoos on skin</button></div>
+      </div>
+    </section>
     <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span></footer>
   </div>
 
@@ -555,10 +619,10 @@
        The stars will turn back to that night and draw the wheel.</p>
     <span class="label ink-only" data-t="ink.label" hidden>Your readings, worn</span>
     <h1 class="ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h1>
-    <p class="ink-only" data-t="ink.p" hidden>Five tattoo designs drawn from your own chart and your own numbers. Preview them free;
-       the print-ready flash sheet and the files for your tattoo artist are the one thing here that costs money.</p>
-    <div class="showcase ink-only" id="showcase" hidden></div>
-    <button class="linkish ink-only" data-examples hidden data-t="ex.open2">✒ &nbsp;See an example sheet and the tattoos on skin</button>
+    <p class="ink-only" data-t="ink.p" hidden>Five tattoo designs drawn from your own chart and your own numbers —
+       a print-ready flash sheet and the files for your tattoo artist.</p>
+    <div class="f-price ink-only" id="inkPrice" hidden></div>
+    <div class="gallery ink-only" hidden></div>
     <div class="saved" id="savedMaps" hidden></div>
     <form class="form" id="astroForm" autocomplete="off" novalidate>
       <div class="frow ink-only" hidden>
@@ -585,9 +649,11 @@
       </div>
       <div class="err" id="astroErr"></div>
       <button class="deal-btn astro-only" type="submit" data-t="cast">☉ &nbsp;Cast the chart</button>
-      <button class="deal-btn ink-only" type="submit" data-t="inkGo" hidden>✒ &nbsp;Draw my tattoos</button>
+      <button class="deal-btn gold ink-only" type="submit" data-t="inkGo" hidden>✒ &nbsp;Draw my tattoos</button>
       <p class="privacy" data-t="privacy">Computed in your browser. Your name never leaves this page.</p>
-      <div class="gallery ink-only" hidden></div>
+      <span class="label ink-only sc-label" data-t="sc.label" hidden>The five designs on your sheet</span>
+      <div class="showcase ink-only" id="showcase" hidden></div>
+      <button class="linkish ink-only" data-examples hidden data-t="ex.open2">See an example flash sheet</button>
       <button class="back" type="button" data-go="menu" data-t="back">← &nbsp;The observatory</button>
     </form>
   </div>
@@ -685,7 +751,7 @@
     <span class="label" data-t="ex.label">The tattoo flash</span>
     <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
     <div class="ex-grid" id="exGrid">
-      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=10" alt="An example STAROT tattoo flash sheet with five designs" data-ta="ex.alt" loading="lazy">
+      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=11" alt="An example STAROT tattoo flash sheet with five designs" data-ta="ex.alt" loading="lazy">
         <figcaption data-t="ex.sheet">An example flash sheet: five designs from one birth chart and one name, ready to print.</figcaption></figure>
       <div class="ex-photos" id="exPhotos"></div>
     </div>
@@ -697,7 +763,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="10";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="11";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
@@ -709,19 +775,19 @@ const CONFIG={
      or {video:"media/gallery/sun-wrist.mp4", poster:"media/gallery/sun-wrist.jpg", caption:"…", concept:true}
      concept:true marks AI renders, and the gallery says so */
   gallery:[
-    {src:"media/gallery/hands-sun-rising.jpg",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
+    {src:"media/gallery/hands-sun-rising.jpg",kind:"sun",wide:true,concept:true,caption:"☉ Gemini and ↑ Leo · backs of the hands",captionPt:"☉ Gêmeos e ↑ Leão · costas das mãos",
      alt:"Two people holding hands; his hand has the Sun and Gemini symbols, hers the ascendant arrow and Leo",altPt:"Duas pessoas de mãos dadas; na mão dele o Sol e Gêmeos, na dela a seta do ascendente e Leão"},
-    {src:"media/gallery/line-forearm-woman.jpg",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
+    {src:"media/gallery/line-forearm-woman.jpg",kind:"line",wide:true,concept:true,caption:"Sun and Rising in one line · inner forearm",captionPt:"Sol e Ascendente numa linha · parte interna do antebraço",
      alt:"A row of four astrological symbols along a woman's inner forearm, above the wrist",altPt:"Uma linha de quatro símbolos astrológicos ao longo da parte interna do antebraço de uma mulher, acima do pulso"},
-    {src:"media/gallery/wheel-calf-man.jpg",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
+    {src:"media/gallery/wheel-calf-man.jpg",kind:"wheel",concept:true,caption:"Natal wheel · calf",captionPt:"Roda natal · panturrilha",
      alt:"A natal wheel tattoo on the back of a man's calf",altPt:"Tatuagem de roda natal na panturrilha de um homem"},
-    {src:"media/gallery/line-ear-woman.jpg",concept:true,caption:"Sun and Rising in one line · side of the neck",captionPt:"Sol e Ascendente numa linha · lateral do pescoço",
+    {src:"media/gallery/line-ear-woman.jpg",kind:"line",concept:true,caption:"Sun and Rising in one line · side of the neck",captionPt:"Sol e Ascendente numa linha · lateral do pescoço",
      alt:"Four astrological symbols in a vertical line on the side of a woman's neck, below the ear",altPt:"Quatro símbolos astrológicos em linha vertical na lateral do pescoço de uma mulher, abaixo da orelha"},
-    {src:"media/gallery/line-neck-man.jpg",concept:true,caption:"Sun and Rising in one line · back of the neck",captionPt:"Sol e Ascendente numa linha · nuca",
+    {src:"media/gallery/line-neck-man.jpg",kind:"line",concept:true,caption:"Sun and Rising in one line · back of the neck",captionPt:"Sol e Ascendente numa linha · nuca",
      alt:"A row of four astrological symbols low on the back of a man's neck",altPt:"Uma linha de quatro símbolos astrológicos na nuca de um homem"},
-    {src:"media/gallery/numbers-obliques-woman.jpg",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+    {src:"media/gallery/numbers-obliques-woman.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
      alt:"Four numerology seals in a vertical line down the side of a woman's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de uma mulher"},
-    {src:"media/gallery/numbers-obliques-man.jpg",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
+    {src:"media/gallery/numbers-obliques-man.jpg",kind:"seals",concept:true,caption:"Numbers as seals · along the side",captionPt:"Números em selos · na lateral do tronco",
      alt:"Four numerology seals in a vertical line down the side of a man's torso",altPt:"Quatro selos de numerologia em linha vertical na lateral do tronco de um homem"},
   ],
 };
@@ -733,6 +799,7 @@ const store={
 };
 /* on localhost a test worker can be set with localStorage['starot.api']='"http://localhost:8787"' */
 const IS_LOCAL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const SITE_LABEL=(IS_LOCAL?'miguelmalungo.github.io/starot':(location.host+location.pathname).replace(/\/$/,'')).toUpperCase();
 const PAY_API=((IS_LOCAL&&store.get('api',''))||CONFIG.payApi).replace(/\/$/,'');
 const PAYWALL=!!PAY_API;
 
@@ -792,7 +859,7 @@ const UI_PT={
   'cast':'☉ &nbsp;Desenhar o mapa',
   'privacy':'Calculado no seu navegador. O seu nome nunca sai desta página.',
   'ink.label':'As suas leituras, na pele','ink.h1':'Leve o seu céu<br><em>na pele.</em>',
-  'ink.p':'Cinco desenhos de tatuagem feitos a partir do seu mapa e dos seus números. Veja grátis; a folha de flash pronta para imprimir e os arquivos para o seu tatuador são a única coisa paga aqui.',
+  'ink.p':'Cinco desenhos de tatuagem feitos a partir do seu mapa e dos seus números — uma folha de flash pronta para imprimir e os arquivos para o seu tatuador.',
   'f.iname':'Nome completo de nascimento — para os seus números','inkGo':'✒ &nbsp;Desenhar as minhas tatuagens',
   'num.label':'A aritmética de uma vida',
   'num.h1':'Todo nome é<br><em>um número.</em>',
@@ -818,7 +885,10 @@ const UI_PT={
   'st.label':'Pronto para tatuagem','st.svg':'↓ &nbsp;SVG · vetorial','st.png':'↓ &nbsp;PNG · 4000 px',
   'ex.label':'A folha de flash','ex.h':'As suas leituras, na pele',
   'ex.sheet':'Um exemplo de folha de flash: cinco desenhos de um mapa e um nome, prontos para imprimir.',
-  'ex.go':'✒ &nbsp;Desenhar a minha','ex.open':'✒ &nbsp;Ver as tatuagens na pele','ex.open2':'✒ &nbsp;Ver um exemplo de folha e as tatuagens na pele','ex.alt':'Um exemplo de folha de flash STAROT com cinco desenhos',
+  'ex.go':'✒ &nbsp;Desenhar a minha','ex.open':'Ver as tatuagens na pele','ex.open2':'Ver um exemplo de folha de flash',
+  'feat.label':'As suas leituras, na pele','feat.h':'Leve o seu céu <em>na pele.</em>',
+  'feat.p':'A sua roda, os seus signos de Sol e Ascendente e os seus números, desenhados como cinco tatuagens numa folha de flash.',
+  'feat.go':'✒ &nbsp;Desenhar as minhas tatuagens','sc.label':'Os cinco desenhos da sua folha','ex.alt':'Um exemplo de folha de flash STAROT com cinco desenhos',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
 };
 
@@ -1557,7 +1627,7 @@ function leaveReading(to){
   $('synth').classList.remove('show');
   $('spread').classList.remove('show');
   $('redeal').classList.remove('show');
-  $('counter').textContent='—';
+  $('counter').textContent='';
   reading=false;setOfferBtn();
   history.replaceState(null,'',location.pathname+qs());
   document.querySelectorAll('.slot').forEach(s=>{s.classList.remove('on');s.querySelector('.card').classList.add('hidden-face');});
@@ -2094,8 +2164,11 @@ function skyIntro(sun,moon,H){
            `O céu como estava sobre ${p} — ${s} no centro, ${m} na maré${a?`, ${a} no horizonte`:''}.`);
 }
 /* every free reading ends with the same quiet invitation */
-const inkCta=lead=>`<div class="ink"><span class="k">${T('Wear it','Leve na pele')}</span><p>${lead}</p>
-  <div class="ink-row"><button class="deal-btn gold" data-goink>✒ &nbsp;${T('Make it a tattoo','Transformar em tatuagem')}</button></div></div>`;
+const inkCta=(lead,kind='sun')=>{
+  const g=(CONFIG.gallery||[]).find(it=>it.kind===kind&&it.src)||(CONFIG.gallery||[]).find(it=>it.src);
+  return `<div class="ink${g?' has-ph':''}">${g?`<button class="ink-ph" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}"><img src="${mv(g.src)}" alt="" loading="lazy"></button>`:''}
+  <div class="ink-body"><span class="k">${T('Wear it','Leve na pele')}</span><p>${lead}</p>
+  <div class="ink-row"><button class="deal-btn gold" data-goink>✒ &nbsp;${T('Make it a tattoo','Virar tatuagem')}</button></div></div></div>`;};
 const INK_LEAD_SKY=T('Your wheel, your Sun and your Rising, with your numbers — drawn as tattoo designs on one flash sheet.',
                      'A sua roda, o seu Sol e o seu Ascendente, com os seus números — desenhados como tatuagens numa folha de flash.');
 
@@ -2121,7 +2194,7 @@ function showAstro(k){
       prose:`<em>${T('The tide; what you need in order to feel safe.','A maré; o que você precisa para se sentir em segurança.')}</em> ${MOON_IN[moon.sign]}${houseLine(moon)}`+
         (chart.hasTime?'':`<span class="rev">${T('Without an hour the Moon is placed at noon — she moves half a degree an hour, so she may sit a few degrees to either side.',
                                                'Sem a hora, a Lua é posicionada ao meio-dia — ela anda meio grau por hora, então pode estar alguns graus para um lado ou para o outro.')}</span>`)+
-        inkCta(INK_LEAD_SKY)});
+        inkCta(INK_LEAD_SKY,'line')});
   }else if(k===3){
     if(chart.houses){
       const a=signOf(chart.houses.asc),m=signOf(chart.houses.mc),s=SIGNS[a];
@@ -2165,7 +2238,7 @@ function showAstro(k){
     setPanel({pos:M.pos+T('The Whole Sky','O Céu Inteiro'),name:T('Your natal wheel','A sua roda natal'),
       meta:[[M.born,bornLine()],[M.place,placeLine()],[M.houses,H?sysName(H).toUpperCase():NEED_HOUR]],
       prose:`<em>${skyIntro(sun,moon,H)}</em>
-        ${inkCta(INK_LEAD_SKY)}
+        ${inkCta(INK_LEAD_SKY,'wheel')}
         <div class="sub">${T('Planets','Planetas')}</div><table class="tbl">${rows}</table>
         ${H?`<div class="sub">${T('Houses','Casas')} · ${sysName(H)}</div><table class="tbl">${houseRows}</table>`:''}
         <div class="sub">${T('Aspects','Aspectos')}</div>${aspRows?`<table class="tbl">${aspRows}</table>`:`<span class="line">${T('A quiet sky — no major aspects within orb.','Um céu quieto — nenhum aspecto maior dentro da órbita.')}</span>`}
@@ -2296,7 +2369,7 @@ function showNumber(k){
   setPanel({pos:`${T('Exhibit — ','Exposição — ')}${p.pos}`,name:`${n} · ${N_.title}`,meta,
     prose:`<em>${p.intro}</em> ${N_.prose}<span class="line">${p.tail(n)}</span>${extra}`+
       inkCta(T(`<b style="color:var(--gold);font-weight:400">${row}</b> — your Life Path, Expression, Soul and Persona as their seals in one row, drawn as a tattoo with your chart.`,
-               `<b style="color:var(--gold);font-weight:400">${row}</b> — o seu Caminho, Expressão, Alma e Persona em selos numa linha, desenhados como tatuagem junto com o seu mapa.`))});
+               `<b style="color:var(--gold);font-weight:400">${row}</b> — o seu Caminho, Expressão, Alma e Persona em selos numa linha, desenhados como tatuagem junto com o seu mapa.`),'seals')});
 }
 
 /* ═══ THE CORNER BUTTON — an offering, or the tattoo flash ════ */
@@ -2421,7 +2494,7 @@ async function renderFlash(W=3508,wm=false){
     dz.forEach(([d,cx,,,ly],i)=>lab(i+1,d.cap,cx*W,K(ly)));
     t(T('Line art for personal use — the SVG files scale to any size for your tattoo artist.','Traço para uso pessoal — os arquivos SVG escalam para qualquer tamanho para o seu tatuador.'),
       `italic 300 ${K(46)}px 'Cormorant Garamond'`,soft,K(4800));
-    t((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),`400 ${K(28)}px Jost`,gold,K(4885),`${K(8)}px`);
+    t(SITE_LABEL,`400 ${K(28)}px Jost`,gold,K(4885),`${K(8)}px`);
   });
   if(wm){  /* the preview carries a watermark; the sheet you buy does not */
     x.save();x.translate(W/2,H/2);x.rotate(-.42);x.font=`500 ${K(84)}px Jost`;x.fillStyle='rgba(22,20,18,.09)';x.textAlign='center';
@@ -2650,8 +2723,14 @@ $('unlockGo').onclick=async()=>{
   }
 };
 $('unlockPrice').textContent=CONFIG.price;
-$('inkTag').textContent=PAYWALL?T(`${CONFIG.price} · tattoo flash`,`${CONFIG.price} · folha de flash`):T('Free preview','Prévia grátis');
-if(PAYWALL)$('inkTag').classList.add('paid');
+/* the price, said plainly wherever the tattoo flash is offered */
+(function priceChips(){
+  const chips=PAYWALL
+    ?[T('Preview free','Prévia grátis'),`<b>${CONFIG.price}</b> · ${T('print-ready sheet + files','folha pronta para imprimir + arquivos')}`]
+    :[T('Preview free','Prévia grátis'),T('Sheet + files free for now','Folha + arquivos grátis por agora')];
+  const html=chips.map(c=>`<span>${c}</span>`).join('<i></i>');
+  for(const id of ['featPrice','inkPrice'])$(id).innerHTML=html;
+})();
 
 /* ═══ THE EXAMPLES POPUP — the flash sheet and the designs worn ═══ */
 const exEl=$('examples');
@@ -2684,15 +2763,23 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
   document.querySelectorAll('.gallery').forEach(g=>{
     g.hidden=!items.length;if(!items.length)return;
     const concept=items.some(it=>it.concept);
-    g.innerHTML=`<span class="label">${T('On skin','Na pele')}</span>`+
-      (concept?`<span class="privacy" style="margin-top:-6px">${T('Concept renders, made with AI — your designs, imagined on skin.','Imagens conceituais, feitas com IA — os seus desenhos, imaginados na pele.')}</span>`:'')+
+    g.innerHTML=`<div class="g-head"><span class="label">${T('On skin','Na pele')}</span>`+
+      (concept?`<span class="g-note">${T('Concept images made with AI — the designs are exactly what you get.','Imagens conceituais feitas com IA — os desenhos são exatamente os que recebe.')}</span>`:'')+`</div>`+
       `<div class="g-row">`+items.map(it=>{
       const cap=(PT?it.captionPt:it.caption)||'';
       return it.video
         ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
-        :`<figure><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
+        :`<figure${it.wide?' class="wide"':''}><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
     }).join('')+`</div>`;
   });
+  /* the menu's featured card: the hands and the calf, the two most telling photos */
+  const pick=k=>items.find(it=>it.kind===k&&it.src);
+  const fp=[pick('sun'),pick('wheel')].filter(Boolean);
+  const box=$('featPhotos');
+  if(!fp.length){box.hidden=true;return;}
+  box.innerHTML=fp.map((it,i)=>`<button class="f-ph${i?'':' w'}" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}">
+      <img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||''}" loading="lazy"></button>`).join('')+
+    (items.some(it=>it.concept)?`<span class="f-note">${T('Concept images · made with AI','Imagens conceituais · feitas com IA')}</span>`:'');
 })();
 
 /* ═══ SAVING FILES — phones get the share sheet, computers a download ═══ */
@@ -2759,7 +2846,7 @@ async function renderPoster(){
   txt(`${when} · ${chartMeta.place.full}`.toUpperCase(),`400 ${K(34)}px Jost`,'#8f7b52',K(2660),`${K(10)}px`);
   txt(T(`Sun in ${SIGNS[sun.sign].name}  ·  Moon in ${SIGNS[moon.sign].name}`,`Sol em ${SIGNS[sun.sign].name}  ·  Lua em ${SIGNS[moon.sign].name}`)+(chart.houses?`  ·  ${risingName(SIGNS[signOf(chart.houses.asc)])}`:''),
     `300 ${K(62)}px 'Cormorant Garamond'`,'#d8b877',K(2780));
-  txt((location.host+location.pathname).replace(/\/$/,'').toUpperCase(),`400 ${K(24)}px Jost`,'rgba(143,123,82,.8)',K(2910),`${K(8)}px`);
+  txt(SITE_LABEL,`400 ${K(24)}px Jost`,'rgba(143,123,82,.8)',K(2910),`${K(8)}px`);
   return c;
 }
 
