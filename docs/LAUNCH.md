@@ -1,6 +1,6 @@
 # Launching the tattoo flash
 
-Every reading is free. The one paid thing is the €7 tattoo flash (nine designs on two print-ready
+Every reading is free. The one paid thing is the €5 tattoo flash (nine designs on two print-ready
 sheets and the files). The code is ready; nothing charges money until you finish these steps.
 
 ## 0 · Before you sell anything (Portugal)
@@ -53,7 +53,7 @@ At the top of the `<script>` in `index.html`:
 ```js
 const CONFIG={
   payApi:"https://starot-pay.<you>.workers.dev",
-  price:"€7",
+  price:"€5",
   donationUrl:"https://buy.stripe.com/…",   // the offering link
   goatcounter:"starot",                     // optional, see step 5
 };
@@ -102,7 +102,7 @@ free readings lead people to the tattoos.
 - **Every deploy:** raise `MEDIA_V` in `index.html` by one and write the same number in
   `version.txt`. Browsers holding the old page then reload it once, and new images bypass the cache.
 
-- **Price:** `PRICE_CENTS` in `worker/wrangler.toml` (now 700, then `npx wrangler deploy`)
+- **Price:** `PRICE_CENTS` in `worker/wrangler.toml` (now 500, then `npx wrangler deploy`)
   *and* `CONFIG.price` in `index.html`.
 - **Custom domain:** update `SITE_URL`, `TERMS_URL` (and `ALLOWED_ORIGINS` if you keep
   both) in `wrangler.toml`, the canonical / `og:` URLs in `index.html`, and Stripe's public

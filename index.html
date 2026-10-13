@@ -780,7 +780,7 @@
       <li><i>⁂</i><span data-t="get.nums"><b>Your numbers as seals, in a row</b> — Life Path, Expression, Soul, Persona, as drawn in your reading</span></li>
       <li><i>↓</i><span data-t="get.files"><b>Two print-ready flash sheets</b> with them all, and each design as vector SVG and 4000 px PNG for your tattoo artist</span></li>
     </ul>
-    <div class="price"><b id="unlockPrice">€7</b><span data-t="price.note">One payment<br>yours for good</span></div>
+    <div class="price"><b id="unlockPrice">€5</b><span data-t="price.note">One payment<br>yours for good</span></div>
     <button class="deal-btn gold" id="unlockGo" data-t="unlockGo">↓ &nbsp;Get my tattoo files</button>
     <span id="unlockNote"></span>
     <span class="trust" data-t="trust">Secure checkout by Stripe · card · Apple Pay · Google Pay · MB WAY<br>
@@ -823,7 +823,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="26";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="27";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -832,7 +832,7 @@ const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
     if(v&&v!==MEDIA_V&&+v>+MEDIA_V){sessionStorage.setItem('starot.reloaded',MEDIA_V);location.reload();}}).catch(()=>{});}catch(e){}})();
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
-  price:"€7",       // the tattoo flash — shown on the page; the amount charged lives in the worker (PRICE_CENTS)
+  price:"€5",       // the tattoo flash — shown on the page; the amount charged lives in the worker (PRICE_CENTS)
   donationUrl:"",   // pay-what-you-want link for the offering bowl (Stripe payment link, Ko-fi…)
   goatcounter:"",   // e.g. "starot" for https://starot.goatcounter.com — empty = no analytics
   /* photos/videos of the designs on skin (docs/MEDIA.md), e.g.

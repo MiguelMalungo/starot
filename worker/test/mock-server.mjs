@@ -9,7 +9,7 @@ const PORT = 8787;
 const mock = installMockStripe({ checkoutBase: `http://localhost:${PORT}` });
 const env = {
   STRIPE_SECRET_KEY: "sk_test_mock", SITE_URL: "https://miguelmalungo.github.io/starot/",
-  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "700", CURRENCY: "eur",
+  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "500", CURRENCY: "eur",
   REQUIRE_TERMS: "true", STRIPE_TAX: "false", ALLOWED_ORIGINS: "", ALLOW_LOCALHOST: "true",
 };
 

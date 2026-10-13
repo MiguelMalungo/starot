@@ -52,7 +52,7 @@ Every reading is free and complete: tarot, the full astral map (all ten planets,
 aspects, Moon and Rising), numerology, the Maya day sign, and a 3600 × 4500 star poster of your sky, with an
 optional offering (a pay-what-you-want link).
 
-**The product is the tattoo flash, €7**: nine designs drawn from your own readings —
+**The product is the tattoo flash, €5**: nine designs drawn from your own readings —
 1. the natal wheel, 2. ☉ beside your Sun sign, 3. the ascendant arrow beside your Rising
 sign, 4. both of those in one line, 5. Life Path, Expression, Soul and Persona as their
 seals in a row, and from the Maya count 6. the day sign with its tone, 7. the tone in a ring,

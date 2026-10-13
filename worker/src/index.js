@@ -80,7 +80,7 @@ async function checkout(req, env, origin) {
   p.set("locale", lang === "pt" ? "pt-BR" : "auto");
   p.set("line_items[0][quantity]", "1");
   p.set("line_items[0][price_data][currency]", env.CURRENCY || "eur");
-  p.set("line_items[0][price_data][unit_amount]", String(parseInt(env.PRICE_CENTS || "700", 10)));
+  p.set("line_items[0][price_data][unit_amount]", String(parseInt(env.PRICE_CENTS || "500", 10)));
   p.set("line_items[0][price_data][product_data][name]", c.name);
   p.set("line_items[0][price_data][product_data][description]", c.desc(when, inp.place));
   p.set("payment_intent_data[description]", `STAROT tattoo flash · ${when} · ${inp.place}`);
@@ -94,7 +94,7 @@ async function checkout(req, env, origin) {
   }
   if (env.STRIPE_TAX === "true") {
     p.set("automatic_tax[enabled]", "true");
-    p.set("line_items[0][price_data][tax_behavior]", "inclusive");   // €7 stays €7, VAT inside
+    p.set("line_items[0][price_data][tax_behavior]", "inclusive");   // €5 stays €5, VAT inside
   }
   for (const [k, v] of Object.entries({ ...inp, nums: nums.join("."), v: TAG })) p.set(`metadata[${k}]`, String(v));
 

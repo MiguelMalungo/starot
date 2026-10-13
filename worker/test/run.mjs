@@ -5,7 +5,7 @@ import { installMockStripe } from "./mock-stripe.mjs";
 
 const env = {
   STRIPE_SECRET_KEY: "sk_test_x", SITE_URL: "https://miguelmalungo.github.io/starot/",
-  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "700", CURRENCY: "eur",
+  TERMS_URL: "https://miguelmalungo.github.io/starot/terms.html", PRICE_CENTS: "500", CURRENCY: "eur",
   REQUIRE_TERMS: "true", STRIPE_TAX: "false", ALLOWED_ORIGINS: "", ALLOW_LOCALHOST: "false",
 };
 const SITE = "https://miguelmalungo.github.io";
@@ -29,14 +29,14 @@ await t("foreign origins are not echoed back", async () => {
   assert.equal(r.headers.get("Access-Control-Allow-Origin"), SITE);
 });
 let sid;
-await t("checkout creates a €7 session carrying the birth details and the four numbers", async () => {
+await t("checkout creates a €5 session carrying the birth details and the four numbers", async () => {
   const r = await call("/checkout", { method: "POST", body: { input, nums } });
   const j = await r.json();
   assert.equal(r.status, 200, JSON.stringify(j));
   assert.match(j.url, /^https:\/\/checkout\.stripe\.com\//);
   sid = [...mock.sessions.keys()].pop();
   const s = mock.sessions.get(sid);
-  assert.equal(s.amount_total, 700);
+  assert.equal(s.amount_total, 500);
   assert.equal(s.params.locale, "auto");
   assert.equal(s.params["line_items[0][price_data][currency]"], "eur");
   assert.equal(s.metadata.place, "Lisbon, Portugal");
