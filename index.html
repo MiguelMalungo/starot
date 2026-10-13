@@ -2333,13 +2333,14 @@ function glyphAsc(ctx,x,y,s,lw){   /* the ascendant: an arrow rising from the ho
   ctx.beginPath();ctx.moveTo(-.78,.82);ctx.lineTo(.78,.82);ctx.moveTo(0,.82);ctx.lineTo(0,-.9);
   ctx.moveTo(-.4,-.5);ctx.lineTo(0,-.92);ctx.lineTo(.4,-.5);ctx.stroke();ctx.restore();
 }
-function drawSunPair(ctx,W,H,sign){glyphPlanet(ctx,0,W*.29,H/2,H*.34,H*.05);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*.05);}
-function drawRisingPair(ctx,W,H,sign){glyphAsc(ctx,W*.29,H/2,H*.36,H*.05);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*.05);}
+const PAIR_LW=.075;   /* stroke of the sign designs, as a share of their height — bold enough to read small on skin */
+function drawSunPair(ctx,W,H,sign){glyphPlanet(ctx,0,W*.29,H/2,H*.34,H*PAIR_LW);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*PAIR_LW);}
+function drawRisingPair(ctx,W,H,sign){glyphAsc(ctx,W*.29,H/2,H*.36,H*PAIR_LW);glyphSign(ctx,sign,W*.69,H/2,H*.36,H*PAIR_LW);}
 /* ☉ sign · ↑ sign — the two pairs in one line, a dot between them */
 function drawSkyRow(ctx,W,H,sunSign,ascSign){
-  glyphPlanet(ctx,0,W*.12,H/2,H*.34,H*.05);glyphSign(ctx,sunSign,W*.32,H/2,H*.36,H*.05);
-  ctx.beginPath();ctx.arc(W/2,H/2,H*.035,0,7);ctx.fill();
-  glyphAsc(ctx,W*.68,H/2,H*.36,H*.05);glyphSign(ctx,ascSign,W*.88,H/2,H*.36,H*.05);
+  glyphPlanet(ctx,0,W*.12,H/2,H*.34,H*PAIR_LW);glyphSign(ctx,sunSign,W*.32,H/2,H*.36,H*PAIR_LW);
+  ctx.beginPath();ctx.arc(W/2,H/2,H*.045,0,7);ctx.fill();
+  glyphAsc(ctx,W*.68,H/2,H*.36,H*PAIR_LW);glyphSign(ctx,ascSign,W*.88,H/2,H*.36,H*PAIR_LW);
 }
 /* the four numbers as their seals — circle, figure and numeral, as drawn in the readings */
 const SEAL_ROW=4.4;   /* width ÷ height of the row */
