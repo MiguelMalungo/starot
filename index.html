@@ -685,7 +685,7 @@
     <span class="label" data-t="ex.label">The tattoo flash</span>
     <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
     <div class="ex-grid" id="exGrid">
-      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg" alt="An example STAROT tattoo flash sheet with five designs" data-ta="ex.alt" loading="lazy">
+      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=7" alt="An example STAROT tattoo flash sheet with five designs" data-ta="ex.alt" loading="lazy">
         <figcaption data-t="ex.sheet">An example flash sheet: five designs from one birth chart and one name, ready to print.</figcaption></figure>
       <div class="ex-photos" id="exPhotos"></div>
     </div>
@@ -697,6 +697,8 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
+const MEDIA_V="7";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
   price:"€7",       // the tattoo flash — shown on the page; the amount charged lives in the worker (PRICE_CENTS)
@@ -1470,7 +1472,7 @@ if(PT){
   document.querySelectorAll('[data-t]').forEach(el=>{const v=UI_PT[el.dataset.t];if(v!=null)el.innerHTML=v;});
   document.querySelectorAll('[data-tp]').forEach(el=>{const v=UI_PT[el.dataset.tp];if(v!=null)el.placeholder=v;});
   document.querySelectorAll('[data-ta]').forEach(el=>{const v=UI_PT[el.dataset.ta];if(v!=null)el.alt=v;});
-  const exImg=document.querySelector('.ex-sheet img');if(exImg)exImg.src='media/examples/flash-sheet-example-pt.jpg';
+  const exImg=document.querySelector('.ex-sheet img');if(exImg)exImg.src=mv('media/examples/flash-sheet-example-pt.jpg');
 }
 /* the other language, one tap away; a map link keeps its map */
 document.querySelectorAll('.lang').forEach(b=>{
@@ -2656,8 +2658,8 @@ const exEl=$('examples');
 function figHTML(it){
   const cap=(PT?it.captionPt:it.caption)||'',alt=(PT?it.altPt:it.alt)||cap;
   return `<figure class="${it.wide?'wide':''}">`+(it.video
-    ?`<video src="${it.video}" ${it.poster?`poster="${it.poster}"`:''} muted loop playsinline autoplay preload="metadata"></video>`
-    :`<img src="${it.src}" alt="${alt}" loading="lazy">`)+(cap?`<figcaption>${cap}</figcaption>`:'')+`</figure>`;
+    ?`<video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>`
+    :`<img src="${mv(it.src)}" alt="${alt}" loading="lazy">`)+(cap?`<figcaption>${cap}</figcaption>`:'')+`</figure>`;
 }
 function openExamples(){
   const items=CONFIG.gallery||[];
@@ -2687,8 +2689,8 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exEl.classList.remove('show')
       `<div class="g-row">`+items.map(it=>{
       const cap=(PT?it.captionPt:it.caption)||'';
       return it.video
-        ?`<figure><video src="${it.video}" ${it.poster?`poster="${it.poster}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
-        :`<figure><img src="${it.src}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
+        ?`<figure><video src="${mv(it.video)}" ${it.poster?`poster="${mv(it.poster)}"`:''} muted loop playsinline autoplay preload="metadata"></video>${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`
+        :`<figure><img src="${mv(it.src)}" alt="${(PT?it.altPt:it.alt)||cap}" loading="lazy">${cap?`<figcaption>${cap}</figcaption>`:''}</figure>`;
     }).join('')+`</div>`;
   });
 })();

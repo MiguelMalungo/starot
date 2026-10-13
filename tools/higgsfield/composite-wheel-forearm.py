@@ -17,9 +17,9 @@ DES = ROOT / "media/designs"
 # curve of the limb, rotation in degrees (counter-clockwise)
 JOBS = [
     ("calf-plate-man-clean.png", None, "design-1-natal-wheel.png", "wheel-calf-composite-man.png",
-     (918, 1040), 560, .93, -2),
-    ("wheel-forearm-woman-v1.png", (0, 1450, 1362, 2368), "design-4-sun-and-rising-gemini-leo.png",
-     "line-forearm-composite-woman.png", (650, 1705), 340, 1, 43),
+     (918, 1010), 280, .95, -2),
+    ("wheel-forearm-woman-v1.png", (0, 1445, 1362, 2363), "design-4-sun-and-rising-gemini-leo.png",
+     "line-forearm-composite-woman.png", (681, 1676), 440, 1, 59),   # the forearm's axis, measured edge to edge
 ]
 INK = (26, 28, 34)
 STRENGTH = 1.6
