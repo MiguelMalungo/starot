@@ -99,6 +99,9 @@ free readings lead people to the tattoos.
 
 ## Changing things later
 
+- **Every deploy:** raise `MEDIA_V` in `index.html` by one and write the same number in
+  `version.txt`. Browsers holding the old page then reload it once, and new images bypass the cache.
+
 - **Price:** `PRICE_CENTS` in `worker/wrangler.toml` (now 700, then `npx wrangler deploy`)
   *and* `CONFIG.price` in `index.html`.
 - **Custom domain:** update `SITE_URL`, `TERMS_URL` (and `ALLOWED_ORIGINS` if you keep
