@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#050609">
 <link rel="canonical" href="https://starot.one/">
 <link rel="alternate" hreflang="en" href="https://starot.one/">
-<link rel="alternate" hreflang="pt-BR" href="https://starot.one/?lang=pt">
+<link rel="alternate" hreflang="pt-BR" href="https://starot.one/pt/">
 <link rel="alternate" hreflang="x-default" href="https://starot.one/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="STAROT">
@@ -914,7 +914,16 @@ const PAYWALL=!!PAY_API;
 /* ═══ LANGUAGE — English, or Brazilian Portuguese ═════════════
    ?lang=pt|en wins and is remembered; otherwise a Portuguese browser gets PT.
    T(en,pt) picks a phrase; L(key,en) swaps a whole table for its PT twin. */
-const URL_LANG=new URLSearchParams(location.search).get('lang');
+const QS_LANG=new URLSearchParams(location.search).get('lang');
+const URL_LANG=window.FORCE_LANG||QS_LANG;
+/* the PT page lives at /pt/ (tools/build-pt.sh): ?lang=pt on / goes there, ?lang=en on /pt/ comes back */
+(function langHome(){
+  const want=QS_LANG==='pt'&&!window.FORCE_LANG?'/pt/':QS_LANG==='en'&&window.FORCE_LANG?'/':'';
+  if(!want)return;
+  try{localStorage.setItem('starot.lang',JSON.stringify(QS_LANG));}catch(e){}
+  const p=new URLSearchParams(location.search);p.delete('lang');const q=p.toString();
+  location.replace(want+(q?'?'+q:'')+location.hash);
+})();
 const LANG=(()=>{
   if(URL_LANG==='pt'||URL_LANG==='en'){store.set('lang',URL_LANG);return URL_LANG;}
   const s=store.get('lang','');if(s==='pt'||s==='en')return s;
@@ -936,7 +945,7 @@ function L(key,en){
 /* query string that keeps an explicit ?lang= alongside anything else */
 function qs(extra){
   const p=new URLSearchParams(extra||{});
-  if(URL_LANG)p.set('lang',URL_LANG);
+  if(QS_LANG)p.set('lang',QS_LANG);
   const s=p.toString();return s?'?'+s:'';
 }
 
@@ -1668,9 +1677,9 @@ document.querySelectorAll('.lang').forEach(b=>{
   b.textContent=PT?'EN':'PT';
   b.setAttribute('aria-label',PT?'English':'Português');
   b.onclick=()=>{
-    const p=new URLSearchParams(location.search);p.delete('canceled');p.set('lang',PT?'en':'pt');
+    const p=new URLSearchParams(location.search);p.delete('canceled');p.delete('lang');
     store.set('lang',PT?'en':'pt');track('lang-'+(PT?'en':'pt'));
-    location.href=location.pathname+'?'+p.toString();
+    const q=p.toString();location.href=(PT?'/':'/pt/')+(q?'?'+q:'');
   };
 });
 /* terms only matter once something is for sale */
@@ -1684,7 +1693,7 @@ function toast(html,ms=6500){
   clearTimeout(toastT);if(ms)toastT=setTimeout(()=>t.classList.remove('show'),ms);
 }
 async function shareSite(){
-  const url=location.origin+location.pathname+(PT?'?lang=pt':'');   /* never the ?map= link — that one is private */
+  const url=location.origin+(PT?'/pt/':'/');   /* never the ?map= link — that one is private */
   track('share');
   try{
     if(navigator.share){await navigator.share({title:T('STAROT · Observatory of Fates','STAROT · Observatório dos Destinos'),
