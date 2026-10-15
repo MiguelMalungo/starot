@@ -6,17 +6,18 @@
 <title>STAROT · Observatory of Fates</title>
 <meta name="description" content="Tarot, astral maps, numerology and the Maya count, drawn in stardust. Deal three arcana, read the numbers in your name, find your Maya day sign, or see the sky as it stood when you were born.">
 <meta name="theme-color" content="#050609">
-<link rel="alternate" hreflang="en" href="https://miguelmalungo.github.io/starot/">
-<link rel="alternate" hreflang="pt-BR" href="https://miguelmalungo.github.io/starot/?lang=pt">
-<link rel="alternate" hreflang="x-default" href="https://miguelmalungo.github.io/starot/">
+<link rel="canonical" href="https://starot.one/">
+<link rel="alternate" hreflang="en" href="https://starot.one/">
+<link rel="alternate" hreflang="pt-BR" href="https://starot.one/?lang=pt">
+<link rel="alternate" hreflang="x-default" href="https://starot.one/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="STAROT">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="pt_BR">
 <meta property="og:title" content="STAROT · Observatory of Fates">
 <meta property="og:description" content="Tarot, astral maps, numerology and the Maya count — every answer drawn in thousands of stars.">
-<meta property="og:url" content="https://miguelmalungo.github.io/starot/">
-<meta property="og:image" content="https://miguelmalungo.github.io/starot/og.jpg">
+<meta property="og:url" content="https://starot.one/">
+<meta property="og:image" content="https://starot.one/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -631,7 +632,7 @@
         <span class="f-sub" id="featSub"></span>
       </div>
     </section>
-    <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span></footer>
+    <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span><i class="free-note" hidden></i><span class="free-note" id="freeNote" hidden></span></footer>
   </div>
 
   <!-- ── tarot ── -->
@@ -827,7 +828,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="29";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="30";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -838,6 +839,7 @@ const CONFIG={
   payApi:"",        // your payment worker, e.g. "https://starot-pay.yourname.workers.dev" — empty = tattoo files download free
   price:"€5",       // the tattoo flash — shown on the page; the amount charged lives in the worker (PRICE_CENTS)
   donationUrl:"",   // pay-what-you-want link for the offering bowl (Stripe payment link, Ko-fi…)
+  freeUntil:"2027-01-15",   // shown as "Free until …" while payApi is empty; the paywall stays manual
   goatcounter:"",   // e.g. "starot" for https://starot.goatcounter.com — empty = no analytics
   /* photos/videos of the designs on skin (docs/MEDIA.md), e.g.
      {src:"media/gallery/wheel-forearm.jpg", caption:"Natal wheel · forearm", captionPt:"Roda natal · antebraço", concept:true}
@@ -880,7 +882,7 @@ const store={
 };
 /* on localhost a test worker can be set with localStorage['starot.api']='"http://localhost:8787"' */
 const IS_LOCAL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-const SITE_LABEL=(IS_LOCAL?'miguelmalungo.github.io/starot':(location.host+location.pathname).replace(/\/$/,'')).toUpperCase();
+const SITE_LABEL=(IS_LOCAL?'starot.one':(location.host+location.pathname).replace(/\/$/,'')).toUpperCase();
 const PAY_API=((IS_LOCAL&&store.get('api',''))||CONFIG.payApi).replace(/\/$/,'');
 const PAYWALL=!!PAY_API;
 
@@ -3135,17 +3137,27 @@ $('unlockGo').onclick=async()=>{
   }
 };
 $('unlockPrice').textContent=CONFIG.price;
+/* "Free until …", read from CONFIG.freeUntil (YYYY-MM-DD) */
+function freeUntilText(){
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(CONFIG.freeUntil||'');
+  if(!m)return T('Files free for now','Arquivos grátis por agora');
+  const mi=+m[2]-1,d=+m[3],y=m[1];
+  const en=['January','February','March','April','May','June','July','August','September','October','November','December'][mi];
+  const pt=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][mi];
+  return T(`Free until ${d} ${en} ${y}`,`Grátis até ${d} de ${pt} de ${y}`);
+}
 /* the price, said plainly wherever the tattoo flash is offered */
 (function priceChips(){
   const chips=PAYWALL
     ?[T('Preview free','Prévia grátis'),`<b>${CONFIG.price}</b> · ${T('downloadable files','arquivos para baixar')}`]
-    :[T('Preview free','Prévia grátis'),T('Files free for now','Arquivos grátis por agora')];
+    :[T('Preview free','Prévia grátis'),freeUntilText()];
   const html=chips.map(c=>`<span>${c}</span>`).join('<i></i>');
   for(const id of ['featPrice','inkPrice'])$(id).innerHTML=html;
   $('featGo').innerHTML=`↓ &nbsp;${T('Get my tattoo files','Quero os meus arquivos')}`+(PAYWALL?` · ${CONFIG.price}`:'');
   $('featSub').textContent=PAYWALL
     ?T('Your designs are drawn first — see them free, pay only if you love them.','Os seus desenhos aparecem primeiro — veja grátis e pague só se gostar.')
-    :T('Free for now — see your designs, then download them.','Grátis por agora — veja os seus desenhos e baixe-os.');
+    :freeUntilText()+T(' — see your designs, then download them.',' — veja os seus desenhos e baixe-os.');
+  if(!PAYWALL&&CONFIG.freeUntil){$('freeNote').textContent=freeUntilText();document.querySelectorAll('.free-note').forEach(e=>e.hidden=false);}
 })();
 
 /* ═══ THE EXAMPLES POPUP — the flash sheet and the designs worn ═══ */
