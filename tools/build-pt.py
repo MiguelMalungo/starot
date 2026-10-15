@@ -28,6 +28,13 @@ pt = dict(re.findall(r"'(about\.[a-z0-9]+)':'([^']*)'", s))
 for k, v in pt.items():
     s, n = re.subn(r'(data-t="%s">)[^<]*(<)' % re.escape(k), lambda m: m.group(1) + v + m.group(2), s, count=1)
     if n != 1: sys.exit(f"build-pt: {k} not found")
+import json
+qs = sorted(int(k[7:]) for k in pt if re.fullmatch(r"about\.q\d+", k))
+faq_pt = json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": "pt-BR", "mainEntity": [
+    {"@type": "Question", "name": pt[f"about.q{i}"], "acceptedAnswer": {"@type": "Answer", "text": pt[f"about.a{i}"]}} for i in qs]},
+    ensure_ascii=False)
+s, n = re.subn(r'(<script type="application/ld\+json" id="faqLd">\n).*?(\n</script>)', lambda m: m.group(1) + faq_pt + m.group(2), s, count=1, flags=re.S)
+if n != 1: sys.exit("build-pt: faqLd not found")
 sub(r'<script>\n', "<script>window.FORCE_LANG='pt'</script>\n<script>\n")
 out = root / "pt" / "index.html"
 out.parent.mkdir(exist_ok=True)

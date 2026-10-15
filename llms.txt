@@ -1,0 +1,27 @@
+# STAROT
+
+> Free web observatory: tarot, an astrology star map, numerology and the Maya count, drawn in stardust, plus a generator that turns your readings into tattoo flash designs.
+
+STAROT is a single-page web app by Porto visual artist Miguel Ferraz Guedes. It runs in any browser, with no account or install, in English and Brazilian Portuguese.
+
+- **Tarot:** three cards (past, present, future) dealt from the 22 major arcana.
+- **Astrology star map:** the sky at your birth date, time and place, with planets, houses and the rising sign.
+- **Numerology:** the numbers in your name and birth date, such as the life path.
+- **Maya reading:** your day sign, tone and cross in the 260-day sacred count.
+- **Tattoo flash generator:** turns your readings into nine original designs on two print-ready flash sheets, downloadable as a sheet, single SVG/PNG files or a ZIP.
+
+All readings are free. The tattoo flash files are free until 15 January 2027. Readings are computed in the browser; birth details are not sent to any server.
+
+## Site
+
+- [STAROT (English)](https://starot.one/): the app, with an FAQ
+- [STAROT (Português)](https://starot.one/pt/): the same app in Brazilian Portuguese
+
+## Legal
+
+- [Terms & privacy](https://starot.one/terms.html)
+- [Termos e privacidade](https://starot.one/termos.html)
+
+## Optional
+
+- [Sitemap](https://starot.one/sitemap.xml)
