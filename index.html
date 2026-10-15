@@ -100,11 +100,15 @@
   }
   #intro.gone{opacity:0;visibility:hidden;pointer-events:none}
   #intro .label{margin-bottom:-14px}
-  #intro h1{
+  #intro h1,#intro h2.vh{
     font-family:'Cormorant Garamond',serif;font-weight:300;
     font-size:clamp(46px,6.5vw,88px);line-height:1.05;letter-spacing:.02em;
   }
-  #intro h1 em{font-style:italic;color:var(--gold)}
+  #intro .about{max-width:640px;margin:48px auto 0;text-align:left;opacity:.85}
+  #intro .about h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:24px;margin-bottom:10px}
+  #intro .about h3{font-family:'Jost',sans-serif;font-weight:400;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:18px 0 4px}
+  #intro .about p{font-size:17px;margin:0}
+  #intro h1 em,#intro h2.vh em{font-style:italic;color:var(--gold)}
   #intro p{
     font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;
     font-size:18px;color:var(--mist);max-width:46ch;line-height:1.6;
@@ -521,7 +525,7 @@
     /* symbol lives in the top ~40%; text is pinned to a band below it */
     #intro{padding-top:126px;gap:24px}
     .section{margin:0}
-    #intro h1{font-size:clamp(38px,10vw,56px)}
+    #intro h1,#intro h2.vh{font-size:clamp(38px,10vw,56px)}
     .doors{display:grid;grid-template-columns:1fr 1fr;width:100%;max-width:440px;gap:8px}
     .door .glyph svg{width:30px;height:30px}
     .door{flex:1 1 0;width:auto;min-width:0;padding:16px 6px 13px;gap:7px}
@@ -645,6 +649,12 @@
         <span class="f-sub" id="featSub"></span>
       </div>
     </section>
+    <section id="about" class="about" aria-labelledby="aboutH">
+     <h2 id="aboutH" data-t="about.h">Free tarot, star maps, numerology and tattoo flash</h2>
+     <p data-t="about.p">STAROT is a free web observatory by Porto visual artist Miguel Ferraz Guedes. Deal a three-card tarot reading, cast your birth star map, read the numbers in your name, find your Maya day sign, and turn the result into nine original tattoo flash designs with print-ready sheets in SVG and PNG.</p>
+     <h3 data-t="about.q1">Is it free?</h3><p data-t="about.a1">Yes. All readings are free. The tattoo flash generator is free until 15 January 2027.</p>
+     <h3 data-t="about.q2">Can my tattoo artist use the files?</h3><p data-t="about.a2">Yes. Download SVG/PNG or a ZIP with print-ready flash sheets to bring to your artist.</p>
+    </section>
     <footer class="legal"><a class="terms-link" id="termsLink" href="terms.html" data-t="legal.terms" hidden>Terms &amp; privacy</a><i class="terms-link" hidden></i><button class="linkish" style="margin:0" data-share data-t="legal.share">Share the observatory</button><i></i><span data-t="legal.ent">For reflection &amp; entertainment</span><i class="free-note" hidden></i><span class="free-note" id="freeNote" hidden></span></footer>
   </div>
 
@@ -652,7 +662,7 @@
   <div class="section" id="tarotIntro">
     <div id="introMain">
       <span class="label" data-t="tarot.label">A reading in stardust</span>
-      <h1 data-t="tarot.h1">The cards are<br><em>constellations.</em></h1>
+      <h2 class="vh" data-t="tarot.h1">The cards are<br><em>constellations.</em></h2>
       <p data-t="tarot.p">Ask your question in silence. Three arcana will be drawn from the
          dark — past, present, future — each figure assembled from thousands
          of stars that scatter at your touch, and remember.</p>
@@ -675,11 +685,11 @@
   <!-- ── astral map ── -->
   <div class="section" id="astroIntro">
     <span class="label astro-only" data-t="astro.label">The sky at the hour of your birth</span>
-    <h1 class="astro-only" data-t="astro.h1">Where were the<br><em>planets standing?</em></h1>
+    <h2 class="vh astro-only" data-t="astro.h1">Where were the<br><em>planets standing?</em></h2>
     <p class="astro-only" data-t="astro.p">Give the observatory your date, your hour and the place you first breathed.
        The stars will turn back to that night and draw the wheel.</p>
     <span class="label ink-only" data-t="ink.label" hidden>Your readings, worn</span>
-    <h1 class="ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h1>
+    <h2 class="vh ink-only" data-t="ink.h1" hidden>Wear your<br><em>sky.</em></h2>
     <p class="ink-only" data-t="ink.p" hidden>Nine tattoo designs drawn from your chart, your numbers and your Maya signs —
        two print-ready flash sheets and the files for your tattoo artist.</p>
     <div class="f-price ink-only" id="inkPrice" hidden></div>
@@ -722,7 +732,7 @@
   <!-- ── numerology ── -->
   <div class="section" id="numIntro">
     <span class="label" data-t="num.label">The arithmetic of a life</span>
-    <h1 data-t="num.h1">Every name is<br><em>a number.</em></h1>
+    <h2 class="vh" data-t="num.h1">Every name is<br><em>a number.</em></h2>
     <p data-t="num.p">Write the full name you were given at birth, and the date. The letters will be
        weighed, the digits folded, and the seal of your path drawn in stars.</p>
     <form class="form" id="numForm" autocomplete="off" novalidate>
@@ -739,7 +749,7 @@
   <!-- ── maya ── -->
   <div class="section" id="mayaIntro">
     <span class="label" data-t="maya.label">The count of days</span>
-    <h1 data-t="maya.h1">Every day has<br><em>a face.</em></h1>
+    <h2 class="vh" data-t="maya.h1">Every day has<br><em>a face.</em></h2>
     <p data-t="maya.p">The Maya count of 260 days gives every day a sign and a number. Give the observatory the day
        you were born, and it will find yours — with its tone, its trecena and the four signs that frame it.</p>
     <form class="form" id="mayaForm" autocomplete="off" novalidate>
@@ -829,7 +839,7 @@
     <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
     <div class="ex-grid" id="exGrid">
       <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=14" alt="An example of the STAROT tattoo flash sheets" data-ta="ex.alt" loading="lazy">
-        <img id="exImg1" src="media/examples/flash-sheet-example-maya.jpg?v=14" alt="" loading="lazy">
+        <img id="exImg1" src="media/examples/flash-sheet-example-maya.jpg?v=14" alt="Example tattoo flash sheet based on a Maya day sign" data-ta="ex.alt2" loading="lazy">
         <figcaption data-t="ex.sheet">Example flash sheets: nine designs from one birth chart and one name, ready to print.</figcaption></figure>
       <div class="ex-photos" id="exPhotos"></div>
     </div>
@@ -989,6 +999,11 @@ const UI_PT={
   'ex.go':'✒ &nbsp;Desenhar a minha','ex.open':'Ver as tatuagens na pele','ex.open2':'Ver um exemplo de folha de flash',
   'feat.label':'As suas leituras, na pele','feat.h':'Leve o seu céu <em>na pele.</em>',
   'feat.p':'A sua roda, os seus signos de Sol e Ascendente, os seus números e os seus signos maias, desenhados como nove tatuagens em duas folhas de flash.',
+'about.h':'Tarot, mapa astral, numerologia e flash de tatuagem grátis',
+'about.p':'STAROT é um observatório web gratuito do artista visual portuense Miguel Ferraz Guedes. Tire três cartas de tarot, trace o seu mapa astral, leia os números do seu nome, descubra o seu signo maia e transforme o resultado em nove desenhos originais de flash de tatuagem, com folhas prontas a imprimir em SVG e PNG.',
+'about.q1':'É grátis?','about.a1':'Sim. Todas as leituras são grátis. O gerador de flash de tatuagem é grátis até 15 de janeiro de 2027.',
+'about.q2':'O meu tatuador pode usar os arquivos?','about.a2':'Sim. Baixe SVG/PNG ou um ZIP com folhas de flash prontas a imprimir para levar ao seu tatuador.',
+'ex.alt2':'Exemplo de folha de flash de tatuagem baseada num signo maia',
 'sc.label':'Os desenhos das suas folhas','ex.alt':'Um exemplo das folhas de flash STAROT',
   'st.fine':'Traço preto em fundo transparente. O seu tatuador pode ajustar a espessura das linhas para a sua pele e o tamanho escolhido.',
 };
@@ -2269,7 +2284,7 @@ function skyIntro(sun,moon,H){
 const inkCta=(lead,kind='sun')=>{
   const all=CONFIG.gallery||[],isMaya=k=>/^m/.test(k||'');   /* maya, mtone, mtrecena, mcross */
   const g=all.find(it=>it.kind===kind&&it.src)||(isMaya(kind)?all.find(it=>isMaya(it.kind)&&it.src):all.find(it=>it.src));
-  return `<div class="ink${g?' has-ph':''}">${g?`<button class="ink-ph" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}"><img src="${mv(g.src)}" alt="" loading="lazy"></button>`:''}
+  return `<div class="ink${g?' has-ph':''}">${g?`<button class="ink-ph" data-examples aria-label="${T('See the tattoos on skin','Ver as tatuagens na pele')}"><img src="${mv(g.src)}" alt="${(PT?g.altPt:g.alt)||g.caption||T('STAROT tattoo flash design','Desenho de flash de tatuagem STAROT')}" loading="lazy"></button>`:''}
   <div class="ink-body"><span class="k">${T('Wear it','Leve na pele')}</span><p>${lead}</p>
   <div class="ink-row"><button class="deal-btn gold" data-goink>✒ &nbsp;${T('Make it a tattoo','Virar tatuagem')}</button></div></div></div>`;};
 const INK_LEAD_SKY=T('Your wheel, your Sun and your Rising, with your numbers — drawn as tattoo designs on one flash sheet.',
