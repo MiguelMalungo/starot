@@ -101,6 +101,7 @@ free readings lead people to the tattoos.
 
 - **Every deploy:** raise `MEDIA_V` in `index.html` by one and write the same number in
   `version.txt`. Browsers holding the old page then reload it once, and new images bypass the cache.
+  Then run `python3 tools/build-pt.py` so `pt/index.html` (the Portuguese page) matches.
 
 - **Price:** `PRICE_CENTS` in `worker/wrangler.toml` (now 500, then `npx wrangler deploy`)
   *and* `CONFIG.price` in `index.html`.
