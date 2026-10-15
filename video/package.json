@@ -6,7 +6,9 @@
     "studio": "remotion studio",
     "render": "remotion render LaunchEN out/starot-launch-en.mp4",
     "render:pt": "remotion render LaunchPT out/starot-launch-pt.mp4",
-    "cover": "remotion still Cover out/cover-en.png && remotion still CoverPT out/cover-pt.png"
+    "cover": "remotion still Cover out/cover-en.png && remotion still CoverPT out/cover-pt.png",
+    "render:stars": "remotion render StarsEN out/starot-stars-en.mp4",
+    "render:stars:pt": "remotion render StarsPT out/starot-stars-pt.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.250",

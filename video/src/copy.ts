@@ -2,7 +2,8 @@
 export type Copy = {
   hook: string; birth: string; sky: string; nine: string; print: string;
   miguel1: string; miguel2: string; domain: string; offer: string; cover: string;
-  rec: string; sheet: string;
+  rec: string; sheet: string; sheet2: string;
+  name: string; city: string; files: string[]; counter: string;
 };
 
 export const EN: Copy = {
@@ -18,6 +19,11 @@ export const EN: Copy = {
   cover: "the stars drew my tattoo",
   rec: "rec/phone-en.mp4",
   sheet: "sheet-en-1.jpg",
+  sheet2: "sheet-en-2.jpg",
+  name: "Maria Inês Soares Costa",
+  city: "09:15 · LISBON",
+  files: ["natal-wheel.svg", "sun-gemini.png", "maya-day-1-imix.svg", "flash-sheet · A3 · 300 dpi"],
+  counter: "of",
 };
 
 export const PT: Copy = {
@@ -33,4 +39,9 @@ export const PT: Copy = {
   cover: "as estrelas desenharam a minha tatuagem",
   rec: "rec/phone-pt.mp4",
   sheet: "sheet-pt-1.jpg",
+  sheet2: "sheet-pt-2.jpg",
+  name: "Maria Inês Soares Costa",
+  city: "09:15 · LISBOA",
+  files: ["roda-natal.svg", "sol-gemeos.png", "nawal-1-imix.svg", "folha de flash · A3 · 300 dpi"],
+  counter: "de",
 };
