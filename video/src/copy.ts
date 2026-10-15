@@ -1,7 +1,7 @@
 /* Everything the viewer reads, in both languages. The edit is the same; only the words change. */
 export type Copy = {
   hook: string; birth: string; sky: string; nine: string; print: string;
-  miguel1: string; miguel2: string; domain: string; offer: string; cover: string;
+  ink1: string; ink2: string; domain: string; offer: string; cover: string;
   rec: string; sheet: string; sheet2: string;
   name: string; city: string; files: string[]; counter: string;
 };
@@ -12,8 +12,8 @@ export const EN: Copy = {
   sky: "→ the sky the night you were born",
   nine: "→ 9 designs from your sky, numbers & Maya signs",
   print: "print-ready · SVG · PNG",
-  miguel1: "I'm Miguel, an artist from Porto.",
-  miguel2: "I made this for you.",
+  ink1: "drawn line by line, ready to stencil",
+  ink2: "→ take it to your tattoo artist",
   domain: "starot.one",
   offer: "free until 15 Jan · then €5",
   cover: "the stars drew my tattoo",
@@ -32,8 +32,8 @@ export const PT: Copy = {
   sky: "→ o céu da noite em que nasceu",
   nine: "→ 9 desenhos do seu céu, números e signos maias",
   print: "pronta para imprimir · SVG · PNG",
-  miguel1: "Sou o Miguel, artista do Porto.",
-  miguel2: "Fiz isto para você.",
+  ink1: "desenhado traço a traço, pronto para o stencil",
+  ink2: "→ leve ao seu tatuador",
   domain: "starot.one",
   offer: "grátis até 15 jan · depois €5",
   cover: "as estrelas desenharam a minha tatuagem",

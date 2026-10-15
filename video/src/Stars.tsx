@@ -195,7 +195,6 @@ const Ink: React.FC<{ copy: Copy; dur: number }> = ({ copy, dur }) => {
   useEffect(() => { fetch(staticFile("designs/4-sky.svg")).then(r => r.text()).then(t => { setSvg(t.replace(/#111/g, C.ink).replace(/<path /g, '<path pathLength="1" ').replace(/<svg /, '<svg style="width:100%;height:auto;display:block;overflow:visible" ')); continueRender(h); }); }, [h]);
   const p = interpolate(f, [6, dur - 30], [0, 1], { ...clamp, easing: Easing.inOut(Easing.cubic) });
   const push = interpolate(f, [0, dur], [1.0, 1.08], clamp);
-  const stamp = interpolate(f, [dur - 34, dur - 20], [0, 1], clamp);
   const half = Math.round(dur / 2);
   return (
     <AbsoluteFill style={{ background: C.paper }}>
@@ -204,11 +203,8 @@ const Ink: React.FC<{ copy: Copy; dur: number }> = ({ copy, dur }) => {
       <AbsoluteFill style={{ background: "radial-gradient(ellipse 85% 70% at 30% 18%, rgba(255,214,150,.35), transparent 60%), radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(60,40,20,.45))" }} />
       <style>{`.ink path[fill="none"]{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--p))}.ink path:not([fill="none"]){opacity:var(--p)}`}</style>
       <div className="ink" style={{ position: "absolute", left: 90, right: 90, top: 860, transform: `scale(${push})`, ["--p" as any]: p }} dangerouslySetInnerHTML={{ __html: svg || "" }} />
-      <div style={{ position: "absolute", bottom: 300, width: "100%", textAlign: "center", fontFamily: SANS, fontSize: 26, letterSpacing: ".34em", color: "rgba(28,26,30,.62)", opacity: stamp }}>
-        PORTO · 41.15° N · 8.61° W
-      </div>
-      <Sequence durationInFrames={half}><Words text={copy.miguel1} dur={half} y={300} size={68} color={C.ink} shadow={false} /></Sequence>
-      <Sequence from={half} durationInFrames={dur - half}><Words text={copy.miguel2} dur={dur - half} y={300} size={76} color={C.ink} shadow={false} /></Sequence>
+      <Sequence durationInFrames={half}><Words text={copy.ink1} dur={half} y={300} size={68} color={C.ink} shadow={false} /></Sequence>
+      <Sequence from={half} durationInFrames={dur - half}><Words text={copy.ink2} dur={dur - half} y={300} size={68} color={C.ink} shadow={false} /></Sequence>
     </AbsoluteFill>
   );
 };

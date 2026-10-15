@@ -247,8 +247,8 @@ const Hands: React.FC<{ copy: Copy; dur: number }> = ({ copy, dur }) => {
       </AbsoluteFill>
       <Lamp strength={.5} />
       <Scrim />
-      <Sequence durationInFrames={half}><Caption text={copy.miguel1} dur={half} y={250} size={64} /></Sequence>
-      <Sequence from={half} durationInFrames={dur - half}><Caption text={copy.miguel2} dur={dur - half} y={250} size={70} /></Sequence>
+      <Sequence durationInFrames={half}><Caption text={copy.ink1} dur={half} y={250} size={64} /></Sequence>
+      <Sequence from={half} durationInFrames={dur - half}><Caption text={copy.ink2} dur={dur - half} y={250} size={70} /></Sequence>
     </AbsoluteFill>
   );
 };
