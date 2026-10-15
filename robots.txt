@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://starot.one/sitemap.xml
