@@ -1,0 +1,47 @@
+[
+ {
+  "file": "designs/1-wheel.svg",
+  "kind": "wheel",
+  "ratio": 1
+ },
+ {
+  "file": "designs/2-sun.svg",
+  "kind": "sun",
+  "ratio": 2
+ },
+ {
+  "file": "designs/3-rising.svg",
+  "kind": "rising",
+  "ratio": 2
+ },
+ {
+  "file": "designs/4-sky.svg",
+  "kind": "sky",
+  "ratio": 4
+ },
+ {
+  "file": "designs/5-seals.svg",
+  "kind": "seals",
+  "ratio": 4.4
+ },
+ {
+  "file": "designs/6-maya.svg",
+  "kind": "maya",
+  "ratio": 0.7874015748031495
+ },
+ {
+  "file": "designs/7-mtone.svg",
+  "kind": "mtone",
+  "ratio": 1
+ },
+ {
+  "file": "designs/8-mtrecena.svg",
+  "kind": "mtrecena",
+  "ratio": 0.7874015748031495
+ },
+ {
+  "file": "designs/9-mcross.svg",
+  "kind": "mcross",
+  "ratio": 1
+ }
+]

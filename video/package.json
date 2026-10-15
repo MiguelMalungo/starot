@@ -1,0 +1,17 @@
+{
+  "name": "starot-launch-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render LaunchEN out/starot-launch-en.mp4",
+    "render:pt": "remotion render LaunchPT out/starot-launch-pt.mp4",
+    "cover": "remotion still Cover out/cover-en.png && remotion still CoverPT out/cover-pt.png"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.250",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.250"
+  }
+}

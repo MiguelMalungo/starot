@@ -6,3 +6,5 @@ node_modules/
 media/gallery/raw/
 .env.local
 .env*.local
+video/out/
+video/public/rec/
