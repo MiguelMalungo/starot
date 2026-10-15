@@ -1,9 +1,9 @@
 /* Image-to-video for the launch video: uploads a local still and animates it.
-   npx tsx video.ts <still.png> <out-name> "<prompt>" [endpoint]
+   npx tsx video.ts <https URL of the still> <out-name> "<prompt>" [endpoint]
    Saves media/gallery/raw/<out-name>.mp4. One billable request. */
 import { config as loadEnv } from "dotenv";
 import { config, higgsfield, HiggsfieldError } from "@higgsfield/client/v2";
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 
 loadEnv({ path: new URL(".env.local", import.meta.url).pathname, quiet: true });
 const creds = process.env.HF_CREDENTIALS || "";
@@ -11,7 +11,9 @@ if (!creds.includes(":")) { console.error("HF_CREDENTIALS is missing from tools/
 config({ credentials: creds });
 
 const [still, name, prompt, endpoint = "bytedance/seedance-2.5/image-to-video"] = process.argv.slice(2);
-const image_url = await (higgsfield as any).agents.media.upload(await readFile(still), still.endsWith(".png") ? "png" : "jpeg", "image");
+/* the still must be reachable by URL: a public https link, e.g. a file published with the site */
+if (!/^https:\/\//.test(still)) { console.error("Pass the still as a public https URL."); process.exit(1); }
+const image_url = still;
 try {
   const r: any = await higgsfield.subscribe(endpoint, {
     input: { prompt, image_url, duration: 5, resolution: "1080p", aspect_ratio: "9:16" },

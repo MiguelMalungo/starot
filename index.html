@@ -852,8 +852,8 @@
     <span class="label" data-t="ex.label">The tattoo flash</span>
     <h3 id="exTitle" data-t="ex.h">Your readings, worn</h3>
     <div class="ex-grid" id="exGrid">
-      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=14" alt="An example of the STAROT tattoo flash sheets" data-ta="ex.alt" loading="lazy">
-        <img id="exImg1" src="media/examples/flash-sheet-example-maya.jpg?v=14" alt="Example tattoo flash sheet based on a Maya day sign" data-ta="ex.alt2" loading="lazy">
+      <figure class="ex-sheet"><img src="media/examples/flash-sheet-example.jpg?v=34" alt="An example of the STAROT tattoo flash sheets" data-ta="ex.alt" loading="lazy">
+        <img id="exImg1" src="media/examples/flash-sheet-example-maya.jpg?v=34" alt="Example tattoo flash sheet based on a Maya day sign" data-ta="ex.alt2" loading="lazy">
         <figcaption data-t="ex.sheet">Example flash sheets: nine designs from one birth chart and one name, ready to print.</figcaption></figure>
       <div class="ex-photos" id="exPhotos"></div>
     </div>
@@ -865,7 +865,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="33";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="34";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -2808,6 +2808,7 @@ function setOfferBtn(){
   b.innerHTML=kind==='unlock'?`↓ &nbsp;<span class="lg">${T('Tattoo files','Arquivos de tatuagem')} · </span><span class="sm">${T('Files','Arquivos')} · </span>${CONFIG.price}`
     :kind==='flash'?`↓ &nbsp;${T('Flash sheet','Folha de flash')}`:`✦ &nbsp;${T('Leave an offering','Deixar uma oferenda')}`;
 }
+setOfferBtn();   /* label the corner button in the page's language from the start */
 $('offerBtn').onclick=()=>{
   const k=$('offerBtn').dataset.kind;
   if(k==='unlock')openUnlock();
