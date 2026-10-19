@@ -866,7 +866,7 @@
 
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="35";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="36";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -1713,13 +1713,44 @@ function toast(html,ms=6500){
   const t=$('toast');t.innerHTML=html;t.classList.add('show');
   clearTimeout(toastT);if(ms)toastT=setTimeout(()=>t.classList.remove('show'),ms);
 }
+/* ═══ SHARED READINGS — #r=<base64url JSON>, built only when Share is tapped ═══
+   The hash never reaches a server or analytics. It is obfuscation, not encryption:
+   anyone with the link can decode the birth details the sharer typed in. */
+const b64u={
+  enc:o=>btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),
+  dec:s=>JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')),c=>c.charCodeAt(0))))};
+const pickInp=i=>({y:i.y,m:i.m,d:i.d,h:i.h,mi:i.mi,nt:i.nt?1:0,lat:i.lat,lon:i.lon,tz:i.tz,place:i.place});
+function readingState(){
+  if(!reading)return null;
+  if(mode==='tarot')return {k:'tarot',c:spread.map(x=>[x.card,x.reversed?1:0]),f:tarotFor==='other'?1:0};
+  if(mode==='astro'&&chartInput)return {k:'astro',i:pickInp(chartInput)};
+  if(mode==='num'&&numbers)return {k:'num',n:numbers.name,d:[numbers.date.y,numbers.date.m,numbers.date.d]};
+  if(mode==='maya'&&maya)return {k:'maya',d:[maya.date.y,maya.date.m,maya.date.d]};
+  if(mode==='ink'&&chartInput&&inkNums)return {k:'ink',i:pickInp(chartInput),u:inkNums};   /* the numbers, not the name */
+  return null;
+}
+function openShared(o){
+  const dt=a=>({y:+a[0],m:+a[1],d:+a[2]});
+  if(o.k==='tarot'){
+    const c=(o.c||[]).map(([card,r])=>({card:+card,reversed:!!r}));
+    if(c.length!==3||c.some(x=>!(x.card>=0&&x.card<22))||new Set(c.map(x=>x.card)).size!==3)throw 0;
+    tarotFor=o.f?'other':'self';deal(c);
+  }else if(o.k==='astro')castChart(o.i);
+  else if(o.k==='num')readNumbers(String(o.n),dt(o.d));
+  else if(o.k==='maya')readMaya(dt(o.d));
+  else if(o.k==='ink')castInk(o.i,o.u.map(Number));
+  else throw 0;
+}
 async function shareSite(){
-  const url=location.origin+(PT?'/pt/':'/');   /* never the ?map= link — that one is private */
-  track('share');
+  const st=readingState();
+  const url=location.origin+(PT?'/pt/':'/')+(st?'#r='+b64u.enc(st):'');
+  track(st?'share-'+st.k:'share');
   try{
     if(navigator.share){await navigator.share({title:T('STAROT · Observatory of Fates','STAROT · Observatório dos Destinos'),
       text:T('Tarot, astral maps, numerology and the Maya count — drawn in stardust.','Tarô, mapa astral, numerologia e a contagem maia — desenhados em poeira de estrelas.'),url});return;}
-    await navigator.clipboard.writeText(url);toast(T('Link copied — pass it on.','Link copiado — passe adiante.'));
+    await navigator.clipboard.writeText(url);
+    toast(st&&st.k!=='tarot'?T('Link copied. It opens this reading, and it carries the birth details you entered.','Link copiado. Ele abre esta leitura e leva os dados de nascimento que você informou.')
+      :T('Link copied — pass it on.','Link copiado — passe adiante.'));
   }catch(e){}
 }
 document.addEventListener('click',e=>{
@@ -1778,6 +1809,7 @@ function leaveReading(to){
   $('redeal').classList.remove('show');
   $('counter').textContent='';
   reading=false;setOfferBtn();
+  document.querySelectorAll('#panel [data-share]').forEach(b=>b.innerHTML=T('✦ &nbsp;Share the observatory','✦ &nbsp;Compartilhar o observatório'));
   history.replaceState(null,'',location.pathname+qs());
   document.querySelectorAll('.slot').forEach(s=>{s.classList.remove('on');s.querySelector('.card').classList.add('hidden-face');});
   scatter();
@@ -1793,6 +1825,7 @@ function beginReading(){
   $('intro').classList.add('gone');
   setLens(false);
   reading=true;
+  document.querySelectorAll('#panel [data-share]').forEach(b=>b.innerHTML=T('✦ &nbsp;Share this reading','✦ &nbsp;Compartilhar esta leitura'));
   $('redeal').innerHTML=REDEAL[mode];
   $('unlock').classList.remove('show');$('offer').classList.remove('show');$('stencil').classList.remove('show');$('examples').classList.remove('show');
   document.querySelectorAll('.head-right .nav').forEach(n=>n.classList.toggle('here',n.dataset.go===mode));
@@ -1820,11 +1853,11 @@ const POSINTRO=L('POSINTRO',{
 const POS_SHORT=L('POS_SHORT',["Past","Present","Future"]);
 let spread=[], tarotFor='self';
 
-function deal(){
+function deal(fixed){
   mode='tarot';
   const idxs=[...Array(22).keys()];
-  spread=[];
-  for(let k=0;k<3;k++){
+  spread=Array.isArray(fixed)?fixed:[];
+  for(let k=0;k<3&&!Array.isArray(fixed);k++){
     const j=Math.floor(Math.random()*idxs.length);
     spread.push({card:idxs.splice(j,1)[0], reversed:Math.random()<0.28});
   }
@@ -1861,7 +1894,7 @@ $('dealOther').onclick=()=>{
   $('ritual').classList.add('on');
   setTimeout(()=>$('dealBtn2').classList.add('ready'),4200);
 };
-$('dealBtn2').onclick=deal;
+$('dealBtn2').onclick=()=>deal();
 
 /* ═══ DATE FIELDS (shared by the two forms) ═══════════════════ */
 const MONTHS=L('MONTHS',["January","February","March","April","May","June","July","August","September","October","November","December"]);
@@ -2488,6 +2521,9 @@ $('numForm').onsubmit=e=>{
   const raw=$('nName').value.trim();
   const date=readDate('n',err);if(!date)return;
   if(nameNumbers(raw).letters<2){err.textContent=T('The observatory needs a name of at least two letters.','O observatório precisa de um nome com pelo menos duas letras.');return;}
+  readNumbers(raw,date);
+};
+function readNumbers(raw,date){
   numbers=computeNumbers(raw,date);
   mode='num';
   beginReading();setOfferBtn();track('numbers-read');
@@ -2496,7 +2532,7 @@ $('numForm').onsubmit=e=>{
   setTimeout(()=>showNumber(0),1000);
   setTimeout(()=>showSynth(T(`The thread of these numbers: <b>${numbers.life}</b> on the road, <b>${numbers.expr}</b> in the hands, <b>${numbers.soul}</b> beneath the breath.`,
     `O fio destes números: <b>${numbers.life}</b> na estrada, <b>${numbers.expr}</b> nas mãos, <b>${numbers.soul}</b> por baixo do sopro.`)),2600);
-};
+}
 function showNumber(k){
   if(view===k)return;
   view=k;
@@ -2747,6 +2783,9 @@ $('mayaForm').onsubmit=e=>{
   e.preventDefault();
   const err=$('mayaErr');err.textContent='';
   const date=readDate('m',err);if(!date)return;
+  readMaya(date);
+};
+function readMaya(date){
   maya=mayaOf(date);
   mode='maya';
   beginReading();setOfferBtn();track('maya-read');
@@ -2756,7 +2795,7 @@ $('mayaForm').onsubmit=e=>{
   const S=MAYA_SIGNS[maya.sign],R=MAYA_SIGNS[maya.trecena],D=MAYA_DIRS[maya.dir];
   setTimeout(()=>showSynth(T(`Your day: <b>${maya.tone} ${S.y}</b>, ${S.en.toLowerCase()} — in the trecena of <b>${R.y}</b>, facing the <b>${D.n.toLowerCase()}</b>.`,
     `O seu dia: <b>${maya.tone} ${S.y}</b>, ${S.pt.toLowerCase()} — na trecena de <b>${R.y}</b>, voltado para o <b>${D.n.toLowerCase()}</b>.`)),2600);
-};
+}
 function showMaya(k){
   if(view===k)return;
   view=k;markSlot(k);
@@ -3375,6 +3414,15 @@ async function renderPoster(){
   txt(SITE_LABEL,`400 ${K(24)}px Jost`,'rgba(143,123,82,.8)',K(2910),`${K(8)}px`);
   return c;
 }
+
+(function sharedArrive(){
+  const m=/^#r=([A-Za-z0-9_-]+)$/.exec(location.hash);
+  if(!m)return;
+  history.replaceState(null,'',location.pathname+location.search);   /* birth details do not stay in the address bar */
+  if(new URLSearchParams(location.search).has('sheet')||new URLSearchParams(location.search).has('canceled'))return;
+  try{openShared(b64u.dec(m[1]));track('shared-open');}
+  catch(e){toast(T('That shared reading could not be opened.','Não foi possível abrir essa leitura compartilhada.'));}
+})();
 
 /* ═══ RETURNING FROM CHECKOUT — ?sheet=<session> is the sheet's own link ═══ */
 (async function arrive(){
