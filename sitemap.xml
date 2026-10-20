@@ -8,4 +8,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://starot.one/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://starot.one/pt/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://starot.one/"/></url>
+  <url><loc>https://starot.one/terms.html</loc></url>
+  <url><loc>https://starot.one/termos.html</loc></url>
 </urlset>
