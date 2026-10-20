@@ -869,7 +869,7 @@
 <script>window.FORCE_LANG='pt'</script>
 <script>
 /* ═══ CONFIG — the only lines you need to edit (see docs/LAUNCH.md) ═══ */
-const MEDIA_V="36";   /* bump when a gallery or example image changes, so browsers fetch the new one */
+const MEDIA_V="37";   /* bump when a gallery or example image changes, so browsers fetch the new one */
 const mv=u=>u+(u.includes("?")?"&":"?")+"v="+MEDIA_V;
 /* browsers may keep this page for ten minutes after a deploy: ask for version.txt (never cached) and
    reload once if this copy is older */
@@ -931,7 +931,7 @@ const PAYWALL=!!PAY_API;
    ?lang=pt|en wins and is remembered; otherwise a Portuguese browser gets PT.
    T(en,pt) picks a phrase; L(key,en) swaps a whole table for its PT twin. */
 const QS_LANG=new URLSearchParams(location.search).get('lang');
-const URL_LANG=window.FORCE_LANG||QS_LANG;
+const URL_LANG=(QS_LANG==='pt'||QS_LANG==='en')?QS_LANG:window.FORCE_LANG;   /* an explicit ?lang= wins (and is remembered) even on /pt/, so /pt/?lang=en lands on / in English */
 /* the PT page lives at /pt/ (tools/build-pt.sh): ?lang=pt on / goes there, ?lang=en on /pt/ comes back */
 (function langHome(){
   const want=QS_LANG==='pt'&&!window.FORCE_LANG?'/pt/':QS_LANG==='en'&&window.FORCE_LANG?'/':'';
