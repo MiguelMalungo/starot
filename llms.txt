@@ -10,7 +10,7 @@ STAROT is a single-page web app by Porto visual artist Miguel Ferraz Guedes. It 
 - **Maya reading:** your day sign, tone and cross in the 260-day sacred count.
 - **Tattoo flash generator:** turns your readings into nine original designs on two print-ready flash sheets, downloadable as a sheet, single SVG/PNG files or a ZIP.
 
-All readings are free. The tattoo flash files are free until 15 January 2027. Readings are computed in the browser; birth details are not sent to any server.
+All readings are free. The tattoo flash files are free until 15 January 2027. Readings are computed in the browser; birth details are not sent to any server. Readings can be shared as links: the Share button creates a share URL that replays the reading when opened.
 
 ## Site
 
