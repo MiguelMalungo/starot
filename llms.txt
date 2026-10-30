@@ -22,6 +22,19 @@ All readings are free. The tattoo flash files are free until 15 January 2027. Re
 - [Terms & privacy](https://starot.one/terms.html)
 - [Termos e privacidade](https://starot.one/termos.html)
 
+## About the creator
+
+- [Miguel Ferraz Guedes](https://miguelfguedes.pt/): visual artist in Porto; Instagram [@1gato100futuro](https://instagram.com/1gato100futuro)
+
+## FAQ
+
+- Can I get a free tarot reading online here? Yes. STAROT deals three cards from the 22 major arcana (past, present and future) and reads them for you, free, with no sign-up.
+- What is a birth star map? Your astral map: the sky as it stood when and where you were born, with the planets, the houses and your rising sign.
+- What is a tattoo flash generator? STAROT turns your readings into nine original designs on two flash sheets.
+- Is it free? Yes. All readings are free, and the tattoo flash files are free until 15 January 2027.
+- Is my birth data stored? No. Your name and birth details are processed in your browser; the readings send nothing to any server.
+- Do I need an account or an app? No. STAROT runs in any web browser, on phone or computer, with no account and no download.
+
 ## Optional
 
 - [Sitemap](https://starot.one/sitemap.xml)
