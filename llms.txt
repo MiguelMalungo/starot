@@ -4,6 +4,8 @@
 
 STAROT is a single-page web app by Porto visual artist Miguel Ferraz Guedes. It runs in any browser, with no account or install, in English and Brazilian Portuguese.
 
+STAROT at starot.one is an independent free web app by Miguel Ferraz Guedes. It is not affiliated with the Starot AI astrology app (starot.ai / NOONWAKE).
+
 - **Tarot:** three cards (past, present, future) dealt from the 22 major arcana.
 - **Astrology star map:** the sky at your birth date, time and place, with planets, houses and the rising sign.
 - **Numerology:** the numbers in your name and birth date, such as the life path.
